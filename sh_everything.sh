@@ -8,6 +8,22 @@ DIR_ROOT=$PWD
 #
 #
 
+echo ""
+echo "#################################################"
+echo "#                                               #"
+echo "# IF THIS SCRIPT FAIL -> TRY THOSE TWO COMMANDS #"
+echo "# -> 'chmod +x ./sh_everything.sh'              #"
+echo "# -> './sh_everything.sh'                       #"
+echo "#                                               #"
+echo "#################################################"
+echo ""
+
+#
+#
+#
+#
+#
+
 func_ensure_pkg() {
 
   PKG_NAME=$1
