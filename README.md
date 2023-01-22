@@ -48,7 +48,7 @@ sh sh_install_thirdparties.sh
 ```bash
 chmod +x ./sh_everything.sh
 ./sh_everything.sh
-# will tell if a depedency is missing
+# will tell if a dependency is missing
 # will skip the web-wasm build if emscripten is not detected
 ```
 
