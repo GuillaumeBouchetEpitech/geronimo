@@ -5,6 +5,7 @@
 - [Geronimo](#geronimo)
   - [Table of Contents](#table-of-contents)
 - [Dependencies](#dependencies)
+  - [Dependency: Emscripten 3.1.26 (for web-wasm build)](#dependency-emscripten-3126-for-web-wasm-build)
   - [Dependency: SDL2 (for native build)](#dependency-sdl2-for-native-build)
   - [Dependency: bullet3, glm, tinyobjloader, stb](#dependency-bullet3-glm-tinyobjloader-stb)
 - [How to Build (Quick)](#how-to-build-quick)
@@ -15,6 +16,20 @@
 - [Thanks for watching!](#thanks-for-watching)
 
 # Dependencies
+
+## Dependency: Emscripten 3.1.26 (for web-wasm build)
+```bash
+git clone https://github.com/emscripten-core/emsdk.git
+
+cd emsdk
+
+./emsdk install 3.1.26
+./emsdk activate --embedded 3.1.26
+
+. ./emsdk_env.sh
+
+em++ --clear-cache
+```
 
 ## Dependency: SDL2 (for native build)
 ```

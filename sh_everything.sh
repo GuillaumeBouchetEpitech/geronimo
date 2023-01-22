@@ -36,6 +36,8 @@ func_ensure_pkg libsdl2-dev
 
 if [ -z "${EMSDK}" ]; then
   echo "the env var 'EMSDK' is missing, the web-wasm builds will be skipped"
+  echo " => check the readme if you want to install emscripten"
+  echo " => it emscripten is laready installed, you may just need to run '. ./emsdk_env.sh' in this terminal"
   WEB_WASM_AVAILABLE=no
 else
   echo "the env var 'EMSDK' was found, the web-wasm builds will be included"
