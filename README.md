@@ -4,27 +4,40 @@
 ## Table of Contents
 - [Geronimo](#geronimo)
   - [Table of Contents](#table-of-contents)
-- [How to Build](#how-to-build)
-  - [Dependencies](#dependencies)
-    - [System Dependencies](#system-dependencies)
-    - [Local Dependencies](#local-dependencies)
+- [Dependencies](#dependencies)
+  - [Dependency: SDL2 (for native build)](#dependency-sdl2-for-native-build)
+  - [Dependency: bullet3, glm, tinyobjloader, stb](#dependency-bullet3-glm-tinyobjloader-stb)
+- [How to Build (Quick)](#how-to-build-quick)
+  - [Build Everything (will skip web-wasm if emscripten is absent)](#build-everything-will-skip-web-wasm-if-emscripten-is-absent)
+- [How to Build (Detailed)](#how-to-build-detailed)
   - [Build native C++ libraries](#build-native-c-libraries)
   - [Build webassembly (wasm) C++ libraries](#build-webassembly-wasm-c-libraries)
 - [Thanks for watching!](#thanks-for-watching)
 
-# How to Build
+# Dependencies
 
-## Dependencies
-
-### System Dependencies
+## Dependency: SDL2 (for native build)
 ```
-sdl2
+libsdl2-dev
 ```
 
-### Local Dependencies
+## Dependency: bullet3, glm, tinyobjloader, stb
 ```bash
 sh sh_install_thirdparties.sh
 ```
+
+# How to Build (Quick)
+
+## Build Everything (will skip web-wasm if emscripten is absent)
+
+```bash
+chmod +x ./sh_everything.sh
+./sh_everything.sh
+# will tell if a depedency is missing
+# will skip the web-wasm build if emscripten is not detected
+```
+
+# How to Build (Detailed)
 
 ## Build native C++ libraries
 
