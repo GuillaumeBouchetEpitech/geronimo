@@ -58,13 +58,21 @@ void loadObjModel(const std::string& filename, const std::string& mtlDir,
         std::size_t vertexIndex = 3 * std::size_t(index.vertex_index);
         std::size_t normalIndex = 3 * std::size_t(index.normal_index);
 
-        position.x = attrib.vertices[vertexIndex + 0];
-        position.y = attrib.vertices[vertexIndex + 1];
-        position.z = attrib.vertices[vertexIndex + 2];
+        if (vertexIndex + 2 < attrib.vertices.size()) {
+          position.x = attrib.vertices[vertexIndex + 0];
+          position.y = attrib.vertices[vertexIndex + 1];
+          position.z = attrib.vertices[vertexIndex + 2];
+        } else {
+          continue;
+        }
 
-        normal.x = attrib.normals[normalIndex + 0];
-        normal.y = attrib.normals[normalIndex + 1];
-        normal.z = attrib.normals[normalIndex + 2];
+        if (normalIndex + 2 < attrib.normals.size()) {
+          normal.x = attrib.normals[normalIndex + 0];
+          normal.y = attrib.normals[normalIndex + 1];
+          normal.z = attrib.normals[normalIndex + 2];
+        } else {
+          normal.x = normal.y = normal.y = 0;
+        }
 
         // tinyobj::real_t tx = attrib.texcoords[2*index.texcoord_index+0];
         // tinyobj::real_t ty = attrib.texcoords[2*index.texcoord_index+1];

@@ -67,8 +67,7 @@ DIR_OBJ=			./obj/web-wasm
 
 endif
 
-DIR_OBJ_GERONIMO=						$(DIR_OBJ)/geronimo
-DIR_OBJ_BULLET_PHYSICS=		$(DIR_OBJ)/bullet-physics
+DIR_OBJ_GERONIMO=					$(DIR_OBJ)/geronimo
 
 
 #### SRC
@@ -228,11 +227,6 @@ $(DIR_OBJ_GERONIMO)/%.o: %.cpp
 	@$(CXX) -c $(CXXFLAGS_GERONIMO) -MMD -MT "$@" -MF "$@.dep" -o "$@" $<
 
 include $(shell test -d $(DIR_OBJ_GERONIMO) && find $(DIR_OBJ_GERONIMO) -name "*.dep")
-
-$(DIR_OBJ_BULLET_PHYSICS)/%.o: %.cpp
-	@mkdir -p $(dir $@)
-	@echo ' --> processing $(LOG_INFO):' $<
-	@$(CXX) $(CXXFLAGS_BULLET_PHYSICS) $< -c -o $@
 
 #
 
