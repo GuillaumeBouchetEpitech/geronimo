@@ -3,18 +3,15 @@
 DIR_SRC=						./src
 DIR_APPLICATION=		./bin
 DIR_LIB_GERONIMO=			..
-DIR_LIB_GERONIMO_SRC=	$(DIR_LIB_GERONIMO)/src
-DIR_LIB_GERONIMO_DEP=	$(DIR_LIB_GERONIMO)/lib/native
 
-NAME_APPLICATION=								$(DIR_APPLICATION)/exec
-NAME_GERONIMO_SYSTEM=						$(DIR_LIB_GERONIMO_DEP)/lib-geronimo-system.a
-NAME_GERONIMO_GRAPHIC=					$(DIR_LIB_GERONIMO_DEP)/lib-geronimo-graphic.a
-NAME_GERONIMO_PHYSICS=					$(DIR_LIB_GERONIMO_DEP)/lib-geronimo-physics.a
-NAME_GERONIMO_AUDIO=						$(DIR_LIB_GERONIMO_DEP)/lib-geronimo-audio.a
-NAME_BULLET_PHYSICS_LINEARMATH=	$(DIR_LIB_GERONIMO_DEP)/lib-bullet-physics-linearmath.a
-NAME_BULLET_PHYSICS_COLLISION=	$(DIR_LIB_GERONIMO_DEP)/lib-bullet-physics-collision.a
-NAME_BULLET_PHYSICS_DYNAMICS=		$(DIR_LIB_GERONIMO_DEP)/lib-bullet-physics-dynamics.a
-
+NAME_APPLICATION=			$(DIR_APPLICATION)/exec
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-system.a
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-graphic.a
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-physics.a
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-audio.a
+NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-dynamics.a
+NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-collision.a
+NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-linearmath.a
 
 SRC+= \
 	$(wildcard \
@@ -58,17 +55,14 @@ CXXFLAGS += $(BUILD_FLAG)
 CXXFLAGS += -std=c++17
 CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
-CXXFLAGS += -I$(DIR_LIB_GERONIMO_SRC)
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties/dependencies/bullet3/src
 CXXFLAGS += -no-pie
 
 LDFLAGS += $(BUILD_FLAG)
-LDFLAGS += $(NAME_GERONIMO_AUDIO)
-LDFLAGS += $(NAME_GERONIMO_PHYSICS)
-LDFLAGS += $(NAME_GERONIMO_GRAPHIC)
-LDFLAGS += $(NAME_GERONIMO_SYSTEM)
-LDFLAGS += $(NAME_BULLET_PHYSICS_DYNAMICS)
-LDFLAGS += $(NAME_BULLET_PHYSICS_COLLISION)
-LDFLAGS += $(NAME_BULLET_PHYSICS_LINEARMATH)
+LDFLAGS += $(NAME_GERONIMO)
+LDFLAGS += $(NAME_BULLET_PHYSICS)
 
 LIBRARIES += sdl2
 LIBRARIES += glesv2

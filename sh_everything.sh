@@ -68,7 +68,8 @@ fi
 
 echo "ensuring the thirdparties are installed"
 
-sh sh_install_thirdparties.sh not-interactive
+chmod u+x ./sh_install_thirdparties.sh
+./sh_install_thirdparties.sh not-interactive
 
 #
 #

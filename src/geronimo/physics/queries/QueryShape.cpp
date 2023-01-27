@@ -11,9 +11,12 @@ namespace physics {
 
 namespace {
 
+using OnNewPhysicBodyCallback = std::function<bool(AbstractPhysicBody*)>;
+
 /// ContactResultCallback is used to report contact points
 struct MyContactResultCallback
   : public btCollisionWorld::ContactResultCallback {
+
   int m_bodyUniqueIdA;
   int m_bodyUniqueIdB;
   int m_linkIndexA;
@@ -23,15 +26,22 @@ struct MyContactResultCallback
   PhysicWorld& _physicWorld;
 
   btPairCachingGhostObject& _volume;
-  QueryShape::QueryShapeParams::ResultRaw& _result;
   void* _toIgnore;
+
+  OnNewPhysicBodyCallback _onNewPhysicBodyCallback;
+  bool _isCompleted = false;
 
   MyContactResultCallback(PhysicWorld& physicWorld,
                           btPairCachingGhostObject& volume,
-                          QueryShape::QueryShapeParams::ResultRaw& result,
-                          int collisionGroup, int collisionMask, void* toIgnore)
-    : _physicWorld(physicWorld), _volume(volume), _result(result),
-      _toIgnore(toIgnore) {
+                          int collisionGroup,
+                          int collisionMask,
+                          void* toIgnore,
+                          const OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
+    : _physicWorld(physicWorld)
+    , _volume(volume)
+    , _toIgnore(toIgnore)
+    , _onNewPhysicBodyCallback(onNewPhysicBodyCallback)
+  {
     m_collisionFilterGroup = collisionGroup;
     m_collisionFilterMask = collisionMask;
   }
@@ -54,13 +64,10 @@ struct MyContactResultCallback
     static_cast<void>(partId1); // unused
     static_cast<void>(index1);  // unused
 
-    if (_result.allBodiesTotal >= _result.allBodiesMaxSize)
-      return 1;
+    if (_isCompleted)
+      return 0;
 
-    const btCollisionObjectWrapper* pObject =
-      (colObj0Wrap->m_collisionObject != &_volume ? colObj0Wrap : colObj1Wrap);
-    // PhysicBody* pBody =
-    //   static_cast<PhysicBody*>(pObject->m_collisionObject->getUserPointer());
+    const btCollisionObjectWrapper* pObject = (colObj0Wrap->m_collisionObject != &_volume ? colObj0Wrap : colObj1Wrap);
 
     const btRigidBody* pRigidBody =
       btRigidBody::upcast(pObject->m_collisionObject);
@@ -73,16 +80,9 @@ struct MyContactResultCallback
     AbstractPhysicBody* pPhysicBody =
       static_cast<AbstractPhysicBody*>(pRigidBody->getUserPointer());
 
-    // check duplicates
-    for (std::size_t ii = 0; ii < _result.allBodiesTotal; ++ii)
-      if (_result.allRawBodiesData[ii] == pPhysicBody)
-        // if (_result.allRawBodiesRefs[ii].get() == pPhysicBody)
-        return 1;
+    if (!_onNewPhysicBodyCallback(pPhysicBody))
+      _isCompleted = true;
 
-    _result.allRawBodiesData[_result.allBodiesTotal] = pPhysicBody;
-    // _result.allRawBodiesRefs[_result.allBodiesTotal] =
-    // _physicWorld.getPhysicBodyManager().getBody(*pPhysicBody);
-    _result.allBodiesTotal += 1;
     return 1;
   }
 };
@@ -97,13 +97,7 @@ bool QueryShape::_queryShape(QueryShapeParams& inParams,
 
   PhysicShape* pShape = PhysicShape::create(inParams.shape, false);
 
-  // if (inParams.radius <= 0.0f)
-  //   return false;
-
-  // btSphereShape sphereShape(inParams.radius);
-
   btPairCachingGhostObject volume = btPairCachingGhostObject();
-  // volume.setCollisionShape(&sphereShape);
   volume.setCollisionShape(pShape->getRawShape());
   volume.setCollisionFlags(volume.getCollisionFlags() |
                            btCollisionObject::CF_NO_CONTACT_RESPONSE);
@@ -114,9 +108,25 @@ bool QueryShape::_queryShape(QueryShapeParams& inParams,
     btVector3(inParams.position.x, inParams.position.y, inParams.position.z));
   volume.setWorldTransform(tr);
 
-  MyContactResultCallback cr(_physicWorld, volume, outResultArray,
+  const OnNewPhysicBodyCallback callback = [&outResultArray](AbstractPhysicBody* pPhysicBody) -> bool
+  {
+    if (outResultArray.allBodiesTotal >= outResultArray.allBodiesMaxSize)
+      return false;
+
+    // check duplicates
+    for (std::size_t ii = 0; ii < outResultArray.allBodiesTotal; ++ii)
+      if (outResultArray.allRawBodiesData[ii] == pPhysicBody)
+        return true;
+
+    outResultArray.allRawBodiesData[outResultArray.allBodiesTotal] = pPhysicBody;
+    outResultArray.allBodiesTotal += 1;
+    return true;
+  };
+
+  MyContactResultCallback cr(_physicWorld, volume, //outResultArray,
                              inParams.collisionGroup, inParams.collisionMask,
-                             inParams.toIgnore);
+                             inParams.toIgnore,
+                             callback);
 
   _physicWorld._bullet.dynamicsWorld->contactTest(&volume, cr);
 
@@ -124,6 +134,48 @@ bool QueryShape::_queryShape(QueryShapeParams& inParams,
 
   outResultArray.hasHit = outResultArray.allBodiesTotal > 0;
   return outResultArray.hasHit;
+}
+
+bool QueryShape::queryShape(QueryShapeParams& inParams,
+                            std::vector<AbstractPhysicBody*>& outResultVector) {
+
+  outResultVector.clear();
+  outResultVector.reserve(256);
+
+  PhysicShape* pShape = PhysicShape::create(inParams.shape, false);
+
+  btPairCachingGhostObject volume = btPairCachingGhostObject();
+  volume.setCollisionShape(pShape->getRawShape());
+  volume.setCollisionFlags(volume.getCollisionFlags() |
+                           btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+  btTransform tr;
+  tr.setIdentity();
+  tr.setOrigin(
+    btVector3(inParams.position.x, inParams.position.y, inParams.position.z));
+  volume.setWorldTransform(tr);
+
+  const OnNewPhysicBodyCallback callback = [&outResultVector](AbstractPhysicBody* pPhysicBody) -> bool
+  {
+    // check duplicates
+    for (std::size_t ii = 0; ii < outResultVector.size(); ++ii)
+      if (outResultVector[ii] == pPhysicBody)
+        return true;
+
+    outResultVector.push_back(pPhysicBody);
+    return true;
+  };
+
+  MyContactResultCallback cr(_physicWorld, volume,
+                             inParams.collisionGroup, inParams.collisionMask,
+                             inParams.toIgnore,
+                             callback);
+
+  _physicWorld._bullet.dynamicsWorld->contactTest(&volume, cr);
+
+  delete pShape;
+
+  return !outResultVector.empty();
 }
 
 } // namespace physics

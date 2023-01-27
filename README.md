@@ -38,7 +38,8 @@ libsdl2-dev
 
 ## Dependency: bullet3, glm, tinyobjloader, stb
 ```bash
-sh sh_install_thirdparties.sh
+chmod u+x ./sh_install_thirdparties.sh
+./sh_install_thirdparties.sh
 ```
 
 # How to Build (Quick)
@@ -46,7 +47,7 @@ sh sh_install_thirdparties.sh
 ## Build Everything (will skip web-wasm if emscripten is absent)
 
 ```bash
-chmod +x ./sh_everything.sh
+chmod u+x ./sh_everything.sh
 ./sh_everything.sh
 # will tell if a dependency is missing
 # will skip the web-wasm build if emscripten is not detected

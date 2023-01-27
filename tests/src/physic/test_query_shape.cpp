@@ -18,21 +18,26 @@ TEST(physic_wrapper, query_shape_nothing) {
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
   shapeDef.data.sphere.radius = 1.0f;
 
-  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(1000, 0, 0),
-                                                     shapeDef);
+  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(1000, 0, 0), shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
-  gero::physics::QueryShape::QueryShapeParams::ResultArray<5> result;
-  world.getQueryShape().queryShape(params, result);
+  gero::physics::QueryShape::QueryShapeParams::ResultArray<5> resultStack;
+  world.getQueryShape().queryShape(params, resultStack);
 
-  EXPECT_EQ(result.hasHit, false);
-  EXPECT_EQ(result.allBodiesTotal, 0);
+  std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
+  world.getQueryShape().queryShape(params, resultHeap);
 
+  EXPECT_EQ(resultStack.hasHit, false);
+  EXPECT_EQ(resultStack.allBodiesTotal, 0);
 #if 1
-  EXPECT_EQ(result.allBodiesData.size(), 5);
+  EXPECT_EQ(resultStack.allBodiesData.size(), 5);
+
+  EXPECT_EQ(resultHeap.size(), 0);
 #else
   EXPECT_EQ(result.allBodiesRefs.size(), 5);
 #endif
+
+
 }
 
 TEST(physic_wrapper, query_shape_static_object) {
@@ -56,15 +61,21 @@ TEST(physic_wrapper, query_shape_static_object) {
                                                      shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
-  gero::physics::QueryShape::QueryShapeParams::ResultArray<5> result;
-  world.getQueryShape().queryShape(params, result);
+  gero::physics::QueryShape::QueryShapeParams::ResultArray<5> resultStack;
+  world.getQueryShape().queryShape(params, resultStack);
 
-  EXPECT_EQ(result.hasHit, true);
-  EXPECT_EQ(result.allBodiesTotal, 1);
+  std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
+  world.getQueryShape().queryShape(params, resultHeap);
+
+  EXPECT_EQ(resultStack.hasHit, true);
+  EXPECT_EQ(resultStack.allBodiesTotal, 1);
 
 #if 1
-  EXPECT_EQ(result.allBodiesData.size(), 5);
-  EXPECT_EQ(result.allBodiesData[0], bodyRef.get());
+  EXPECT_EQ(resultStack.allBodiesData.size(), 5);
+  EXPECT_EQ(resultStack.allBodiesData[0], bodyRef.get());
+
+  EXPECT_EQ(resultHeap.size(), 1);
+  EXPECT_EQ(resultHeap[0], bodyRef.get());
 #else
   EXPECT_EQ(result.allBodiesRefs.size(), 5);
   EXPECT_EQ(result.allBodiesRefs[0], bodyRef);
@@ -112,11 +123,14 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
                                                      shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
-  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> result;
-  world.getQueryShape().queryShape(params, result);
+  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
+  world.getQueryShape().queryShape(params, resultStack);
 
-  EXPECT_EQ(result.hasHit, true);
-  EXPECT_EQ(result.allBodiesTotal, 7);
+  std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
+  world.getQueryShape().queryShape(params, resultHeap);
+
+  EXPECT_EQ(resultStack.hasHit, true);
+  EXPECT_EQ(resultStack.allBodiesTotal, 7);
 
 #if 1
 
@@ -130,14 +144,24 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
       return it != allBodyRef.end();
     };
 
-  EXPECT_EQ(result.allBodiesData.size(), 10);
-  EXPECT_EQ(findBody(result.allBodiesData.at(0)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(1)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(2)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(3)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(4)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(5)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(6)), true);
+  EXPECT_EQ(resultStack.allBodiesData.size(), 10);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(0)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(1)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(2)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(3)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(4)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(5)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(6)), true);
+
+  EXPECT_EQ(resultHeap.size(), 7);
+  EXPECT_EQ(findBody(resultHeap.at(0)), true);
+  EXPECT_EQ(findBody(resultHeap.at(1)), true);
+  EXPECT_EQ(findBody(resultHeap.at(2)), true);
+  EXPECT_EQ(findBody(resultHeap.at(3)), true);
+  EXPECT_EQ(findBody(resultHeap.at(4)), true);
+  EXPECT_EQ(findBody(resultHeap.at(5)), true);
+  EXPECT_EQ(findBody(resultHeap.at(6)), true);
+
 #else
 
   auto findBody =
@@ -203,11 +227,14 @@ TEST(physic_wrapper, query_shape_some_static_objects) {
                                                      shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
-  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> result;
-  world.getQueryShape().queryShape(params, result);
+  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
+  world.getQueryShape().queryShape(params, resultStack);
 
-  EXPECT_EQ(result.hasHit, true);
-  EXPECT_EQ(result.allBodiesTotal, 3);
+  std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
+  world.getQueryShape().queryShape(params, resultHeap);
+
+  EXPECT_EQ(resultStack.hasHit, true);
+  EXPECT_EQ(resultStack.allBodiesTotal, 3);
 
 #if 1
 
@@ -221,14 +248,20 @@ TEST(physic_wrapper, query_shape_some_static_objects) {
       return it != allBodyRef.end();
     };
 
-  EXPECT_EQ(result.allBodiesData.size(), 10);
-  EXPECT_EQ(findBody(result.allBodiesData.at(0)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(1)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(2)), true);
-  EXPECT_EQ(findBody(result.allBodiesData.at(3)), false);
-  EXPECT_EQ(findBody(result.allBodiesData.at(4)), false);
-  EXPECT_EQ(findBody(result.allBodiesData.at(5)), false);
-  EXPECT_EQ(findBody(result.allBodiesData.at(6)), false);
+  EXPECT_EQ(resultStack.allBodiesData.size(), 10);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(0)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(1)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(2)), true);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(3)), false);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(4)), false);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(5)), false);
+  EXPECT_EQ(findBody(resultStack.allBodiesData.at(6)), false);
+
+  EXPECT_EQ(resultHeap.size(), 3);
+  EXPECT_EQ(findBody(resultHeap.at(0)), true);
+  EXPECT_EQ(findBody(resultHeap.at(1)), true);
+  EXPECT_EQ(findBody(resultHeap.at(2)), true);
+
 #else
 
   auto findBody =
@@ -305,25 +338,49 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
                                                      shapeDef);
   params.collisionGroup = filter1;
   params.collisionMask = filter1;
-  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> result;
-  world.getQueryShape().queryShape(params, result);
+  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
+  world.getQueryShape().queryShape(params, resultStack);
 
-  EXPECT_EQ(result.hasHit, true);
-  EXPECT_EQ(result.allBodiesTotal, 3);
+  std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
+  world.getQueryShape().queryShape(params, resultHeap);
+
+  EXPECT_EQ(resultStack.hasHit, true);
+  EXPECT_EQ(resultStack.allBodiesTotal, 3);
 
 #if 1
 
-  EXPECT_EQ(result.allBodiesData.size(), 10);
+  {
+    EXPECT_EQ(resultStack.allBodiesData.size(), 10);
 
-  int totalFound = 0;
-  for (std::size_t ii = 0; ii < result.allBodiesTotal; ++ii) {
-    for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
-      if (result.allBodiesData[ii] == allBodyRef[index].get() &&
-          allExpectedIndices.count(index) > 0) {
-        ++totalFound;
+    int totalFound = 0;
+    for (std::size_t ii = 0; ii < resultStack.allBodiesTotal; ++ii) {
+      for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
+        if (resultStack.allBodiesData[ii] == allBodyRef[index].get() &&
+            allExpectedIndices.count(index) > 0) {
+          ++totalFound;
+        }
       }
     }
+
+    EXPECT_EQ(totalFound, 3);
   }
+
+  {
+    EXPECT_EQ(resultHeap.size(), 3);
+
+    int totalFound = 0;
+    for (std::size_t ii = 0; ii < resultHeap.size(); ++ii) {
+      for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
+        if (resultHeap[ii] == allBodyRef[index].get() &&
+            allExpectedIndices.count(index) > 0) {
+          ++totalFound;
+        }
+      }
+    }
+
+    EXPECT_EQ(totalFound, 3);
+  }
+
 #else
 
   EXPECT_EQ(result.allBodiesRefs.size(), 10);
@@ -337,9 +394,10 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
       }
     }
   }
+
+  // EXPECT_EQ(totalFound, 3);
 #endif
 
-  EXPECT_EQ(totalFound, 3);
 }
 
 TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
@@ -385,25 +443,49 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
   params.collisionGroup = -1;
   params.collisionMask = -1;
   params.toIgnore = &(*allBodyRef[4]);
-  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> result;
-  world.getQueryShape().queryShape(params, result);
+  gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
+  world.getQueryShape().queryShape(params, resultStack);
 
-  EXPECT_EQ(result.hasHit, true);
-  EXPECT_EQ(result.allBodiesTotal, 6);
+  std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
+  world.getQueryShape().queryShape(params, resultHeap);
+
+  EXPECT_EQ(resultStack.hasHit, true);
+  EXPECT_EQ(resultStack.allBodiesTotal, 6);
 
 #if 1
 
-  EXPECT_EQ(result.allBodiesData.size(), 10);
+  {
+    EXPECT_EQ(resultStack.allBodiesData.size(), 10);
 
-  int totalFound = 0;
-  for (std::size_t ii = 0; ii < result.allBodiesTotal; ++ii) {
-    for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
-      if (result.allBodiesData[ii] == allBodyRef[index].get() &&
-          allExpectedIndices.count(index) > 0) {
-        ++totalFound;
+    int totalFound = 0;
+    for (std::size_t ii = 0; ii < resultStack.allBodiesTotal; ++ii) {
+      for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
+        if (resultStack.allBodiesData[ii] == allBodyRef[index].get() &&
+            allExpectedIndices.count(index) > 0) {
+          ++totalFound;
+        }
       }
     }
+
+    EXPECT_EQ(totalFound, 6);
   }
+
+  {
+    EXPECT_EQ(resultHeap.size(), 6);
+
+    int totalFound = 0;
+    for (std::size_t ii = 0; ii < resultHeap.size(); ++ii) {
+      for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
+        if (resultHeap[ii] == allBodyRef[index].get() &&
+            allExpectedIndices.count(index) > 0) {
+          ++totalFound;
+        }
+      }
+    }
+
+    EXPECT_EQ(totalFound, 6);
+  }
+
 #else
 
   EXPECT_EQ(result.allBodiesRefs.size(), 10);
@@ -419,7 +501,6 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
   }
 #endif
 
-  EXPECT_EQ(totalFound, 6);
 }
 
 #if 0

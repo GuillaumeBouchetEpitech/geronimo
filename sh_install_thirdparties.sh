@@ -2,106 +2,150 @@
 
 FIRST_ARG=$1
 
-# echo "FIRST_ARG: ${1}"
-
 case $FIRST_ARG in
 not-interactive)
-    INTERACTIVE_MODE=off
-    ;;
+  INTERACTIVE_MODE=off
+  ;;
 *)
-    INTERACTIVE_MODE=on
-    ;;
+  INTERACTIVE_MODE=on
+  ;;
 esac
 
 #
 # INIT
 
-DIR_DEPENDENCIES=$PWD/thirdparties/dependencies/
+DIR_DEPENDENCIES=$PWD/thirdparties/dependencies
 
-BULLET3_DIR=bullet3
-BULLET3_URL=bulletphysics/bullet3
-BULLET3_TAG=2.87
-
-GLM_DIR=glm
-GLM_URL=g-truc/glm
-GLM_TAG=0.9.9.2
-
-TINYOBJ_DIR=tinyobjloader
-TINYOBJ_URL=syoyo/tinyobjloader
-TINYOBJ_TAG=v1.0.6
-
-STB_DIR=stb
-STB_URL=nothings/stb
-STB_TAG=master
+declare -a my_array=(
+  "BULLET_PHYSICS;bullet3;bulletphysics/bullet3;2.87"
+  "GLM;glm;g-truc/glm;0.9.9.2"
+  "TINY_OBJ_LOADER;tinyobjloader;syoyo/tinyobjloader;v1.0.6"
+  "STB;stb;nothings/stb;master"
+)
 
 mkdir -p $DIR_DEPENDENCIES
 
-clone_repo() {
+func_clone_repo() {
 
-    CURR_GIT_URL=$1
-    CURR_GIT_TAG=$2
-    CURR_DEST_DIR=$3
+  IN_ALL_DEP_ARRAY=${*}
+
+  for CURR_DEP_STR in $IN_ALL_DEP_ARRAY;
+  do
+
+    while IFS=';' read -ra CURR_SPLIT_STR; do
+
+      CURR_NAME="${CURR_SPLIT_STR[0]}"
+      CURR_DEST_DIR="${CURR_SPLIT_STR[1]}"
+      CURR_GIT_URL="${CURR_SPLIT_STR[2]}"
+      CURR_GIT_TAG="${CURR_SPLIT_STR[3]}"
+
+    done <<< "$CURR_DEP_STR"
+
+    echo ""
+    echo "###"
+    echo "###"
+    echo "### processing dependency $CURR_NAME"
+    echo "###"
+    echo "###"
+    echo ""
 
     if [ -d "$DIR_DEPENDENCIES/$CURR_DEST_DIR" ]
     then
 
-        case $INTERACTIVE_MODE in
-        off)
-            must_install=no
-            ;;
+      echo ""
+      echo "###"
+      echo "### dependency $CURR_NAME folder was found"
+      echo "###"
+      echo ""
+
+      case $INTERACTIVE_MODE in
+      off)
+
+        echo ""
+        echo "###"
+        echo "### interacive mode is off -> skipping"
+        echo "###"
+        echo ""
+
+        must_install=no
+        ;;
+      *)
+
+        echo ""
+        echo "Directory $DIR_DEPENDENCIES/$CURR_DEST_DIR exists, replace?"
+        echo "=> no:  1 (default)"
+        echo "=> yes: 2"
+        echo ""
+
+        read USER_INPUT_PROJECT
+
+        case $USER_INPUT_PROJECT in
+        2)
+          echo "replacing"
+          echo ""
+          must_install=yes
+          ;;
         *)
-            echo ""
-            echo "Directory $DIR_DEPENDENCIES/$CURR_DEST_DIR exists, replace?"
-            echo "=> no:  1 (default)"
-            echo "=> yes: 2"
-            echo ""
-
-            read USER_INPUT_PROJECT
-
-            case $USER_INPUT_PROJECT in
-            2)
-                echo "replacing"
-                echo ""
-                must_install=yes
-                ;;
-            *)
-                echo "not replacing"
-                echo ""
-                must_install=no
-                ;;
-            esac
-            ;;
+          echo "not replacing"
+          echo ""
+          must_install=no
+          ;;
         esac
+        ;;
+      esac
 
     else
-        must_install=yes
+
+      echo ""
+      echo "###"
+      echo "### dependency $CURR_NAME is missing -> will install"
+      echo "###"
+      echo ""
+
+      must_install=yes
     fi
 
 
 
     case $must_install in
     yes)
+
+      echo ""
+      echo "###"
+      echo "### dependency $CURR_NAME will now be downloaded"
+      echo "###"
+      echo ""
+
+      cd $DIR_DEPENDENCIES
+
+      # reset
+      rm -rf $CURR_DEST_DIR
+
+      # clone (but we only ask for one commit, which is very light)
+      git clone --quiet --depth 1 --branch $CURR_GIT_TAG https://github.com/$CURR_GIT_URL $CURR_DEST_DIR
+
+      if [ -d "$DIR_DEPENDENCIES/$CURR_DEST_DIR" ]
+      then
         echo ""
-        echo "installing"
+        echo "###"
+        echo "### dependency $CURR_NAME successfully downloaded"
+        echo "###"
         echo ""
+      else
+        echo ""
+        echo "###"
+        echo "### dependency $CURR_NAME failed to be downloaded"
+        echo "###"
+        echo ""
+        exit 1;
+      fi
 
-        cd $DIR_DEPENDENCIES
-
-        # reset
-        rm -rf $CURR_DEST_DIR
-
-        # clone (but we only ask for one commit, which is very light)
-        git clone --depth 1 --branch $CURR_GIT_TAG https://github.com/$CURR_GIT_URL $CURR_DEST_DIR
-        ;;
+      ;;
     esac
+
+  done
 }
 
-clone_repo $BULLET3_URL $BULLET3_TAG $BULLET3_DIR
-clone_repo $GLM_URL     $GLM_TAG     $GLM_DIR
-clone_repo $TINYOBJ_URL $TINYOBJ_TAG $TINYOBJ_DIR
-clone_repo $STB_URL     $STB_TAG     $STB_DIR
+func_clone_repo ${my_array[*]}
 
-
-
-
-
+tree -L 1 thirdparties/dependencies

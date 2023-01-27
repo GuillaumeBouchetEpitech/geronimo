@@ -45,14 +45,6 @@ public:
       // PhysicBodyManager::BodyWeakRef bodyRef;
     };
 
-    struct ResultRaw {
-      bool hasHit = false;
-
-      ResultImpact* allRawImpactsData;
-      std::size_t allImpactsMaxSize;
-      std::size_t allImpactsTotal;
-    };
-
     template <std::size_t N> struct ResultArray {
       bool hasHit = false;
 
@@ -67,27 +59,54 @@ public:
         collisionMask(mask), type(inType), toIgnore(inToIgnore) {}
   };
 
+public:
+  using OnNewPhysicBodyCallback = std::function<bool(const RaycastParams::ResultImpact&)>;
+
 private:
-  void _normalRaycast(RaycastParams& params, RaycastParams::ResultRaw& result);
-  void _convexSweep(RaycastParams& params, RaycastParams::ResultRaw& result);
-  bool _raycast(RaycastParams& params, RaycastParams::ResultRaw& result);
+  void _normalRaycast(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
+  void _convexSweep(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
+  void _raycast(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
 
 public:
   template <std::size_t N>
-  bool raycast(RaycastParams& params,
-               RaycastParams::ResultArray<N>& resultArray) {
+  bool raycast(RaycastParams& inParams,
+               RaycastParams::ResultArray<N>& outResultArray) {
 
-    RaycastParams::ResultRaw resultRaw;
-    resultRaw.allRawImpactsData = resultArray.allImpactsData.data();
-    resultRaw.allImpactsMaxSize = N;
-    resultRaw.allImpactsTotal = 0;
-    const bool hasHit = _raycast(params, resultRaw);
+    outResultArray.hasHit = false;
+    outResultArray.allImpactsTotal = 0;
 
-    resultArray.hasHit = resultRaw.hasHit;
-    resultArray.allImpactsTotal = resultRaw.allImpactsTotal;
+    const OnNewPhysicBodyCallback callback = [&inParams, &outResultArray](const RaycastParams::ResultImpact& inResult) -> bool
+    {
+      if (outResultArray.allImpactsTotal >= N)
+        return false;
 
-    return hasHit;
+      if (inParams.type == RaycastParams::Type::closest)
+      {
+        outResultArray.allImpactsData[0] = inResult;
+        outResultArray.allImpactsTotal = 1;
+      }
+      else
+      {
+        // check duplicates
+        for (std::size_t ii = 0; ii < outResultArray.allImpactsTotal; ++ii)
+          if (outResultArray.allImpactsData[ii].body == inResult.body)
+            return true;
+
+        outResultArray.allImpactsData[outResultArray.allImpactsTotal] = inResult;
+        outResultArray.allImpactsTotal += 1;
+      }
+
+      return true;
+    };
+
+    _raycast(inParams, callback);
+
+    outResultArray.hasHit = outResultArray.allImpactsTotal > 0;
+
+    return outResultArray.hasHit;
   }
+
+  bool raycast(RaycastParams& params, std::vector<RaycastParams::ResultImpact>& outResultVector);
 };
 
 } // namespace physics

@@ -78,6 +78,10 @@ public:
 
     return hasHit;
   }
+
+  bool queryShape(QueryShapeParams& inParams,
+                  std::vector<AbstractPhysicBody*>& outResultVector);
+
 };
 
 } // namespace physics
