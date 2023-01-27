@@ -1,15 +1,26 @@
 
 
 
+# reset
+# rm -rf obj/src/network/
+# make -j6
+
+# # ./bin/exec --gtest_filter=basic_double_linked_list__swap_two_links_from_same_list*
+# # ./bin/exec --gtest_filter=physic_wrapper*
+# ./bin/exec --gtest_filter=network_wrapper*
+
+# exit 0
+
+
+
 reset
-rm -rf obj/src/network/
+rm -rf obj/src/system/
 make -j6
 
-# ./bin/exec --gtest_filter=basic_double_linked_list__swap_two_links_from_same_list*
-# ./bin/exec --gtest_filter=physic_wrapper*
-./bin/exec --gtest_filter=network_wrapper*
+./bin/exec
 
 exit 0
+
 
 
 # reset

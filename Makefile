@@ -43,7 +43,7 @@ NAME_GERONIMO_SYSTEM=						$(DIR_LIB)/lib-geronimo-system.bc
 NAME_GERONIMO_GRAPHIC=					$(DIR_LIB)/lib-geronimo-graphic.bc
 NAME_GERONIMO_PHYSICS=					$(DIR_LIB)/lib-geronimo-physics.bc
 NAME_GERONIMO_AUDIO=						$(DIR_LIB)/lib-geronimo-audio.bc
-NAME_GERONIMO_NETWORK=					$(DIR_LIB)/lib-geronimo-network.bc
+# NAME_GERONIMO_NETWORK=					$(DIR_LIB)/lib-geronimo-network.bc
 
 endif
 
@@ -118,10 +118,15 @@ SRC_GERONIMO_AUDIO+=	\
 		$(DIR_SRC)/geronimo/audio/decoders/*.cpp \
 		)
 
+
+ifeq ($(build_platform),native)
+
 SRC_GERONIMO_NETWORK+=	\
 	$(wildcard \
 		$(DIR_SRC)/geronimo/network/*.cpp \
 		)
+
+endif
 
 #
 
@@ -129,7 +134,13 @@ OBJ_GERONIMO_SYSTEM=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_
 OBJ_GERONIMO_GRAPHIC=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_GRAPHIC))
 OBJ_GERONIMO_PHYSICS=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_PHYSICS))
 OBJ_GERONIMO_AUDIO=			$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_AUDIO))
+
+
+ifeq ($(build_platform),native)
+
 OBJ_GERONIMO_NETWORK=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_NETWORK))
+
+endif
 
 #
 
@@ -196,6 +207,8 @@ all:	\
 ensure_folders:
 	@mkdir -p $(DIR_LIB)
 
+ifeq ($(build_platform),native)
+
 geronimo:	\
 	ensure_folders	\
 	geronimo_system	\
@@ -203,6 +216,17 @@ geronimo:	\
 	geronimo_physics	\
 	geronimo_audio	\
 	geronimo_network
+
+else ifeq ($(build_platform),web-wasm)
+
+geronimo:	\
+	ensure_folders	\
+	geronimo_system	\
+	geronimo_graphic	\
+	geronimo_physics	\
+	geronimo_audio
+
+endif
 
 geronimo_system:	ensure_folders $(OBJ_GERONIMO_SYSTEM)
 	@echo ' ---> building $(LOG_INFO): "geronimo system library"'
@@ -224,10 +248,14 @@ geronimo_audio:	ensure_folders $(OBJ_GERONIMO_AUDIO)
 	@$(AR) cr $(NAME_GERONIMO_AUDIO) $(OBJ_GERONIMO_AUDIO)
 	@echo '   --> built $(LOG_INFO): "geronimo audio library"'
 
+ifeq ($(build_platform),native)
+
 geronimo_network:	ensure_folders $(OBJ_GERONIMO_NETWORK)
 	@echo ' ---> building $(LOG_INFO): "geronimo network library"'
 	@$(AR) cr $(NAME_GERONIMO_NETWORK) $(OBJ_GERONIMO_NETWORK)
 	@echo '   --> built $(LOG_INFO): "geronimo network library"'
+
+endif
 
 #
 
@@ -249,6 +277,8 @@ clean:
 	@$(RM) $(DIR_OBJ_GERONIMO)
 	@echo '   -> cleaned $(LOG_INFO): geronimo library build file(s)'
 
+ifeq ($(build_platform),native)
+
 fclean: clean
 	@echo ' -> cleaning $(LOG_INFO): geronimo library file(s)'
 	@$(RM) $(NAME_GERONIMO_SYSTEM)
@@ -257,6 +287,18 @@ fclean: clean
 	@$(RM) $(NAME_GERONIMO_AUDIO)
 	@$(RM) $(NAME_GERONIMO_NETWORK)
 	@echo '   -> cleaned $(LOG_INFO): geronimo library file(s)'
+
+else ifeq ($(build_platform),web-wasm)
+
+fclean: clean
+	@echo ' -> cleaning $(LOG_INFO): geronimo library file(s)'
+	@$(RM) $(NAME_GERONIMO_SYSTEM)
+	@$(RM) $(NAME_GERONIMO_GRAPHIC)
+	@$(RM) $(NAME_GERONIMO_PHYSICS)
+	@$(RM) $(NAME_GERONIMO_AUDIO)
+	@echo '   -> cleaned $(LOG_INFO): geronimo library file(s)'
+
+endif
 
 re:			fclean all
 
