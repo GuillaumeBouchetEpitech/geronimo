@@ -16,20 +16,21 @@ namespace threading {
 class Consumer : public NonCopyable {
 private:
   std::thread _thread;
-  ThreadSynchroniser _waitProducer;
+  ThreadSynchroniser _setupSynchroniser;
+  ThreadSynchroniser _taskSynchroniser;
 
-  bool _running = false;
+  bool _isRunning = false;
 
-  WorkCallback _work;
+  WorkCallback _workCallback;
 
   IProducer& _producer;
 
 public:
-  explicit Consumer(IProducer& producer);
+  explicit Consumer(IProducer& inProducer);
   ~Consumer();
 
 public:
-  void execute(const WorkCallback& work);
+  void execute(const WorkCallback& inWorkCallback);
   void quit();
 
 public:

@@ -14,7 +14,7 @@ class ThreadSynchroniser : public NonCopyable {
 private:
   std::mutex _mutex;
   std::condition_variable _condVar;
-  bool _notified = false;
+  bool _isNotified = false;
 
 public:
   // this class act like a scoped lock but notify before unlocking

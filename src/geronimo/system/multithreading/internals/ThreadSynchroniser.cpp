@@ -31,11 +31,11 @@ ThreadSynchroniser::ScopedLockedNotifier::~ScopedLockedNotifier() {
 
 bool ThreadSynchroniser::waitUntilNotified(std::unique_lock<std::mutex>& lock,
                                            float seconds /*= 0.0f*/) {
-  _notified = false;
+  _isNotified = false;
 
   // no need to wait for a timeout
   if (seconds <= 0.0f) {
-    while (!_notified) // loop to avoid spurious wakeups
+    while (_isNotified == false) // loop to avoid spurious wakeups
       _condVar.wait(lock);
 
     return true;
@@ -46,7 +46,7 @@ bool ThreadSynchroniser::waitUntilNotified(std::unique_lock<std::mutex>& lock,
   auto timeoutPoint = std::chrono::system_clock::now();
   timeoutPoint += std::chrono::milliseconds(millisecondsToWait);
 
-  while (!_notified) // loop to avoid spurious wakeups
+  while (_isNotified == false) // loop to avoid spurious wakeups
     if (_condVar.wait_until(lock, timeoutPoint) == std::cv_status::timeout)
       return false; // we did time out
 
@@ -54,7 +54,7 @@ bool ThreadSynchroniser::waitUntilNotified(std::unique_lock<std::mutex>& lock,
 }
 
 void ThreadSynchroniser::notify() {
-  _notified = true;
+  _isNotified = true;
   _condVar.notify_one();
 }
 
@@ -67,7 +67,7 @@ ThreadSynchroniser::makeScopedLockNotifier() {
   return ScopedLockedNotifier(*this);
 }
 
-bool ThreadSynchroniser::isNotified() const { return _notified; }
+bool ThreadSynchroniser::isNotified() const { return _isNotified; }
 
 } // namespace threading
 } // namespace gero

@@ -16,66 +16,67 @@ Producer::~Producer() { quit(); }
 //
 //
 
-void Producer::initialise(unsigned int totalCores) {
-  // clamp [1..8]
-  const unsigned int totalConsumers = std::min(std::max(totalCores, 1U), 8U);
+void Producer::initialise(uint32_t inTotalCores) {
 
   //
   // launch consumers
 
-  for (unsigned int ii = 0; ii < totalConsumers; ++ii) {
+  for (uint32_t ii = 0; ii < inTotalCores; ++ii) {
     auto newConsumer = std::make_shared<Consumer>(*this);
 
-    _consumers.push_back(newConsumer);
+    _allConsumers.push_back(newConsumer);
     _freeConsumers.push_back(newConsumer);
   }
-
-  _running = false; // the producer's thread will set it to true
 
   //
   // launch producer thread
 
+  auto setupLock = _setupSynchroniser.makeScopedLock();
+
+  _isRunning = false; // the producer's thread will set it to true
+
   _thread = std::thread(&Producer::_threadedMethod, this);
 
   // here we wait for the thread to be running
-  while (!_running)
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+  // wait -> release the lock for other thread(s)
+  _setupSynchroniser.waitUntilNotified(setupLock);
 }
 
-void Producer::push(const WorkCallback& work) {
-  if (!_running)
+void Producer::push(const WorkCallback& inWorkCallback) {
+  if (!_isRunning)
     D_THROW(std::runtime_error, "producer not running");
 
-  auto lockNotifier = _waitOneTask.makeScopedLockNotifier();
+  auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
 
   // this part is locked and will notify at the end of the scope
 
-  _plannedTasks.push_back(Task(work));
+  _allPlannedTasks.push_back(Task(inWorkCallback));
 }
 
 void Producer::quit() {
-  if (!_running)
+  if (!_isRunning)
     return;
 
   // clear the planned task(s) and wake up the running thread
   {
-    auto lockNotifier = _waitOneTask.makeScopedLockNotifier();
+    auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
-    _plannedTasks.clear();
+    _allPlannedTasks.clear();
   }
 
   waitUntilAllCompleted();
 
   // clear the planned task(s) and wake up the running thread
   {
-    auto lockNotifier = _waitOneTask.makeScopedLockNotifier();
+    auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
-    // _plannedTasks.clear();
-    _running = false;
+    // _allPlannedTasks.clear();
+    _isRunning = false;
   }
 
   if (_thread.joinable())
@@ -83,7 +84,7 @@ void Producer::quit() {
 
   _freeConsumers.clear();
   _busyConsumers.clear();
-  _consumers.clear();
+  _allConsumers.clear();
 
   // no more shared_ptr references are held
   //
@@ -93,40 +94,39 @@ void Producer::quit() {
 }
 
 void Producer::waitUntilAllCompleted() {
-  if (!_running)
+  if (!_isRunning)
     D_THROW(std::runtime_error, "producer not running");
 
-  auto lock = _waitAllTask.makeScopedLock();
+  auto lock = _allTaskSynchroniser.makeScopedLock();
 
   // this part is locked
 
   // make the (main) thread wait for all tasks to be completed
   while (!allCompleted()) {
     // wait -> release the lock for other thread(s)
-    _waitAllTask.waitUntilNotified(lock);
+    _allTaskSynchroniser.waitUntilNotified(lock);
   }
 }
 
 bool Producer::allCompleted() const {
-  return (_plannedTasks.empty() && _runningTasks.empty());
+  return (_allPlannedTasks.empty() && _allRunningTasks.empty());
 }
 
 //
 //
 
-void Producer::_notifyWorkDone(Consumer* consumer) {
-  auto lockNotifier = _waitOneTask.makeScopedLockNotifier();
+void Producer::_notifyWorkDone(Consumer* inConsumer) {
+  auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
 
   // this part is locked and will notify at the end of the scope
 
   // find the task per consumer in the "running" list
-  auto comparison = [consumer](const Task& task) {
-    return task.consumer.get() == consumer;
+  auto comparison = [inConsumer](const Task& currTask) {
+    return currTask.consumer.get() == inConsumer;
   };
-  auto itTask =
-    std::find_if(_runningTasks.begin(), _runningTasks.end(), comparison);
+  auto itTask = std::find_if(_allRunningTasks.begin(), _allRunningTasks.end(), comparison);
 
-  if (itTask == _runningTasks.end())
+  if (itTask == _allRunningTasks.end())
     return; // <= this should never fail
 
   // move consumer from free to busy
@@ -137,30 +137,37 @@ void Producer::_notifyWorkDone(Consumer* consumer) {
   if (itConsumer != _busyConsumers.end()) // <= this should never fail
     _busyConsumers.erase(itConsumer);
 
-  _runningTasks.erase(itTask);
+  _allRunningTasks.erase(itTask);
 
   // wake up potentially waiting (main) thread
-  if (_plannedTasks.empty() && _runningTasks.empty())
-    _waitAllTask.notify();
+  if (_allPlannedTasks.empty() && _allRunningTasks.empty())
+    _allTaskSynchroniser.notify();
 }
 
 void Producer::_threadedMethod() {
-  auto lock = _waitOneTask.makeScopedLock();
+
+  auto taskLock = _taskSynchroniser.makeScopedLock();
 
   // this part is locked
 
-  _running = true;
+  {
+    auto setupLockNotifier = _setupSynchroniser.makeScopedLockNotifier();
 
-  while (_running) {
+    // this part is locked and will notify at the end of the scope
+
+    _isRunning = true;
+  }
+
+  while (_isRunning) {
     // wait -> release the lock for other thread(s)
-    _waitOneTask.waitUntilNotified(lock);
+    _taskSynchroniser.waitUntilNotified(taskLock);
 
     // this part is locked
 
-    if (!_running)
+    if (!_isRunning)
       break; // quit scenario
 
-    while (!_plannedTasks.empty()) {
+    while (!_allPlannedTasks.empty()) {
       if (_freeConsumers.empty())
         break; // no consumer available, wait again
 
@@ -169,15 +176,15 @@ void Producer::_threadedMethod() {
       _busyConsumers.push_back(currConsumer);
       _freeConsumers.pop_front();
 
-      Task& currentTask = _plannedTasks.front();
+      Task& currentTask = _allPlannedTasks.front();
 
       // run task
       currentTask.consumer = currConsumer;
       currConsumer->execute(currentTask.work);
 
       // move task from planned to running
-      _runningTasks.push_back(currentTask);
-      _plannedTasks.pop_front();
+      _allRunningTasks.push_back(currentTask);
+      _allPlannedTasks.pop_front();
     }
   }
 }

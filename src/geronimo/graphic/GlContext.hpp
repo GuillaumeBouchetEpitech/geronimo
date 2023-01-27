@@ -151,8 +151,10 @@ enum class DepthFuncs {
   always,
 };
 void setDepthFunc(DepthFuncs func);
+void setDepthMask(bool isEnabled);
 
 enum class BlendFuncs {
+  one,
   srcAlpha,
   oneMinuxSrcAlpha,
 };
@@ -164,8 +166,8 @@ enum class States {
   blend,
   scissorTest,
 };
-void enable(States state);
-void disable(States state);
+void enable(States state); // TODO: template variadics
+void disable(States state); // TODO: template variadics
 
 enum class BackFaceCullingDirection {
   clockWise,

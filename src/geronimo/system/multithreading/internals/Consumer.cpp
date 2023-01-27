@@ -1,21 +1,27 @@
 
 #include "Consumer.hpp"
 
+#include "geronimo/system/TraceLogger.hpp"
+
 #include <chrono>
 
 namespace gero {
 namespace threading {
 
-Consumer::Consumer(IProducer& producer) : _producer(producer) {
-  _running = false; // the consumer's thread will set it to true
+Consumer::Consumer(IProducer& inProducer) : _producer(inProducer) {
+
+  auto setupLock = _setupSynchroniser.makeScopedLock();
+
+  _isRunning = false; // the consumer's thread will set it to true
 
   // launch consumer thread
 
   _thread = std::thread(&Consumer::_threadedMethod, this);
 
   // here we wait for the thread to be running
-  while (!_running)
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+  // wait -> release the lock for other thread(s)
+  _setupSynchroniser.waitUntilNotified(setupLock);
 }
 
 Consumer::~Consumer() { quit(); }
@@ -23,24 +29,24 @@ Consumer::~Consumer() { quit(); }
 //
 //
 
-void Consumer::execute(const WorkCallback& work) {
-  auto lockNotifier = _waitProducer.makeScopedLockNotifier();
+void Consumer::execute(const WorkCallback& inWorkCallback) {
+  auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
 
   // this part is locked and will notify at the end of the scope
 
-  _work = work;
+  _workCallback = inWorkCallback;
 }
 
 void Consumer::quit() {
-  if (!_running)
+  if (!_isRunning)
     return;
 
   {
-    auto lockNotifier = _waitProducer.makeScopedLockNotifier();
+    auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
-    _running = false;
+    _isRunning = false;
   }
 
   if (_thread.joinable())
@@ -50,30 +56,37 @@ void Consumer::quit() {
 //
 //
 
-bool Consumer::isRunning() const { return _running; }
+bool Consumer::isRunning() const { return _isRunning; }
 
-bool Consumer::isAvailable() const { return !_waitProducer.isNotified(); }
+bool Consumer::isAvailable() const { return !_taskSynchroniser.isNotified(); }
 
 //
 //
 
 void Consumer::_threadedMethod() {
-  auto lock = _waitProducer.makeScopedLock();
+
+  auto taskLock = _taskSynchroniser.makeScopedLock();
+
+  {
+    auto setupLockNotifier = _setupSynchroniser.makeScopedLockNotifier();
+
+    // this part is locked and will notify at the end of the scope
+
+    _isRunning = true;
+  }
 
   // this part is locked
 
-  _running = true;
-
-  while (_running) {
+  while (_isRunning) {
     // wait -> release the lock for other thread(s)
-    _waitProducer.waitUntilNotified(lock);
+    _taskSynchroniser.waitUntilNotified(taskLock);
 
     // this part is locked
 
-    if (!_running)
+    if (!_isRunning)
       break; // quit scenario
 
-    _work();
+    _workCallback();
 
     _producer._notifyWorkDone(this);
   }

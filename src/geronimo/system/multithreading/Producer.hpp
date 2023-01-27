@@ -26,31 +26,32 @@ private:
 
 private:
   std::thread _thread;
-  ThreadSynchroniser _waitOneTask;
-  ThreadSynchroniser _waitAllTask;
+  ThreadSynchroniser _setupSynchroniser;
+  ThreadSynchroniser _taskSynchroniser;
+  ThreadSynchroniser _allTaskSynchroniser;
 
-  bool _running = false;
+  bool _isRunning = false;
 
-  std::list<std::shared_ptr<Consumer>> _consumers;
+  std::list<std::shared_ptr<Consumer>> _allConsumers;
   std::list<std::shared_ptr<Consumer>> _freeConsumers;
   std::list<std::shared_ptr<Consumer>> _busyConsumers;
 
-  std::list<Task> _plannedTasks;
-  std::list<Task> _runningTasks;
+  std::list<Task> _allPlannedTasks;
+  std::list<Task> _allRunningTasks;
 
 public:
   Producer() = default;
   virtual ~Producer();
 
 public:
-  void initialise(unsigned int totalCores);
-  void push(const WorkCallback& work);
+  void initialise(uint32_t inTotalCores);
+  void push(const WorkCallback& inWorkCallback);
   void quit();
   void waitUntilAllCompleted();
   bool allCompleted() const;
 
 private:
-  virtual void _notifyWorkDone(Consumer* consumer) override;
+  virtual void _notifyWorkDone(Consumer* inConsumer) override;
   void _threadedMethod();
 };
 
