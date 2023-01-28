@@ -56,14 +56,12 @@ struct BaseCustomRayResultCallback : public ResultCallback {
     const btRigidBody* pRigidBody = btRigidBody::upcast(pCollisionObject);
 
     btVector3 hitNormal;
-    // btVector3 hitPos;
     if (normalInWorldSpace) {
       hitNormal = hitNormalLocal;
     } else {
       /// need to transform normal into worldspace
       hitNormal = pRigidBody->getWorldTransform().getBasis() * hitNormalLocal;
     }
-    // hitPos = hitPointWorld;
 
     const glm::vec3 impactPoint =
       glm::vec3(hitPointWorld[0], hitPointWorld[1], hitPointWorld[2]);
@@ -72,8 +70,6 @@ struct BaseCustomRayResultCallback : public ResultCallback {
 
     AbstractPhysicBody* pPhysicBody =
       static_cast<AbstractPhysicBody*>(pRigidBody->getUserPointer());
-
-    // auto bodyRef = _physicWorld.getPhysicBodyManager().getBody(*physicBody);
 
     if (!_onNewPhysicBodyCallback({ impactPoint, impactNormal, pPhysicBody }))
       _isCompleted = true;
@@ -130,9 +126,6 @@ struct CustomRayResultCallback
   virtual btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult,
                                    bool normalInWorldSpace) override {
 
-    if (_isCompleted)
-      return 0.0f;
-
     m_collisionObject = rayResult.m_collisionObject;
     m_closestHitFraction = rayResult.m_hitFraction;
 
@@ -143,9 +136,6 @@ struct CustomRayResultCallback
 
       _process(rayResult.m_collisionObject, rayResult.m_hitNormalLocal, hitPos,
                normalInWorldSpace);
-
-      if (_isCompleted)
-        return 0.0f;
     }
 
     if (_type == Raycaster::RaycastParams::Type::everything)
@@ -156,7 +146,6 @@ struct CustomRayResultCallback
 
 void Raycaster::_normalRaycast(RaycastParams& params,
                                const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
-  // normal raycast
 
   btVector3 rayFrom(params.from.x, params.from.y, params.from.z);
   btVector3 rayTo(params.to.x, params.to.y, params.to.z);
@@ -166,8 +155,6 @@ void Raycaster::_normalRaycast(RaycastParams& params,
   rayCallback.m_collisionFilterMask = params.collisionMask;
 
   _physicWorld._bullet.dynamicsWorld->rayTest(rayFrom, rayTo, rayCallback);
-
-  // result.hasHit = rayCallback.hasHit() && result.allImpactsTotal > 0;
 }
 
 //
@@ -191,9 +178,6 @@ struct CustomConvexResultCallback
   virtual btScalar
   addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace) {
 
-    if (_isCompleted)
-      return 0.0f;
-
     // // caller already does the filter on the m_closestHitFraction
     // btAssert(convexResult.m_hitFraction <= m_closestHitFraction);
 
@@ -202,9 +186,6 @@ struct CustomConvexResultCallback
     if (_isValid(convexResult.m_hitCollisionObject)) {
       _process(convexResult.m_hitCollisionObject, convexResult.m_hitNormalLocal,
                convexResult.m_hitPointLocal, normalInWorldSpace);
-
-      if (_isCompleted)
-        return 0.0f;
     }
 
     if (_type == Raycaster::RaycastParams::Type::everything)

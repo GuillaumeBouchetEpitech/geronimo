@@ -123,7 +123,7 @@ bool QueryShape::_queryShape(QueryShapeParams& inParams,
     return true;
   };
 
-  MyContactResultCallback cr(_physicWorld, volume, //outResultArray,
+  MyContactResultCallback cr(_physicWorld, volume,
                              inParams.collisionGroup, inParams.collisionMask,
                              inParams.toIgnore,
                              callback);

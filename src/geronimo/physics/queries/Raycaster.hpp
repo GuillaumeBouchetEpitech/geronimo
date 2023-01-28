@@ -42,7 +42,6 @@ public:
       glm::vec3 impactPoint;
       glm::vec3 impactNormal;
       AbstractPhysicBody* body = nullptr;
-      // PhysicBodyManager::BodyWeakRef bodyRef;
     };
 
     template <std::size_t N> struct ResultArray {
@@ -77,9 +76,6 @@ public:
 
     const OnNewPhysicBodyCallback callback = [&inParams, &outResultArray](const RaycastParams::ResultImpact& inResult) -> bool
     {
-      if (outResultArray.allImpactsTotal >= N)
-        return false;
-
       if (inParams.type == RaycastParams::Type::closest)
       {
         outResultArray.allImpactsData[0] = inResult;
@@ -87,6 +83,9 @@ public:
       }
       else
       {
+        if (outResultArray.allImpactsTotal >= outResultArray.allImpactsData.size())
+          return false;
+
         // check duplicates
         for (std::size_t ii = 0; ii < outResultArray.allImpactsTotal; ++ii)
           if (outResultArray.allImpactsData[ii].body == inResult.body)

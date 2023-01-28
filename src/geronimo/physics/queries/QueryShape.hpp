@@ -26,7 +26,6 @@ public:
   struct QueryShapeParams {
     glm::vec3 position;
 
-    // float radius;
     PhysicShapeDef shape;
 
     short collisionGroup;
@@ -37,7 +36,6 @@ public:
     struct ResultRaw {
       bool hasHit = false;
 
-      // PhysicBodyManager::BodyWeakRef* allRawBodiesRefs;
       AbstractPhysicBody** allRawBodiesData; // abstract
       std::size_t allBodiesMaxSize;
       std::size_t allBodiesTotal;
@@ -47,7 +45,6 @@ public:
       bool hasHit = false;
 
       std::array<AbstractPhysicBody*, N> allBodiesData;
-      // std::array<PhysicBodyManager::BodyWeakRef, N> allBodiesRefs;
       std::size_t allBodiesTotal;
     };
 
@@ -68,7 +65,6 @@ public:
                   QueryShapeParams::ResultArray<N>& outResultArray) {
     QueryShapeParams::ResultRaw resultRaw;
     resultRaw.allRawBodiesData = outResultArray.allBodiesData.data();
-    // resultRaw.allRawBodiesRefs = outResultArray.allBodiesRefs.data();
     resultRaw.allBodiesMaxSize = N;
     resultRaw.allBodiesTotal = 0;
     const bool hasHit = _queryShape(inParams, resultRaw);

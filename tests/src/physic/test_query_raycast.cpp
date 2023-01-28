@@ -86,7 +86,6 @@ TEST(physic_wrapper, raycast_closest_static_object) {
   std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
   world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
 
-#if 1
   EXPECT_EQ(resultRayStack.hasHit, true);
   EXPECT_EQ(resultRayStack.allImpactsTotal, 1);
   EXPECT_EQ(resultRayStack.allImpactsData.size(), 5);
@@ -126,32 +125,6 @@ TEST(physic_wrapper, raycast_closest_static_object) {
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.x, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.y, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.z, 1, 0.001);
-
-#else
-  EXPECT_EQ(resultRay.hasHit, true);
-  EXPECT_EQ(resultRay.allImpactsTotal, 1);
-  EXPECT_EQ(resultRay.allImpactsData.size(), 5);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef, bodyRef);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef.get(), bodyRef.get());
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.z, 1, 0.001);
-
-  EXPECT_EQ(resultSphere.hasHit, true);
-  EXPECT_EQ(resultSphere.allImpactsTotal, 1);
-  EXPECT_EQ(resultSphere.allImpactsData.size(), 5);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef, bodyRef);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef.get(), bodyRef.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, 1, 0.001);
-#endif
 }
 
 TEST(physic_wrapper, raycast_closest_static_object_with_collision_filters) {
@@ -201,7 +174,6 @@ TEST(physic_wrapper, raycast_closest_static_object_with_collision_filters) {
   std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
   world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
 
-#if 1
   EXPECT_EQ(resultRayStack.hasHit, true);
   EXPECT_EQ(resultRayStack.allImpactsTotal, 1);
   EXPECT_EQ(resultRayStack.allImpactsData.size(), 5);
@@ -241,31 +213,6 @@ TEST(physic_wrapper, raycast_closest_static_object_with_collision_filters) {
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.x, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.y, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.z, 1, 0.001);
-#else
-  EXPECT_EQ(resultRay.hasHit, true);
-  EXPECT_EQ(resultRay.allImpactsTotal, 1);
-  EXPECT_EQ(resultRay.allImpactsData.size(), 5);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef, bodyRef_2);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef.get(), bodyRef_2.get());
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.z, 1, 0.001);
-
-  EXPECT_EQ(resultSphere.hasHit, true);
-  EXPECT_EQ(resultSphere.allImpactsTotal, 1);
-  EXPECT_EQ(resultSphere.allImpactsData.size(), 5);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef, bodyRef_2);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef.get(), bodyRef_2.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, 1, 0.001);
-#endif
 }
 
 TEST(physic_wrapper, raycast_closest_static_object_with_ignore_parameter) {
@@ -312,7 +259,6 @@ TEST(physic_wrapper, raycast_closest_static_object_with_ignore_parameter) {
   std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
   world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
 
-#if 1
   EXPECT_EQ(resultRayStack.hasHit, true);
   EXPECT_EQ(resultRayStack.allImpactsTotal, 1);
   EXPECT_EQ(resultRayStack.allImpactsData.size(), 5);
@@ -352,31 +298,6 @@ TEST(physic_wrapper, raycast_closest_static_object_with_ignore_parameter) {
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.x, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.y, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[0].impactPoint.z, 1, 0.001);
-#else
-  EXPECT_EQ(resultRay.hasHit, true);
-  EXPECT_EQ(resultRay.allImpactsTotal, 1);
-  EXPECT_EQ(resultRay.allImpactsData.size(), 5);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef, bodyRef_2);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef.get(), bodyRef_2.get());
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.z, 1, 0.001);
-
-  EXPECT_EQ(resultSphere.hasHit, true);
-  EXPECT_EQ(resultSphere.allImpactsTotal, 1);
-  EXPECT_EQ(resultSphere.allImpactsData.size(), 5);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef, bodyRef_2);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef.get(), bodyRef_2.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, 1, 0.001);
-#endif
 }
 
 TEST(physic_wrapper, raycast_every_static_objects) {
@@ -423,7 +344,6 @@ TEST(physic_wrapper, raycast_every_static_objects) {
   std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
   world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
 
-#if 1
   EXPECT_EQ(resultRayStack.hasHit, true);
   EXPECT_EQ(resultRayStack.allImpactsTotal, 2);
   EXPECT_EQ(resultRayStack.allImpactsData.size(), 5);
@@ -491,48 +411,6 @@ TEST(physic_wrapper, raycast_every_static_objects) {
   EXPECT_NEAR(resultSphereHeap[1].impactPoint.x, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[1].impactPoint.y, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[1].impactPoint.z, 6, 0.001);
-#else
-
-  EXPECT_EQ(resultRay.hasHit, true);
-  EXPECT_EQ(resultRay.allImpactsTotal, 2);
-  EXPECT_EQ(resultRay.allImpactsData.size(), 5);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef, bodyRef_2);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef.get(), bodyRef_2.get());
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.z, 1, 0.001);
-  EXPECT_EQ(resultRay.allImpactsData[1].bodyRef, bodyRef_1);
-  EXPECT_EQ(resultRay.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.z, 6, 0.001);
-
-  EXPECT_EQ(resultSphere.hasHit, true);
-  EXPECT_EQ(resultSphere.allImpactsTotal, 2);
-  EXPECT_EQ(resultSphere.allImpactsData.size(), 5);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef, bodyRef_2);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef.get(), bodyRef_2.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, 1, 0.001);
-  EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef, bodyRef_1);
-  EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.z, 6, 0.001);
-#endif
 }
 
 TEST(physic_wrapper, raycast_every_static_objects_with_ignore_parameter) {
@@ -587,7 +465,6 @@ TEST(physic_wrapper, raycast_every_static_objects_with_ignore_parameter) {
   std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
   world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
 
-#if 1
   EXPECT_EQ(resultRayStack.hasHit, true);
   EXPECT_EQ(resultRayStack.allImpactsTotal, 2);
   EXPECT_EQ(resultRayStack.allImpactsData.size(), 5);
@@ -655,48 +532,6 @@ TEST(physic_wrapper, raycast_every_static_objects_with_ignore_parameter) {
   EXPECT_NEAR(resultSphereHeap[1].impactPoint.x, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[1].impactPoint.y, 0, 0.001f);
   EXPECT_NEAR(resultSphereHeap[1].impactPoint.z, 6, 0.001);
-
-#else
-  EXPECT_EQ(resultRay.hasHit, true);
-  EXPECT_EQ(resultRay.allImpactsTotal, 2);
-  EXPECT_EQ(resultRay.allImpactsData.size(), 5);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef, bodyRef_3);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef.get(), bodyRef_3.get());
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.z, -4, 0.001);
-  EXPECT_EQ(resultRay.allImpactsData[1].bodyRef, bodyRef_1);
-  EXPECT_EQ(resultRay.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.z, 6, 0.001);
-
-  EXPECT_EQ(resultSphere.hasHit, true);
-  EXPECT_EQ(resultSphere.allImpactsTotal, 2);
-  EXPECT_EQ(resultSphere.allImpactsData.size(), 5);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef, bodyRef_3);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef.get(), bodyRef_3.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, -4, 0.001);
-  EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef, bodyRef_1);
-  EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.z, 6, 0.001);
-#endif
 }
 
 TEST(physic_wrapper, raycast_every_static_objects_being_looped) {
@@ -753,7 +588,6 @@ TEST(physic_wrapper, raycast_every_static_objects_being_looped) {
     std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
     world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
 
-#if 1
     EXPECT_EQ(resultRayStack.hasHit, true);
     EXPECT_EQ(resultRayStack.allImpactsTotal, 2);
     EXPECT_EQ(resultRayStack.allImpactsData.size(), 5);
@@ -821,48 +655,6 @@ TEST(physic_wrapper, raycast_every_static_objects_being_looped) {
     EXPECT_NEAR(resultSphereHeap[1].impactPoint.x, 0, 0.001f);
     EXPECT_NEAR(resultSphereHeap[1].impactPoint.y, 0, 0.001f);
     EXPECT_NEAR(resultSphereHeap[1].impactPoint.z, 6, 0.001);
-
-#else
-    EXPECT_EQ(resultRay.hasHit, true);
-    EXPECT_EQ(resultRay.allImpactsTotal, 2);
-    EXPECT_EQ(resultRay.allImpactsData.size(), 5);
-    EXPECT_EQ(resultRay.allImpactsData[0].bodyRef, bodyRef_3);
-    EXPECT_EQ(resultRay.allImpactsData[0].bodyRef.get(), bodyRef_3.get());
-    EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.x, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.y, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.z, 1, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.x, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.y, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.z, -4, 0.001);
-    EXPECT_EQ(resultRay.allImpactsData[1].bodyRef, bodyRef_1);
-    EXPECT_EQ(resultRay.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-    EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.x, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.y, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.z, 1, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.x, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.y, 0, 0.001f);
-    EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.z, 6, 0.001);
-
-    EXPECT_EQ(resultSphere.hasHit, true);
-    EXPECT_EQ(resultSphere.allImpactsTotal, 2);
-    EXPECT_EQ(resultSphere.allImpactsData.size(), 5);
-    EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef, bodyRef_3);
-    EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef.get(), bodyRef_3.get());
-    EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.x, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.y, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.z, 1, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, -4, 0.001);
-    EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef, bodyRef_1);
-    EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-    EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.x, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.y, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.z, 1, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.x, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.y, 0, 0.001f);
-    EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.z, 6, 0.001);
-#endif
   }
 }
 
@@ -916,7 +708,6 @@ TEST(physic_wrapper, raycast_repro_static_box_bug) {
   // gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphere;
   // world.getRaycaster().raycast(paramsSphere, resultSphere);
 
-#if 1
   EXPECT_EQ(resultRay.hasHit, true);
   EXPECT_EQ(resultRay.allImpactsTotal, 1);
   EXPECT_EQ(resultRay.allImpactsData.size(), 5);
@@ -942,45 +733,4 @@ TEST(physic_wrapper, raycast_repro_static_box_bug) {
   // EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0.5f, 0.1f);
   // EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0.5f, 0.1f);
   // EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, 0, 0.1f);
-#else
-  EXPECT_EQ(resultRay.hasHit, true);
-  EXPECT_EQ(resultRay.allImpactsTotal, 2);
-  EXPECT_EQ(resultRay.allImpactsData.size(), 5);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef, bodyRef_3);
-  EXPECT_EQ(resultRay.allImpactsData[0].bodyRef.get(), bodyRef_3.get());
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[0].impactPoint.z, -4, 0.001);
-  EXPECT_EQ(resultRay.allImpactsData[1].bodyRef, bodyRef_1);
-  EXPECT_EQ(resultRay.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultRay.allImpactsData[1].impactPoint.z, 6, 0.001);
-
-  EXPECT_EQ(resultSphere.hasHit, true);
-  EXPECT_EQ(resultSphere.allImpactsTotal, 2);
-  EXPECT_EQ(resultSphere.allImpactsData.size(), 5);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef, bodyRef_3);
-  EXPECT_EQ(resultSphere.allImpactsData[0].bodyRef.get(), bodyRef_3.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[0].impactPoint.z, -4, 0.001);
-  EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef, bodyRef_1);
-  EXPECT_EQ(resultSphere.allImpactsData[1].bodyRef.get(), bodyRef_1.get());
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactNormal.z, 1, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.x, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.y, 0, 0.001f);
-  EXPECT_NEAR(resultSphere.allImpactsData[1].impactPoint.z, 6, 0.001);
-#endif
 }
