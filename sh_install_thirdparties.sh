@@ -16,7 +16,7 @@ esac
 
 DIR_DEPENDENCIES=$PWD/thirdparties/dependencies
 
-declare -a my_array=(
+declare -a all_dependencies_array=(
   "BULLET_PHYSICS;bullet3;bulletphysics/bullet3;2.87"
   "GLM;glm;g-truc/glm;0.9.9.2"
   "TINY_OBJ_LOADER;tinyobjloader;syoyo/tinyobjloader;v1.0.6"
@@ -146,6 +146,6 @@ func_clone_repo() {
   done
 }
 
-func_clone_repo ${my_array[*]}
+func_clone_repo ${all_dependencies_array[*]}
 
 tree -L 1 thirdparties/dependencies

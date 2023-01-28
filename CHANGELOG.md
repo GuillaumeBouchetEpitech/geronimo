@@ -1,7 +1,7 @@
 
 # Changelog
 
-## [0.0.3] - 2023-01-23
+## [0.0.3] - 2023-01-28
 ### Changed
 - feat physics queries now support heap container
 - feat: the gl context now support the deapth mask
