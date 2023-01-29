@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [0.0.4] - 2023-01-29
+### Changed
+- chore: refactor of the container
+- chore: refactor of the unit tests
+
 ## [0.0.3] - 2023-01-28
 ### Changed
 - feat physics queries now support heap container
