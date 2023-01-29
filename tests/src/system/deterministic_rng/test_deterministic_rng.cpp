@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(deterministic_rng, can_generate_10000_unique_random_values) {
+TEST(system_deterministic_rng, can_generate_10000_unique_random_values) {
   gero::rng::DeterministicRng rng;
 
   constexpr int testSize = 10000;
@@ -19,7 +19,7 @@ TEST(deterministic_rng, can_generate_10000_unique_random_values) {
   EXPECT_EQ(allValues.size(), testSize);
 }
 
-TEST(deterministic_rng, can_generate_10000_uniformed_random_values) {
+TEST(system_deterministic_rng, can_generate_10000_uniformed_random_values) {
   gero::rng::DeterministicRng rng;
 
   constexpr int testSize = 10000;
@@ -32,7 +32,7 @@ TEST(deterministic_rng, can_generate_10000_uniformed_random_values) {
   }
 }
 
-TEST(deterministic_rng, can_generate_10000_random_but_deterministic_values) {
+TEST(system_deterministic_rng, can_generate_10000_random_but_deterministic_values) {
   constexpr int32_t k_seed = 666;
 
   gero::rng::DeterministicRng rng;
@@ -48,7 +48,7 @@ TEST(deterministic_rng, can_generate_10000_random_but_deterministic_values) {
   EXPECT_EQ(allValues.size(), testSize);
 
   rng.setSeed(k_seed);
-  for (int index = 0; index < testSize; ++index) {
+  for (std::size_t index = 0; index < testSize; ++index) {
     EXPECT_EQ(allValues[index], rng.getValue());
   }
 }

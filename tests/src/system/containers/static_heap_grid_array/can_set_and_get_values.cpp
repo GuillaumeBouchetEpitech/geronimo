@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(static_heap_grid_array, can_set_and_get_values) {
+TEST(system_static_heap_grid_array, can_set_and_get_values) {
   constexpr std::size_t k_width = 6;
   constexpr std::size_t k_height = 4;
 
@@ -38,7 +38,7 @@ TEST(static_heap_grid_array, can_set_and_get_values) {
   }
 }
 
-TEST(static_heap_grid_array, can_set_and_get_off_limits_values) {
+TEST(system_static_heap_grid_array, can_set_and_get_off_limits_values) {
   constexpr std::size_t k_width = 6;
   constexpr std::size_t k_height = 4;
 

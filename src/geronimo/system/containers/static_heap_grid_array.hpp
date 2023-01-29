@@ -20,7 +20,7 @@ class static_heap_grid_array_base_column_iterator
   friend static_heap_grid_array;
 
 public:
-  using ValueType = typename static_heap_grid_array::ValueType;
+  using value_type = typename static_heap_grid_array::value_type;
 
 protected:
   static_heap_grid_array* _container;
@@ -98,38 +98,38 @@ class static_heap_grid_array_column_iterator
   friend static_heap_grid_array;
 
 public:
-  using BaseType =
+  using base_type =
     static_heap_grid_array_base_column_iterator<static_heap_grid_array>;
-  using ValueType = typename BaseType::ValueType;
+  using value_type = typename base_type::value_type;
 
 public:
   static_heap_grid_array_column_iterator(static_heap_grid_array& container,
                                          int row, int column)
-    : BaseType(container, row, column) {}
+    : base_type(container, row, column) {}
 
 public:
-  ValueType& operator[](int index) {
-    BaseType::_ensure_is_valid();
+  value_type& operator[](int index) {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column + index);
   }
-  const ValueType& operator[](int index) const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator[](int index) const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column + index);
   }
-  ValueType* operator->() {
-    BaseType::_ensure_is_valid();
+  value_type* operator->() {
+    base_type::_ensure_is_valid();
     return &((*this->_container)(this->_row, this->_column));
   }
-  const ValueType* operator->() const {
-    BaseType::_ensure_is_valid();
+  const value_type* operator->() const {
+    base_type::_ensure_is_valid();
     return &((*this->_container)(this->_row, this->_column));
   }
-  ValueType& operator*() {
-    BaseType::_ensure_is_valid();
+  value_type& operator*() {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column);
   }
-  const ValueType& operator*() const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator*() const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column);
   }
 
@@ -153,26 +153,26 @@ class static_heap_grid_array_const_column_iterator
   friend static_heap_grid_array;
 
 public:
-  using BaseType =
+  using base_type =
     static_heap_grid_array_base_column_iterator<static_heap_grid_array>;
-  using ValueType = typename BaseType::ValueType;
+  using value_type = typename base_type::value_type;
 
 public:
   static_heap_grid_array_const_column_iterator(
     static_heap_grid_array& container, int row, int column)
-    : BaseType(container, row, column) {}
+    : base_type(container, row, column) {}
 
 public:
-  const ValueType& operator[](int index) const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator[](int index) const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column + index);
   }
-  const ValueType* operator->() const {
-    BaseType::_ensure_is_valid();
+  const value_type* operator->() const {
+    base_type::_ensure_is_valid();
     return &((*this->_container)(this->_row, this->_column));
   }
-  const ValueType& operator*() const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator*() const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column);
   }
 
@@ -202,7 +202,7 @@ class static_heap_grid_array_base_row_iterator
   friend static_heap_grid_array;
 
 public:
-  using ValueType = typename static_heap_grid_array::ValueType;
+  using value_type = typename static_heap_grid_array::value_type;
 
 protected:
   static_heap_grid_array* _container;
@@ -278,57 +278,57 @@ class static_heap_grid_array_row_iterator
   friend static_heap_grid_array;
 
 public:
-  using BaseType =
+  using base_type =
     static_heap_grid_array_base_row_iterator<static_heap_grid_array>;
-  using ColumnIterator = typename static_heap_grid_array::ColumnIterator;
-  using ConstColumnIterator =
-    typename static_heap_grid_array::ConstColumnIterator;
-  using ValueType = typename BaseType::ValueType;
+  using column_iterator = typename static_heap_grid_array::column_iterator;
+  using const_column_iterator =
+    typename static_heap_grid_array::const_column_iterator;
+  using value_type = typename base_type::value_type;
 
 public:
   static_heap_grid_array_row_iterator(static_heap_grid_array& container,
                                       int row, int column)
-    : BaseType(container, row, column) {}
+    : base_type(container, row, column) {}
 
 public:
-  ValueType& operator[](int index) {
-    BaseType::_ensure_is_valid();
+  value_type& operator[](int index) {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row + index, this->_column);
   }
-  const ValueType& operator[](int index) const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator[](int index) const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row + index, this->_column);
   }
-  ValueType* operator->() {
-    BaseType::_ensure_is_valid();
+  value_type* operator->() {
+    base_type::_ensure_is_valid();
     return &((*this->_container)(this->_row, this->_column));
   }
-  const ValueType* operator->() const {
-    BaseType::_ensure_is_valid();
+  const value_type* operator->() const {
+    base_type::_ensure_is_valid();
     return &((*this->_container)(this->_row, this->_column));
   }
-  ValueType& operator*() {
-    BaseType::_ensure_is_valid();
+  value_type& operator*() {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column);
   }
-  const ValueType& operator*() const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator*() const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column);
   }
 
 public:
-  ColumnIterator beginColumns() {
-    return ColumnIterator(*this->_container, this->_row, this->_column);
+  column_iterator beginColumns() {
+    return column_iterator(*this->_container, this->_row, this->_column);
   }
-  ColumnIterator endColumns() {
-    return ColumnIterator(*this->_container, this->_row,
+  column_iterator endColumns() {
+    return column_iterator(*this->_container, this->_row,
                           this->_column + int(this->_container->_width));
   }
-  ConstColumnIterator beginColumns() const {
-    return ConstColumnIterator(*this->_container, this->_row, this->_column);
+  const_column_iterator beginColumns() const {
+    return const_column_iterator(*this->_container, this->_row, this->_column);
   }
-  ConstColumnIterator endColumns() const {
-    return ConstColumnIterator(*this->_container, this->_row,
+  const_column_iterator endColumns() const {
+    return const_column_iterator(*this->_container, this->_row,
                                this->_column + int(this->_container->_width));
   }
 
@@ -352,37 +352,37 @@ class static_heap_grid_array_const_row_iterator
   friend static_heap_grid_array;
 
 public:
-  using BaseType =
+  using base_type =
     static_heap_grid_array_base_row_iterator<static_heap_grid_array>;
-  using ConstColumnIterator =
-    typename static_heap_grid_array::ConstColumnIterator;
-  using ValueType = typename BaseType::ValueType;
+  using const_column_iterator =
+    typename static_heap_grid_array::const_column_iterator;
+  using value_type = typename base_type::value_type;
 
 public:
   static_heap_grid_array_const_row_iterator(static_heap_grid_array& container,
                                             int row, int column)
-    : BaseType(container, row, column) {}
+    : base_type(container, row, column) {}
 
 public:
-  const ValueType& operator[](int index) const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator[](int index) const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row + index, this->_column);
   }
-  const ValueType* operator->() const {
-    BaseType::_ensure_is_valid();
+  const value_type* operator->() const {
+    base_type::_ensure_is_valid();
     return &((*this->_container)(this->_row, this->_column));
   }
-  const ValueType& operator*() const {
-    BaseType::_ensure_is_valid();
+  const value_type& operator*() const {
+    base_type::_ensure_is_valid();
     return (*this->_container)(this->_row, this->_column);
   }
 
 public:
-  ConstColumnIterator beginColumns() const {
-    return ConstColumnIterator(*this->_container, this->_row, this->_column);
+  const_column_iterator beginColumns() const {
+    return const_column_iterator(*this->_container, this->_row, this->_column);
   }
-  ConstColumnIterator endColumns() const {
-    return ConstColumnIterator(*this->_container, this->_row,
+  const_column_iterator endColumns() const {
+    return const_column_iterator(*this->_container, this->_row,
                                this->_column + int(this->_container->_width));
   }
 
@@ -410,32 +410,33 @@ public:
  *
  * ...TODO
  */
-template <typename Type> class static_heap_grid_array {
+template <typename InternalBaseType, typename PublicBaseType = InternalBaseType> class static_heap_grid_array {
 public:
-  using ValueType = Type;
-  using BaseColumnIterator =
-    static_heap_grid_array_base_column_iterator<static_heap_grid_array<Type>>;
-  using ColumnIterator =
-    static_heap_grid_array_column_iterator<static_heap_grid_array<Type>>;
-  using ConstColumnIterator =
-    static_heap_grid_array_const_column_iterator<static_heap_grid_array<Type>>;
-  using BaseRowIterator =
-    static_heap_grid_array_base_row_iterator<static_heap_grid_array<Type>>;
-  using RowIterator =
-    static_heap_grid_array_row_iterator<static_heap_grid_array<Type>>;
-  using ConstRowIterator =
-    static_heap_grid_array_const_row_iterator<static_heap_grid_array<Type>>;
+  using value_type = PublicBaseType;
+  using internal_type = InternalBaseType;
+  using base_column_iterator =
+    static_heap_grid_array_base_column_iterator<static_heap_grid_array<value_type>>;
+  using column_iterator =
+    static_heap_grid_array_column_iterator<static_heap_grid_array<value_type>>;
+  using const_column_iterator =
+    static_heap_grid_array_const_column_iterator<static_heap_grid_array<value_type>>;
+  using base_row_iterator =
+    static_heap_grid_array_base_row_iterator<static_heap_grid_array<value_type>>;
+  using row_iterator =
+    static_heap_grid_array_row_iterator<static_heap_grid_array<value_type>>;
+  using const_row_iterator =
+    static_heap_grid_array_const_row_iterator<static_heap_grid_array<value_type>>;
 
 protected:
-  friend BaseColumnIterator;
-  friend ColumnIterator;
-  friend ConstColumnIterator;
-  friend BaseRowIterator;
-  friend RowIterator;
-  friend ConstRowIterator;
+  friend base_column_iterator;
+  friend column_iterator;
+  friend const_column_iterator;
+  friend base_row_iterator;
+  friend row_iterator;
+  friend const_row_iterator;
 
 private:
-  dynamic_heap_array<Type> _data;
+  dynamic_heap_array<internal_type> _data;
   std::size_t _height = 0;
   std::size_t _width = 0;
 
@@ -480,16 +481,16 @@ private:
   }
 
 public:
-  Type& get(int row, int column) { return _data[_get_data_index(row, column)]; }
-  Type& operator()(int row, int column) { return get(row, column); }
+  value_type& get(int row, int column) { return _data[_get_data_index(row, column)]; }
+  value_type& operator()(int row, int column) { return get(row, column); }
 
-  const Type& get(int row, int column) const {
+  const value_type& get(int row, int column) const {
     return _data[_get_data_index(row, column)];
   }
-  const Type& operator()(int row, int column) const { return get(row, column); }
+  const value_type& operator()(int row, int column) const { return get(row, column); }
 
-  const Type& operator[](int index) const { return _data[index]; }
-  Type& operator[](int index) { return _data[index]; }
+  const value_type& operator[](int index) const { return _data[index]; }
+  value_type& operator[](int index) { return _data[index]; }
 
   std::size_t width() const { return _width; }
   std::size_t height() const { return _height; }
@@ -497,70 +498,70 @@ public:
   bool is_empty() const { return _data.is_empty(); }
 
 public:
-  ColumnIterator beginColumns() { return ColumnIterator(*this, 0, 0); }
-  ColumnIterator endColumns() {
-    return ColumnIterator(*this, int(_height), int(_width));
+  column_iterator beginColumns() { return column_iterator(*this, 0, 0); }
+  column_iterator endColumns() {
+    return column_iterator(*this, int(_height), int(_width));
   }
-  ConstColumnIterator beginColumns() const {
-    return ConstColumnIterator(*const_cast<static_heap_grid_array*>(this), 0,
+  const_column_iterator beginColumns() const {
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this), 0,
                                0);
   }
-  ConstColumnIterator endColumns() const {
-    return ConstColumnIterator(*const_cast<static_heap_grid_array*>(this),
+  const_column_iterator endColumns() const {
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this),
                                int(_height), int(_width));
   }
 
 public:
-  ColumnIterator beginColumns(uint32_t row) {
-    return ColumnIterator(*this, int(row), 0);
+  column_iterator beginColumns(uint32_t row) {
+    return column_iterator(*this, int(row), 0);
   }
-  ColumnIterator endColumns(uint32_t row) {
-    return ColumnIterator(*this, int(row), int(_width));
+  column_iterator endColumns(uint32_t row) {
+    return column_iterator(*this, int(row), int(_width));
   }
-  ConstColumnIterator beginColumns(uint32_t row) const {
-    return ConstColumnIterator(*const_cast<static_heap_grid_array*>(this),
+  const_column_iterator beginColumns(uint32_t row) const {
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this),
                                int(row), 0);
   }
-  ConstColumnIterator endColumns(uint32_t row) const {
-    return ConstColumnIterator(*const_cast<static_heap_grid_array*>(this),
+  const_column_iterator endColumns(uint32_t row) const {
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this),
                                int(row), int(_width));
   }
 
 public:
-  RowIterator beginRows(uint32_t row) {
-    return RowIterator(*this, int(row), 0);
+  row_iterator beginRows(uint32_t row) {
+    return row_iterator(*this, int(row), 0);
   }
-  RowIterator endRows(uint32_t row) {
-    return RowIterator(*this, int(row) + 1, 0);
+  row_iterator endRows(uint32_t row) {
+    return row_iterator(*this, int(row) + 1, 0);
   }
-  ConstRowIterator beginRows(uint32_t row) const {
-    return ConstRowIterator(*const_cast<static_heap_grid_array*>(this),
+  const_row_iterator beginRows(uint32_t row) const {
+    return const_row_iterator(*const_cast<static_heap_grid_array*>(this),
                             int(row), 0);
   }
-  ConstRowIterator endRows(uint32_t row) const {
-    return ConstRowIterator(*const_cast<static_heap_grid_array*>(this),
+  const_row_iterator endRows(uint32_t row) const {
+    return const_row_iterator(*const_cast<static_heap_grid_array*>(this),
                             int(row) + 1, 0);
   }
 
 public:
-  RowIterator beginRows() { return RowIterator(*this, 0, 0); }
-  RowIterator endRows() { return RowIterator(*this, int(_height), 0); }
-  ConstRowIterator beginRows() const {
-    return ConstRowIterator(*const_cast<static_heap_grid_array*>(this), 0, 0);
+  row_iterator beginRows() { return row_iterator(*this, 0, 0); }
+  row_iterator endRows() { return row_iterator(*this, int(_height), 0); }
+  const_row_iterator beginRows() const {
+    return const_row_iterator(*const_cast<static_heap_grid_array*>(this), 0, 0);
   }
-  ConstRowIterator endRows() const {
-    return ConstRowIterator(*const_cast<static_heap_grid_array*>(this),
+  const_row_iterator endRows() const {
+    return const_row_iterator(*const_cast<static_heap_grid_array*>(this),
                             int(_height), 0);
   }
 
 public:
   void invalidate_all_iterators() {
-    basic_double_linked_list::loop_list_links_and_reset<ColumnIterator>(
+    basic_double_linked_list::loop_list_links_and_reset<column_iterator>(
       _column_iterators_list,
-      [](ColumnIterator* it) -> void { it->_container = nullptr; });
-    basic_double_linked_list::loop_list_links_and_reset<RowIterator>(
+      [](column_iterator* it) -> void { it->_container = nullptr; });
+    basic_double_linked_list::loop_list_links_and_reset<row_iterator>(
       _row_iterators_list,
-      [](RowIterator* it) -> void { it->_container = nullptr; });
+      [](row_iterator* it) -> void { it->_container = nullptr; });
   }
 };
 

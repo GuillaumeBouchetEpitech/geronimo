@@ -10,18 +10,36 @@
 #include <memory>
 #include <string>
 
+// #define D_REF_TRACKER_ITERATORS
+
 namespace gero {
 
 // will survive a container reallocation
 // will survive a container destruction
 template <typename generic_array_container>
 class generic_array_container_base_iterator
-  : public basic_double_linked_list::link {
+  : public basic_double_linked_list::link
+  // , public std::iterator<std::random_access_iterator_tag, typename generic_array_container::value_type>
+{
 
   friend generic_array_container;
 
 public:
-  using ValueType = typename generic_array_container::ValueType;
+
+
+  // -> https://www.fluentcpp.com/2018/05/08/std-iterator-deprecated/
+
+  using value_type = typename generic_array_container::value_type;
+
+  using iterator_category = std::random_access_iterator_tag;
+  // using value_type = int;
+  using difference_type = int;
+  using pointer = value_type*;
+  using reference = value_type&;
+
+
+  // // using difference_type = typename std::iterator<std::random_access_iterator_tag, value_type>::difference_type;
+  // using difference_type = int64_t;
 
 protected:
   generic_array_container* _container;
@@ -31,8 +49,11 @@ public:
   generic_array_container_base_iterator(generic_array_container& container,
                                         int index)
     : _container(&container), _index(index) {
+
+#ifdef D_REF_TRACKER_ITERATORS
     basic_double_linked_list::add_link_to_list(_container->_iterators_list,
                                                *this);
+#endif
   }
 
   // COPY
@@ -43,10 +64,13 @@ public:
 
     _container = other._container;
     _index = other._index;
+
+#ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
       basic_double_linked_list::add_link_to_list(_container->_iterators_list,
                                                  *this);
     }
+#endif
   }
 
   // MOVE
@@ -57,10 +81,14 @@ public:
 
     std::swap(_container, other._container);
     std::swap(_index, other._index);
+
+#ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
       basic_double_linked_list::swap_two_links_from_same_list(
         _container->_iterators_list, other, *this);
     }
+#endif
+
   }
 
   // COPY
@@ -71,10 +99,13 @@ public:
 
     _container = other._container;
     _index = other._index;
+
+#ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
       basic_double_linked_list::add_link_to_list(_container->_iterators_list,
                                                  *this);
     }
+#endif
 
     return *this;
   }
@@ -87,18 +118,24 @@ public:
 
     std::swap(_container, other._container);
     std::swap(_index, other._index);
+
+#ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
       basic_double_linked_list::swap_two_links_from_same_list(
         _container->_iterators_list, other, *this);
     }
+#endif
 
     return *this;
   }
 
   ~generic_array_container_base_iterator() {
+
+#ifdef D_REF_TRACKER_ITERATORS
     if (_container)
       basic_double_linked_list::remove_link_from_list(
         _container->_iterators_list, *this);
+#endif
   }
 
 public:
@@ -111,41 +148,73 @@ protected:
   }
 
 public:
-  generic_array_container_base_iterator& operator++() // ++pre
-  {
-    _ensure_is_valid();
-    if (_index < int(_container->size()))
-      ++_index;
-    return *this;
-  }
-  generic_array_container_base_iterator& operator++(int) // post++
-  {
-    generic_array_container_base_iterator copy = *this;
-    ++(*this);
-    return copy;
-  }
+  // generic_array_container_base_iterator& operator++() // ++pre
+  // {
+  //   _ensure_is_valid();
+  //   if (_index < int(_container->size()))
+  //     ++_index;
+  //   return *this;
+  // }
+  // // generic_array_container_base_iterator& operator++(int) // post++
+  // // {
+  // //   generic_array_container_base_iterator copy = *this;
+  // //   ++(*this);
+  // //   return copy;
+  // // }
 
-  generic_array_container_base_iterator& operator--() // --pre
-  {
-    _ensure_is_valid();
-    if (_index > 0)
-      --_index;
-    return *this;
-  }
-  generic_array_container_base_iterator& operator--(int) // post--
-  {
-    generic_array_container_base_iterator copy = *this;
-    --(*this);
-    return copy;
-  }
+  // generic_array_container_base_iterator& operator--() // --pre
+  // {
+  //   _ensure_is_valid();
+  //   if (_index > 0)
+  //     --_index;
+  //   return *this;
+  // }
+  // generic_array_container_base_iterator& operator--(int) // post--
+  // {
+  //   generic_array_container_base_iterator copy = *this;
+  //   --(*this);
+  //   return copy;
+  // }
 
 public:
-  bool operator==(const generic_array_container_base_iterator& other) const {
-    return (_container == other._container && _index == other._index);
+  bool operator==(const generic_array_container_base_iterator& rhs) const {
+    return (_container == rhs._container && _index == rhs._index);
   }
-  bool operator!=(const generic_array_container_base_iterator& other) const {
-    return !(*this == other);
+  bool operator!=(const generic_array_container_base_iterator& rhs) const {
+
+    return !(*this == rhs);
+
+    // return !generic_array_container_base_iterator::operator==(rhs);
   }
+  bool operator<(const generic_array_container_base_iterator& rhs) const { return _index < rhs._index; }
+
+  bool operator>(const generic_array_container_base_iterator& rhs) const { return _index > rhs._index; }
+  // bool operator>(const generic_array_container_base_iterator& rhs) const {
+  //   return (
+  //     !generic_array_container_base_iterator::operator<(rhs) &&
+  //     !generic_array_container_base_iterator::operator==(rhs)
+  //   );
+  // }
+
+  bool operator<=(const generic_array_container_base_iterator& rhs) const { return _index <= rhs._index; }
+  // bool operator<=(const generic_array_container_base_iterator& rhs) const { return !generic_array_container_base_iterator::operator>(rhs); }
+
+  bool operator>=(const generic_array_container_base_iterator& rhs) const { return _index >= rhs._index; }
+  // bool operator>=(const generic_array_container_base_iterator& rhs) const { return !generic_array_container_base_iterator::operator<(rhs); }
+
+    // inline bool operator==(const Iterator& rhs) const {return _ptr == rhs._ptr;}
+    // inline bool operator!=(const Iterator& rhs) const {return _ptr != rhs._ptr;}
+    // inline bool operator>(const Iterator& rhs) const {return _ptr > rhs._ptr;}
+    // inline bool operator<(const Iterator& rhs) const {return _ptr < rhs._ptr;}
+    // inline bool operator>=(const Iterator& rhs) const {return _ptr >= rhs._ptr;}
+    // inline bool operator<=(const Iterator& rhs) const {return _ptr <= rhs._ptr;}
+
+  difference_type operator-(const generic_array_container_base_iterator& rhs) const { return _index - rhs._index; }
+  difference_type operator+(const generic_array_container_base_iterator& rhs) const { return _index + rhs._index; }
+
+  // generic_array_container_base_iterator& operator--() { --_index; return *this; }
+  // generic_array_container_base_iterator& operator++() { ++_index; return *this; }
+
 };
 
 // will survive a container reallocation
@@ -157,52 +226,158 @@ class generic_array_container_iterator
   friend generic_array_container;
 
 public:
-  using BaseType =
+  using base_type =
     generic_array_container_base_iterator<generic_array_container>;
-  using ValueType = typename BaseType::ValueType;
+  using value_type = typename base_type::value_type;
 
 public:
   generic_array_container_iterator(generic_array_container& container,
                                    int index)
-    : BaseType(container, index) {}
+    : base_type(container, index) {}
 
 public:
-  ValueType& operator[](int index) {
-    BaseType::_ensure_is_valid();
-    return (*BaseType::_container)[BaseType::_index + index];
+  value_type& operator[](int index) {
+    base_type::_ensure_is_valid();
+    return (*base_type::_container)[base_type::_index + index];
   }
-  const ValueType& operator[](int index) const {
-    BaseType::_ensure_is_valid();
-    return (*BaseType::_container)[BaseType::_index + index];
+  const value_type& operator[](int index) const {
+    base_type::_ensure_is_valid();
+    return (*base_type::_container)[base_type::_index + index];
   }
-  ValueType* operator->() {
-    BaseType::_ensure_is_valid();
-    return &((*BaseType::_container)[BaseType::_index]);
+  value_type* operator->() {
+    base_type::_ensure_is_valid();
+    return &((*base_type::_container)[base_type::_index]);
   }
-  const ValueType* operator->() const {
-    BaseType::_ensure_is_valid();
-    return &((*BaseType::_container)[BaseType::_index]);
+  const value_type* operator->() const {
+    base_type::_ensure_is_valid();
+    return &((*base_type::_container)[base_type::_index]);
   }
-  ValueType& operator*() {
-    BaseType::_ensure_is_valid();
-    return (*BaseType::_container)[BaseType::_index];
+  value_type& operator*() {
+    base_type::_ensure_is_valid();
+    return (*base_type::_container)[base_type::_index];
   }
-  const ValueType& operator*() const {
-    BaseType::_ensure_is_valid();
-    return (*BaseType::_container)[BaseType::_index];
+  const value_type& operator*() const {
+    base_type::_ensure_is_valid();
+    return (*base_type::_container)[base_type::_index];
   }
 
 public:
-  generic_array_container_iterator operator+(int value) const {
+  // generic_array_container_iterator operator+(int value) const {
+  //   generic_array_container_iterator copy = *this;
+  //   copy._index += value;
+  //   return copy;
+  // }
+  // generic_array_container_iterator operator-(int value) const {
+  //   generic_array_container_iterator copy = *this;
+  //   copy._index -= value;
+  //   return copy;
+  // }
+
+
+
+
+  // inline Iterator operator+(difference_type rhs) const {return Iterator(_ptr+rhs);}
+  // inline Iterator operator-(difference_type rhs) const {return Iterator(_ptr-rhs);}
+
+  generic_array_container_iterator operator+(typename base_type::difference_type rhs) const {
     generic_array_container_iterator copy = *this;
-    copy._index += value;
+    copy._index += int(rhs);
+    // copy._index += rhs._index;
     return copy;
   }
-  generic_array_container_iterator operator-(int value) const {
+  generic_array_container_iterator operator-(typename base_type::difference_type rhs) const {
     generic_array_container_iterator copy = *this;
-    copy._index -= value;
+    copy._index -= int(rhs);
+    // copy._index -= rhs._index;
     return copy;
   }
+
+
+
+  // friend inline Iterator operator+(difference_type lhs, const Iterator& rhs) {return Iterator(lhs+rhs._ptr);}
+  // friend inline Iterator operator-(difference_type lhs, const Iterator& rhs) {return Iterator(lhs-rhs._ptr);}
+
+
+  friend inline generic_array_container_iterator operator+(typename base_type::difference_type lhs, const generic_array_container_iterator& rhs) {
+    // generic_array_container_iterator copy = *this;
+    generic_array_container_iterator copy = rhs;
+    copy._index = lhs + rhs._index;
+    return copy;
+    // return generic_array_container_iterator(lhs+rhs._ptr);
+  }
+
+  friend inline generic_array_container_iterator operator-(typename base_type::difference_type lhs, const generic_array_container_iterator& rhs) {
+    // generic_array_container_iterator copy = *this;
+    generic_array_container_iterator copy = rhs;
+    copy._index = lhs - rhs._index;
+    return copy;
+    // return generic_array_container_iterator(lhs-rhs._ptr);
+  }
+
+
+
+  // inline generic_array_container_iterator operator++(int) const {generic_array_container_iterator tmp(*this); ++_ptr; return tmp;}
+  // inline generic_array_container_iterator operator--(int) const {generic_array_container_iterator tmp(*this); --_ptr; return tmp;}
+
+
+
+
+  generic_array_container_iterator operator++() // ++pre
+  {
+    // _ensure_is_valid();
+    if (base_type::_index < int(base_type::_container->size()))
+      ++base_type::_index;
+    return *this;
+  }
+  generic_array_container_iterator operator--() // --pre
+  {
+    // _ensure_is_valid();
+    if (base_type::_index > 0)
+      --base_type::_index;
+    return *this;
+  }
+
+  generic_array_container_iterator operator++(int) // post++
+  {
+    generic_array_container_iterator copy = *this;
+    ++(*this);
+    return copy;
+  }
+
+  generic_array_container_iterator operator--(int) // post--
+  {
+    generic_array_container_iterator copy = *this;
+    --(*this);
+    return copy;
+  }
+
+
+
+
+
+  // generic_array_container_iterator operator+(typename base_type::difference_type rhs) const {return generic_array_container_iterator(_ptr + rhs);}
+  // generic_array_container_iterator operator-(typename base_type::difference_type rhs) const {return generic_array_container_iterator(_ptr - rhs);}
+
+
+  // difference_type operator-(const generic_array_container_iterator& rhs) const
+  typename base_type::difference_type operator-(const generic_array_container_iterator& rhs) const
+  {
+    return base_type::_index - rhs._index;
+  }
+
+  // bool operator<(const generic_array_container_iterator& rhs) const
+  // {
+  //   return base_type::_index < rhs._index;
+  // }
+  // generic_array_container_iterator& operator--()
+  // {
+  //   --base_type::_index;
+  //   return *this;
+  // }
+
+
+
+
 };
 
 // will survive a container reallocation
@@ -214,27 +389,27 @@ class generic_array_container_const_iterator
   friend generic_array_container;
 
 public:
-  using BaseType =
+  using base_type =
     generic_array_container_base_iterator<generic_array_container>;
-  using ValueType = typename BaseType::ValueType;
+  using value_type = typename base_type::value_type;
 
 public:
   generic_array_container_const_iterator(generic_array_container& container,
                                          int index)
-    : BaseType(container, index) {}
+    : base_type(container, index) {}
 
 public:
-  const ValueType& operator[](int index) const {
-    BaseType::_ensure_is_valid();
-    return (*BaseType::_container)[BaseType::_index + index];
+  const value_type& operator[](int index) const {
+    base_type::_ensure_is_valid();
+    return (*base_type::_container)[base_type::_index + index];
   }
-  const ValueType* operator->() const {
-    BaseType::_ensure_is_valid();
-    return &((*BaseType::_container)[BaseType::_index]);
+  const value_type* operator->() const {
+    base_type::_ensure_is_valid();
+    return &((*base_type::_container)[base_type::_index]);
   }
-  const ValueType& operator*() const {
-    BaseType::_ensure_is_valid();
-    return (*BaseType::_container)[BaseType::_index];
+  const value_type& operator*() const {
+    base_type::_ensure_is_valid();
+    return (*base_type::_container)[base_type::_index];
   }
 
 public:
@@ -248,6 +423,73 @@ public:
     copy._index -= value;
     return copy;
   }
+
+
+
+
+
+
+
+  friend inline generic_array_container_const_iterator operator+(typename base_type::difference_type lhs, const generic_array_container_const_iterator& rhs) {
+    // generic_array_container_const_iterator copy = *this;
+    generic_array_container_const_iterator copy = rhs;
+    copy._index = lhs + rhs._index;
+    return copy;
+    // return generic_array_container_const_iterator(lhs+rhs._ptr);
+  }
+
+  friend inline generic_array_container_const_iterator operator-(typename base_type::difference_type lhs, const generic_array_container_const_iterator& rhs) {
+    // generic_array_container_const_iterator copy = *this;
+    generic_array_container_const_iterator copy = rhs;
+    copy._index = lhs - rhs._index;
+    return copy;
+    // return generic_array_container_const_iterator(lhs-rhs._ptr);
+  }
+
+
+
+
+
+
+
+  generic_array_container_const_iterator operator++() // ++pre
+  {
+    // _ensure_is_valid();
+    if (base_type::_index < int(base_type::_container->size()))
+      ++base_type::_index;
+    return *this;
+  }
+  generic_array_container_const_iterator operator--() // --pre
+  {
+    // _ensure_is_valid();
+    if (base_type::_index > 0)
+      --base_type::_index;
+    return *this;
+  }
+
+  generic_array_container_const_iterator operator++(int) // post++
+  {
+    generic_array_container_const_iterator copy = *this;
+    ++(*this);
+    return copy;
+  }
+
+  generic_array_container_const_iterator operator--(int) // post--
+  {
+    generic_array_container_iterator copy = *this;
+    --(*this);
+    return copy;
+  }
+
+
+
+
+
+
+
+
+
+
 };
 
 //
@@ -256,27 +498,32 @@ public:
 //
 //
 
-template <typename Type> class generic_array_container {
+template <typename InternalType, typename PublicType = InternalType>
+class generic_array_container {
+
 public:
-  using ValueType = Type;
-  using BaseIterator =
-    generic_array_container_base_iterator<generic_array_container<Type>>;
-  using Iterator =
-    generic_array_container_iterator<generic_array_container<Type>>;
-  using ConstIterator =
-    generic_array_container_const_iterator<generic_array_container<Type>>;
+  using value_type = PublicType;
+  using internal_type = InternalType;
+  using base_iterator =
+    generic_array_container_base_iterator<generic_array_container<value_type>>;
+  using iterator =
+    generic_array_container_iterator<generic_array_container<value_type>>;
+  using const_iterator =
+    generic_array_container_const_iterator<generic_array_container<value_type>>;
 
 protected:
-  friend BaseIterator;
-  friend Iterator;
-  friend ConstIterator;
+  friend base_iterator;
+  friend iterator;
+  friend const_iterator;
 
 protected:
   std::size_t _size = 0;
-  Type* _data = nullptr;
+  internal_type* _data = nullptr;
 
+#ifdef D_REF_TRACKER_ITERATORS
   basic_double_linked_list _iterators_list;
   basic_double_linked_list _const_iterators_list;
+#endif
 
 public:
   generic_array_container() = default;
@@ -298,7 +545,11 @@ public:
     return *this;
   }
 
+#ifdef D_REF_TRACKER_ITERATORS
   virtual ~generic_array_container() { invalidate_all_iterators(); }
+#else
+  virtual ~generic_array_container() = default;
+#endif
 
 protected:
   void _ensure_not_empty() const {
@@ -321,63 +572,68 @@ protected:
   // }
 
 public:
-  Iterator begin() { return Iterator(*this, 0); }
-  Iterator end() { return Iterator(*this, int(_size)); }
+  iterator begin() { return iterator(*this, 0); }
+  iterator end() { return iterator(*this, int(_size)); }
 
-  ConstIterator begin() const {
-    return ConstIterator(*const_cast<generic_array_container*>(this), 0);
+  const_iterator begin() const {
+    return const_iterator(*const_cast<generic_array_container*>(this), 0);
   }
-  ConstIterator end() const {
-    return ConstIterator(*const_cast<generic_array_container*>(this),
+  const_iterator end() const {
+    return const_iterator(*const_cast<generic_array_container*>(this),
                          int(_size));
   }
 
+#ifdef D_REF_TRACKER_ITERATORS
   void invalidate_all_iterators() {
-    basic_double_linked_list::loop_list_links_and_reset<Iterator>(
-      _iterators_list, [](Iterator* it) -> void { it->_container = nullptr; });
-    basic_double_linked_list::loop_list_links_and_reset<ConstIterator>(
+    basic_double_linked_list::loop_list_links_and_reset<iterator>(
+      _iterators_list, [](iterator* it) -> void { it->_container = nullptr; });
+    basic_double_linked_list::loop_list_links_and_reset<const_iterator>(
       _const_iterators_list,
-      [](ConstIterator* it) -> void { it->_container = nullptr; });
+      [](const_iterator* it) -> void { it->_container = nullptr; });
   }
+#endif
 
 public:
   bool is_empty() const { return _size == 0; }
   std::size_t size() const { return _size; }
   bool is_out_of_range(std::size_t index) const { return (index >= _size); }
+
+#ifdef D_REF_TRACKER_ITERATORS
   std::size_t total_iterators() const {
     return _iterators_list.size + _const_iterators_list.size;
   }
+#endif
 
 public:
   // support out of range index (negative values included)
-  const Type& operator[](int index) const { return _data[_get_index(index)]; }
-  Type& operator[](int index) { return _data[_get_index(index)]; }
+  const value_type& operator[](int index) const { return _data[_get_index(index)]; }
+  value_type& operator[](int index) { return _data[_get_index(index)]; }
 
-  const Type& at(std::size_t index) const {
+  const value_type& at(std::size_t index) const {
     if (is_out_of_range(index))
       D_THROW(std::runtime_error, "out of range, index: " << index);
     return _data[index];
   }
-  Type& at(std::size_t index) {
+  value_type& at(std::size_t index) {
     if (is_out_of_range(index))
       D_THROW(std::runtime_error, "out of range, index: " << index);
     return _data[index];
   }
 
-  const Type& front() const {
+  const value_type& front() const {
     _ensure_not_empty();
     return _data[0];
   }
-  Type& front() {
+  value_type& front() {
     _ensure_not_empty();
     return _data[0];
   }
 
-  const Type& back() const {
+  const value_type& back() const {
     _ensure_not_empty();
     return _data[_size - 1];
   }
-  Type& back() {
+  value_type& back() {
     _ensure_not_empty();
     return _data[_size - 1];
   }

@@ -4,13 +4,15 @@
 
 namespace gero {
 
-template <typename Type, std::size_t _Size>
-class static_array : public generic_array_container<Type> {
+template <typename InternalType, std::size_t _Size, typename PublicType = InternalType>
+class static_array : public generic_array_container<InternalType, PublicType> {
 
-  using base_class = generic_array_container<Type>;
+  using value_type = PublicType;
+
+  using base_class = generic_array_container<InternalType, PublicType>;
 
 private:
-  Type _static_data[_Size];
+  InternalType _static_data[_Size];
 
 public:
   static_array() {

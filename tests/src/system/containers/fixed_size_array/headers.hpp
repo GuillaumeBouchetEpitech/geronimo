@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "geronimo/system/containers/dynamic_heap_array.hpp"
+#include "geronimo/system/containers/fixed_size_array.hpp"
 #include "geronimo/system/containers/generic_array_container.hpp"
 #include "geronimo/system/containers/static_array.hpp"
 
@@ -16,8 +16,7 @@
 #include "gtest/gtest.h"
 
 template <std::size_t N>
-using shorthand_dynamic_heap_array =
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, N>;
+using shorthand_fixed_size_array =
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, N>;
 
-
-struct system_generic_array_container : public common::threadsafe_fixture {};
+struct system_fixed_size_array : public common::threadsafe_fixture {};

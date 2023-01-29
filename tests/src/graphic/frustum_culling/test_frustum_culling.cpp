@@ -41,7 +41,7 @@ constexpr float k_step = 10000.0f;
 
 } // namespace
 
-TEST(frustum_culling,
+TEST(graphic_frustum_culling,
      confirm_under_multiple_angles_the_point_in_frustum_feature) {
   for (int zz = -k_range; zz <= k_range; ++zz)
     for (int yy = -k_range; yy <= k_range; ++yy)
@@ -76,7 +76,7 @@ TEST(frustum_culling,
       }
 }
 
-TEST(frustum_culling,
+TEST(graphic_frustum_culling,
      confirm_under_multiple_angles_the_sphere_in_frustum_feature) {
   for (int zz = -k_range; zz <= k_range; ++zz)
     for (int yy = -k_range; yy <= k_range; ++yy)
@@ -117,7 +117,7 @@ TEST(frustum_culling,
       }
 }
 
-TEST(frustum_culling,
+TEST(graphic_frustum_culling,
      confirm_under_multiple_angles_the_cube_in_frustum_feature) {
   for (int zz = -k_range; zz <= k_range; ++zz)
     for (int yy = -k_range; yy <= k_range; ++yy)

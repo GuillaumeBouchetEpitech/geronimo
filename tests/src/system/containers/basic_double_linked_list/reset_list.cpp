@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(basic_double_linked_list__reset_list, can_reset_a_list_of_1_link) {
+TEST(system_basic_double_linked_list, can_reset_a_list_of_1_link) {
   List list;
   Link link1;
 
@@ -25,7 +25,7 @@ TEST(basic_double_linked_list__reset_list, can_reset_a_list_of_1_link) {
   EXPECT_EQ(link1.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__reset_list, can_reset_a_list_of_2_links) {
+TEST(system_basic_double_linked_list, can_reset_a_list_of_2_links) {
   List list;
   Link link1;
   Link link2;
@@ -57,7 +57,7 @@ TEST(basic_double_linked_list__reset_list, can_reset_a_list_of_2_links) {
   EXPECT_EQ(link2.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__reset_list, can_reset_a_list_of_3_links) {
+TEST(system_basic_double_linked_list, can_reset_a_list_of_3_links) {
   List list;
   Link link1;
   Link link2;

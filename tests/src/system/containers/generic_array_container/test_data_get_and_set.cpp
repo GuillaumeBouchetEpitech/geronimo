@@ -3,7 +3,7 @@
 
 #include "system/containers/generic_array_container_commons/common.hpp"
 
-TEST(generic_array_container_get_and_set_values,
+TEST_F(system_generic_array_container,
      can_be_for_looped_and_set_and_then_get_values_afterward) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
@@ -55,7 +55,7 @@ TEST(generic_array_container_get_and_set_values,
   }
 }
 
-TEST(generic_array_container_get_and_set_values,
+TEST_F(system_generic_array_container,
      can_access_out_of_range_indexed_values) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
@@ -219,7 +219,7 @@ TEST(generic_array_container_get_and_set_values,
   }
 }
 
-TEST(generic_array_container_get_and_set_values,
+TEST_F(system_generic_array_container,
      can_set_and_get_front_and_back_values) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
@@ -293,7 +293,7 @@ TEST(generic_array_container_get_and_set_values,
   }
 }
 
-TEST(generic_array_container_get_and_set_values,
+TEST_F(system_generic_array_container,
      can_set_and_get_range_checked_values) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
@@ -369,7 +369,7 @@ TEST(generic_array_container_get_and_set_values,
   }
 }
 
-TEST(generic_array_container_get_and_set_values,
+TEST_F(system_generic_array_container,
      can_check_if_index_is_out_of_range) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;

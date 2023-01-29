@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(basic_double_linked_list__reset_link, link_can_be_reset) {
+TEST(system_basic_double_linked_list, link_can_be_reset) {
   Link link1;
   link1.prev_link = (Link*)666;
   link1.next_link = (Link*)666;

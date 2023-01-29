@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(audio, load_ogg_file) {
+TEST(audio_general_test, load_ogg_file) {
   OpenALSoundManager soundManager;
 
   // soundManager.loadOggFromFile(666, "./tests/src/audio/assets/Cannon_3.ogg");

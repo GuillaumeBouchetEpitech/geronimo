@@ -4,7 +4,7 @@
 #include <mutex>
 #include <thread>
 
-TEST(multithreading_test,
+TEST(system_multithreading,
      can_run_task_in_parrallel_and_wait_for_them_to_finish) {
 
   constexpr int k_totalThreads = 3;
@@ -24,14 +24,14 @@ TEST(multithreading_test,
   const auto endTime = std::chrono::high_resolution_clock::now();
   const auto microseconds =
     std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-  const uint64_t elapsedTime = microseconds.count();
+  const int64_t elapsedTime = microseconds.count();
 
   EXPECT_GT(elapsedTime, 90);
   EXPECT_LT(elapsedTime, 110);
 }
 
 TEST(
-  multithreading_test,
+  system_multithreading,
   can_run_more_task_in_parrallel_than_the_total_thread_number_and_wait_for_them_to_finish) {
 
   constexpr int k_totalThreads = 3;
@@ -51,13 +51,13 @@ TEST(
   const auto endTime = std::chrono::high_resolution_clock::now();
   const auto microseconds =
     std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-  const uint64_t elapsedTime = microseconds.count();
+  const int64_t elapsedTime = microseconds.count();
 
   EXPECT_GT(elapsedTime, 190);
   EXPECT_LT(elapsedTime, 210);
 }
 
-TEST(multithreading_test, can_run_task_in_parrallel_that_get_and_set_values) {
+TEST(system_multithreading, can_run_task_in_parrallel_that_get_and_set_values) {
 
   constexpr int k_totalThreads = 3;
   std::mutex tmpMutex;
@@ -80,7 +80,7 @@ TEST(multithreading_test, can_run_task_in_parrallel_that_get_and_set_values) {
   EXPECT_EQ(value, 100);
 }
 
-TEST(multithreading_test,
+TEST(system_multithreading,
      can_run_task_in_parrallel_that_get_and_set_values_in_a_thead_safe_way) {
 
   constexpr int k_totalThreads = 3;

@@ -17,5 +17,6 @@
 
 template <std::size_t N>
 using shorthand_dynamic_heap_array =
-  gero::dynamic_heap_array<common::TestStructure,
-                           std::allocator<common::TestStructure>, N>;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, N>;
+
+struct system_dynamic_heap_array : public common::threadsafe_fixture {};

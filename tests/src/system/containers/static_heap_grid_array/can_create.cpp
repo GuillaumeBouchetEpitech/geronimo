@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(static_heap_grid_array, can_create) {
+TEST(system_static_heap_grid_array, can_create) {
   constexpr std::size_t k_width = 6;
   constexpr std::size_t k_height = 4;
 

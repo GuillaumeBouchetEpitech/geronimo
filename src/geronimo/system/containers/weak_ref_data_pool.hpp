@@ -26,21 +26,21 @@ public:
   struct weak_ref;
 
   using value_type = PublicBaseType;
+  using internal_base_type = InternalBaseType;
 
 public:
-  struct internal_data : public InternalBaseType {
+  struct internal_data : public internal_base_type {
   public:
     int _index = -1;
     bool _is_active = false;
     basic_double_linked_list _weak_ref_list;
 
   public:
-    using InternalBaseType::InternalBaseType; // reuse parent InternalBaseType
-                                              // class ctor(s)
+    using internal_base_type::internal_base_type; // reuse parent internal_base_type  class ctor(s)
 
   public:
     internal_data(const internal_data& other) = delete; // block copy
-    internal_data(internal_data&& other) : InternalBaseType(std::move(other)) {
+    internal_data(internal_data&& other) : internal_base_type(std::move(other)) {
       if (&other == this)
         return;
       std::swap(_index, other._index);
@@ -58,7 +58,7 @@ public:
       if (&other == this)
         return *this;
 
-      InternalBaseType::operator=(std::move(other));
+      internal_base_type::operator=(std::move(other));
 
       std::swap(_index, other._index);
       std::swap(_is_active, other._is_active);
@@ -220,8 +220,6 @@ public:
 
       basic_double_linked_list& list =
         _pool->_itemsPool.at(std::size_t(_index))._weak_ref_list;
-      // basic_double_linked_list::discard_and_replace_link_from_list(list,
-      // other, *this);
       basic_double_linked_list::swap_two_links_from_same_list(list, other,
                                                               *this);
     }
@@ -248,23 +246,22 @@ public:
     int32_t index() { return _index; }
     int32_t index() const { return _index; }
 
-    PublicBaseType* get() {
+    value_type* get() {
       return _index < 0 ? nullptr : &_pool->_itemsPool.at(std::size_t(_index));
     }
-    const PublicBaseType* get() const {
+    const value_type* get() const {
       return _index < 0 ? nullptr : &_pool->_itemsPool.at(std::size_t(_index));
     }
 
-    PublicBaseType* operator->() { return get(); }
-    const PublicBaseType* operator->() const { return get(); }
+    value_type* operator->() { return get(); }
+    const value_type* operator->() const { return get(); }
 
-    PublicBaseType& operator*() { return *get(); }
-    const PublicBaseType& operator*() const { return *get(); }
+    value_type& operator*() { return *get(); }
+    const value_type& operator*() const { return *get(); }
   };
 
 private:
-  dynamic_heap_array<internal_data, std::allocator<internal_data>, initial_size>
-    _itemsPool;
+  dynamic_heap_array<internal_data, internal_data, initial_size> _itemsPool;
 
 public:
   weak_ref_data_pool() = default;
@@ -300,7 +297,7 @@ public:
     _itemsPool.clear();
   }
 
-  // weak_ref acquire(PublicBaseType&& toMove)
+  // weak_ref acquire(value_type&& toMove)
   // {
   //   if (_itemsPool.size() == _itemsPool.capacity())
   //     return weak_ref::make_invalid();
@@ -335,7 +332,7 @@ public:
   //   return weak_ref(this, std::size_t(index));
   // }
 
-  // weak_ref acquire(PublicBaseType&& toMove)
+  // weak_ref acquire(value_type&& toMove)
   // {
   //   if (no_realloc == true && _itemsPool.size() == _itemsPool.capacity())
   //     return weak_ref::make_invalid();
@@ -387,16 +384,16 @@ public:
     return weak_ref(const_cast<weak_ref_data_pool*>(this), get_index(ref));
   }
 
-  // weak_ref get(const PublicBaseType& target) { return weak_ref(this,
-  // get_index(target)); } weak_ref get(const PublicBaseType& target) const {
+  // weak_ref get(const value_type& target) { return weak_ref(this,
+  // get_index(target)); } weak_ref get(const value_type& target) const {
   // return weak_ref(const_cast<weak_ref_data_pool*>(this), get_index(target));
   // }
 
-  // weak_ref get(PublicBaseType& public_type) {
+  // weak_ref get(value_type& public_type) {
 
   //   return weak_ref(this, int32_t(index));
   // }
-  // const weak_ref get(PublicBaseType& public_type) const {
+  // const weak_ref get(value_type& public_type) const {
   //   return weak_ref(const_cast<weak_ref_data_pool*>(this), int32_t(index));
   // }
 
@@ -414,13 +411,13 @@ public:
     return get_ref_count(uint32_t(get_index(ref)));
   }
 
-  // uint32_t get_ref_count(const PublicBaseType& target) {
+  // uint32_t get_ref_count(const value_type& target) {
   //   return get_ref_count(uint32_t(get_index(&target)));
   // }
 
 public:
   int32_t get_index(const weak_ref& ref) const { return ref._index; }
-  // int32_t get_index(const PublicBaseType& target) const { return
+  // int32_t get_index(const value_type& target) const { return
   // _itemsPool.get_index(target); }
 
 public:
@@ -428,7 +425,7 @@ public:
   bool is_active(std::size_t index) const {
     return is_active(&_itemsPool.at(index));
   }
-  bool is_active(const PublicBaseType& target) const {
+  bool is_active(const value_type& target) const {
     return reinterpret_cast<internal_data*>(&target)->_is_active;
   }
 
@@ -440,10 +437,10 @@ public:
   }
   // void release(std::size_t index) { release(&_itemsPool.at(index)); }
 
-  // void release(const PublicBaseType& externalData) {
+  // void release(const value_type& externalData) {
   // release(get_index(externalData)); }
 
-  // void release(const PublicBaseType& externalData) {
+  // void release(const value_type& externalData) {
 
   //   const int32_t index = get_index(externalData);
 
@@ -485,7 +482,7 @@ public:
     }
   }
 
-  void filter(std::function<bool(PublicBaseType&)> callback) {
+  void filter(std::function<bool(value_type&)> callback) {
     for (std::size_t index = 0; index < _itemsPool.size();) {
       auto& item = _itemsPool.at(index);
 
@@ -502,19 +499,19 @@ public:
     }
   }
 
-  void for_each(std::function<void(PublicBaseType&)> callback) {
+  void for_each(std::function<void(value_type&)> callback) {
     for (auto& item : _itemsPool)
       if (item._is_active == true)
         callback(item);
   }
 
-  void for_each(std::function<void(const PublicBaseType&)> callback) const {
+  void for_each(std::function<void(const value_type&)> callback) const {
     for (const auto& item : _itemsPool)
       if (item._is_active == true)
         callback(item);
   }
 
-  weak_ref find_if(std::function<bool(const PublicBaseType&)> callback) const {
+  weak_ref find_if(std::function<bool(const value_type&)> callback) const {
     for (std::size_t index = 0; index < _itemsPool.size(); ++index) {
       auto& item = _itemsPool.at(index);
 

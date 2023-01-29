@@ -3,14 +3,7 @@
 
 #include "system/containers/generic_array_container_commons/common.hpp"
 
-namespace {
-
-struct generic_array_container_constructor : public common::threadsafe_fixture {
-};
-
-} // namespace
-
-TEST_F(generic_array_container_constructor, construct_with_empty_size) {
+TEST_F(system_generic_array_container, construct_with_empty_size) {
   shorthand_dynamic_heap_array<0> myDefaultDynamicArray;
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 0);
@@ -22,7 +15,7 @@ TEST_F(generic_array_container_constructor, construct_with_empty_size) {
   EXPECT_EQ(mySizedDynamicArray.is_empty(), true);
 }
 
-TEST_F(generic_array_container_constructor, construct_with_size_of_5) {
+TEST_F(system_generic_array_container, construct_with_size_of_5) {
   gero::static_array<common::TestStructure, 5> mySaticArray;
   EXPECT_EQ(mySaticArray.size(), 5);
   EXPECT_EQ(mySaticArray.is_empty(), false);
@@ -38,7 +31,7 @@ TEST_F(generic_array_container_constructor, construct_with_size_of_5) {
   EXPECT_EQ(mySizedDynamicArray.is_empty(), false);
 }
 
-TEST_F(generic_array_container_constructor, comparison_operators) {
+TEST_F(system_generic_array_container, comparison_operators) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArrayA;
     gero::static_array<common::TestStructure, 5> mySaticArrayB;
@@ -54,7 +47,7 @@ TEST_F(generic_array_container_constructor, comparison_operators) {
   }
 }
 
-TEST_F(generic_array_container_constructor,
+TEST_F(system_generic_array_container,
        do_not_call_any_ctor_when_moving_containers) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -63,8 +56,7 @@ TEST_F(generic_array_container_constructor,
   EXPECT_EQ(common::getTotalAlloc(), 0);
   EXPECT_EQ(common::getTotalDealloc(), 0);
 
-  auto mySizedDynamicArray1 = std::make_unique<gero::dynamic_heap_array<
-    common::TestStructure, common::MyAllocator<common::TestStructure>, 5>>();
+  auto mySizedDynamicArray1 = std::make_unique<gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>>();
 
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);

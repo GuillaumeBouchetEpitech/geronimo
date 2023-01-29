@@ -87,18 +87,10 @@ public:
 };
 
 class PhysicBody : public AbstractPhysicBody {
-  // private:
+
   friend PhysicWorld;
   friend PhysicBodyManager;
   friend PhysicVehicle;
-
-  // friend weak_ref_data_pool<PhysicBody>;
-  // friend dynamic_heap_array<PhysicBody>;
-  // friend std::allocator<PhysicBody>;
-  // friend std::allocator<weak_ref_data_pool<PhysicBody>::internal_data>;
-
-  // friend PhysicHingeConstraint;
-  // friend PhysicFixedConstraint;
 
 private:
   struct Bullet {

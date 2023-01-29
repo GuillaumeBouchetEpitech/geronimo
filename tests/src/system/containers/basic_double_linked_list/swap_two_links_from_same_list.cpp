@@ -3,7 +3,7 @@
 
 #include "headers.hpp"
 
-TEST(basic_double_linked_list__swap_two_links_from_same_list,
+TEST(system_basic_double_linked_list,
      can_swap_link_in_2_links_list) {
   List list;
   Link link1;
@@ -36,7 +36,7 @@ TEST(basic_double_linked_list__swap_two_links_from_same_list,
   EXPECT_EQ(link2.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__swap_two_links_from_same_list,
+TEST(system_basic_double_linked_list,
      can_swap_link_in_3_links_list) {
   List list;
   Link link1;
@@ -99,7 +99,7 @@ TEST(basic_double_linked_list__swap_two_links_from_same_list,
   EXPECT_EQ(link1.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__swap_two_links_from_same_list,
+TEST(system_basic_double_linked_list,
      can_swap_dead_link_in_3_links_list) {
   List list;
   Link link1;

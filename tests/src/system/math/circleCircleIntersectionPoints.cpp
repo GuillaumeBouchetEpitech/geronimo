@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(circleCircleIntersectionPoints, find_90_degrees_positions) {
+TEST(system_circleCircleIntersectionPoints, find_90_degrees_positions) {
   gero::math::Circle c1;
   c1.center.x = 0;
   c1.center.y = 0;
@@ -33,7 +33,7 @@ TEST(circleCircleIntersectionPoints, find_90_degrees_positions) {
   EXPECT_NEAR(glm::degrees(res2ParentAngle), -90.0f, 0.01f);
 }
 
-TEST(circleCircleIntersectionPoints, find_straigth_positions) {
+TEST(system_circleCircleIntersectionPoints, find_straigth_positions) {
   gero::math::Circle c1;
   c1.center.x = 0;
   c1.center.y = 0;
@@ -74,7 +74,7 @@ TEST(circleCircleIntersectionPoints, find_straigth_positions) {
   EXPECT_NEAR(glm::degrees(res2ParentAngle), 0.0f, 0.01f);
 }
 
-TEST(circleCircleIntersectionPoints,
+TEST(system_circleCircleIntersectionPoints,
      find_90_degrees_positions_with_different_radius) {
   gero::math::Circle c1;
   c1.center.x = 0;

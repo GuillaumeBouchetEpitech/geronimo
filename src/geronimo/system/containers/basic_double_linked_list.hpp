@@ -52,31 +52,6 @@ struct basic_double_linked_list {
     list.size -= 1;
   }
 
-  // static void discard_and_replace_link_from_list(basic_double_linked_list&
-  // list,
-  //                                                link& old_link,
-  //                                                link& new_link) {
-  //   // replace in list
-
-  //   // FROM: ... <--> (oldLink) <--> ...
-  //   // TO:   ... <--> (newLink) <--> ...
-
-  //   new_link.prev_link = old_link.prev_link;
-  //   new_link.next_link = old_link.next_link;
-
-  //   reset_link(old_link);
-
-  //   if (new_link.prev_link)
-  //     new_link.prev_link->next_link = &new_link;
-  //   if (new_link.next_link)
-  //     new_link.next_link->prev_link = &new_link;
-
-  //   // FROM: (headLink) -> (oldLink) -> ...
-  //   // TO:   (headLink) -> (newLink) -> ...
-  //   if (list.head_link == &old_link)
-  //     list.head_link = &new_link;
-  // }
-
   static void swap_two_links_from_same_list(basic_double_linked_list& list,
                                             link& link_a, link& link_b) {
     // swap in list

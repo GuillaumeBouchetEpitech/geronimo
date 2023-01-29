@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(static_heap_grid_array, iterators_features) {
+TEST(system_static_heap_grid_array, iterators_features) {
   constexpr std::size_t k_width = 6;
   constexpr std::size_t k_height = 4;
 
@@ -70,7 +70,7 @@ TEST(static_heap_grid_array, iterators_features) {
   }
 }
 
-TEST(static_heap_grid_array, iterators_increment_decrement_operator) {
+TEST(system_static_heap_grid_array, iterators_increment_decrement_operator) {
   constexpr std::size_t k_width = 6;
   constexpr std::size_t k_height = 4;
 

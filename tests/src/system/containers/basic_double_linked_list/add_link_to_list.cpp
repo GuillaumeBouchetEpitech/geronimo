@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(basic_double_linked_list__add_link_to_list, can_add_link_to_list_once) {
+TEST(system_basic_double_linked_list, can_add_link_to_list_once) {
   List list;
   Link link1;
 
@@ -18,7 +18,7 @@ TEST(basic_double_linked_list__add_link_to_list, can_add_link_to_list_once) {
   EXPECT_EQ(link1.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__add_link_to_list, can_add_link_to_list_twice) {
+TEST(system_basic_double_linked_list, can_add_link_to_list_twice) {
   List list;
   Link link1;
   Link link2;
@@ -41,7 +41,7 @@ TEST(basic_double_linked_list__add_link_to_list, can_add_link_to_list_twice) {
   EXPECT_EQ(link1.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__add_link_to_list,
+TEST(system_basic_double_linked_list,
      can_add_link_to_list_three_times) {
   List list;
   Link link1;

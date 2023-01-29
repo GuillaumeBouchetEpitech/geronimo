@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_acquire_weak_ref_and_get_the_values_from_it) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -19,7 +19,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(ref->my_string, "test");
 }
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_acquire_weak_ref_and_copy_and_move_it) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -61,7 +61,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(copiedRef3->my_string, "test");
 }
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_acquire_weak_ref_and_get_and_set_the_values_of_it) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -85,7 +85,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(ref->my_string, "test test");
 }
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_acquire_weak_ref_and_get_total_ref_count_from_the_pool) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -110,7 +110,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(ref, false);
 }
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_acquire_weak_ref_and_invalidate_it) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -239,7 +239,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(copiedRef3, false);
 }
 
-TEST(weak_ref_data_pool__refs_features, can_acquire_weak_ref_and_release_it) {
+TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_release_it) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
     myPool;
@@ -293,7 +293,7 @@ TEST(weak_ref_data_pool__refs_features, can_acquire_weak_ref_and_release_it) {
   EXPECT_EQ(copiedRef3, false);
 }
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_acquire_several_weak_ref_and_release_them_one_by_one) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -384,7 +384,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(ref3, false);
 }
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_acquire_several_weak_ref_and_clear_the_pool) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -463,7 +463,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(copiedRef3, false);
 }
 
-TEST(weak_ref_data_pool__refs_features, can_directly_access_pool_data) {
+TEST(system_weak_ref_data_pool, can_directly_access_pool_data) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
     myPool;
@@ -485,7 +485,7 @@ TEST(weak_ref_data_pool__refs_features, can_directly_access_pool_data) {
   EXPECT_EQ(myPool.get(2)->my_string, "test");
 }
 
-TEST(weak_ref_data_pool__refs_features, can_prevent_pool_growth) {
+TEST(system_weak_ref_data_pool, can_prevent_pool_growth) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
     myPool;
@@ -501,10 +501,10 @@ TEST(weak_ref_data_pool__refs_features, can_prevent_pool_growth) {
 
   EXPECT_EQ(myPool.size(), 10);
   for (int ii = 0; ii < 10; ++ii)
-    EXPECT_EQ(myPool.get(ii).get()->value, ii);
+    EXPECT_EQ(myPool.get(uint32_t(ii)).get()->value, ii);
 }
 
-TEST(weak_ref_data_pool__refs_features, can_allow_pool_growth) {
+TEST(system_weak_ref_data_pool, can_allow_pool_growth) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            false>
     myPool;
@@ -516,10 +516,10 @@ TEST(weak_ref_data_pool__refs_features, can_allow_pool_growth) {
 
   EXPECT_EQ(myPool.size(), 20);
   for (int ii = 0; ii < 20; ++ii)
-    EXPECT_EQ(myPool.get(ii).get()->value, ii);
+    EXPECT_EQ(myPool.get(uint32_t(ii)).get()->value, ii);
 }
 
-TEST(weak_ref_data_pool__refs_features, can_move_data_into_a_weak_ref) {
+TEST(system_weak_ref_data_pool, can_move_data_into_a_weak_ref) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            false>
     myPool;
@@ -536,7 +536,7 @@ TEST(weak_ref_data_pool__refs_features, can_move_data_into_a_weak_ref) {
   EXPECT_EQ(mainRef->my_string, "test test");
 }
 
-TEST(weak_ref_data_pool__refs_features, can_move_entire_pool) {
+TEST(system_weak_ref_data_pool, can_move_entire_pool) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            false>
     myPool1;
@@ -550,8 +550,8 @@ TEST(weak_ref_data_pool__refs_features, can_move_entire_pool) {
   EXPECT_EQ(myPool1.size(), 20);
   EXPECT_EQ(myPool2.size(), 0);
   for (int ii = 0; ii < 20; ++ii) {
-    EXPECT_EQ(myPool1.get(ii)->value, ii);
-    EXPECT_EQ(myPool1.get(ii)->my_string, "test");
+    EXPECT_EQ(myPool1.get(uint32_t(ii))->value, ii);
+    EXPECT_EQ(myPool1.get(uint32_t(ii))->my_string, "test");
   }
 
   myPool2 = std::move(myPool1);
@@ -559,12 +559,12 @@ TEST(weak_ref_data_pool__refs_features, can_move_entire_pool) {
   EXPECT_EQ(myPool1.size(), 0);
   EXPECT_EQ(myPool2.size(), 20);
   for (int ii = 0; ii < 20; ++ii) {
-    EXPECT_EQ(myPool2.get(ii)->value, ii);
-    EXPECT_EQ(myPool2.get(ii)->my_string, "test");
+    EXPECT_EQ(myPool2.get(uint32_t(ii))->value, ii);
+    EXPECT_EQ(myPool2.get(uint32_t(ii))->my_string, "test");
   }
 }
 
-TEST(weak_ref_data_pool__refs_features,
+TEST(system_weak_ref_data_pool,
      can_make_weak_ref_that_invalidate_once_out_of_scope) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
@@ -594,7 +594,7 @@ TEST(weak_ref_data_pool__refs_features,
   EXPECT_EQ(myPool.get_ref_count(2), 0);
 }
 
-// TEST(weak_ref_data_pool__refs_features,
+// TEST(system_weak_ref_data_pool,
 // can_make_weak_ref_that_invalidate_once_out_of_scope_with_get_index_feature) {
 
 //   using LocalPool = gero::weak_ref_data_pool<common::TestStructure,
@@ -656,7 +656,7 @@ template <std::size_t N> struct ResultArray {
 } // namespace
 
 TEST(
-  weak_ref_data_pool__refs_features,
+  weak_ref_data_pool,
   can_make_weak_ref_that_invalidate_once_out_of_scope_with_get_index_feature_2) {
 
   LocalPool myPool;
@@ -697,7 +697,7 @@ TEST(
 }
 
 TEST(
-  weak_ref_data_pool__refs_features,
+  weak_ref_data_pool,
   can_make_weak_ref_that_invalidate_once_out_of_scope_with_get_index_feature_3) {
 
   LocalPool myPool;

@@ -15,10 +15,10 @@ NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-phy
 
 SRC+= \
 	$(wildcard \
-		$(DIR_SRC)/*.cpp \
 		$(DIR_SRC)/system/containers/basic_double_linked_list/*.cpp \
 		$(DIR_SRC)/system/containers/generic_array_container/*.cpp \
 		$(DIR_SRC)/system/containers/dynamic_heap_array/*.cpp \
+		$(DIR_SRC)/system/containers/fixed_size_array/*.cpp \
 		$(DIR_SRC)/system/containers/generic_array_container_commons/*.cpp \
 		$(DIR_SRC)/system/containers/weak_ref_data_pool/*.cpp \
 		$(DIR_SRC)/system/containers/static_heap_grid_array/*.cpp \
@@ -30,17 +30,18 @@ SRC+= \
 
 SRC+= \
 	$(wildcard \
-		$(DIR_SRC)/*.cpp \
 		$(DIR_SRC)/graphic/frustum_culling/*.cpp \
 	)
 
 SRC+= \
 	$(wildcard \
-		$(DIR_SRC)/*.cpp \
 		$(DIR_SRC)/physic/*.cpp \
 	)
 
-# $(DIR_SRC)/audio/*.cpp \
+# SRC+= \
+# 	$(wildcard \
+# 		$(DIR_SRC)/audio/*.cpp \
+# 	)
 
 
 DIR_OBJ=	./obj
@@ -51,6 +52,8 @@ OBJ=		$(patsubst %.cpp, $(DIR_OBJ)/%.o, $(SRC))
 
 BUILD_FLAG= -g3
 
+CXX=clang++
+
 CXXFLAGS += $(BUILD_FLAG)
 CXXFLAGS += -std=c++17
 CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
@@ -58,20 +61,21 @@ CXXFLAGS += -I$(DIR_SRC)
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties/dependencies/bullet3/src
-CXXFLAGS += -no-pie
 
 LDFLAGS += $(BUILD_FLAG)
 LDFLAGS += $(NAME_GERONIMO)
 LDFLAGS += $(NAME_BULLET_PHYSICS)
 
-LIBRARIES += sdl2
-LIBRARIES += glesv2
-LIBRARIES += egl
+# LIBRARIES += sdl2
+# LIBRARIES += glesv2
+# LIBRARIES += egl
 LIBRARIES += openal
 LIBRARIES += gtest_main
 
-CXXFLAGS += $(shell pkg-config $(LIBRARIES) --cflags)
-LDFLAGS += $(shell pkg-config $(LIBRARIES) --libs)
+CXXFLAGS_LINKER = $(CXXFLAGS)
+CXXFLAGS_LINKER += $(shell pkg-config $(LIBRARIES) --cflags)
+LDFLAGS_LINKER += $(LDFLAGS)
+LDFLAGS_LINKER += $(shell pkg-config $(LIBRARIES) --libs)
 
 
 RM=			rm -rf
@@ -89,7 +93,7 @@ ensurefolders:
 
 application:	ensurefolders $(OBJ)
 	@echo ' ---> building $(LOG_INFO) "application"'
-	@$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME_APPLICATION) $(LDFLAGS)
+	@$(CXX) $(CXXFLAGS_LINKER) $(OBJ) -o $(NAME_APPLICATION) $(LDFLAGS_LINKER)
 	@echo '   --> built $(LOG_INFO) "application"'
 
 #

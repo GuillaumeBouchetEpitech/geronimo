@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(weak_ref_data_pool__features_with_callbacks, can_filter_pool) {
+TEST(system_weak_ref_data_pool, can_filter_pool) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
     myPool;
@@ -18,8 +18,8 @@ TEST(weak_ref_data_pool__features_with_callbacks, can_filter_pool) {
   auto ref9 = myPool.acquire(9, "test");
 
   EXPECT_EQ(myPool.size(), 10);
-  for (int ii = 0; ii < 10; ++ii) {
-    EXPECT_EQ(myPool.get(ii).get()->value, ii);
+  for (uint32_t ii = 0; ii < 10U; ++ii) {
+    EXPECT_EQ(myPool.get(ii).get()->value, int32_t(ii));
     EXPECT_EQ(myPool.get(ii).get()->my_string, "test");
   }
 
@@ -63,7 +63,7 @@ TEST(weak_ref_data_pool__features_with_callbacks, can_filter_pool) {
   EXPECT_EQ(myPool.get(4).get()->my_string, "test");
 }
 
-TEST(weak_ref_data_pool__features_with_callbacks, can_loop_pool) {
+TEST(system_weak_ref_data_pool, can_loop_pool) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
     myPool;
@@ -103,7 +103,7 @@ TEST(weak_ref_data_pool__features_with_callbacks, can_loop_pool) {
   }
 }
 
-TEST(weak_ref_data_pool__features_with_callbacks, can_find_if) {
+TEST(system_weak_ref_data_pool, can_find_if) {
   gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
                            true>
     myPool;

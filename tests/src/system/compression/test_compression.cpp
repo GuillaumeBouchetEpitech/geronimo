@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(compression,
+TEST(system_compression,
      easy__can_compress_to_smaller_size_and_decompress_to_original) {
   constexpr int k_buffSize = 256;
   constexpr int k_offset = 0;
@@ -35,7 +35,7 @@ TEST(compression,
   }
 }
 
-TEST(compression,
+TEST(system_compression,
      difficult__can_compress_to_smaller_size_and_decompress_to_original) {
   constexpr int k_buffSize = 256;
   constexpr int k_offset = 0;
@@ -69,7 +69,7 @@ TEST(compression,
   }
 }
 
-TEST(compression, can_fail_to_compress_and_just_return_false) {
+TEST(system_compression, can_fail_to_compress_and_just_return_false) {
   constexpr int k_buffSize = 256;
   constexpr int k_offset = 0;
 

@@ -5,12 +5,19 @@
 
 namespace gero {
 
-template <typename Type, typename Allocator = std::allocator<Type>,
-          std::size_t initial_size = 0>
-class dynamic_heap_array : public generic_array_container<Type> {
+template <
+typename PublicType,
+typename InternalType = PublicType,
+std::size_t initial_size = 0,
+typename Allocator = std::allocator<InternalType>
+>
+class dynamic_heap_array : public generic_array_container<PublicType, InternalType> {
 
-  using base_class = generic_array_container<Type>;
+  using value_type = PublicType;
+  using internal_type = InternalType;
+  using base_class = generic_array_container<PublicType, InternalType>;
 
+protected:
   using traits_t = std::allocator_traits<Allocator>; // The matching trait
 
 protected:
@@ -18,40 +25,46 @@ protected:
 
 protected:
   // allocate memory only, will not call any constructor
-  Type* allocate_memory(std::size_t size) {
+  internal_type* allocate_memory(std::size_t size) {
     Allocator alloc;
-    Type* newData = alloc.allocate(size);
+    internal_type* newData = alloc.allocate(size);
     return newData;
   }
 
   // deallocate memory only, will not call any destructor
-  void deallocate_memory(Type* data, std::size_t size) {
+  void deallocate_memory(internal_type* data, std::size_t size) {
     Allocator alloc;
     alloc.deallocate(data, size);
   }
 
   // call the move constructor only, do not allocate memory
-  void call_constructor(Type* dataPtr) {
+  void call_constructor(internal_type* dataPtr) {
     Allocator alloc;
     traits_t::construct(alloc, dataPtr);
   }
 
   // call the move constructor only, do not allocate memory
-  void call_move_constructor(Type* dataPtr, Type&& value) {
+  void call_copy_constructor(internal_type* dataPtr, const internal_type& value) {
+    Allocator alloc;
+    traits_t::construct(alloc, dataPtr, value);
+  }
+
+  // call the move constructor only, do not allocate memory
+  void call_move_constructor(internal_type* dataPtr, internal_type&& value) {
     Allocator alloc;
     traits_t::construct(alloc, dataPtr, std::move(value));
   }
 
   // call the move constructor only, do not allocate memory
   template <typename... Args>
-  Type& emplace_move_constructor(Type* dataPtr, Args&&... args) {
+  internal_type& emplace_move_constructor(internal_type* dataPtr, Args&&... args) {
     Allocator alloc;
     traits_t::construct(alloc, dataPtr, std::forward<Args>(args)...);
     return *dataPtr;
   }
 
   // call the destructor only, do not deallocate memory
-  void call_destructor(Type* dataPtr) {
+  void call_destructor(internal_type* dataPtr) {
     Allocator alloc;
     traits_t::destroy(alloc, dataPtr);
   }
@@ -161,15 +174,17 @@ public:
 
 public:
   // may reallocate
-  void push_back(const Type& value) {
+  void push_back(const value_type& value) {
     if (this->_size == _capacity)
       _realloc(_capacity * 2);
 
-    this->_data[this->_size++] = value; // copy
+    call_copy_constructor(this->_data + this->_size, value);
+
+    ++this->_size;
   }
 
   // may reallocate
-  void push_back(Type&& value) {
+  void push_back(value_type&& value) {
     if (this->_size == _capacity)
       _realloc(_capacity * 2);
 
@@ -179,12 +194,12 @@ public:
   }
 
   // may reallocate
-  template <typename... Args> Type& emplace_back(Args&&... args) {
+  template <typename... Args>
+  value_type& emplace_back(Args&&... args) {
     if (this->_size == _capacity)
       _realloc(_capacity * 2);
 
-    Type& result = emplace_move_constructor(this->_data + this->_size,
-                                            std::forward<Args>(args)...);
+    value_type& result = emplace_move_constructor(this->_data + this->_size, std::forward<Args>(args)...);
 
     ++this->_size;
 
@@ -274,7 +289,7 @@ protected:
     if (newCapacity <= _capacity)
       return;
 
-    Type* newData = allocate_memory(newCapacity);
+    internal_type* newData = allocate_memory(newCapacity);
 
     for (std::size_t ii = 0; ii < this->_size; ++ii)
       call_move_constructor(newData + ii, std::move(this->_data[ii]));

@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(basic_double_linked_list__loop_and_reset_feature,
+TEST(system_basic_double_linked_list,
      can_loop_and_reset_list_a_list_of_1_link) {
   List list;
   Link link1;
@@ -18,11 +18,11 @@ TEST(basic_double_linked_list__loop_and_reset_feature,
   EXPECT_EQ(link1.prev_link, nullptr);
   EXPECT_EQ(link1.next_link, nullptr);
 
-  int totalIteration = 0;
+  std::size_t totalIteration = 0;
   std::array<Link*, 1> expectedLinks = {{&link1}};
 
   List::loop_list_links_and_reset<Link>(
-    list, [this, &expectedLinks, &totalIteration](Link* inLink) -> void {
+    list, [&expectedLinks, &totalIteration](Link* inLink) -> void {
       EXPECT_EQ(inLink, expectedLinks[totalIteration]);
       ++totalIteration;
     });
@@ -34,7 +34,7 @@ TEST(basic_double_linked_list__loop_and_reset_feature,
   EXPECT_EQ(link1.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__loop_and_reset_feature,
+TEST(system_basic_double_linked_list,
      can_loop_and_reset_list_a_list_of_2_links) {
   List list;
   Link link1;
@@ -57,11 +57,11 @@ TEST(basic_double_linked_list__loop_and_reset_feature,
   EXPECT_EQ(link1.prev_link, &link2);
   EXPECT_EQ(link1.next_link, nullptr);
 
-  int totalIteration = 0;
+  std::size_t totalIteration = 0;
   std::array<Link*, 2> expectedLinks = {{&link2, &link1}};
 
   List::loop_list_links_and_reset<Link>(
-    list, [this, &expectedLinks, &totalIteration](Link* inLink) -> void {
+    list, [&expectedLinks, &totalIteration](Link* inLink) -> void {
       EXPECT_EQ(inLink, expectedLinks[totalIteration]);
       ++totalIteration;
     });
@@ -75,7 +75,7 @@ TEST(basic_double_linked_list__loop_and_reset_feature,
   EXPECT_EQ(link1.next_link, nullptr);
 }
 
-TEST(basic_double_linked_list__loop_and_reset_feature,
+TEST(system_basic_double_linked_list,
      can_loop_and_reset_list_a_list_of_3_links) {
   List list;
   Link link1;
@@ -104,11 +104,11 @@ TEST(basic_double_linked_list__loop_and_reset_feature,
   EXPECT_EQ(link1.prev_link, &link2);
   EXPECT_EQ(link1.next_link, nullptr);
 
-  int totalIteration = 0;
+  std::size_t totalIteration = 0;
   std::array<Link*, 3> expectedLinks = {{&link3, &link2, &link1}};
 
   List::loop_list_links_and_reset<Link>(
-    list, [this, &expectedLinks, &totalIteration](Link* inLink) -> void {
+    list, [&expectedLinks, &totalIteration](Link* inLink) -> void {
       EXPECT_EQ(inLink, expectedLinks[totalIteration]);
       ++totalIteration;
     });

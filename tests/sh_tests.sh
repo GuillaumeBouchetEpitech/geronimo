@@ -5,8 +5,12 @@ reset
 make -j6
 
 # ./bin/exec --gtest_filter=basic_double_linked_list__swap_two_links_from_same_list*
-./bin/exec --gtest_filter=physic_wrapper*
+# ./bin/exec --gtest_filter=physic_wrapper*
 # ./bin/exec
+
+# ./bin/exec --gtest_filter=*generic_array_container*
+./bin/exec
+
 
 exit 0
 

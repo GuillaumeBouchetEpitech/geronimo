@@ -3,14 +3,7 @@
 
 #include "system/containers/generic_array_container_commons/common.hpp"
 
-namespace {
-
-struct dynamic_heap_array__allocating_features
-  : public common::threadsafe_fixture {};
-
-} // namespace
-
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        not_pre_allocated__pre_allocate) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -20,9 +13,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 0>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 0);
@@ -51,7 +42,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__pre_allocate_same) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -61,9 +52,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 5>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -92,7 +81,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__pre_allocate_less) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -102,9 +91,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 5>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -133,7 +120,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__pre_allocate_more) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -143,9 +130,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 5>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -174,7 +159,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        not_pre_allocated__ensure_size) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -184,9 +169,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 0>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 0);
@@ -225,7 +208,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__ensure_size_same) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -235,9 +218,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 5>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -276,7 +257,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__ensure_size_less) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -286,9 +267,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 5>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -325,7 +304,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__ensure_size_more) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -335,9 +314,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 5>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 0);
   EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -386,7 +363,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        not_pre_allocated__ensure_size_grow_existing) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -396,9 +373,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 0>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 5);
@@ -448,7 +423,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__ensure_size_grow_existing_same) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -458,9 +433,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 10>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 5);
@@ -510,7 +483,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__ensure_size_grow_existing_less) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -520,9 +493,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 10>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 5);
@@ -568,7 +539,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   common::reset();
 }
 
-TEST_F(dynamic_heap_array__allocating_features,
+TEST_F(system_dynamic_heap_array,
        is_pre_allocated__ensure_size_grow_existing_more) {
   EXPECT_EQ(common::getTotalCtor(), 0);
   EXPECT_EQ(common::getTotalCopyCtor(), 0);
@@ -578,9 +549,7 @@ TEST_F(dynamic_heap_array__allocating_features,
   EXPECT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure,
-                           common::MyAllocator<common::TestStructure>, 10>
-    myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   EXPECT_EQ(myDefaultDynamicArray.size(), 5);
