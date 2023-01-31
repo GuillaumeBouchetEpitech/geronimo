@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [0.0.5] - 2023-01-31
+### Changed
+- feat: new templated function aliasing
+- fix: generic container ref counting disabled
+
 ## [0.0.4] - 2023-01-29
 ### Changed
 - chore: refactor of the container
