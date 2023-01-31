@@ -11,6 +11,7 @@
 - [How to Build (Quick)](#how-to-build-quick)
   - [Build Everything (will skip web-wasm if emscripten is absent)](#build-everything-will-skip-web-wasm-if-emscripten-is-absent)
 - [How to Build (Detailed)](#how-to-build-detailed)
+- [Project(s) using it](#projects-using-it)
 - [Thanks for watching!](#thanks-for-watching)
 
 # Dependencies
@@ -52,5 +53,10 @@ chmod u+x ./sh_everything.sh
 # How to Build (Detailed)
 
 [Specific Doc](./detailed-build.md)
+
+# Project(s) using it
+
+- Self Learning 3d Cars [Github Link](https://github.com/GuillaumeBouchetEpitech/self-learning-3d-cars)
+- Basic Genetic Algorithm [Github Link](https://github.com/GuillaumeBouchetEpitech/basic-genetic-algorithm)
 
 # Thanks for watching!
