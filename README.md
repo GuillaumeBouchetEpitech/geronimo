@@ -37,7 +37,7 @@ libsdl2-dev
 
 ## Dependency: bullet3, glm, tinyobjloader, stb
 
-This dependency will be donwloaded and built with the `Build Everything` method below
+The dependencies will be donwloaded and built with the `Build Everything` method below
 
 # How to Build (Quick)
 
