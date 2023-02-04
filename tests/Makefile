@@ -23,6 +23,7 @@ SRC+= \
 		$(DIR_SRC)/system/containers/weak_ref_data_pool/*.cpp \
 		$(DIR_SRC)/system/containers/static_heap_grid_array/*.cpp \
 		$(DIR_SRC)/system/deterministic_rng/*.cpp \
+		$(DIR_SRC)/system/parser-utils/*.cpp \
 		$(DIR_SRC)/system/compression/*.cpp \
 		$(DIR_SRC)/system/math/*.cpp \
 		$(DIR_SRC)/system/multithreading/*.cpp \
