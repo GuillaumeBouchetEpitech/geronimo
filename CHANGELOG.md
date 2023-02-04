@@ -1,6 +1,12 @@
 
 # Changelog
 
+## [0.0.6] - 2023-02-04
+### Changed
+- test: switch from "expect" to "assert"
+- test: parser-utils tests
+- feat: basic regex parser now rely on string_view
+
 ## [0.0.5] - 2023-01-31
 ### Changed
 - feat: new templated function aliasing
