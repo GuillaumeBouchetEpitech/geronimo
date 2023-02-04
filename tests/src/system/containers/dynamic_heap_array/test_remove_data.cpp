@@ -4,12 +4,12 @@
 #include "system/containers/generic_array_container_commons/common.hpp"
 
 TEST_F(system_dynamic_heap_array, not_pre_allocated__pop_back) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -18,98 +18,98 @@ TEST_F(system_dynamic_heap_array, not_pre_allocated__pop_back) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 7);
-  EXPECT_EQ(common::getTotalDtor(), 7);
-  EXPECT_EQ(common::getTotalAlloc(), 3);
-  EXPECT_EQ(common::getTotalDealloc(), 2);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 7);
+  ASSERT_EQ(common::getTotalDtor(), 7);
+  ASSERT_EQ(common::getTotalAlloc(), 3);
+  ASSERT_EQ(common::getTotalDealloc(), 2);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 3);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 3);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 2);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 2);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 1);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 1);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }
 
 TEST_F(system_dynamic_heap_array, is_pre_allocated__pop_back) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -118,98 +118,98 @@ TEST_F(system_dynamic_heap_array, is_pre_allocated__pop_back) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 4);
-  EXPECT_EQ(common::getTotalDtor(), 4);
-  EXPECT_EQ(common::getTotalAlloc(), 1);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 4);
+  ASSERT_EQ(common::getTotalDtor(), 4);
+  ASSERT_EQ(common::getTotalAlloc(), 1);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 3);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 3);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 2);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 2);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 1);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 1);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.pop_back();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }
 
 TEST_F(system_dynamic_heap_array, not_pre_allocated__unsorted_erase) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -218,99 +218,99 @@ TEST_F(system_dynamic_heap_array, not_pre_allocated__unsorted_erase) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 7);
-  EXPECT_EQ(common::getTotalDtor(), 7);
-  EXPECT_EQ(common::getTotalAlloc(), 3);
-  EXPECT_EQ(common::getTotalDealloc(), 2);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 7);
+  ASSERT_EQ(common::getTotalDtor(), 7);
+  ASSERT_EQ(common::getTotalAlloc(), 3);
+  ASSERT_EQ(common::getTotalDealloc(), 2);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(1), 1); // remove middle
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(1), 1); // remove middle
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 3);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "4");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 3);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 3);
-  EXPECT_EQ(common::getTotalDtor(), 2);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 3);
+  ASSERT_EQ(common::getTotalDtor(), 2);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(0), 1); // remove first
-  EXPECT_EQ(myDefaultDynamicArray.size(), 2);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(0), 1); // remove first
+  ASSERT_EQ(myDefaultDynamicArray.size(), 2);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 3);
-  EXPECT_EQ(common::getTotalDtor(), 2);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 3);
+  ASSERT_EQ(common::getTotalDtor(), 2);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(1), 0); // remove last
-  EXPECT_EQ(myDefaultDynamicArray.size(), 1);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(1), 0); // remove last
+  ASSERT_EQ(myDefaultDynamicArray.size(), 1);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(0), 0); // remove only left
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(0), 0); // remove only left
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }
 
 TEST_F(system_dynamic_heap_array, is_pre_allocated__unsorted_erase) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -319,98 +319,98 @@ TEST_F(system_dynamic_heap_array, is_pre_allocated__unsorted_erase) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 4);
-  EXPECT_EQ(common::getTotalDtor(), 4);
-  EXPECT_EQ(common::getTotalAlloc(), 1);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 4);
+  ASSERT_EQ(common::getTotalDtor(), 4);
+  ASSERT_EQ(common::getTotalAlloc(), 1);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(1), 1); // remove middle
-  EXPECT_EQ(myDefaultDynamicArray.size(), 3);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "4");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(1), 1); // remove middle
+  ASSERT_EQ(myDefaultDynamicArray.size(), 3);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 3);
-  EXPECT_EQ(common::getTotalDtor(), 2);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 3);
+  ASSERT_EQ(common::getTotalDtor(), 2);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(0), 1); // remove first
-  EXPECT_EQ(myDefaultDynamicArray.size(), 2);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(0), 1); // remove first
+  ASSERT_EQ(myDefaultDynamicArray.size(), 2);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 3);
-  EXPECT_EQ(common::getTotalDtor(), 2);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 3);
+  ASSERT_EQ(common::getTotalDtor(), 2);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(1), 0); // remove last
-  EXPECT_EQ(myDefaultDynamicArray.size(), 1);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(1), 0); // remove last
+  ASSERT_EQ(myDefaultDynamicArray.size(), 1);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.unsorted_erase(0), 0); // remove only left
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.unsorted_erase(0), 0); // remove only left
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }
 
 TEST_F(system_dynamic_heap_array, not_pre_allocated__sorted_erase) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -419,98 +419,98 @@ TEST_F(system_dynamic_heap_array, not_pre_allocated__sorted_erase) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 7);
-  EXPECT_EQ(common::getTotalDtor(), 7);
-  EXPECT_EQ(common::getTotalAlloc(), 3);
-  EXPECT_EQ(common::getTotalDealloc(), 2);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 7);
+  ASSERT_EQ(common::getTotalDtor(), 7);
+  ASSERT_EQ(common::getTotalAlloc(), 3);
+  ASSERT_EQ(common::getTotalDealloc(), 2);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(1), 2); // remove middle
-  EXPECT_EQ(myDefaultDynamicArray.size(), 3);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(1), 2); // remove middle
+  ASSERT_EQ(myDefaultDynamicArray.size(), 3);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 6);
-  EXPECT_EQ(common::getTotalDtor(), 3);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 6);
+  ASSERT_EQ(common::getTotalDtor(), 3);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(0), 2); // remove first
-  EXPECT_EQ(myDefaultDynamicArray.size(), 2);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(0), 2); // remove first
+  ASSERT_EQ(myDefaultDynamicArray.size(), 2);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 6);
-  EXPECT_EQ(common::getTotalDtor(), 3);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 6);
+  ASSERT_EQ(common::getTotalDtor(), 3);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(1), 0); // remove last
-  EXPECT_EQ(myDefaultDynamicArray.size(), 1);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(1), 0); // remove last
+  ASSERT_EQ(myDefaultDynamicArray.size(), 1);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(0), 0); // remove only left
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(0), 0); // remove only left
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }
 
 TEST_F(system_dynamic_heap_array, is_pre_allocated__sorted_erase) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -519,98 +519,98 @@ TEST_F(system_dynamic_heap_array, is_pre_allocated__sorted_erase) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 4);
-  EXPECT_EQ(common::getTotalDtor(), 4);
-  EXPECT_EQ(common::getTotalAlloc(), 1);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 4);
+  ASSERT_EQ(common::getTotalDtor(), 4);
+  ASSERT_EQ(common::getTotalAlloc(), 1);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(1), 2); // remove middle
-  EXPECT_EQ(myDefaultDynamicArray.size(), 3);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(1), 2); // remove middle
+  ASSERT_EQ(myDefaultDynamicArray.size(), 3);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 6);
-  EXPECT_EQ(common::getTotalDtor(), 3);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 6);
+  ASSERT_EQ(common::getTotalDtor(), 3);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(0), 2); // remove first
-  EXPECT_EQ(myDefaultDynamicArray.size(), 2);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(0), 2); // remove first
+  ASSERT_EQ(myDefaultDynamicArray.size(), 2);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 6);
-  EXPECT_EQ(common::getTotalDtor(), 3);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 6);
+  ASSERT_EQ(common::getTotalDtor(), 3);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(1), 0); // remove last
-  EXPECT_EQ(myDefaultDynamicArray.size(), 1);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(1), 0); // remove last
+  ASSERT_EQ(myDefaultDynamicArray.size(), 1);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "3");
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  EXPECT_EQ(myDefaultDynamicArray.sorted_erase(0), 0); // remove only left
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.sorted_erase(0), 0); // remove only left
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 1);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 1);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }
 
 TEST_F(system_dynamic_heap_array, not_pre_allocated__clear) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -619,47 +619,47 @@ TEST_F(system_dynamic_heap_array, not_pre_allocated__clear) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 7);
-  EXPECT_EQ(common::getTotalDtor(), 7);
-  EXPECT_EQ(common::getTotalAlloc(), 3);
-  EXPECT_EQ(common::getTotalDealloc(), 2);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 7);
+  ASSERT_EQ(common::getTotalDtor(), 7);
+  ASSERT_EQ(common::getTotalAlloc(), 3);
+  ASSERT_EQ(common::getTotalDealloc(), 2);
   common::reset();
 
   myDefaultDynamicArray.clear();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 4);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 4);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }
 
 TEST_F(system_dynamic_heap_array, is_pre_allocated__clear) {
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 0);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 0);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
@@ -668,36 +668,36 @@ TEST_F(system_dynamic_heap_array, is_pre_allocated__clear) {
   myDefaultDynamicArray.push_back(common::TestStructure(3, "3"));
   myDefaultDynamicArray.push_back(common::TestStructure(4, "4"));
 
-  EXPECT_EQ(myDefaultDynamicArray.size(), 4);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), false);
-  EXPECT_EQ(myDefaultDynamicArray[0].value, 1);
-  EXPECT_EQ(myDefaultDynamicArray[0].my_string, "1");
-  EXPECT_EQ(myDefaultDynamicArray[1].value, 2);
-  EXPECT_EQ(myDefaultDynamicArray[1].my_string, "2");
-  EXPECT_EQ(myDefaultDynamicArray[2].value, 3);
-  EXPECT_EQ(myDefaultDynamicArray[2].my_string, "3");
-  EXPECT_EQ(myDefaultDynamicArray[3].value, 4);
-  EXPECT_EQ(myDefaultDynamicArray[3].my_string, "4");
+  ASSERT_EQ(myDefaultDynamicArray.size(), 4);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), false);
+  ASSERT_EQ(myDefaultDynamicArray[0].value, 1);
+  ASSERT_EQ(myDefaultDynamicArray[0].my_string, "1");
+  ASSERT_EQ(myDefaultDynamicArray[1].value, 2);
+  ASSERT_EQ(myDefaultDynamicArray[1].my_string, "2");
+  ASSERT_EQ(myDefaultDynamicArray[2].value, 3);
+  ASSERT_EQ(myDefaultDynamicArray[2].my_string, "3");
+  ASSERT_EQ(myDefaultDynamicArray[3].value, 4);
+  ASSERT_EQ(myDefaultDynamicArray[3].my_string, "4");
 
-  EXPECT_EQ(common::getTotalCtor(), 4);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 4);
-  EXPECT_EQ(common::getTotalDtor(), 4);
-  EXPECT_EQ(common::getTotalAlloc(), 1);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 4);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 4);
+  ASSERT_EQ(common::getTotalDtor(), 4);
+  ASSERT_EQ(common::getTotalAlloc(), 1);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
   myDefaultDynamicArray.clear();
-  EXPECT_EQ(myDefaultDynamicArray.size(), 0);
-  EXPECT_EQ(myDefaultDynamicArray.capacity(), 5);
-  EXPECT_EQ(myDefaultDynamicArray.is_empty(), true);
+  ASSERT_EQ(myDefaultDynamicArray.size(), 0);
+  ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
+  ASSERT_EQ(myDefaultDynamicArray.is_empty(), true);
 
-  EXPECT_EQ(common::getTotalCtor(), 0);
-  EXPECT_EQ(common::getTotalCopyCtor(), 0);
-  EXPECT_EQ(common::getTotalMoveCtor(), 0);
-  EXPECT_EQ(common::getTotalDtor(), 4);
-  EXPECT_EQ(common::getTotalAlloc(), 0);
-  EXPECT_EQ(common::getTotalDealloc(), 0);
+  ASSERT_EQ(common::getTotalCtor(), 0);
+  ASSERT_EQ(common::getTotalCopyCtor(), 0);
+  ASSERT_EQ(common::getTotalMoveCtor(), 0);
+  ASSERT_EQ(common::getTotalDtor(), 4);
+  ASSERT_EQ(common::getTotalAlloc(), 0);
+  ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 }

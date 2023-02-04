@@ -59,5 +59,5 @@ TEST(audio_general_test, load_ogg_file) {
     }
   }
 
-  // EXPECT_EQ(result, true);
+  // ASSERT_EQ(result, true);
 }

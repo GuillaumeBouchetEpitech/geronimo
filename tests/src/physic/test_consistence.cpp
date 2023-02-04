@@ -44,19 +44,19 @@ TEST(physic_wrapper, test_consistence_raw) {
       {4, &ref4},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.index(), index)
+      ASSERT_EQ(currRef.index(), index)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -72,19 +72,19 @@ TEST(physic_wrapper, test_consistence_raw) {
       {3, &ref3},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.index(), index)
+      ASSERT_EQ(currRef.index(), index)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -101,19 +101,19 @@ TEST(physic_wrapper, test_consistence_raw) {
       {5, &ref5},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.index(), index)
+      ASSERT_EQ(currRef.index(), index)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -130,19 +130,19 @@ TEST(physic_wrapper, test_consistence_raw) {
       {5, &ref5},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.index(), index)
+      ASSERT_EQ(currRef.index(), index)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -159,19 +159,19 @@ TEST(physic_wrapper, test_consistence_raw) {
       {5, &ref5},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.index(), index)
+      ASSERT_EQ(currRef.index(), index)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -258,23 +258,23 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
       {555, &ref4},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.index(), index)
+      ASSERT_EQ(currRef.index(), index)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_val, currVal)
+      ASSERT_EQ(currRef->_val, currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef.is_active(), true)
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -290,21 +290,21 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
       {444, &ref3},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_val, currVal)
+      ASSERT_EQ(currRef->_val, currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef.is_active(), true)
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -321,21 +321,21 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
       {666, &ref5},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_val, currVal)
+      ASSERT_EQ(currRef->_val, currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef.is_active(), true)
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -352,21 +352,21 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
       {666, &ref5},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_val, currVal)
+      ASSERT_EQ(currRef->_val, currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef.is_active(), true)
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }
@@ -383,21 +383,21 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
       {666, &ref5},
     }};
 
-    EXPECT_EQ(bodyManager.size(), expectedVal.size());
+    ASSERT_EQ(bodyManager.size(), expectedVal.size());
     for (std::size_t index = 0; index < expectedVal.size(); ++index) {
       auto& currData = expectedVal.at(index);
       auto& currVal = currData.expectedVal;
       auto& currRef = *currData.pRef;
 
-      EXPECT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
+      ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef.is_active(), true)
+      ASSERT_EQ(currRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_val, currVal)
+      ASSERT_EQ(currRef->_val, currVal)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef.is_active(), true)
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
         << " => index: " << index << ", value: " << currVal;
-      EXPECT_EQ(currRef->_bodyRef->getUserValue(), currVal)
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
     }
   }

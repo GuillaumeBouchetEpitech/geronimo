@@ -10,13 +10,13 @@ TEST(system_deterministic_rng, can_generate_10000_unique_random_values) {
   for (int index = 0; index < testSize; ++index) {
     const int64_t value = rng.getValue();
 
-    EXPECT_EQ(allValues.count(value), 0);
-    EXPECT_LT(value, rng.getMaxValue());
+    ASSERT_EQ(allValues.count(value), 0);
+    ASSERT_LT(value, rng.getMaxValue());
 
     allValues.insert(value);
   }
 
-  EXPECT_EQ(allValues.size(), testSize);
+  ASSERT_EQ(allValues.size(), testSize);
 }
 
 TEST(system_deterministic_rng, can_generate_10000_uniformed_random_values) {
@@ -27,8 +27,8 @@ TEST(system_deterministic_rng, can_generate_10000_uniformed_random_values) {
   for (int index = 0; index < testSize; ++index) {
     const float value = rng.getNormalisedValue();
 
-    EXPECT_GE(value, 0.0f);
-    EXPECT_LT(value, 1.0f);
+    ASSERT_GE(value, 0.0f);
+    ASSERT_LT(value, 1.0f);
   }
 }
 
@@ -45,10 +45,10 @@ TEST(system_deterministic_rng, can_generate_10000_random_but_deterministic_value
   for (int index = 0; index < testSize; ++index)
     allValues.push_back(rng.getValue());
 
-  EXPECT_EQ(allValues.size(), testSize);
+  ASSERT_EQ(allValues.size(), testSize);
 
   rng.setSeed(k_seed);
   for (std::size_t index = 0; index < testSize; ++index) {
-    EXPECT_EQ(allValues[index], rng.getValue());
+    ASSERT_EQ(allValues[index], rng.getValue());
   }
 }

@@ -5,7 +5,7 @@
 #include <thread>
 
 TEST(system_multithreading,
-     can_run_task_in_parrallel_and_wait_for_them_to_finish) {
+     can_run_task_in_parallel_and_wait_for_them_to_finish) {
 
   constexpr int k_totalThreads = 3;
 
@@ -26,13 +26,14 @@ TEST(system_multithreading,
     std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
   const int64_t elapsedTime = microseconds.count();
 
-  EXPECT_GT(elapsedTime, 90);
+  ASSERT_GT(elapsedTime, 90);
+  // not using ASSERT_LT -> valgrind slow down the test and make it fail
   EXPECT_LT(elapsedTime, 110);
 }
 
 TEST(
   system_multithreading,
-  can_run_more_task_in_parrallel_than_the_total_thread_number_and_wait_for_them_to_finish) {
+  can_run_more_task_in_parallel_than_the_total_thread_number_and_wait_for_them_to_finish) {
 
   constexpr int k_totalThreads = 3;
 
@@ -53,11 +54,11 @@ TEST(
     std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
   const int64_t elapsedTime = microseconds.count();
 
-  EXPECT_GT(elapsedTime, 190);
-  EXPECT_LT(elapsedTime, 210);
+  ASSERT_GT(elapsedTime, 190);
+  ASSERT_LT(elapsedTime, 210);
 }
 
-TEST(system_multithreading, can_run_task_in_parrallel_that_get_and_set_values) {
+TEST(system_multithreading, can_run_task_in_parallel_that_get_and_set_values) {
 
   constexpr int k_totalThreads = 3;
   std::mutex tmpMutex;
@@ -77,11 +78,11 @@ TEST(system_multithreading, can_run_task_in_parrallel_that_get_and_set_values) {
 
   threadedProducer.waitUntilAllCompleted();
 
-  EXPECT_EQ(value, 100);
+  ASSERT_EQ(value, 100);
 }
 
 TEST(system_multithreading,
-     can_run_task_in_parrallel_that_get_and_set_values_in_a_thead_safe_way) {
+     can_run_task_in_parallel_that_get_and_set_values_in_a_thead_safe_way) {
 
   constexpr int k_totalThreads = 3;
   std::mutex tmpMutex;
@@ -107,6 +108,6 @@ TEST(system_multithreading,
 
   threadedProducer.waitUntilAllCompleted();
 
-  EXPECT_EQ(value, true);
-  EXPECT_EQ(totalChanges, 10);
+  ASSERT_EQ(value, true);
+  ASSERT_EQ(totalChanges, 10);
 }

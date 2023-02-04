@@ -18,11 +18,11 @@ TEST_F(system_fixed_size_array, std_sort) {
 
   std::sort(myDefaultFixedArray.begin(), myDefaultFixedArray.end());
 
-  EXPECT_EQ(myDefaultFixedArray.at(0), 111);
-  EXPECT_EQ(myDefaultFixedArray.at(1), 222);
-  EXPECT_EQ(myDefaultFixedArray.at(2), 333);
-  EXPECT_EQ(myDefaultFixedArray.at(3), 444);
-  EXPECT_EQ(myDefaultFixedArray.at(4), 555);
-  EXPECT_EQ(myDefaultFixedArray.at(5), 666);
+  ASSERT_EQ(myDefaultFixedArray.at(0), 111);
+  ASSERT_EQ(myDefaultFixedArray.at(1), 222);
+  ASSERT_EQ(myDefaultFixedArray.at(2), 333);
+  ASSERT_EQ(myDefaultFixedArray.at(3), 444);
+  ASSERT_EQ(myDefaultFixedArray.at(4), 555);
+  ASSERT_EQ(myDefaultFixedArray.at(5), 666);
 
 }

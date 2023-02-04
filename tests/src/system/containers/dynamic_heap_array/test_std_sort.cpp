@@ -16,11 +16,11 @@ TEST_F(system_dynamic_heap_array, std_sort) {
 
   std::sort(myDynamicArray.begin(), myDynamicArray.end());
 
-  EXPECT_EQ(myDynamicArray.at(0), 111);
-  EXPECT_EQ(myDynamicArray.at(1), 222);
-  EXPECT_EQ(myDynamicArray.at(2), 333);
-  EXPECT_EQ(myDynamicArray.at(3), 444);
-  EXPECT_EQ(myDynamicArray.at(4), 555);
-  EXPECT_EQ(myDynamicArray.at(5), 666);
+  ASSERT_EQ(myDynamicArray.at(0), 111);
+  ASSERT_EQ(myDynamicArray.at(1), 222);
+  ASSERT_EQ(myDynamicArray.at(2), 333);
+  ASSERT_EQ(myDynamicArray.at(3), 444);
+  ASSERT_EQ(myDynamicArray.at(4), 555);
+  ASSERT_EQ(myDynamicArray.at(5), 666);
 
 }

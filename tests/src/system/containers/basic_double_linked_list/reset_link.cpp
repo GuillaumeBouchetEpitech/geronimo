@@ -8,6 +8,6 @@ TEST(system_basic_double_linked_list, link_can_be_reset) {
 
   List::reset_link(link1);
 
-  EXPECT_EQ(link1.prev_link, nullptr);
-  EXPECT_EQ(link1.next_link, nullptr);
+  ASSERT_EQ(link1.prev_link, nullptr);
+  ASSERT_EQ(link1.next_link, nullptr);
 }

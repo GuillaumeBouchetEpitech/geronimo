@@ -17,7 +17,7 @@ TEST(physic_wrapper, dynamic_object_is_affected_by_gravity) {
   for (int ii = 0; ii < 100; ++ii)
     world.step(frameTime, 1, frameTime);
 
-  EXPECT_LT(bodyRef->getPosition().z, 0);
+  ASSERT_LT(bodyRef->getPosition().z, 0);
 }
 
 TEST(physic_wrapper, static_object_is_not_affected_by_gravity) {
@@ -36,7 +36,7 @@ TEST(physic_wrapper, static_object_is_not_affected_by_gravity) {
   for (int ii = 0; ii < 100; ++ii)
     world.step(frameTime, 1, frameTime);
 
-  EXPECT_EQ(bodyRef->getPosition().z, 10);
+  ASSERT_EQ(bodyRef->getPosition().z, 10);
 }
 
 TEST(physic_wrapper, dynamic_object_can_collide_with_static_object) {
@@ -63,8 +63,8 @@ TEST(physic_wrapper, dynamic_object_can_collide_with_static_object) {
   for (int ii = 0; ii < 100; ++ii)
     world.step(frameTime, 1, frameTime);
 
-  EXPECT_LT(bodyRef_1->getPosition().z, 10);
-  EXPECT_GT(bodyRef_1->getPosition().z, 0);
+  ASSERT_LT(bodyRef_1->getPosition().z, 10);
+  ASSERT_GT(bodyRef_1->getPosition().z, 0);
 }
 
 TEST(
@@ -99,7 +99,7 @@ TEST(
   for (int ii = 0; ii < 100; ++ii)
     world.step(frameTime, 1, frameTime);
 
-  EXPECT_LT(bodyRef_1->getPosition().z, 0);
+  ASSERT_LT(bodyRef_1->getPosition().z, 0);
 }
 
 // TEST(
@@ -130,13 +130,13 @@ TEST(
 //     allRefs.push_back(bodyRef_1);
 //   }
 
-//   EXPECT_EQ(world.getPhysicBodyManager().size(), 10);
+//   ASSERT_EQ(world.getPhysicBodyManager().size(), 10);
 
 //   world.step(0, 1, 0);
 //   // for (int ii = 0; ii < 100; ++ii)
 //   //   world.step(frameTime, 1, frameTime);
 
-//   // EXPECT_LT(bodyRef_1->getPosition().z, 0);
+//   // ASSERT_LT(bodyRef_1->getPosition().z, 0);
 
 //   D_MYERR("###");
 //   D_MYERR("###");
@@ -158,5 +158,5 @@ TEST(
 //   D_MYERR("###");
 //   D_MYERR("###");
 
-//   EXPECT_EQ(world.getPhysicBodyManager().size(), 7);
+//   ASSERT_EQ(world.getPhysicBodyManager().size(), 7);
 // }

@@ -22,16 +22,16 @@ TEST(system_compression,
   const bool success = gero::compression::AdaptiveHuffman::compress(
     rawBufferSecondary, tmpBuffSize, k_offset);
 
-  EXPECT_EQ(success, true);
-  EXPECT_LT(tmpBuffSize, k_buffSize);
+  ASSERT_EQ(success, true);
+  ASSERT_LT(tmpBuffSize, k_buffSize);
 
   gero::compression::AdaptiveHuffman::decompress(
     rawBufferSecondary, tmpBuffSize, k_buffSize, k_offset);
 
-  EXPECT_EQ(tmpBuffSize, k_buffSize);
+  ASSERT_EQ(tmpBuffSize, k_buffSize);
 
   for (int ii = 0; ii < tmpBuffSize; ++ii) {
-    EXPECT_EQ(rawBufferSecondary[ii], rawBufferPrimary[ii]);
+    ASSERT_EQ(rawBufferSecondary[ii], rawBufferPrimary[ii]);
   }
 }
 
@@ -56,16 +56,16 @@ TEST(system_compression,
   const bool success = gero::compression::AdaptiveHuffman::compress(
     rawBufferSecondary, tmpBuffSize, k_offset);
 
-  EXPECT_EQ(success, true);
-  EXPECT_LT(tmpBuffSize, k_buffSize);
+  ASSERT_EQ(success, true);
+  ASSERT_LT(tmpBuffSize, k_buffSize);
 
   gero::compression::AdaptiveHuffman::decompress(
     rawBufferSecondary, tmpBuffSize, k_buffSize, k_offset);
 
-  EXPECT_EQ(tmpBuffSize, k_buffSize);
+  ASSERT_EQ(tmpBuffSize, k_buffSize);
 
   for (int ii = 0; ii < tmpBuffSize; ++ii) {
-    EXPECT_EQ(rawBufferSecondary[ii], rawBufferPrimary[ii]);
+    ASSERT_EQ(rawBufferSecondary[ii], rawBufferPrimary[ii]);
   }
 }
 
@@ -89,10 +89,10 @@ TEST(system_compression, can_fail_to_compress_and_just_return_false) {
   const bool success = gero::compression::AdaptiveHuffman::compress(
     rawBufferSecondary, tmpBuffSize, k_offset);
 
-  EXPECT_EQ(success, false);
-  EXPECT_EQ(tmpBuffSize, k_buffSize);
+  ASSERT_EQ(success, false);
+  ASSERT_EQ(tmpBuffSize, k_buffSize);
 
   for (int ii = 0; ii < tmpBuffSize; ++ii) {
-    EXPECT_EQ(rawBufferSecondary[ii], rawBufferPrimary[ii]);
+    ASSERT_EQ(rawBufferSecondary[ii], rawBufferPrimary[ii]);
   }
 }

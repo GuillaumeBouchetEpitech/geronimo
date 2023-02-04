@@ -67,10 +67,10 @@ TEST(graphic_frustum_culling,
           //
 
           for (glm::vec3 dir : k_longDirections)
-            EXPECT_EQ(frustumCulling.pointInFrustum(currOffset + dir), false);
-          EXPECT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 10.0f),
+            ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + dir), false);
+          ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 10.0f),
                     true);
-          EXPECT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 90.0f),
+          ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 90.0f),
                     true);
         }
       }
@@ -102,15 +102,15 @@ TEST(graphic_frustum_culling,
           //
 
           for (glm::vec3 dir : k_longDirections)
-            EXPECT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f),
+            ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f),
                       false);
           for (glm::vec3 dir : k_shortDirections)
-            EXPECT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f),
+            ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f),
                       true);
-          EXPECT_EQ(
+          ASSERT_EQ(
             frustumCulling.sphereInFrustum(currOffset + forward * 10.0f, 20.0f),
             true);
-          EXPECT_EQ(
+          ASSERT_EQ(
             frustumCulling.sphereInFrustum(currOffset + forward * 90.0f, 20.0f),
             true);
         }
@@ -143,17 +143,17 @@ TEST(graphic_frustum_culling,
           //
 
           for (glm::vec3 dir : k_longDirections)
-            EXPECT_EQ(
+            ASSERT_EQ(
               frustumCulling.cubeInFrustum(currOffset + dir, glm::vec3(20.0f)),
               false);
           for (glm::vec3 dir : k_shortDirections)
-            EXPECT_EQ(
+            ASSERT_EQ(
               frustumCulling.cubeInFrustum(currOffset + dir, glm::vec3(100.0f)),
               true);
-          EXPECT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 10.0f,
+          ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 10.0f,
                                                  glm::vec3(20.0f)),
                     true);
-          EXPECT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 90.0f,
+          ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 90.0f,
                                                  glm::vec3(20.0f)),
                     true);
         }

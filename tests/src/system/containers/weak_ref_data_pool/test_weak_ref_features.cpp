@@ -9,14 +9,14 @@ TEST(system_weak_ref_data_pool,
 
   auto ref = myPool.acquire(555, "test");
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_index(ref), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(ref.is_active(), true);
-  EXPECT_EQ(ref, true);
-  EXPECT_EQ(ref.get(), myPool.get(0).get());
-  EXPECT_EQ(ref->value, 555);
-  EXPECT_EQ(ref->my_string, "test");
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_index(ref), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref.is_active(), true);
+  ASSERT_EQ(ref, true);
+  ASSERT_EQ(ref.get(), myPool.get(0).get());
+  ASSERT_EQ(ref->value, 555);
+  ASSERT_EQ(ref->my_string, "test");
 }
 
 TEST(system_weak_ref_data_pool,
@@ -32,33 +32,33 @@ TEST(system_weak_ref_data_pool,
   auto movedRef = copiedRef2;            // copy
   auto copiedRef3 = std::move(movedRef); // move
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_index(mainRef), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 4);
-  EXPECT_EQ(mainRef.is_active(), true);
-  EXPECT_EQ(copiedRef1.is_active(), true);
-  EXPECT_EQ(copiedRef2.is_active(), true);
-  EXPECT_EQ(movedRef.is_active(), false);
-  EXPECT_EQ(copiedRef3.is_active(), true);
-  EXPECT_EQ(mainRef, true);
-  EXPECT_EQ(copiedRef1, true);
-  EXPECT_EQ(copiedRef2, true);
-  EXPECT_EQ(movedRef, false);
-  EXPECT_EQ(copiedRef3, true);
-  EXPECT_EQ(mainRef.get(), myPool.get(0).get());
-  EXPECT_EQ(movedRef.get(), nullptr);
-  EXPECT_EQ(mainRef.get(), copiedRef1.get());
-  EXPECT_EQ(mainRef.get(), copiedRef2.get());
-  EXPECT_EQ(mainRef.get(), copiedRef3.get());
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_index(mainRef), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 4);
+  ASSERT_EQ(mainRef.is_active(), true);
+  ASSERT_EQ(copiedRef1.is_active(), true);
+  ASSERT_EQ(copiedRef2.is_active(), true);
+  ASSERT_EQ(movedRef.is_active(), false);
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(mainRef, true);
+  ASSERT_EQ(copiedRef1, true);
+  ASSERT_EQ(copiedRef2, true);
+  ASSERT_EQ(movedRef, false);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(mainRef.get(), myPool.get(0).get());
+  ASSERT_EQ(movedRef.get(), nullptr);
+  ASSERT_EQ(mainRef.get(), copiedRef1.get());
+  ASSERT_EQ(mainRef.get(), copiedRef2.get());
+  ASSERT_EQ(mainRef.get(), copiedRef3.get());
 
-  EXPECT_EQ(mainRef->value, 555);
-  EXPECT_EQ(mainRef->my_string, "test");
-  EXPECT_EQ(copiedRef1->value, 555);
-  EXPECT_EQ(copiedRef1->my_string, "test");
-  EXPECT_EQ(copiedRef2->value, 555);
-  EXPECT_EQ(copiedRef2->my_string, "test");
-  EXPECT_EQ(copiedRef3->value, 555);
-  EXPECT_EQ(copiedRef3->my_string, "test");
+  ASSERT_EQ(mainRef->value, 555);
+  ASSERT_EQ(mainRef->my_string, "test");
+  ASSERT_EQ(copiedRef1->value, 555);
+  ASSERT_EQ(copiedRef1->my_string, "test");
+  ASSERT_EQ(copiedRef2->value, 555);
+  ASSERT_EQ(copiedRef2->my_string, "test");
+  ASSERT_EQ(copiedRef3->value, 555);
+  ASSERT_EQ(copiedRef3->my_string, "test");
 }
 
 TEST(system_weak_ref_data_pool,
@@ -69,20 +69,20 @@ TEST(system_weak_ref_data_pool,
 
   auto ref = myPool.acquire(555, "test");
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_index(ref), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(ref.is_active(), true);
-  EXPECT_EQ(ref, true);
-  EXPECT_EQ(ref.get(), myPool.get(0).get());
-  EXPECT_EQ(ref->value, 555);
-  EXPECT_EQ(ref->my_string, "test");
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_index(ref), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref.is_active(), true);
+  ASSERT_EQ(ref, true);
+  ASSERT_EQ(ref.get(), myPool.get(0).get());
+  ASSERT_EQ(ref->value, 555);
+  ASSERT_EQ(ref->my_string, "test");
 
   ref->value += 100;
   ref->my_string += " test";
 
-  EXPECT_EQ(ref->value, 655);
-  EXPECT_EQ(ref->my_string, "test test");
+  ASSERT_EQ(ref->value, 655);
+  ASSERT_EQ(ref->my_string, "test test");
 }
 
 TEST(system_weak_ref_data_pool,
@@ -93,21 +93,21 @@ TEST(system_weak_ref_data_pool,
 
   auto ref = myPool.acquire(555, "test");
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_index(ref), 0);
-  EXPECT_EQ(myPool.get_ref_count(ref), 1);
-  EXPECT_EQ(ref.is_active(), true);
-  EXPECT_EQ(ref, true);
-  EXPECT_EQ(ref.get(), myPool.get(0).get());
-  EXPECT_EQ(ref->value, 555);
-  EXPECT_EQ(ref->my_string, "test");
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_index(ref), 0);
+  ASSERT_EQ(myPool.get_ref_count(ref), 1);
+  ASSERT_EQ(ref.is_active(), true);
+  ASSERT_EQ(ref, true);
+  ASSERT_EQ(ref.get(), myPool.get(0).get());
+  ASSERT_EQ(ref->value, 555);
+  ASSERT_EQ(ref->my_string, "test");
 
   ref.invalidate();
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_ref_count(0), 0);
-  EXPECT_EQ(ref.is_active(), false);
-  EXPECT_EQ(ref, false);
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_ref_count(0), 0);
+  ASSERT_EQ(ref.is_active(), false);
+  ASSERT_EQ(ref, false);
 }
 
 TEST(system_weak_ref_data_pool,
@@ -121,122 +121,122 @@ TEST(system_weak_ref_data_pool,
   auto copiedRef2 = copiedRef1; // copy
   auto copiedRef3 = copiedRef2; // copy
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_index(mainRef), 0);
-  EXPECT_EQ(myPool.get_index(copiedRef1), 0);
-  EXPECT_EQ(myPool.get_index(copiedRef2), 0);
-  EXPECT_EQ(myPool.get_index(copiedRef3), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 4);
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_index(mainRef), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef1), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef2), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef3), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 4);
 
-  EXPECT_EQ(mainRef.is_active(), true);
-  EXPECT_EQ(mainRef, true);
-  EXPECT_EQ(mainRef.get(), myPool.get(0).get());
-  EXPECT_EQ(mainRef->value, 555);
-  EXPECT_EQ(mainRef->my_string, "test");
+  ASSERT_EQ(mainRef.is_active(), true);
+  ASSERT_EQ(mainRef, true);
+  ASSERT_EQ(mainRef.get(), myPool.get(0).get());
+  ASSERT_EQ(mainRef->value, 555);
+  ASSERT_EQ(mainRef->my_string, "test");
 
-  EXPECT_EQ(copiedRef1.is_active(), true);
-  EXPECT_EQ(copiedRef1, true);
-  EXPECT_EQ(copiedRef1.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef1->value, 555);
-  EXPECT_EQ(copiedRef1->my_string, "test");
+  ASSERT_EQ(copiedRef1.is_active(), true);
+  ASSERT_EQ(copiedRef1, true);
+  ASSERT_EQ(copiedRef1.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef1->value, 555);
+  ASSERT_EQ(copiedRef1->my_string, "test");
 
-  EXPECT_EQ(copiedRef2.is_active(), true);
-  EXPECT_EQ(copiedRef2, true);
-  EXPECT_EQ(copiedRef2.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef2->value, 555);
-  EXPECT_EQ(copiedRef2->my_string, "test");
+  ASSERT_EQ(copiedRef2.is_active(), true);
+  ASSERT_EQ(copiedRef2, true);
+  ASSERT_EQ(copiedRef2.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef2->value, 555);
+  ASSERT_EQ(copiedRef2->my_string, "test");
 
-  EXPECT_EQ(copiedRef3.is_active(), true);
-  EXPECT_EQ(copiedRef3, true);
-  EXPECT_EQ(copiedRef3.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef3->value, 555);
-  EXPECT_EQ(copiedRef3->my_string, "test");
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(copiedRef3.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef3->value, 555);
+  ASSERT_EQ(copiedRef3->my_string, "test");
 
   mainRef.invalidate();
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_ref_count(0), 3);
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_ref_count(0), 3);
 
-  EXPECT_EQ(mainRef.is_active(), false);
-  EXPECT_EQ(mainRef, false);
+  ASSERT_EQ(mainRef.is_active(), false);
+  ASSERT_EQ(mainRef, false);
 
-  EXPECT_EQ(copiedRef1.is_active(), true);
-  EXPECT_EQ(copiedRef1, true);
-  EXPECT_EQ(copiedRef1.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef1->value, 555);
-  EXPECT_EQ(copiedRef1->my_string, "test");
+  ASSERT_EQ(copiedRef1.is_active(), true);
+  ASSERT_EQ(copiedRef1, true);
+  ASSERT_EQ(copiedRef1.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef1->value, 555);
+  ASSERT_EQ(copiedRef1->my_string, "test");
 
-  EXPECT_EQ(copiedRef2.is_active(), true);
-  EXPECT_EQ(copiedRef2, true);
-  EXPECT_EQ(copiedRef2.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef2->value, 555);
-  EXPECT_EQ(copiedRef2->my_string, "test");
+  ASSERT_EQ(copiedRef2.is_active(), true);
+  ASSERT_EQ(copiedRef2, true);
+  ASSERT_EQ(copiedRef2.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef2->value, 555);
+  ASSERT_EQ(copiedRef2->my_string, "test");
 
-  EXPECT_EQ(copiedRef3.is_active(), true);
-  EXPECT_EQ(copiedRef3, true);
-  EXPECT_EQ(copiedRef3.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef3->value, 555);
-  EXPECT_EQ(copiedRef3->my_string, "test");
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(copiedRef3.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef3->value, 555);
+  ASSERT_EQ(copiedRef3->my_string, "test");
 
   copiedRef2.invalidate();
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_ref_count(0), 2);
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_ref_count(0), 2);
 
-  EXPECT_EQ(mainRef.is_active(), false);
-  EXPECT_EQ(mainRef, false);
+  ASSERT_EQ(mainRef.is_active(), false);
+  ASSERT_EQ(mainRef, false);
 
-  EXPECT_EQ(copiedRef1.is_active(), true);
-  EXPECT_EQ(copiedRef1, true);
-  EXPECT_EQ(copiedRef1.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef1->value, 555);
-  EXPECT_EQ(copiedRef1->my_string, "test");
+  ASSERT_EQ(copiedRef1.is_active(), true);
+  ASSERT_EQ(copiedRef1, true);
+  ASSERT_EQ(copiedRef1.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef1->value, 555);
+  ASSERT_EQ(copiedRef1->my_string, "test");
 
-  EXPECT_EQ(copiedRef2.is_active(), false);
-  EXPECT_EQ(copiedRef2, false);
+  ASSERT_EQ(copiedRef2.is_active(), false);
+  ASSERT_EQ(copiedRef2, false);
 
-  EXPECT_EQ(copiedRef3.is_active(), true);
-  EXPECT_EQ(copiedRef3, true);
-  EXPECT_EQ(copiedRef3.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef3->value, 555);
-  EXPECT_EQ(copiedRef3->my_string, "test");
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(copiedRef3.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef3->value, 555);
+  ASSERT_EQ(copiedRef3->my_string, "test");
 
   copiedRef1.invalidate();
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
 
-  EXPECT_EQ(mainRef.is_active(), false);
-  EXPECT_EQ(mainRef, false);
+  ASSERT_EQ(mainRef.is_active(), false);
+  ASSERT_EQ(mainRef, false);
 
-  EXPECT_EQ(copiedRef1.is_active(), false);
-  EXPECT_EQ(copiedRef1, false);
+  ASSERT_EQ(copiedRef1.is_active(), false);
+  ASSERT_EQ(copiedRef1, false);
 
-  EXPECT_EQ(copiedRef2.is_active(), false);
-  EXPECT_EQ(copiedRef2, false);
+  ASSERT_EQ(copiedRef2.is_active(), false);
+  ASSERT_EQ(copiedRef2, false);
 
-  EXPECT_EQ(copiedRef3.is_active(), true);
-  EXPECT_EQ(copiedRef3, true);
-  EXPECT_EQ(copiedRef3.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef3->value, 555);
-  EXPECT_EQ(copiedRef3->my_string, "test");
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(copiedRef3.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef3->value, 555);
+  ASSERT_EQ(copiedRef3->my_string, "test");
 
   copiedRef3.invalidate();
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_ref_count(0), 0);
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_ref_count(0), 0);
 
-  EXPECT_EQ(mainRef.is_active(), false);
-  EXPECT_EQ(mainRef, false);
+  ASSERT_EQ(mainRef.is_active(), false);
+  ASSERT_EQ(mainRef, false);
 
-  EXPECT_EQ(copiedRef1.is_active(), false);
-  EXPECT_EQ(copiedRef1, false);
+  ASSERT_EQ(copiedRef1.is_active(), false);
+  ASSERT_EQ(copiedRef1, false);
 
-  EXPECT_EQ(copiedRef2.is_active(), false);
-  EXPECT_EQ(copiedRef2, false);
+  ASSERT_EQ(copiedRef2.is_active(), false);
+  ASSERT_EQ(copiedRef2, false);
 
-  EXPECT_EQ(copiedRef3.is_active(), false);
-  EXPECT_EQ(copiedRef3, false);
+  ASSERT_EQ(copiedRef3.is_active(), false);
+  ASSERT_EQ(copiedRef3, false);
 }
 
 TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_release_it) {
@@ -249,48 +249,48 @@ TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_release_it) {
   auto copiedRef2 = copiedRef1; // copy
   auto copiedRef3 = copiedRef2; // copy
 
-  EXPECT_EQ(myPool.size(), 1);
-  EXPECT_EQ(myPool.get_index(mainRef), 0);
-  EXPECT_EQ(myPool.get_index(copiedRef1), 0);
-  EXPECT_EQ(myPool.get_index(copiedRef2), 0);
-  EXPECT_EQ(myPool.get_index(copiedRef3), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 4);
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_index(mainRef), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef1), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef2), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef3), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 4);
 
-  EXPECT_EQ(mainRef.is_active(), true);
-  EXPECT_EQ(mainRef, true);
-  EXPECT_EQ(mainRef.get(), myPool.get(0).get());
-  EXPECT_EQ(mainRef->value, 555);
-  EXPECT_EQ(mainRef->my_string, "test");
+  ASSERT_EQ(mainRef.is_active(), true);
+  ASSERT_EQ(mainRef, true);
+  ASSERT_EQ(mainRef.get(), myPool.get(0).get());
+  ASSERT_EQ(mainRef->value, 555);
+  ASSERT_EQ(mainRef->my_string, "test");
 
-  EXPECT_EQ(copiedRef1.is_active(), true);
-  EXPECT_EQ(copiedRef1, true);
-  EXPECT_EQ(copiedRef1.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef1->value, 555);
-  EXPECT_EQ(copiedRef1->my_string, "test");
+  ASSERT_EQ(copiedRef1.is_active(), true);
+  ASSERT_EQ(copiedRef1, true);
+  ASSERT_EQ(copiedRef1.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef1->value, 555);
+  ASSERT_EQ(copiedRef1->my_string, "test");
 
-  EXPECT_EQ(copiedRef2.is_active(), true);
-  EXPECT_EQ(copiedRef2, true);
-  EXPECT_EQ(copiedRef2.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef2->value, 555);
-  EXPECT_EQ(copiedRef2->my_string, "test");
+  ASSERT_EQ(copiedRef2.is_active(), true);
+  ASSERT_EQ(copiedRef2, true);
+  ASSERT_EQ(copiedRef2.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef2->value, 555);
+  ASSERT_EQ(copiedRef2->my_string, "test");
 
-  EXPECT_EQ(copiedRef3.is_active(), true);
-  EXPECT_EQ(copiedRef3, true);
-  EXPECT_EQ(copiedRef3.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef3->value, 555);
-  EXPECT_EQ(copiedRef3->my_string, "test");
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(copiedRef3.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef3->value, 555);
+  ASSERT_EQ(copiedRef3->my_string, "test");
 
   myPool.release(mainRef);
 
-  EXPECT_EQ(myPool.size(), 0);
-  EXPECT_EQ(mainRef.is_active(), false);
-  EXPECT_EQ(mainRef, false);
-  EXPECT_EQ(copiedRef1.is_active(), false);
-  EXPECT_EQ(copiedRef1, false);
-  EXPECT_EQ(copiedRef2.is_active(), false);
-  EXPECT_EQ(copiedRef2, false);
-  EXPECT_EQ(copiedRef3.is_active(), false);
-  EXPECT_EQ(copiedRef3, false);
+  ASSERT_EQ(myPool.size(), 0);
+  ASSERT_EQ(mainRef.is_active(), false);
+  ASSERT_EQ(mainRef, false);
+  ASSERT_EQ(copiedRef1.is_active(), false);
+  ASSERT_EQ(copiedRef1, false);
+  ASSERT_EQ(copiedRef2.is_active(), false);
+  ASSERT_EQ(copiedRef2, false);
+  ASSERT_EQ(copiedRef3.is_active(), false);
+  ASSERT_EQ(copiedRef3, false);
 }
 
 TEST(system_weak_ref_data_pool,
@@ -303,85 +303,85 @@ TEST(system_weak_ref_data_pool,
   auto ref2 = myPool.acquire(666, "test");
   auto ref3 = myPool.acquire(777, "test");
 
-  EXPECT_EQ(myPool.size(), 3);
+  ASSERT_EQ(myPool.size(), 3);
 
-  EXPECT_EQ(myPool.get_index(ref1), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(ref1.is_active(), true);
-  EXPECT_EQ(ref1, true);
-  EXPECT_EQ(ref1.get(), myPool.get(0).get());
-  EXPECT_EQ(ref1->value, 555);
-  EXPECT_EQ(ref1->my_string, "test");
+  ASSERT_EQ(myPool.get_index(ref1), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref1.is_active(), true);
+  ASSERT_EQ(ref1, true);
+  ASSERT_EQ(ref1.get(), myPool.get(0).get());
+  ASSERT_EQ(ref1->value, 555);
+  ASSERT_EQ(ref1->my_string, "test");
 
-  EXPECT_EQ(myPool.get_index(ref2), 1);
-  EXPECT_EQ(myPool.get_ref_count(1), 1);
-  EXPECT_EQ(ref2.is_active(), true);
-  EXPECT_EQ(ref2, true);
-  EXPECT_EQ(ref2.get(), myPool.get(1).get());
-  EXPECT_EQ(ref2->value, 666);
-  EXPECT_EQ(ref2->my_string, "test");
+  ASSERT_EQ(myPool.get_index(ref2), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(ref2.is_active(), true);
+  ASSERT_EQ(ref2, true);
+  ASSERT_EQ(ref2.get(), myPool.get(1).get());
+  ASSERT_EQ(ref2->value, 666);
+  ASSERT_EQ(ref2->my_string, "test");
 
-  EXPECT_EQ(myPool.get_index(ref3), 2);
-  EXPECT_EQ(myPool.get_ref_count(2), 1);
-  EXPECT_EQ(ref3.is_active(), true);
-  EXPECT_EQ(ref3, true);
-  EXPECT_EQ(ref3.get(), myPool.get(2).get());
-  EXPECT_EQ(ref3->value, 777);
-  EXPECT_EQ(ref3->my_string, "test");
+  ASSERT_EQ(myPool.get_index(ref3), 2);
+  ASSERT_EQ(myPool.get_ref_count(2), 1);
+  ASSERT_EQ(ref3.is_active(), true);
+  ASSERT_EQ(ref3, true);
+  ASSERT_EQ(ref3.get(), myPool.get(2).get());
+  ASSERT_EQ(ref3->value, 777);
+  ASSERT_EQ(ref3->my_string, "test");
 
   myPool.release(ref2);
 
-  EXPECT_EQ(myPool.size(), 2);
+  ASSERT_EQ(myPool.size(), 2);
 
-  EXPECT_EQ(myPool.get_index(ref1), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(ref1.is_active(), true);
-  EXPECT_EQ(ref1, true);
-  EXPECT_EQ(ref1.get(), myPool.get(0).get());
-  EXPECT_EQ(ref1->value, 555);
-  EXPECT_EQ(ref1->my_string, "test");
+  ASSERT_EQ(myPool.get_index(ref1), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref1.is_active(), true);
+  ASSERT_EQ(ref1, true);
+  ASSERT_EQ(ref1.get(), myPool.get(0).get());
+  ASSERT_EQ(ref1->value, 555);
+  ASSERT_EQ(ref1->my_string, "test");
 
-  EXPECT_EQ(ref2.is_active(), false);
-  EXPECT_EQ(ref2, false);
+  ASSERT_EQ(ref2.is_active(), false);
+  ASSERT_EQ(ref2, false);
 
-  EXPECT_EQ(myPool.get_index(ref3), 1);
-  EXPECT_EQ(myPool.get_ref_count(1), 1);
-  EXPECT_EQ(ref3.is_active(), true);
-  EXPECT_EQ(ref3, true);
-  EXPECT_EQ(ref3.get(), myPool.get(1).get());
-  EXPECT_EQ(ref3->value, 777);
-  EXPECT_EQ(ref3->my_string, "test");
+  ASSERT_EQ(myPool.get_index(ref3), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(ref3.is_active(), true);
+  ASSERT_EQ(ref3, true);
+  ASSERT_EQ(ref3.get(), myPool.get(1).get());
+  ASSERT_EQ(ref3->value, 777);
+  ASSERT_EQ(ref3->my_string, "test");
 
   myPool.release(ref1);
 
-  EXPECT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.size(), 1);
 
-  EXPECT_EQ(ref1.is_active(), false);
-  EXPECT_EQ(ref1, false);
+  ASSERT_EQ(ref1.is_active(), false);
+  ASSERT_EQ(ref1, false);
 
-  EXPECT_EQ(ref2.is_active(), false);
-  EXPECT_EQ(ref2, false);
+  ASSERT_EQ(ref2.is_active(), false);
+  ASSERT_EQ(ref2, false);
 
-  EXPECT_EQ(myPool.get_index(ref3), 0);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(ref3.is_active(), true);
-  EXPECT_EQ(ref3, true);
-  EXPECT_EQ(ref3.get(), myPool.get(0).get());
-  EXPECT_EQ(ref3->value, 777);
-  EXPECT_EQ(ref3->my_string, "test");
+  ASSERT_EQ(myPool.get_index(ref3), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref3.is_active(), true);
+  ASSERT_EQ(ref3, true);
+  ASSERT_EQ(ref3.get(), myPool.get(0).get());
+  ASSERT_EQ(ref3->value, 777);
+  ASSERT_EQ(ref3->my_string, "test");
 
   myPool.release(ref3);
 
-  EXPECT_EQ(myPool.size(), 0);
+  ASSERT_EQ(myPool.size(), 0);
 
-  EXPECT_EQ(ref1.is_active(), false);
-  EXPECT_EQ(ref1, false);
+  ASSERT_EQ(ref1.is_active(), false);
+  ASSERT_EQ(ref1, false);
 
-  EXPECT_EQ(ref2.is_active(), false);
-  EXPECT_EQ(ref2, false);
+  ASSERT_EQ(ref2.is_active(), false);
+  ASSERT_EQ(ref2, false);
 
-  EXPECT_EQ(ref3.is_active(), false);
-  EXPECT_EQ(ref3, false);
+  ASSERT_EQ(ref3.is_active(), false);
+  ASSERT_EQ(ref3, false);
 }
 
 TEST(system_weak_ref_data_pool,
@@ -399,68 +399,68 @@ TEST(system_weak_ref_data_pool,
   auto mainRef3 = myPool.acquire(777, "test");
   auto copiedRef3 = mainRef3; // copy
 
-  EXPECT_EQ(myPool.size(), 3);
-  EXPECT_EQ(myPool.get_index(mainRef1), 0);
-  EXPECT_EQ(myPool.get_index(copiedRef1), 0);
-  EXPECT_EQ(myPool.get_index(mainRef2), 1);
-  EXPECT_EQ(myPool.get_index(copiedRef2), 1);
-  EXPECT_EQ(myPool.get_index(mainRef3), 2);
-  EXPECT_EQ(myPool.get_index(copiedRef3), 2);
-  EXPECT_EQ(myPool.get_ref_count(0), 2);
-  EXPECT_EQ(myPool.get_ref_count(1), 2);
-  EXPECT_EQ(myPool.get_ref_count(2), 2);
+  ASSERT_EQ(myPool.size(), 3);
+  ASSERT_EQ(myPool.get_index(mainRef1), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef1), 0);
+  ASSERT_EQ(myPool.get_index(mainRef2), 1);
+  ASSERT_EQ(myPool.get_index(copiedRef2), 1);
+  ASSERT_EQ(myPool.get_index(mainRef3), 2);
+  ASSERT_EQ(myPool.get_index(copiedRef3), 2);
+  ASSERT_EQ(myPool.get_ref_count(0), 2);
+  ASSERT_EQ(myPool.get_ref_count(1), 2);
+  ASSERT_EQ(myPool.get_ref_count(2), 2);
 
-  EXPECT_EQ(mainRef1.is_active(), true);
-  EXPECT_EQ(mainRef1, true);
-  EXPECT_EQ(mainRef1.get(), myPool.get(0).get());
-  EXPECT_EQ(mainRef1->value, 555);
-  EXPECT_EQ(mainRef1->my_string, "test");
+  ASSERT_EQ(mainRef1.is_active(), true);
+  ASSERT_EQ(mainRef1, true);
+  ASSERT_EQ(mainRef1.get(), myPool.get(0).get());
+  ASSERT_EQ(mainRef1->value, 555);
+  ASSERT_EQ(mainRef1->my_string, "test");
 
-  EXPECT_EQ(copiedRef1.is_active(), true);
-  EXPECT_EQ(copiedRef1, true);
-  EXPECT_EQ(copiedRef1.get(), myPool.get(0).get());
-  EXPECT_EQ(copiedRef1->value, 555);
-  EXPECT_EQ(copiedRef1->my_string, "test");
+  ASSERT_EQ(copiedRef1.is_active(), true);
+  ASSERT_EQ(copiedRef1, true);
+  ASSERT_EQ(copiedRef1.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef1->value, 555);
+  ASSERT_EQ(copiedRef1->my_string, "test");
 
-  EXPECT_EQ(mainRef2.is_active(), true);
-  EXPECT_EQ(mainRef2, true);
-  EXPECT_EQ(mainRef2.get(), myPool.get(1).get());
-  EXPECT_EQ(mainRef2->value, 666);
-  EXPECT_EQ(mainRef2->my_string, "test");
+  ASSERT_EQ(mainRef2.is_active(), true);
+  ASSERT_EQ(mainRef2, true);
+  ASSERT_EQ(mainRef2.get(), myPool.get(1).get());
+  ASSERT_EQ(mainRef2->value, 666);
+  ASSERT_EQ(mainRef2->my_string, "test");
 
-  EXPECT_EQ(copiedRef2.is_active(), true);
-  EXPECT_EQ(copiedRef2, true);
-  EXPECT_EQ(copiedRef2.get(), myPool.get(1).get());
-  EXPECT_EQ(copiedRef2->value, 666);
-  EXPECT_EQ(copiedRef2->my_string, "test");
+  ASSERT_EQ(copiedRef2.is_active(), true);
+  ASSERT_EQ(copiedRef2, true);
+  ASSERT_EQ(copiedRef2.get(), myPool.get(1).get());
+  ASSERT_EQ(copiedRef2->value, 666);
+  ASSERT_EQ(copiedRef2->my_string, "test");
 
-  EXPECT_EQ(mainRef3.is_active(), true);
-  EXPECT_EQ(mainRef3, true);
-  EXPECT_EQ(mainRef3.get(), myPool.get(2).get());
-  EXPECT_EQ(mainRef3->value, 777);
-  EXPECT_EQ(mainRef3->my_string, "test");
+  ASSERT_EQ(mainRef3.is_active(), true);
+  ASSERT_EQ(mainRef3, true);
+  ASSERT_EQ(mainRef3.get(), myPool.get(2).get());
+  ASSERT_EQ(mainRef3->value, 777);
+  ASSERT_EQ(mainRef3->my_string, "test");
 
-  EXPECT_EQ(copiedRef3.is_active(), true);
-  EXPECT_EQ(copiedRef3, true);
-  EXPECT_EQ(copiedRef3.get(), myPool.get(2).get());
-  EXPECT_EQ(copiedRef3->value, 777);
-  EXPECT_EQ(copiedRef3->my_string, "test");
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(copiedRef3.get(), myPool.get(2).get());
+  ASSERT_EQ(copiedRef3->value, 777);
+  ASSERT_EQ(copiedRef3->my_string, "test");
 
   myPool.clear();
 
-  EXPECT_EQ(myPool.size(), 0);
-  EXPECT_EQ(mainRef1.is_active(), false);
-  EXPECT_EQ(mainRef1, false);
-  EXPECT_EQ(copiedRef1.is_active(), false);
-  EXPECT_EQ(copiedRef1, false);
-  EXPECT_EQ(mainRef2.is_active(), false);
-  EXPECT_EQ(mainRef2, false);
-  EXPECT_EQ(copiedRef2.is_active(), false);
-  EXPECT_EQ(copiedRef2, false);
-  EXPECT_EQ(mainRef3.is_active(), false);
-  EXPECT_EQ(mainRef3, false);
-  EXPECT_EQ(copiedRef3.is_active(), false);
-  EXPECT_EQ(copiedRef3, false);
+  ASSERT_EQ(myPool.size(), 0);
+  ASSERT_EQ(mainRef1.is_active(), false);
+  ASSERT_EQ(mainRef1, false);
+  ASSERT_EQ(copiedRef1.is_active(), false);
+  ASSERT_EQ(copiedRef1, false);
+  ASSERT_EQ(mainRef2.is_active(), false);
+  ASSERT_EQ(mainRef2, false);
+  ASSERT_EQ(copiedRef2.is_active(), false);
+  ASSERT_EQ(copiedRef2, false);
+  ASSERT_EQ(mainRef3.is_active(), false);
+  ASSERT_EQ(mainRef3, false);
+  ASSERT_EQ(copiedRef3.is_active(), false);
+  ASSERT_EQ(copiedRef3, false);
 }
 
 TEST(system_weak_ref_data_pool, can_directly_access_pool_data) {
@@ -472,17 +472,17 @@ TEST(system_weak_ref_data_pool, can_directly_access_pool_data) {
   myPool.acquire(666, "test");
   myPool.acquire(777, "test");
 
-  EXPECT_EQ(myPool.size(), 3);
-  EXPECT_EQ(myPool.get_ref_count(0), 0);
-  EXPECT_EQ(myPool.get_ref_count(1), 0);
-  EXPECT_EQ(myPool.get_ref_count(2), 0);
+  ASSERT_EQ(myPool.size(), 3);
+  ASSERT_EQ(myPool.get_ref_count(0), 0);
+  ASSERT_EQ(myPool.get_ref_count(1), 0);
+  ASSERT_EQ(myPool.get_ref_count(2), 0);
 
-  EXPECT_EQ(myPool.get(0)->value, 555);
-  EXPECT_EQ(myPool.get(0)->my_string, "test");
-  EXPECT_EQ(myPool.get(1)->value, 666);
-  EXPECT_EQ(myPool.get(1)->my_string, "test");
-  EXPECT_EQ(myPool.get(2)->value, 777);
-  EXPECT_EQ(myPool.get(2)->my_string, "test");
+  ASSERT_EQ(myPool.get(0)->value, 555);
+  ASSERT_EQ(myPool.get(0)->my_string, "test");
+  ASSERT_EQ(myPool.get(1)->value, 666);
+  ASSERT_EQ(myPool.get(1)->my_string, "test");
+  ASSERT_EQ(myPool.get(2)->value, 777);
+  ASSERT_EQ(myPool.get(2)->my_string, "test");
 }
 
 TEST(system_weak_ref_data_pool, can_prevent_pool_growth) {
@@ -493,15 +493,15 @@ TEST(system_weak_ref_data_pool, can_prevent_pool_growth) {
   for (int ii = 0; ii < 20; ++ii) {
     auto ref = myPool.acquire(ii);
     if (ii < 10) {
-      EXPECT_EQ(ref.is_active(), true);
+      ASSERT_EQ(ref.is_active(), true);
     } else {
-      EXPECT_EQ(ref.is_active(), false);
+      ASSERT_EQ(ref.is_active(), false);
     }
   }
 
-  EXPECT_EQ(myPool.size(), 10);
+  ASSERT_EQ(myPool.size(), 10);
   for (int ii = 0; ii < 10; ++ii)
-    EXPECT_EQ(myPool.get(uint32_t(ii)).get()->value, ii);
+    ASSERT_EQ(myPool.get(uint32_t(ii)).get()->value, ii);
 }
 
 TEST(system_weak_ref_data_pool, can_allow_pool_growth) {
@@ -511,12 +511,12 @@ TEST(system_weak_ref_data_pool, can_allow_pool_growth) {
 
   for (int ii = 0; ii < 20; ++ii) {
     auto ref = myPool.acquire(ii);
-    EXPECT_EQ(ref.is_active(), true);
+    ASSERT_EQ(ref.is_active(), true);
   }
 
-  EXPECT_EQ(myPool.size(), 20);
+  ASSERT_EQ(myPool.size(), 20);
   for (int ii = 0; ii < 20; ++ii)
-    EXPECT_EQ(myPool.get(uint32_t(ii)).get()->value, ii);
+    ASSERT_EQ(myPool.get(uint32_t(ii)).get()->value, ii);
 }
 
 TEST(system_weak_ref_data_pool, can_move_data_into_a_weak_ref) {
@@ -526,14 +526,14 @@ TEST(system_weak_ref_data_pool, can_move_data_into_a_weak_ref) {
 
   auto mainRef = myPool.acquire(666, "test");
 
-  EXPECT_EQ(mainRef->value, 666);
-  EXPECT_EQ(mainRef->my_string, "test");
+  ASSERT_EQ(mainRef->value, 666);
+  ASSERT_EQ(mainRef->my_string, "test");
 
   common::TestStructure tmpData(777, "test test");
   *mainRef = std::move(tmpData);
 
-  EXPECT_EQ(mainRef->value, 777);
-  EXPECT_EQ(mainRef->my_string, "test test");
+  ASSERT_EQ(mainRef->value, 777);
+  ASSERT_EQ(mainRef->my_string, "test test");
 }
 
 TEST(system_weak_ref_data_pool, can_move_entire_pool) {
@@ -547,20 +547,20 @@ TEST(system_weak_ref_data_pool, can_move_entire_pool) {
   for (int ii = 0; ii < 20; ++ii)
     myPool1.acquire(ii, "test");
 
-  EXPECT_EQ(myPool1.size(), 20);
-  EXPECT_EQ(myPool2.size(), 0);
+  ASSERT_EQ(myPool1.size(), 20);
+  ASSERT_EQ(myPool2.size(), 0);
   for (int ii = 0; ii < 20; ++ii) {
-    EXPECT_EQ(myPool1.get(uint32_t(ii))->value, ii);
-    EXPECT_EQ(myPool1.get(uint32_t(ii))->my_string, "test");
+    ASSERT_EQ(myPool1.get(uint32_t(ii))->value, ii);
+    ASSERT_EQ(myPool1.get(uint32_t(ii))->my_string, "test");
   }
 
   myPool2 = std::move(myPool1);
 
-  EXPECT_EQ(myPool1.size(), 0);
-  EXPECT_EQ(myPool2.size(), 20);
+  ASSERT_EQ(myPool1.size(), 0);
+  ASSERT_EQ(myPool2.size(), 20);
   for (int ii = 0; ii < 20; ++ii) {
-    EXPECT_EQ(myPool2.get(uint32_t(ii))->value, ii);
-    EXPECT_EQ(myPool2.get(uint32_t(ii))->my_string, "test");
+    ASSERT_EQ(myPool2.get(uint32_t(ii))->value, ii);
+    ASSERT_EQ(myPool2.get(uint32_t(ii))->my_string, "test");
   }
 }
 
@@ -574,24 +574,24 @@ TEST(system_weak_ref_data_pool,
   myPool.acquire(666, "test");
   myPool.acquire(777, "test");
 
-  EXPECT_EQ(myPool.size(), 3);
-  EXPECT_EQ(myPool.get_ref_count(0), 0);
-  EXPECT_EQ(myPool.get_ref_count(1), 0);
-  EXPECT_EQ(myPool.get_ref_count(2), 0);
+  ASSERT_EQ(myPool.size(), 3);
+  ASSERT_EQ(myPool.get_ref_count(0), 0);
+  ASSERT_EQ(myPool.get_ref_count(1), 0);
+  ASSERT_EQ(myPool.get_ref_count(2), 0);
 
   {
     auto ref1 = myPool.get(0);
     auto ref2 = myPool.get(1);
     auto ref3 = myPool.get(2);
 
-    EXPECT_EQ(myPool.get_ref_count(0), 1);
-    EXPECT_EQ(myPool.get_ref_count(1), 1);
-    EXPECT_EQ(myPool.get_ref_count(2), 1);
+    ASSERT_EQ(myPool.get_ref_count(0), 1);
+    ASSERT_EQ(myPool.get_ref_count(1), 1);
+    ASSERT_EQ(myPool.get_ref_count(2), 1);
   }
 
-  EXPECT_EQ(myPool.get_ref_count(0), 0);
-  EXPECT_EQ(myPool.get_ref_count(1), 0);
-  EXPECT_EQ(myPool.get_ref_count(2), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 0);
+  ASSERT_EQ(myPool.get_ref_count(1), 0);
+  ASSERT_EQ(myPool.get_ref_count(2), 0);
 }
 
 // TEST(system_weak_ref_data_pool,
@@ -606,24 +606,24 @@ TEST(system_weak_ref_data_pool,
 //   LocalRef mainRef2 = myPool.acquire(666, "test");
 //   LocalRef mainRef3 = myPool.acquire(777, "test");
 
-//   EXPECT_EQ(myPool.size(), 3);
-//   EXPECT_EQ(myPool.get_ref_count(0), 1);
-//   EXPECT_EQ(myPool.get_ref_count(1), 1);
-//   EXPECT_EQ(myPool.get_ref_count(2), 1);
+//   ASSERT_EQ(myPool.size(), 3);
+//   ASSERT_EQ(myPool.get_ref_count(0), 1);
+//   ASSERT_EQ(myPool.get_ref_count(1), 1);
+//   ASSERT_EQ(myPool.get_ref_count(2), 1);
 
 //   {
 //     LocalRef subRef1 = myPool.get(0);
 //     LocalRef subRef2 = myPool.get(1);
 //     LocalRef subRef3 = myPool.get(2);
 
-//     EXPECT_EQ(myPool.get_ref_count(0), 2);
-//     EXPECT_EQ(myPool.get_ref_count(1), 2);
-//     EXPECT_EQ(myPool.get_ref_count(2), 2);
+//     ASSERT_EQ(myPool.get_ref_count(0), 2);
+//     ASSERT_EQ(myPool.get_ref_count(1), 2);
+//     ASSERT_EQ(myPool.get_ref_count(2), 2);
 //   }
 
-//   EXPECT_EQ(myPool.get_ref_count(0), 1);
-//   EXPECT_EQ(myPool.get_ref_count(1), 1);
-//   EXPECT_EQ(myPool.get_ref_count(2), 1);
+//   ASSERT_EQ(myPool.get_ref_count(0), 1);
+//   ASSERT_EQ(myPool.get_ref_count(1), 1);
+//   ASSERT_EQ(myPool.get_ref_count(2), 1);
 // }
 
 namespace {
@@ -665,10 +665,10 @@ TEST(
   LocalRef mainRef2 = myPool.acquire(666, "test");
   LocalRef mainRef3 = myPool.acquire(777, "test");
 
-  EXPECT_EQ(myPool.size(), 3);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(myPool.get_ref_count(1), 1);
-  EXPECT_EQ(myPool.get_ref_count(2), 1);
+  ASSERT_EQ(myPool.size(), 3);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(myPool.get_ref_count(2), 1);
 
   {
 
@@ -684,16 +684,16 @@ TEST(
     tmpRaw.allRawImpactsData[tmpRaw.allImpactsTotal++].ref = myPool.get(1);
     LocalRef subRef3 = myPool.get(2);
 
-    EXPECT_EQ(tmpRaw.allImpactsTotal, 2);
+    ASSERT_EQ(tmpRaw.allImpactsTotal, 2);
 
-    EXPECT_EQ(myPool.get_ref_count(0), 2);
-    EXPECT_EQ(myPool.get_ref_count(1), 2);
-    EXPECT_EQ(myPool.get_ref_count(2), 2);
+    ASSERT_EQ(myPool.get_ref_count(0), 2);
+    ASSERT_EQ(myPool.get_ref_count(1), 2);
+    ASSERT_EQ(myPool.get_ref_count(2), 2);
   }
 
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(myPool.get_ref_count(1), 1);
-  EXPECT_EQ(myPool.get_ref_count(2), 1);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(myPool.get_ref_count(2), 1);
 }
 
 TEST(
@@ -715,10 +715,10 @@ TEST(
   LocalRef mainRef2 = myPool.acquire(666, "test");
   LocalRef mainRef3 = myPool.acquire(777, "test");
 
-  EXPECT_EQ(myPool.size(), 3);
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(myPool.get_ref_count(1), 1);
-  EXPECT_EQ(myPool.get_ref_count(2), 1);
+  ASSERT_EQ(myPool.size(), 3);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(myPool.get_ref_count(2), 1);
 
   {
 
@@ -736,7 +736,7 @@ TEST(
     D_MYERR("testRef._pool  " << testRef._pool);
     D_MYERR("testRef._index " << testRef._index);
 
-    EXPECT_EQ(testRef, LocalRef::make_invalid());
+    ASSERT_EQ(testRef, LocalRef::make_invalid());
 
 #if 1
 
@@ -759,14 +759,14 @@ TEST(
     D_MYERR("testRef._pool  " << testRef._pool);
     D_MYERR("testRef._index " << testRef._index);
 
-    EXPECT_EQ(testRef, mainRef2);
-    // EXPECT_EQ(testRef, myPool.get(*mainRef1));
+    ASSERT_EQ(testRef, mainRef2);
+    // ASSERT_EQ(testRef, myPool.get(*mainRef1));
   }
 
   // {
-  //   EXPECT_EQ(tmpRaw.allRawImpactsData[0].ref, LocalRef::make_invalid());
-  //   EXPECT_EQ(tmpRaw.allRawImpactsData[1].ref, LocalRef::make_invalid());
-  //   EXPECT_EQ(tmpRaw.allRawImpactsData[2].ref, LocalRef::make_invalid());
+  //   ASSERT_EQ(tmpRaw.allRawImpactsData[0].ref, LocalRef::make_invalid());
+  //   ASSERT_EQ(tmpRaw.allRawImpactsData[1].ref, LocalRef::make_invalid());
+  //   ASSERT_EQ(tmpRaw.allRawImpactsData[2].ref, LocalRef::make_invalid());
 
   //   tmpRaw.allRawImpactsData[tmpRaw.allImpactsTotal++].ref =
   //   myPool.get(*mainRef1);
@@ -776,17 +776,17 @@ TEST(
   //   myPool.get(*mainRef3);
   //   // LocalRef subRef3 = myPool.get(2);
 
-  //   EXPECT_EQ(tmpRaw.allImpactsTotal, 3);
-  //   EXPECT_EQ(tmpRaw.allRawImpactsData[0].ref, mainRef1);
-  //   EXPECT_EQ(tmpRaw.allRawImpactsData[1].ref, mainRef2);
-  //   EXPECT_EQ(tmpRaw.allRawImpactsData[2].ref, mainRef3);
+  //   ASSERT_EQ(tmpRaw.allImpactsTotal, 3);
+  //   ASSERT_EQ(tmpRaw.allRawImpactsData[0].ref, mainRef1);
+  //   ASSERT_EQ(tmpRaw.allRawImpactsData[1].ref, mainRef2);
+  //   ASSERT_EQ(tmpRaw.allRawImpactsData[2].ref, mainRef3);
 
-  //   EXPECT_EQ(myPool.get_ref_count(0), 2);
-  //   EXPECT_EQ(myPool.get_ref_count(1), 2);
-  //   EXPECT_EQ(myPool.get_ref_count(2), 2);
+  //   ASSERT_EQ(myPool.get_ref_count(0), 2);
+  //   ASSERT_EQ(myPool.get_ref_count(1), 2);
+  //   ASSERT_EQ(myPool.get_ref_count(2), 2);
   // }
 
-  EXPECT_EQ(myPool.get_ref_count(0), 1);
-  EXPECT_EQ(myPool.get_ref_count(1), 1);
-  EXPECT_EQ(myPool.get_ref_count(2), 1);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(myPool.get_ref_count(2), 1);
 }
