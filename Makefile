@@ -30,7 +30,7 @@ ifeq ($(build_platform),native)
 DIR_LIB=		./lib/native
 
 NAME_GERONIMO_SYSTEM=						$(DIR_LIB)/lib-geronimo-system.a
-NAME_GERONIMO_GRAPHIC=					$(DIR_LIB)/lib-geronimo-graphic.a
+NAME_GERONIMO_GRAPHICS=					$(DIR_LIB)/lib-geronimo-graphics.a
 NAME_GERONIMO_PHYSICS=					$(DIR_LIB)/lib-geronimo-physics.a
 NAME_GERONIMO_AUDIO=						$(DIR_LIB)/lib-geronimo-audio.a
 
@@ -39,7 +39,7 @@ else ifeq ($(build_platform),web-wasm)
 DIR_LIB=		./lib/web-wasm
 
 NAME_GERONIMO_SYSTEM=						$(DIR_LIB)/lib-geronimo-system.bc
-NAME_GERONIMO_GRAPHIC=					$(DIR_LIB)/lib-geronimo-graphic.bc
+NAME_GERONIMO_GRAPHICS=					$(DIR_LIB)/lib-geronimo-graphics.bc
 NAME_GERONIMO_PHYSICS=					$(DIR_LIB)/lib-geronimo-physics.bc
 NAME_GERONIMO_AUDIO=						$(DIR_LIB)/lib-geronimo-audio.bc
 
@@ -89,15 +89,15 @@ SRC_GERONIMO_SYSTEM+=	\
 		$(DIR_SRC)/geronimo/system/string-utils/*.cpp \
 		)
 
-SRC_GERONIMO_GRAPHIC+=	\
+SRC_GERONIMO_GRAPHICS+=	\
 	$(wildcard \
-		$(DIR_SRC)/geronimo/graphic/*.cpp \
-		$(DIR_SRC)/geronimo/graphic/camera/*.cpp \
-		$(DIR_SRC)/geronimo/graphic/loaders/*.cpp \
-		$(DIR_SRC)/geronimo/graphic/make-geometries/*.cpp \
-		$(DIR_SRC)/geronimo/graphic/sdl/*.cpp \
-		$(DIR_SRC)/geronimo/graphic/vertexBuffers/*.cpp \
-		$(DIR_SRC)/geronimo/graphic/wrappers/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/camera/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/loaders/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/make-geometries/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/sdl/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/vertexBuffers/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/wrappers/*.cpp \
 		)
 
 SRC_GERONIMO_PHYSICS+=	\
@@ -119,7 +119,7 @@ SRC_GERONIMO_AUDIO+=	\
 #
 
 OBJ_GERONIMO_SYSTEM=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_SYSTEM))
-OBJ_GERONIMO_GRAPHIC=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_GRAPHIC))
+OBJ_GERONIMO_GRAPHICS=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_GRAPHICS))
 OBJ_GERONIMO_PHYSICS=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_PHYSICS))
 OBJ_GERONIMO_AUDIO=			$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_AUDIO))
 
@@ -191,7 +191,7 @@ ensure_folders:
 geronimo:	\
 	ensure_folders	\
 	geronimo_system	\
-	geronimo_graphic	\
+	geronimo_graphics	\
 	geronimo_physics	\
 	geronimo_audio
 
@@ -200,9 +200,9 @@ geronimo_system:	ensure_folders $(OBJ_GERONIMO_SYSTEM)
 	@$(AR) cr $(NAME_GERONIMO_SYSTEM) $(OBJ_GERONIMO_SYSTEM)
 	@echo '   --> built $(LOG_INFO): "geronimo system library"'
 
-geronimo_graphic:	ensure_folders $(OBJ_GERONIMO_GRAPHIC)
+geronimo_graphics:	ensure_folders $(OBJ_GERONIMO_GRAPHICS)
 	@echo ' ---> building $(LOG_INFO): "geronimo graphic library"'
-	@$(AR) cr $(NAME_GERONIMO_GRAPHIC) $(OBJ_GERONIMO_GRAPHIC)
+	@$(AR) cr $(NAME_GERONIMO_GRAPHICS) $(OBJ_GERONIMO_GRAPHICS)
 	@echo '   --> built $(LOG_INFO): "geronimo graphic library"'
 
 geronimo_physics:	ensure_folders $(OBJ_GERONIMO_PHYSICS)
@@ -238,7 +238,7 @@ clean:
 fclean: clean
 	@echo ' -> cleaning $(LOG_INFO): geronimo library file(s)'
 	@$(RM) $(NAME_GERONIMO_SYSTEM)
-	@$(RM) $(NAME_GERONIMO_GRAPHIC)
+	@$(RM) $(NAME_GERONIMO_GRAPHICS)
 	@$(RM) $(NAME_GERONIMO_PHYSICS)
 	@$(RM) $(NAME_GERONIMO_AUDIO)
 	@echo '   -> cleaned $(LOG_INFO): geronimo library file(s)'
