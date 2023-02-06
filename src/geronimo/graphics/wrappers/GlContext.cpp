@@ -36,7 +36,7 @@ void bind(uint32_t renderBufferId) {
 }
 
 namespace {
-int getRawDepthFormat(DepthFormat depthFormat) {
+int32_t getRawDepthFormat(DepthFormat depthFormat) {
   switch (depthFormat) {
   case DepthFormat::depth24:
     return GL_DEPTH_COMPONENT24;
@@ -52,7 +52,7 @@ int getRawDepthFormat(DepthFormat depthFormat) {
 
 void setSize(uint32_t width, uint32_t height, DepthFormat depthFormat) {
 
-  const int internalFormat = getRawDepthFormat(depthFormat);
+  const int32_t internalFormat = getRawDepthFormat(depthFormat);
 
   glCheck(glRenderbufferStorage(GL_RENDERBUFFER, GLenum(internalFormat),
                                 GLsizei(width), GLsizei(height)));
@@ -87,15 +87,15 @@ void bind(uint32_t vaoId) { glCheck(glBindVertexArray(vaoId)); }
 //
 
 std::string getVersion() {
-  const unsigned char* msg = glGetString(GL_VERSION);
+  const uint8_t* msg = glGetString(GL_VERSION);
   return std::string(reinterpret_cast<const char*>(msg));
 }
 
-void setViewport(int x, int y, uint32_t width, uint32_t height) {
+void setViewport(int32_t x, int32_t y, uint32_t width, uint32_t height) {
   glCheck(glViewport(x, y, GLsizei(width), GLsizei(height)));
 }
 
-void setScissor(int x, int y, uint32_t width, uint32_t height) {
+void setScissor(int32_t x, int32_t y, uint32_t width, uint32_t height) {
   glCheck(glScissor(x, y, GLsizei(width), GLsizei(height)));
 }
 
@@ -226,8 +226,8 @@ void setBackFaceCullingDirection(BackFaceCullingDirection direction) {
   }
 }
 
-void clear(int mask) {
-  int rawMask = 0;
+void clear(int32_t mask) {
+  int32_t rawMask = 0;
   if (mask & asValue(Buffers::color))
     rawMask |= GL_COLOR_BUFFER_BIT;
   if (mask & asValue(Buffers::depth))
@@ -256,8 +256,8 @@ void clearDepth(float value) { glCheck(glClearDepthf(value)); }
 //   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 // }
 
-int getMaxTextureSize() {
-  int maxTextureSize = 0;
+int32_t getMaxTextureSize() {
+  int32_t maxTextureSize = 0;
   glCheck(glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize));
   return maxTextureSize;
 }

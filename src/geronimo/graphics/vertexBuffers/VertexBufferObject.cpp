@@ -38,7 +38,7 @@ void VertexBufferObject::deallocate() {
 
 bool VertexBufferObject::isAllocated() const { return !_ids.empty(); }
 
-void VertexBufferObject::bind(unsigned int index /* = 0 */) const {
+void VertexBufferObject::bind(uint32_t index /* = 0 */) const {
   if (_ids.empty())
     D_THROW(std::runtime_error, "not allocated");
 

@@ -39,7 +39,7 @@ void makeTorus(Vertices& vertices, uint32_t ringQuality, uint32_t tubeQuality,
   static_heap_grid_array<Vertex> ringVertices;
   ringVertices.allocate(ringQuality, tubeQuality);
 
-  for (int ringIndex = 0; ringIndex < int(ringQuality); ++ringIndex) {
+  for (int32_t ringIndex = 0; ringIndex < int32_t(ringQuality); ++ringIndex) {
     const float coef = float(ringIndex) / float(ringQuality);
     const float angle = coef * math::pi2;
 
@@ -49,7 +49,7 @@ void makeTorus(Vertices& vertices, uint32_t ringQuality, uint32_t tubeQuality,
       const glm::mat4 transformVertex =
         glm::translate(transformNormal, glm::vec3(ringRadius, 0, 0));
 
-      for (int tubeIndex = 0; tubeIndex < int(tubeQuality); ++tubeIndex) {
+      for (int32_t tubeIndex = 0; tubeIndex < int32_t(tubeQuality); ++tubeIndex) {
         const Vertex& sliceVertex = tubeSliceVertices[std::size_t(tubeIndex)];
 
         Vertex& vertex = ringVertices(ringIndex, tubeIndex);
@@ -60,13 +60,13 @@ void makeTorus(Vertices& vertices, uint32_t ringQuality, uint32_t tubeQuality,
     }
   }
 
-  for (int ringIndex = 0; ringIndex < int(ringQuality); ++ringIndex) {
-    const int indexA1 = ringIndex;
-    const int indexB1 = (ringIndex + 1) % int(ringQuality);
+  for (int32_t ringIndex = 0; ringIndex < int32_t(ringQuality); ++ringIndex) {
+    const int32_t indexA1 = ringIndex;
+    const int32_t indexB1 = (ringIndex + 1) % int32_t(ringQuality);
 
-    for (int tubeIndex = 0; tubeIndex < int(tubeQuality); ++tubeIndex) {
-      const int indexA2 = tubeIndex;
-      const int indexB2 = (tubeIndex + 1) % int(tubeQuality);
+    for (int32_t tubeIndex = 0; tubeIndex < int32_t(tubeQuality); ++tubeIndex) {
+      const int32_t indexA2 = tubeIndex;
+      const int32_t indexB2 = (tubeIndex + 1) % int32_t(tubeQuality);
 
       const Vertex& vertexAA = ringVertices(indexA1, indexA2);
       const Vertex& vertexAB = ringVertices(indexA1, indexB2);
@@ -131,7 +131,7 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
   static_heap_grid_array<Vertex> ringVertices;
   ringVertices.allocate(ringQuality, tubeQuality);
 
-  for (int ringIndex = 0; ringIndex < int(ringQuality); ++ringIndex) {
+  for (int32_t ringIndex = 0; ringIndex < int32_t(ringQuality); ++ringIndex) {
     const float coef = float(ringIndex) / float(ringQuality);
     const float angle = startAngle + coef * sweepAngle;
 
@@ -144,7 +144,7 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
     const glm::mat4 transformVertex =
       glm::translate(transformNormal, glm::vec3(ringRadius, 0, 0));
 
-    for (int tubeIndex = 0; tubeIndex < int(tubeQuality); ++tubeIndex) {
+    for (int32_t tubeIndex = 0; tubeIndex < int32_t(tubeQuality); ++tubeIndex) {
       const Vertex& sliceVertex = tubeSliceVertices[std::size_t(tubeIndex)];
 
       Vertex& vertex = ringVertices(ringIndex, tubeIndex);
@@ -153,13 +153,13 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
     }
   }
 
-  for (int ringIndex = 0; ringIndex + 1 < int(ringQuality); ++ringIndex) {
-    const int indexA1 = ringIndex;
-    const int indexB1 = (ringIndex + 1) % int(ringQuality);
+  for (int32_t ringIndex = 0; ringIndex + 1 < int32_t(ringQuality); ++ringIndex) {
+    const int32_t indexA1 = ringIndex;
+    const int32_t indexB1 = (ringIndex + 1) % int32_t(ringQuality);
 
-    for (int tubeIndex = 0; tubeIndex < int(tubeQuality); ++tubeIndex) {
-      const int indexA2 = tubeIndex;
-      const int indexB2 = (tubeIndex + 1) % int(tubeQuality);
+    for (int32_t tubeIndex = 0; tubeIndex < int32_t(tubeQuality); ++tubeIndex) {
+      const int32_t indexA2 = tubeIndex;
+      const int32_t indexB2 = (tubeIndex + 1) % int32_t(tubeQuality);
 
       const Vertex& vertexAA = ringVertices(indexA1, indexA2);
       const Vertex& vertexAB = ringVertices(indexA1, indexB2);
@@ -264,9 +264,9 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
       const glm::vec3& centerF = ringCenters.front();
       const glm::vec3& centerB = ringCenters.back();
 
-      for (int tubeIndex = 0; tubeIndex < int(tubeQuality); ++tubeIndex) {
-        const int index1 = tubeIndex;
-        const int index2 = (tubeIndex + 1) % int(tubeQuality);
+      for (int32_t tubeIndex = 0; tubeIndex < int32_t(tubeQuality); ++tubeIndex) {
+        const int32_t index1 = tubeIndex;
+        const int32_t index2 = (tubeIndex + 1) % int32_t(tubeQuality);
 
         if (closedStart) {
           const glm::vec3 posF1 =

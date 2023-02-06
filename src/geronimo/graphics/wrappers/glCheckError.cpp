@@ -8,7 +8,7 @@ namespace graphics {
 
 namespace debug {
 
-void glCheckError(const char* file, unsigned int line, const char* expression) {
+void glCheckError(const char* file, uint32_t line, const int8_t* expression) {
   // Get the last error
   GLenum errorCode = glGetError();
 

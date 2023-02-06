@@ -15,7 +15,7 @@ VertexArrayObject::~VertexArrayObject() {
     deallocate();
 }
 
-void VertexArrayObject::allocate(unsigned int size /* = 1 */) {
+void VertexArrayObject::allocate(uint32_t size /* = 1 */) {
   if (size < 1)
     D_THROW(std::invalid_argument, "invalid size, input=" << size);
 
@@ -36,7 +36,7 @@ void VertexArrayObject::deallocate() {
   _vaoIds.clear();
 }
 
-void VertexArrayObject::bind(unsigned int index /* = 0 */) const {
+void VertexArrayObject::bind(uint32_t index /* = 0 */) const {
   if (_vaoIds.empty())
     D_THROW(std::runtime_error, "not allocated");
 

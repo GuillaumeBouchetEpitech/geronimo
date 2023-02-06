@@ -31,9 +31,9 @@ public:
   };
 
 private:
-  unsigned int _programId = 0;
-  std::unordered_map<std::string, int> _attributesMap;
-  std::unordered_map<std::string, int> _uniformsMap;
+  uint32_t _programId = 0;
+  std::unordered_map<std::string, int32_t> _attributesMap;
+  std::unordered_map<std::string, int32_t> _uniformsMap;
 
 public:
   ShaderProgram(const Definition& def);
@@ -49,16 +49,16 @@ public:
   static void unbind();
 
 public:
-  int getAttribute(const char* name) const;
-  int getUniform(const char* name) const;
+  int32_t getAttribute(const char* name) const;
+  int32_t getUniform(const char* name) const;
   bool hasAttribute(const char* name) const;
   bool hasUniform(const char* name) const;
 
 public:
-  void setUniform(const char* name, int value) const;
-  void setUniform(const char* name, int x, int y) const;
-  void setUniform(const char* name, int x, int y, int z) const;
-  void setUniform(const char* name, int x, int y, int z, int w) const;
+  void setUniform(const char* name, int32_t value) const;
+  void setUniform(const char* name, int32_t x, int32_t y) const;
+  void setUniform(const char* name, int32_t x, int32_t y, int32_t z) const;
+  void setUniform(const char* name, int32_t x, int32_t y, int32_t z, int32_t w) const;
   void setUniform(const char* name, float value) const;
   void setUniform(const char* name, float x, float y) const;
   void setUniform(const char* name, float x, float y, float z) const;
@@ -69,18 +69,18 @@ public:
   void setUniform(const char* name, const glm::mat4& mat4) const;
 
 public:
-  void setUniform(int location, int value) const;
-  void setUniform(int location, int x, int y) const;
-  void setUniform(int location, int x, int y, int z) const;
-  void setUniform(int location, int x, int y, int z, int w) const;
-  void setUniform(int location, float value) const;
-  void setUniform(int location, float x, float y) const;
-  void setUniform(int location, float x, float y, float z) const;
-  void setUniform(int location, float x, float y, float z, float w) const;
-  void setUniform(int location, const glm::vec3& vec3) const;
-  void setUniform(int location, const glm::vec4& vec4) const;
-  void setUniform(int location, const glm::mat3& mat3) const;
-  void setUniform(int location, const glm::mat4& mat4) const;
+  void setUniform(int32_t location, int32_t value) const;
+  void setUniform(int32_t location, int32_t x, int32_t y) const;
+  void setUniform(int32_t location, int32_t x, int32_t y, int32_t z) const;
+  void setUniform(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w) const;
+  void setUniform(int32_t location, float value) const;
+  void setUniform(int32_t location, float x, float y) const;
+  void setUniform(int32_t location, float x, float y, float z) const;
+  void setUniform(int32_t location, float x, float y, float z, float w) const;
+  void setUniform(int32_t location, const glm::vec3& vec3) const;
+  void setUniform(int32_t location, const glm::vec4& vec4) const;
+  void setUniform(int32_t location, const glm::mat3& mat3) const;
+  void setUniform(int32_t location, const glm::mat4& mat4) const;
 };
 
 } // namespace graphics

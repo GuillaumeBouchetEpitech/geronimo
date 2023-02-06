@@ -33,13 +33,13 @@ SDLWindowWrapper::SDLWindowWrapper(const char* name, uint32_t width,
   // SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   // SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
 
-  const int posX = SDL_WINDOWPOS_UNDEFINED;
-  const int posY = SDL_WINDOWPOS_UNDEFINED;
+  const int32_t posX = SDL_WINDOWPOS_UNDEFINED;
+  const int32_t posY = SDL_WINDOWPOS_UNDEFINED;
   uint32_t flags = SDL_WINDOW_OPENGL;
   if (enableResize)
     flags |= SDL_WINDOW_RESIZABLE;
 
-  _window = SDL_CreateWindow(name, posX, posY, int(width), int(height), flags);
+  _window = SDL_CreateWindow(name, posX, posY, int32_t(width), int32_t(height), flags);
 
   if (!_window)
     D_THROW(std::runtime_error,
@@ -167,7 +167,7 @@ void SDLWindowWrapper::process(uint32_t deltaTime) {
       return stop();
     }
     case SDL_KEYUP: {
-      int symbol = event.key.keysym.sym;
+      int32_t symbol = event.key.keysym.sym;
       if (symbol == SDLK_ESCAPE)
         return stop();
       break;
@@ -178,8 +178,8 @@ void SDLWindowWrapper::process(uint32_t deltaTime) {
     case SDL_WINDOWEVENT: {
       switch (event.window.event) {
       case SDL_WINDOWEVENT_SIZE_CHANGED: {
-        int width = 0;
-        int height = 0;
+        int32_t width = 0;
+        int32_t height = 0;
         SDL_GL_GetDrawableSize(_window, &width, &height);
         if (width == 0 || height == 0)
           SDL_GetWindowSize(_window, &width, &height);

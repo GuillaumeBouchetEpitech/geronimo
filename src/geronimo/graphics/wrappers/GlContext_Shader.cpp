@@ -15,12 +15,12 @@ namespace graphics {
 
 namespace utilities {
 
-using GetDataFunc = void (*)(uint32_t shader, GLenum pname, int* params);
+using GetDataFunc = void (*)(uint32_t shader, GLenum pname, int32_t* params);
 using GetInfoFunc = void (*)(uint32_t shader, GLsizei maxLength,
                              GLsizei* length, GLchar* infoLog);
 
 void _printInfo(uint32_t id, GetDataFunc getDataFunc, GetInfoFunc getInfoFunc) {
-  int infoLogLength = 0;
+  int32_t infoLogLength = 0;
   glCheck(getDataFunc(id, GL_INFO_LOG_LENGTH, &infoLogLength));
 
   if (infoLogLength == 0)
@@ -74,11 +74,11 @@ uint32_t loadShader(GLenum type, const std::string& filename,
   }
 
   const char* content = source.c_str();
-  const int length = int(source.size());
+  const int32_t length = int32_t(source.size());
   glCheck(glShaderSource(shaderId, 1, &content, &length));
   glCheck(glCompileShader(shaderId));
 
-  int compiled;
+  int32_t compiled;
   glCheck(glGetShaderiv(shaderId, GL_COMPILE_STATUS, &compiled));
 
   if (!compiled) {
@@ -125,7 +125,7 @@ bool linkProgram(uint32_t programId, uint32_t vertexShader,
   glCheck(glDeleteShader(vertexShader));
   glCheck(glDeleteShader(fragmentShader));
 
-  int linkedStatus;
+  int32_t linkedStatus;
   glCheck(glGetProgramiv(programId, GL_LINK_STATUS, &linkedStatus));
 
   bool success = (linkedStatus != GL_FALSE);
@@ -136,57 +136,57 @@ bool linkProgram(uint32_t programId, uint32_t vertexShader,
   return success;
 }
 
-int getAttribLocation(uint32_t programId, const char* name) {
-  int location;
+int32_t getAttribLocation(uint32_t programId, const char* name) {
+  int32_t location;
   glCheck(location = glGetAttribLocation(programId, name));
   return location;
 }
 
-int getUniformLocation(uint32_t programId, const char* name) {
-  int location;
+int32_t getUniformLocation(uint32_t programId, const char* name) {
+  int32_t location;
   glCheck(location = glGetUniformLocation(programId, name));
   return location;
 }
 
 void useProgram(uint32_t programId) { glCheck(glUseProgram(programId)); }
 
-void setUniform(int location, int value) {
+void setUniform(int32_t location, int32_t value) {
   glCheck(glUniform1i(location, value));
 }
 
-void setUniform(int location, int x, int y) {
+void setUniform(int32_t location, int32_t x, int32_t y) {
   glCheck(glUniform2i(location, x, y));
 }
 
-void setUniform(int location, int x, int y, int z) {
+void setUniform(int32_t location, int32_t x, int32_t y, int32_t z) {
   glCheck(glUniform3i(location, x, y, z));
 }
 
-void setUniform(int location, int x, int y, int z, int w) {
+void setUniform(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w) {
   glCheck(glUniform4i(location, x, y, z, w));
 }
 
-void setUniform(int location, float value) {
+void setUniform(int32_t location, float value) {
   glCheck(glUniform1f(location, value));
 }
 
-void setUniform(int location, float x, float y) {
+void setUniform(int32_t location, float x, float y) {
   glCheck(glUniform2f(location, x, y));
 }
 
-void setUniform(int location, float x, float y, float z) {
+void setUniform(int32_t location, float x, float y, float z) {
   glCheck(glUniform3f(location, x, y, z));
 }
 
-void setUniform(int location, float x, float y, float z, float w) {
+void setUniform(int32_t location, float x, float y, float z, float w) {
   glCheck(glUniform4f(location, x, y, z, w));
 }
 
-void setUniform(int location, const glm::mat3& matrix) {
+void setUniform(int32_t location, const glm::mat3& matrix) {
   glCheck(glUniformMatrix3fv(location, 1, false, glm::value_ptr(matrix)));
 }
 
-void setUniform(int location, const glm::mat4& matrix) {
+void setUniform(int32_t location, const glm::mat4& matrix) {
   glCheck(glUniformMatrix4fv(location, 1, false, glm::value_ptr(matrix)));
 }
 

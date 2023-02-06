@@ -80,19 +80,19 @@ uint32_t createProgram();
 void deleteProgram(uint32_t programId);
 bool linkProgram(uint32_t programId, uint32_t vertexShader,
                  uint32_t fragmentShader);
-int getAttribLocation(uint32_t programId, const char* name);
-int getUniformLocation(uint32_t programId, const char* name);
+int32_t getAttribLocation(uint32_t programId, const char* name);
+int32_t getUniformLocation(uint32_t programId, const char* name);
 void useProgram(uint32_t programId);
-void setUniform(int location, int value);
-void setUniform(int location, int x, int y);
-void setUniform(int location, int x, int y, int z);
-void setUniform(int location, int x, int y, int z, int w);
-void setUniform(int location, float value);
-void setUniform(int location, float x, float y);
-void setUniform(int location, float x, float y, float z);
-void setUniform(int location, float x, float y, float z, float w);
-void setUniform(int location, const glm::mat3& matrix);
-void setUniform(int location, const glm::mat4& matrix);
+void setUniform(int32_t location, int32_t value);
+void setUniform(int32_t location, int32_t x, int32_t y);
+void setUniform(int32_t location, int32_t x, int32_t y, int32_t z);
+void setUniform(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w);
+void setUniform(int32_t location, float value);
+void setUniform(int32_t location, float x, float y);
+void setUniform(int32_t location, float x, float y, float z);
+void setUniform(int32_t location, float x, float y, float z, float w);
+void setUniform(int32_t location, const glm::mat3& matrix);
+void setUniform(int32_t location, const glm::mat4& matrix);
 
 } // namespace Shader
 
@@ -137,8 +137,8 @@ void bind(uint32_t vaoId);
 } // namespace VertexArrayObject
 
 std::string getVersion();
-void setViewport(int x, int y, uint32_t width, uint32_t height);
-void setScissor(int x, int y, uint32_t width, uint32_t height);
+void setViewport(int32_t x, int32_t y, uint32_t width, uint32_t height);
+void setScissor(int32_t x, int32_t y, uint32_t width, uint32_t height);
 
 enum class DepthFuncs {
   never,
@@ -175,19 +175,19 @@ enum class BackFaceCullingDirection {
 };
 void setBackFaceCullingDirection(BackFaceCullingDirection direction);
 
-enum class Buffers : int {
+enum class Buffers : int32_t {
   color = 1 << 0,
   depth = 1 << 1,
 };
 
-void clear(int mask);
+void clear(int32_t mask);
 void clearColor(float r, float g, float b, float a);
 void clearDepth(float value);
 
 // static void polygonModeAsLine();
 // static void polygonModeAsFill();
 
-int getMaxTextureSize();
+int32_t getMaxTextureSize();
 }; // namespace GlContext
 
 } // namespace graphics

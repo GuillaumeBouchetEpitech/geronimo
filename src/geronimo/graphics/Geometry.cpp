@@ -118,7 +118,7 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
 
       if (attr.ignored == false) {
 
-        const int attrLocation = shader.getAttribute(attr.name.c_str());
+        const int32_t attrLocation = shader.getAttribute(attr.name.c_str());
 
         for (uint32_t kk = 0; kk < totalRows; ++kk) {
           const uint32_t attrId = uint32_t(attrLocation) + kk;

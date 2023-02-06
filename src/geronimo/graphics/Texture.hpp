@@ -42,7 +42,7 @@ public:
   };
 
 private:
-  unsigned int _textureId = 0;
+  uint32_t _textureId = 0;
   glm::uvec2 _size = {0, 0};
 
   struct DepthCompatibleValues {

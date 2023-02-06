@@ -63,7 +63,7 @@ protected:
   //   {
   //     struct Keyboard
   //     {
-  //       std::unordered_map<int, bool> keys;
+  //       std::unordered_map<int32_t, bool> keys;
   //     }
   //     keyboard;
 
@@ -80,8 +80,8 @@ protected:
   //       }
   //       buttons;
 
-  //       // std::unordered_map<int, bool> buttons;
-  //       // std::unordered_map<int, bool> prevButtons;
+  //       // std::unordered_map<int32_t, bool> buttons;
+  //       // std::unordered_map<int32_t, bool> prevButtons;
   //     }
   //     mouse;
   //   }

@@ -22,36 +22,36 @@ private:
   fileUtils::FileManager _fileManager;
 
 private:
-  std::unordered_map<std::string, int> _shaderDefsMap;
-  std::unordered_map<int, std::shared_ptr<ShaderProgram>> _shadersMap;
+  std::unordered_map<std::string, int32_t> _shaderDefsMap;
+  std::unordered_map<int32_t, std::shared_ptr<ShaderProgram>> _shadersMap;
 
 public:
   std::shared_ptr<ShaderProgram>
-  createShader(int aliasCode, const ShaderProgram::Definition def,
+  createShader(int32_t aliasCode, const ShaderProgram::Definition def,
                bool allowDuplicates = false);
-  std::shared_ptr<ShaderProgram> getShader(int aliasCode);
+  std::shared_ptr<ShaderProgram> getShader(int32_t aliasCode);
 
 private:
-  std::unordered_map<std::string, int> _textureDefsMap;
-  std::unordered_map<int, std::shared_ptr<Texture>> _texturesMap;
+  std::unordered_map<std::string, int32_t> _textureDefsMap;
+  std::unordered_map<int32_t, std::shared_ptr<Texture>> _texturesMap;
 
 public:
   std::shared_ptr<Texture>
-  createTexture(int aliasCode, const std::string& filename,
+  createTexture(int32_t aliasCode, const std::string& filename,
                 Texture::Quality quality = Texture::Quality::pixelated,
                 Texture::Pattern pattern = Texture::Pattern::clamped,
                 bool allowDuplicates = false);
-  std::shared_ptr<Texture> getTexture(int aliasCode);
+  std::shared_ptr<Texture> getTexture(int32_t aliasCode);
 
 private:
-  std::unordered_map<std::string, int> _geometryDefsMap;
-  std::unordered_map<int, Geometry::Definition> _geometriesMap;
+  std::unordered_map<std::string, int32_t> _geometryDefsMap;
+  std::unordered_map<int32_t, Geometry::Definition> _geometriesMap;
 
 public:
   const Geometry::Definition&
-  createGeometryDefinition(int aliasCode, const Geometry::Definition& def,
+  createGeometryDefinition(int32_t aliasCode, const Geometry::Definition& def,
                            bool allowDuplicates = false);
-  const Geometry::Definition& getGeometryDefinition(int aliasCode);
+  const Geometry::Definition& getGeometryDefinition(int32_t aliasCode);
 };
 
 } // namespace graphics

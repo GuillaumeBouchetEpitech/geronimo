@@ -32,18 +32,18 @@ public:
       struct Attr {
         std::string name = "";
         AttrType type = AttrType::Float;
-        int index = 0;
+        int32_t index = 0;
         bool ignored = false;
 
         Attr() = default;
         ~Attr() = default;
 
-        Attr(const std::string& inName, AttrType inType, int inIndex,
+        Attr(const std::string& inName, AttrType inType, int32_t inIndex,
              bool inIgnored)
           : name(inName), type(inType), index(inIndex), ignored(inIgnored) {}
       };
 
-      int stride = -1;
+      int32_t stride = -1;
       bool instanced = false;
 
       std::vector<Attr> attrs;
@@ -62,9 +62,9 @@ private:
   VertexArrayObject _vao;
   VertexBufferObject _vbo;
   PrimitiveType _primitiveType = PrimitiveType::lines;
-  unsigned int _primitiveStart = 0;
-  unsigned int _primitiveCount = 0;
-  unsigned int _instanceCount = 0;
+  uint32_t _primitiveStart = 0;
+  uint32_t _primitiveCount = 0;
+  uint32_t _instanceCount = 0;
   bool _isInstanced = false;
 
 public:

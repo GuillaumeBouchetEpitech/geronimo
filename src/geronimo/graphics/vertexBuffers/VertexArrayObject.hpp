@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 namespace gero {
@@ -8,20 +9,20 @@ namespace graphics {
 
 class VertexArrayObject {
 private:
-  std::vector<unsigned int> _vaoIds;
+  std::vector<uint32_t> _vaoIds;
 
 public:
   ~VertexArrayObject();
 
 public:
-  void allocate(unsigned int size = 1);
+  void allocate(uint32_t size = 1);
   void deallocate();
 
 public:
   bool isAllocated() const;
 
 public:
-  void bind(unsigned int index = 0) const;
+  void bind(uint32_t index = 0) const;
 
 public:
   static void unbind();

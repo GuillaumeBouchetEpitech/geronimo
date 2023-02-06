@@ -42,12 +42,12 @@ void Image::loadFromMemory(const std::string& content,
                            bool supportNonPowerOfTwo /*= true*/) {
   dispose();
 
-  int width;
-  int height;
-  int bpp;
+  int32_t width;
+  int32_t height;
+  int32_t bpp;
   _stbPixels = stbi_load_from_memory(
-    reinterpret_cast<const unsigned char*>(content.c_str()),
-    int(content.size()), &width, &height, &bpp, 0);
+    reinterpret_cast<const uint8_t*>(content.c_str()),
+    int32_t(content.size()), &width, &height, &bpp, 0);
 
   if (!_stbPixels)
     D_THROW(std::runtime_error, "image not found");
@@ -95,13 +95,13 @@ bool Image::save(const std::string& filename, uint32_t width, uint32_t height,
                  const uint8_t* pixels) {
   fs::path filePath = filename;
   if (filePath.extension() == ".png")
-    return stbi_write_png(filename.c_str(), int(width), int(height), 4, pixels,
+    return stbi_write_png(filename.c_str(), int32_t(width), int32_t(height), 4, pixels,
                           0);
   if (filePath.extension() == ".jpg")
-    return stbi_write_jpg(filename.c_str(), int(width), int(height), 4, pixels,
+    return stbi_write_jpg(filename.c_str(), int32_t(width), int32_t(height), 4, pixels,
                           0);
   if (filePath.extension() == ".bmp")
-    return stbi_write_bmp(filename.c_str(), int(width), int(height), 4, pixels);
+    return stbi_write_bmp(filename.c_str(), int32_t(width), int32_t(height), 4, pixels);
 
   D_THROW(std::runtime_error, "unknown file extension, filename: " << filename);
 }

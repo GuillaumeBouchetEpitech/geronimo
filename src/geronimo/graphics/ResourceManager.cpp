@@ -14,7 +14,7 @@ namespace gero {
 namespace graphics {
 
 std::shared_ptr<ShaderProgram>
-ResourceManager::createShader(int aliasCode,
+ResourceManager::createShader(int32_t aliasCode,
                               const ShaderProgram::Definition def,
                               bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
@@ -47,7 +47,7 @@ ResourceManager::createShader(int aliasCode,
   return newShader;
 }
 
-std::shared_ptr<ShaderProgram> ResourceManager::getShader(int aliasCode) {
+std::shared_ptr<ShaderProgram> ResourceManager::getShader(int32_t aliasCode) {
   auto it = _shadersMap.find(aliasCode);
   if (it == _shadersMap.end())
     D_THROW(std::runtime_error,
@@ -61,7 +61,7 @@ std::shared_ptr<ShaderProgram> ResourceManager::getShader(int aliasCode) {
 //
 
 std::shared_ptr<Texture> ResourceManager::createTexture(
-  int aliasCode, const std::string& filename,
+  int32_t aliasCode, const std::string& filename,
   Texture::Quality quality /*= Texture::Quality::pixelated*/,
   Texture::Pattern pattern /*= Texture::Pattern::clamped*/,
   bool allowDuplicates /*= false*/) {
@@ -101,7 +101,7 @@ std::shared_ptr<Texture> ResourceManager::createTexture(
   return newTexture;
 }
 
-std::shared_ptr<Texture> ResourceManager::getTexture(int aliasCode) {
+std::shared_ptr<Texture> ResourceManager::getTexture(int32_t aliasCode) {
   auto it = _texturesMap.find(aliasCode);
   if (it == _texturesMap.end())
     D_THROW(std::runtime_error,
@@ -115,7 +115,7 @@ std::shared_ptr<Texture> ResourceManager::getTexture(int aliasCode) {
 //
 
 const Geometry::Definition&
-ResourceManager::createGeometryDefinition(int aliasCode,
+ResourceManager::createGeometryDefinition(int32_t aliasCode,
                                           const Geometry::Definition& def,
                                           bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
@@ -164,7 +164,7 @@ ResourceManager::createGeometryDefinition(int aliasCode,
 }
 
 const Geometry::Definition&
-ResourceManager::getGeometryDefinition(int aliasCode) {
+ResourceManager::getGeometryDefinition(int32_t aliasCode) {
   auto it = _geometriesMap.find(aliasCode);
   if (it == _geometriesMap.end())
     D_THROW(std::runtime_error,

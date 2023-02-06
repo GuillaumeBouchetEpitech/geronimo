@@ -66,7 +66,7 @@ void uploadSingleFloatPixels(uint32_t width, uint32_t height,
 }
 
 namespace {
-int getRawDepthFormat(DepthFormat depthFormat) {
+int32_t getRawDepthFormat(DepthFormat depthFormat) {
   switch (depthFormat) {
   case DepthFormat::depth24:
     return GL_DEPTH_COMPONENT24;
@@ -78,7 +78,7 @@ int getRawDepthFormat(DepthFormat depthFormat) {
     return GL_DEPTH_COMPONENT16;
   }
 }
-int getRawDepthType(DepthType depthType) {
+int32_t getRawDepthType(DepthType depthType) {
   switch (depthType) {
   case DepthType::unsingedShort:
     return GL_UNSIGNED_SHORT;
@@ -107,12 +107,12 @@ void setAsDepthTexture(uint32_t width, uint32_t height, DepthFormat depthFormat,
   // // glTexImage2D(GL_TEXTURE_2D, level, GL_DEPTH_COMPONENT16, GLsizei(width),
   // GLsizei(height), border, GL_DEPTH_COMPONENT16, GL_FLOAT, 0);
 
-  const int level = 0;
-  const int border = 0;
-  const int format = GL_DEPTH_COMPONENT;
+  const int32_t level = 0;
+  const int32_t border = 0;
+  const int32_t format = GL_DEPTH_COMPONENT;
 
-  const int internalFormat = getRawDepthFormat(depthFormat);
-  const int type = getRawDepthType(depthType);
+  const int32_t internalFormat = getRawDepthFormat(depthFormat);
+  const int32_t type = getRawDepthType(depthType);
 
   setTextureAsRepeat(false);
   setTextureAsPixelated();
@@ -127,7 +127,7 @@ void setAsDepthTexture(uint32_t width, uint32_t height, DepthFormat depthFormat,
 }
 
 void setTextureAsRepeat(bool repeat) {
-  const int wrapValue = (repeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+  const int32_t wrapValue = (repeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
   glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapValue));
   glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapValue));
 }

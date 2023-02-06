@@ -38,7 +38,7 @@ uint32_t getColorAttachment(uint32_t index) {
 }
 
 void attachTexture2D(uint32_t index, uint32_t textureId) {
-  constexpr int level = 0;
+  constexpr int32_t level = 0;
   glCheck(glFramebufferTexture2D(GL_FRAMEBUFFER, index, GL_TEXTURE_2D,
                                  textureId, level));
 }

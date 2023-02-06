@@ -4,7 +4,7 @@ namespace graphics {
 
 namespace debug {
 
-void glCheckError(const char* file, unsigned int line, const char* expression);
+void glCheckError(const int8_t* file, uint32_t line, const int8_t* expression);
 
 } // namespace debug
 

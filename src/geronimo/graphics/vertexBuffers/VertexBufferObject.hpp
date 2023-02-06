@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 namespace gero {
@@ -8,7 +9,7 @@ namespace graphics {
 
 class VertexBufferObject {
 private:
-  std::vector<unsigned int> _ids;
+  std::vector<uint32_t> _ids;
 
 public:
   ~VertexBufferObject();
@@ -21,7 +22,7 @@ public:
   bool isAllocated() const;
 
 public:
-  void bind(unsigned int index = 0) const;
+  void bind(uint32_t index = 0) const;
 
 public:
   static void unbind();
