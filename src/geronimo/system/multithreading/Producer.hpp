@@ -31,6 +31,7 @@ private:
   ThreadSynchroniser _allTaskSynchroniser;
 
   bool _isRunning = false;
+  bool _avoidBlocking = false;
 
   std::list<std::shared_ptr<Consumer>> _allConsumers;
   std::list<std::shared_ptr<Consumer>> _freeConsumers;
@@ -44,7 +45,7 @@ public:
   virtual ~Producer();
 
 public:
-  void initialise(uint32_t inTotalCores);
+  void initialise(uint32_t inTotalCores, bool inAvoidBlocking = false);
   void push(const WorkCallback& inWorkCallback);
   void quit();
   void waitUntilAllCompleted();

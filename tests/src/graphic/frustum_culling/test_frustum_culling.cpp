@@ -61,7 +61,7 @@ TEST(graphic_frustum_culling,
           const glm::mat4 view =
             glm::lookAt(currData.eye, currData.center, currData.up);
 
-          gero::graphic::FrustumCulling frustumCulling;
+          gero::graphics::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
 
           //
@@ -96,7 +96,7 @@ TEST(graphic_frustum_culling,
           const glm::mat4 view =
             glm::lookAt(currData.eye, currData.center, currData.up);
 
-          gero::graphic::FrustumCulling frustumCulling;
+          gero::graphics::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
 
           //
@@ -137,7 +137,7 @@ TEST(graphic_frustum_culling,
           const glm::mat4 view =
             glm::lookAt(currData.eye, currData.center, currData.up);
 
-          gero::graphic::FrustumCulling frustumCulling;
+          gero::graphics::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
 
           //

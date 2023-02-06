@@ -16,13 +16,15 @@ Producer::~Producer() { quit(); }
 //
 //
 
-void Producer::initialise(uint32_t inTotalCores) {
+void Producer::initialise(uint32_t inTotalCores, bool inAvoidBlocking /*= false*/) {
+
+  _avoidBlocking = inAvoidBlocking;
 
   //
   // launch consumers
 
   for (uint32_t ii = 0; ii < inTotalCores; ++ii) {
-    auto newConsumer = std::make_shared<Consumer>(*this);
+    auto newConsumer = std::make_shared<Consumer>(*this, _avoidBlocking);
 
     _allConsumers.push_back(newConsumer);
     _freeConsumers.push_back(newConsumer);
@@ -31,16 +33,31 @@ void Producer::initialise(uint32_t inTotalCores) {
   //
   // launch producer thread
 
-  auto setupLock = _setupSynchroniser.makeScopedLock();
+  if (_avoidBlocking == false)
+  {
+    auto setupLock = _setupSynchroniser.makeScopedLock();
 
-  _isRunning = false; // the producer's thread will set it to true
+    _isRunning = false; // the producer's thread will set it to true
 
-  _thread = std::thread(&Producer::_threadedMethod, this);
+    _thread = std::thread(&Producer::_threadedMethod, this);
 
-  // here we wait for the thread to be running
+    // here we wait for the thread to be running
 
-  // wait -> release the lock for other thread(s)
-  _setupSynchroniser.waitUntilNotified(setupLock);
+    // wait -> release the lock for other thread(s)
+    _setupSynchroniser.waitUntilNotified(setupLock);
+  }
+  else
+  {
+    _isRunning = false; // the producer's thread will set it to true
+
+    _thread = std::thread(&Producer::_threadedMethod, this);
+
+    // here we wait for the thread to be running
+
+    // avoid blocking on the main thread
+    while (_isRunning == false)
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
 }
 
 void Producer::push(const WorkCallback& inWorkCallback) {
@@ -150,11 +167,17 @@ void Producer::_threadedMethod() {
 
   // this part is locked
 
+
+  if (_avoidBlocking == false)
   {
     auto setupLockNotifier = _setupSynchroniser.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
+    _isRunning = true;
+  }
+  else
+  {
     _isRunning = true;
   }
 

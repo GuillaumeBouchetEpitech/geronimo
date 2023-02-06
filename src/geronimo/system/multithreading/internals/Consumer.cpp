@@ -8,20 +8,38 @@
 namespace gero {
 namespace threading {
 
-Consumer::Consumer(IProducer& inProducer) : _producer(inProducer) {
+Consumer::Consumer(IProducer& inProducer, bool inAvoidBlocking) : _producer(inProducer), _avoidBlocking(inAvoidBlocking) {
 
-  auto setupLock = _setupSynchroniser.makeScopedLock();
+  if (_avoidBlocking == false)
+  {
+    auto setupLock = _setupSynchroniser.makeScopedLock();
 
-  _isRunning = false; // the consumer's thread will set it to true
+    _isRunning = false; // the consumer's thread will set it to true
 
-  // launch consumer thread
+    // launch consumer thread
 
-  _thread = std::thread(&Consumer::_threadedMethod, this);
+    _thread = std::thread(&Consumer::_threadedMethod, this);
 
-  // here we wait for the thread to be running
+    // here we wait for the thread to be running
 
-  // wait -> release the lock for other thread(s)
-  _setupSynchroniser.waitUntilNotified(setupLock);
+    // wait -> release the lock for other thread(s)
+    _setupSynchroniser.waitUntilNotified(setupLock);
+  }
+  else
+  {
+    _isRunning = false; // the consumer's thread will set it to true
+
+    // launch consumer thread
+
+    _thread = std::thread(&Consumer::_threadedMethod, this);
+
+    // here we wait for the thread to be running
+
+    // avoid blocking on the main thread
+    while (_isRunning == false)
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+
 }
 
 Consumer::~Consumer() { quit(); }
@@ -67,11 +85,16 @@ void Consumer::_threadedMethod() {
 
   auto taskLock = _taskSynchroniser.makeScopedLock();
 
+  if (_avoidBlocking == false)
   {
     auto setupLockNotifier = _setupSynchroniser.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
+    _isRunning = true;
+  }
+  else
+  {
     _isRunning = true;
   }
 

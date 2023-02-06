@@ -6,7 +6,7 @@ DIR_LIB_GERONIMO=			..
 
 NAME_APPLICATION=			$(DIR_APPLICATION)/exec
 NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-system.a
-NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-graphic.a
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-graphics.a
 NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-physics.a
 NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-audio.a
 NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-dynamics.a

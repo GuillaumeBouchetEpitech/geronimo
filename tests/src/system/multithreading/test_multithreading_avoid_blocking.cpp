@@ -5,12 +5,12 @@
 #include <thread>
 
 TEST(system_multithreading,
-     do_not_avoid_blocking___can_run_task_in_parallel_and_wait_for_them_to_finish) {
+     avoid_blocking___can_run_task_in_parallel_and_wait_for_them_to_finish) {
 
   constexpr int k_totalThreads = 3;
 
   gero::threading::Producer threadedProducer;
-  threadedProducer.initialise(k_totalThreads);
+  threadedProducer.initialise(k_totalThreads, true);
 
   const auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -33,12 +33,12 @@ TEST(system_multithreading,
 
 TEST(
   system_multithreading,
-  do_not_avoid_blocking___can_run_more_task_in_parallel_than_the_total_thread_number_and_wait_for_them_to_finish) {
+  avoid_blocking___can_run_more_task_in_parallel_than_the_total_thread_number_and_wait_for_them_to_finish) {
 
   constexpr int k_totalThreads = 3;
 
   gero::threading::Producer threadedProducer;
-  threadedProducer.initialise(k_totalThreads);
+  threadedProducer.initialise(k_totalThreads, true);
 
   const auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -58,13 +58,13 @@ TEST(
   ASSERT_LT(elapsedTime, 210);
 }
 
-TEST(system_multithreading, do_not_avoid_blocking___can_run_task_in_parallel_that_get_and_set_values) {
+TEST(system_multithreading, avoid_blocking___can_run_task_in_parallel_that_get_and_set_values) {
 
   constexpr int k_totalThreads = 3;
   std::mutex tmpMutex;
 
   gero::threading::Producer threadedProducer;
-  threadedProducer.initialise(k_totalThreads);
+  threadedProducer.initialise(k_totalThreads, true);
 
   int value = 0;
 
@@ -82,13 +82,13 @@ TEST(system_multithreading, do_not_avoid_blocking___can_run_task_in_parallel_tha
 }
 
 TEST(system_multithreading,
-     do_not_avoid_blocking___can_run_task_in_parallel_that_get_and_set_values_in_a_thead_safe_way) {
+     avoid_blocking___can_run_task_in_parallel_that_get_and_set_values_in_a_thead_safe_way) {
 
   constexpr int k_totalThreads = 3;
   std::mutex tmpMutex;
 
   gero::threading::Producer threadedProducer;
-  threadedProducer.initialise(k_totalThreads);
+  threadedProducer.initialise(k_totalThreads, true);
 
   int totalChanges = 0;
   bool value = true;

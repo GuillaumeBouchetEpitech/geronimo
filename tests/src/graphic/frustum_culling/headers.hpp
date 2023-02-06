@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "geronimo/graphic/camera/FrustumCulling.hpp"
+#include "geronimo/graphics/camera/FrustumCulling.hpp"
 
 #include "geronimo/system/TraceLogger.hpp"
 
