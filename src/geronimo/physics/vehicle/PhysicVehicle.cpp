@@ -135,15 +135,15 @@ PhysicVehicle& PhysicVehicle::operator=(PhysicVehicle&& other) {
 //
 //
 
-void PhysicVehicle::applyEngineForce(int index, float force) {
+void PhysicVehicle::applyEngineForce(int32_t index, float force) {
   _bullet.vehicle->applyEngineForce(force, index);
 }
 
-void PhysicVehicle::applyBrake(int index, float force) {
+void PhysicVehicle::applyBrake(int32_t index, float force) {
   _bullet.vehicle->setBrake(force, index);
 }
 
-void PhysicVehicle::setSteeringValue(int index, float steering) {
+void PhysicVehicle::setSteeringValue(int32_t index, float steering) {
   _bullet.vehicle->setSteeringValue(steering, index);
 }
 
@@ -153,21 +153,21 @@ void PhysicVehicle::reset() {
   _body->setAngularVelocity(0, 0, 0);
   _body->forceActivate();
 
-  for (int ii = 0; ii < getNumWheels(); ++ii)
+  for (int32_t ii = 0; ii < getNumWheels(); ++ii)
     applyBrake(ii, 1000);
 
   _bullet.vehicle->resetSuspension();
   _bullet.vehicle->updateVehicle(0);
 
-  for (int ii = 0; ii < getNumWheels(); ++ii)
+  for (int32_t ii = 0; ii < getNumWheels(); ++ii)
     applyBrake(ii, 0);
 }
 
-int PhysicVehicle::getNumWheels() const {
+int32_t PhysicVehicle::getNumWheels() const {
   return _bullet.vehicle->getNumWheels();
 }
 
-const glm::mat4& PhysicVehicle::getWheelTransform(int index,
+const glm::mat4& PhysicVehicle::getWheelTransform(int32_t index,
                                                   glm::mat4& mat4x4) const {
 
   // _bullet.vehicle->getWheelTransformWS(index).getOpenGLMatrix(glm::value_ptr(mat4x4));
@@ -176,6 +176,20 @@ const glm::mat4& PhysicVehicle::getWheelTransform(int index,
   _bullet.vehicle->getWheelTransformWS(index).getOpenGLMatrix(tmpMat);
   getGlmFromBullet(tmpMat, mat4x4);
   return mat4x4;
+}
+
+glm::vec3 PhysicVehicle::getWheelPosition(int32_t index) const
+{
+  auto transform = _bullet.vehicle->getWheelTransformWS(index);
+  auto origin = transform.getOrigin();
+  return glm::vec3(origin[0], origin[1], origin[2]);
+}
+
+glm::quat PhysicVehicle::getWheelOrientation(int32_t index) const
+{
+  auto transform = _bullet.vehicle->getWheelTransformWS(index);
+  auto rotation = transform.getRotation();
+  return glm::quat(rotation[3], rotation[0], rotation[1], rotation[2]);
 }
 
 float PhysicVehicle::getCurrentSpeedKmHour() const {
