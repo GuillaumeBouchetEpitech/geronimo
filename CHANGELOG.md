@@ -1,6 +1,18 @@
 
 # Changelog
 
+
+## [0.0.7] - 2023-02-08
+### Changed
+- chore: physic now using the correct primitive types
+- fix: graphic make geometries missing pragma once
+- feat: physic vehicle share get wheels position/orientation
+- feat: physic body share shapeDef + body orientation
+- feat: messaging support quaternions
+- chore: proper int types
+- feat: threading that can avoid blocking (wasm friendly)
+- chore: rename graphic -> graphics
+
 ## [0.0.6] - 2023-02-04
 ### Changed
 - test: switch from "expect" to "assert"
