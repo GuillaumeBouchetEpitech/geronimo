@@ -39,6 +39,7 @@ public:
   MessageView& operator>>(std::string& data);
   MessageView& operator>>(glm::vec3& data);
   MessageView& operator>>(glm::vec4& data);
+  MessageView& operator>>(glm::quat& data);
   MessageView& operator>>(glm::mat4& data);
 };
 

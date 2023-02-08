@@ -107,6 +107,10 @@ MessageView& MessageView::operator>>(glm::vec4& data) {
   return read(&data.x, sizeof(glm::vec4));
 }
 
+MessageView& MessageView::operator>>(glm::quat& data) {
+  return read(&data.x, sizeof(glm::quat));
+}
+
 MessageView& MessageView::operator>>(glm::mat4& data) {
   return read(glm::value_ptr(data), sizeof(glm::mat4));
 }

@@ -112,6 +112,10 @@ MessageBuffer& MessageBuffer::operator<<(const glm::vec4& data) {
   return append(&data.x, sizeof(glm::vec4));
 }
 
+MessageBuffer& MessageBuffer::operator<<(const glm::quat& data) {
+  return append(&data.x, sizeof(glm::quat));
+}
+
 MessageBuffer& MessageBuffer::operator<<(const glm::mat4& data) {
   return append(glm::value_ptr(data), sizeof(glm::mat4));
 }

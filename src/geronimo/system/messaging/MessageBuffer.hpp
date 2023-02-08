@@ -37,6 +37,7 @@ public:
   MessageBuffer& operator<<(const std::string& data);
   MessageBuffer& operator<<(const glm::vec3& data);
   MessageBuffer& operator<<(const glm::vec4& data);
+  MessageBuffer& operator<<(const glm::quat& data);
   MessageBuffer& operator<<(const glm::mat4& data);
 };
 
