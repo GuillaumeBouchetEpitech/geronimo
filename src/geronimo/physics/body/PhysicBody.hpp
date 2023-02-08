@@ -36,6 +36,7 @@ public:
   virtual bool isDynamic() const = 0;
 
   virtual glm::vec3 getPosition() const = 0;
+  virtual glm::quat getOrientation() const = 0;
   virtual glm::mat4& getTransform(glm::mat4& mat4x4) const = 0;
 
   virtual void setPosition(const glm::vec3& pos) = 0;
@@ -65,8 +66,8 @@ public:
   virtual void setFriction(float friction) = 0;
   virtual float getFriction() const = 0;
 
-  virtual void setUserValue(int userValue) = 0;
-  virtual int getUserValue() const = 0;
+  virtual void setUserValue(int32_t userValue) = 0;
+  virtual int32_t getUserValue() const = 0;
 
   virtual void setUserData(void* userData) = 0;
   virtual const void* getUserData() const = 0;
@@ -84,6 +85,8 @@ public:
   virtual void enableContactResponse() = 0;
 
   virtual void dumpData() = 0;
+
+  virtual const PhysicShapeDef& getShapeDefinition() const = 0;
 };
 
 class PhysicBody : public AbstractPhysicBody {
@@ -93,6 +96,8 @@ class PhysicBody : public AbstractPhysicBody {
   friend PhysicVehicle;
 
 private:
+  PhysicShapeDef _shapeDef;
+
   struct Bullet {
     btDefaultMotionState* motionState = nullptr;
     btRigidBody* body = nullptr;
@@ -105,7 +110,7 @@ private:
   // std::vector<ContactPoint> _contacts;
   // std::function<void()> _contactCallback;
 
-  int _userValue = 0;
+  int32_t _userValue = 0;
   void* _userData = nullptr;
 
   bool _isAdded = false;
@@ -124,6 +129,7 @@ public:
   virtual bool isDynamic() const override;
 
   virtual glm::vec3 getPosition() const override;
+  virtual glm::quat getOrientation() const override;
   virtual glm::mat4& getTransform(glm::mat4& mat4x4) const override;
 
   virtual void setPosition(const glm::vec3& pos) override;
@@ -153,8 +159,8 @@ public:
   virtual void setFriction(float friction) override;
   virtual float getFriction() const override;
 
-  virtual void setUserValue(int userValue) override;
-  virtual int getUserValue() const override;
+  virtual void setUserValue(int32_t userValue) override;
+  virtual int32_t getUserValue() const override;
 
   virtual void setUserData(void* userData) override;
   virtual const void* getUserData() const override;
@@ -173,6 +179,8 @@ public:
   virtual void enableContactResponse() override;
 
   virtual void dumpData() override;
+
+  virtual const PhysicShapeDef& getShapeDefinition() const override;
 
   // const std::vector<ContactPoint>& getContacts() const;
   // void setContactCallback(const std::function<void()>& callback);

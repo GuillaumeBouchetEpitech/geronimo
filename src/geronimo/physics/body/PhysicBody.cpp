@@ -12,7 +12,9 @@
 namespace gero {
 namespace physics {
 
-PhysicBody::PhysicBody(const PhysicBodyDef& def) {
+PhysicBody::PhysicBody(const PhysicBodyDef& def)
+{
+  _shapeDef = def.shape;
   _mass = std::max(def.mass, 0.0f);
 
   _shape = PhysicShape::create(def.shape, _mass > 0.0f);
@@ -60,6 +62,8 @@ PhysicBody::PhysicBody(PhysicBody&& other) {
     _bullet.body->setUserPointer(this);
   if (other._bullet.body)
     other._bullet.body->setUserPointer(&other);
+
+  std::swap(_shapeDef, other._shapeDef);
   std::swap(_shape, other._shape);
   std::swap(_mass, other._mass);
   std::swap(_userValue, other._userValue);
@@ -77,6 +81,8 @@ PhysicBody& PhysicBody::operator=(PhysicBody&& other) {
     _bullet.body->setUserPointer(this);
   if (other._bullet.body)
     other._bullet.body->setUserPointer(&other);
+
+  std::swap(_shapeDef, other._shapeDef);
   std::swap(_shape, other._shape);
   std::swap(_mass, other._mass);
   std::swap(_userValue, other._userValue);
@@ -145,13 +151,13 @@ glm::vec3 PhysicBody::getPosition() const {
   return glm::vec3(origin[0], origin[1], origin[2]);
 }
 
-// glm::quat PhysicBody::getOrientation() const
-// {
-//     auto transform = _bullet.body->getWorldTransform();
-//     auto rotation = transform.getRotation();
+glm::quat PhysicBody::getOrientation() const
+{
+  auto transform = _bullet.body->getWorldTransform();
+  auto rotation = transform.getRotation();
 
-//     return glm::quat(rotation[0], rotation[1], rotation[2], rotation[3]);
-// }
+  return glm::quat(rotation[3], rotation[0], rotation[1], rotation[2]);
+}
 
 glm::mat4& PhysicBody::getTransform(glm::mat4& mat4x4) const {
   // _bullet.body->getWorldTransform().getOpenGLMatrix(glm::value_ptr(mat4x4));
@@ -265,8 +271,8 @@ float PhysicBody::getFriction() const {
   return float(_bullet.body->getFriction());
 }
 
-void PhysicBody::setUserValue(int userValue) { _userValue = userValue; }
-int PhysicBody::getUserValue() const { return _userValue; }
+void PhysicBody::setUserValue(int32_t userValue) { _userValue = userValue; }
+int32_t PhysicBody::getUserValue() const { return _userValue; }
 
 void PhysicBody::setUserData(void* userData) { _userData = userData; }
 
@@ -304,14 +310,12 @@ void PhysicBody::forceActivate() {
 }
 
 void PhysicBody::disableContactResponse() {
-  int newFlags = _bullet.body->getCollisionFlags() |
-                 btCollisionObject::CF_NO_CONTACT_RESPONSE;
+  const int32_t newFlags = _bullet.body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE;
   _bullet.body->setCollisionFlags(newFlags);
 }
 
 void PhysicBody::enableContactResponse() {
-  int newFlags = _bullet.body->getCollisionFlags() &
-                 ~btCollisionObject::CF_NO_CONTACT_RESPONSE;
+  const int32_t newFlags = _bullet.body->getCollisionFlags() & ~btCollisionObject::CF_NO_CONTACT_RESPONSE;
   _bullet.body->setCollisionFlags(newFlags);
 }
 
@@ -326,6 +330,12 @@ void PhysicBody::dumpData() {
   D_MYERR("  _userData " << _userData);
   D_MYERR("  _isAdded " << _isAdded);
 }
+
+const PhysicShapeDef& PhysicBody::getShapeDefinition() const
+{
+  return _shapeDef;
+}
+
 
 // const std::vector<ContactPoint>& PhysicBody::getContacts() const
 // {
