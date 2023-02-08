@@ -44,9 +44,9 @@ bool onContactProcessed(btManifoldPoint& contactPoint, void* pBody0,
   btRigidBody* pRigidBody0 = reinterpret_cast<btRigidBody*>(pBody0);
   btRigidBody* pRigidBody1 = reinterpret_cast<btRigidBody*>(pBody1);
 
-  // here the value of the "m_userPersistentData" pointer is used as a int
-  int* pContactId = reinterpret_cast<int*>(&contactPoint.m_userPersistentData);
-  int contactId = *pContactId;
+  // here the value of the "m_userPersistentData" pointer is used as a int32_t
+  int32_t* pContactId = reinterpret_cast<int32_t*>(&contactPoint.m_userPersistentData);
+  int32_t contactId = *pContactId;
 
   const bool isBeginContact = (contactId == 0);
 
@@ -59,7 +59,7 @@ bool onContactProcessed(btManifoldPoint& contactPoint, void* pBody0,
   // Create (on begin) or Get (on update) the contact data
   if (isBeginContact) {
     pContactData = _contactDataPool->pop(); // <= auto-growing internal pool
-    const int contactIndex =
+    const int32_t contactIndex =
       _contactDataPool->getIndex(pContactData); // <= FAST
 
     contactId = contactIndex + 1; // index => id
@@ -69,7 +69,7 @@ bool onContactProcessed(btManifoldPoint& contactPoint, void* pBody0,
     pContactData->pBodyA = pRigidBody0;
     pContactData->pBodyB = pRigidBody1;
   } else {
-    const int contactIndex = contactId - 1; // id => index
+    const int32_t contactIndex = contactId - 1; // id => index
     pContactData = _contactDataPool->get(contactIndex);
   }
 
@@ -124,10 +124,10 @@ bool onContactDestroyed(void* userPersistentData) {
     return true;
   // D_THROW("no callback found");
 
-  const int* pContactId = reinterpret_cast<int*>(&userPersistentData);
-  const int contactId = *pContactId;
+  const int32_t* pContactId = reinterpret_cast<int32_t*>(&userPersistentData);
+  const int32_t contactId = *pContactId;
 
-  const int contactIndex = contactId - 1; // id => index
+  const int32_t contactIndex = contactId - 1; // id => index
 
   PhysicContactData* pContactData = _contactDataPool->get(contactIndex);
   _contactDataPool->release(contactIndex);

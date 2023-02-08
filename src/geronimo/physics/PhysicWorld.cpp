@@ -16,7 +16,7 @@ namespace physics {
 
 class MyDebugDrawer : public btIDebugDraw {
 private:
-  int _debugMode = 0;
+  int32_t _debugMode = 0;
 
   PhysicWorld::debuggerPushLineCallback _debuggerPushLineCallback;
 
@@ -37,7 +37,7 @@ public:
 
   virtual void drawContactPoint(const btVector3& PointOnB,
                                 const btVector3& normalOnB, btScalar distance,
-                                int lifeTime, const btVector3& color) override {
+                                int32_t lifeTime, const btVector3& color) override {
     static_cast<void>(distance); // unused
     static_cast<void>(lifeTime); // unused
 
@@ -59,9 +59,9 @@ public:
     D_MYLOG("textString: " << textString);
   }
 
-  virtual void setDebugMode(int debugMode) override { _debugMode = debugMode; }
+  virtual void setDebugMode(int32_t debugMode) override { _debugMode = debugMode; }
 
-  virtual int getDebugMode() const override { return _debugMode; }
+  virtual int32_t getDebugMode() const override { return _debugMode; }
 };
 
 // PhysicWorld* PhysicWorld::self = nullptr;
@@ -85,7 +85,7 @@ PhysicWorld::PhysicWorld()
   // PhysicContactEventsHandler::initialise([](ContactEvent event,
   // PhysicContactData* contactData)
   // {
-  //   // D_MYLOG("event=" << int(event));
+  //   // D_MYLOG("event=" << int32_t(event));
 
   //   PhysicBody* pPhysicBodyA =
   //   static_cast<PhysicBody*>(contactData->pBodyA->getUserPointer());
@@ -134,7 +134,7 @@ void PhysicWorld::setDebuggerPushLine(
 
 void PhysicWorld::step(float elapsedTime, uint32_t maxSubSteps,
                        float fixedTimeStep) {
-  _bullet.dynamicsWorld->stepSimulation(elapsedTime, int(maxSubSteps),
+  _bullet.dynamicsWorld->stepSimulation(elapsedTime, int32_t(maxSubSteps),
                                         fixedTimeStep);
 }
 

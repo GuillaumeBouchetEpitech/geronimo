@@ -84,15 +84,15 @@ StaticMeshShape::StaticMeshShape(const PhysicShapeDef& def, bool isDynamic)
     verticesDataRaw[ii * 3 + 2] = btScalar(data.verticesData[ii].z);
   }
 
-  const int verticesStride = sizeof(btScalar) * 3;
+  const int32_t verticesStride = sizeof(btScalar) * 3;
 
   const int32_t triangleNumber = int32_t(data.indicesLength) / 3;
   _indicesData = std::make_unique<int32_t[]>(std::size_t(data.indicesLength));
   int32_t* indicesDataRaw = _indicesData.get();
   const uint32_t indicesSizeInBytes =
-    uint32_t(data.indicesLength) * uint32_t(sizeof(int));
+    uint32_t(data.indicesLength) * uint32_t(sizeof(int32_t));
   std::memcpy(indicesDataRaw, data.indicesData, indicesSizeInBytes);
-  const int indicesStride = 3 * sizeof(int);
+  const int32_t indicesStride = 3 * sizeof(int32_t);
 
   _indexVertexArrays = new btTriangleIndexVertexArray(
     triangleNumber, indicesDataRaw, indicesStride, totalDecimals,

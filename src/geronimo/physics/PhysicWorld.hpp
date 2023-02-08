@@ -46,7 +46,7 @@ class PhysicWorld {
 
 public:
   typedef std::vector<glm::vec3> t_vertices;
-  typedef std::vector<int> t_indices;
+  typedef std::vector<int32_t> t_indices;
 
   using debuggerPushLineCallback =
     std::function<void(const glm::vec3&, const glm::vec3&, const glm::vec3&)>;

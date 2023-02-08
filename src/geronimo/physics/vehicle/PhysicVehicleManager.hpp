@@ -38,8 +38,8 @@ public:
   void addVehicle(VehicleWeakRef ref);
   void removeVehicle(VehicleWeakRef ref);
 
-  VehicleWeakRef getVehicle(unsigned int index);
-  const VehicleWeakRef getVehicle(unsigned int index) const;
+  VehicleWeakRef getVehicle(uint32_t index);
+  const VehicleWeakRef getVehicle(uint32_t index) const;
   std::size_t vehicleSize() const;
   bool vehicleEmpty() const;
 };

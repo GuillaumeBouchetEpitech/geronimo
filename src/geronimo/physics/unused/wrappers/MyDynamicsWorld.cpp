@@ -83,10 +83,10 @@ MyDynamicsWorld::~MyDynamicsWorld() {}
 //
 
 void MyDynamicsWorld::createPredictiveContactsInternal_ex(btRigidBody** bodies,
-                                                          int numBodies,
+                                                          int32_t numBodies,
                                                           btScalar timeStep) {
   btTransform predictedTrans;
-  for (int i = 0; i < numBodies; ++i) {
+  for (int32_t i = 0; i < numBodies; ++i) {
     btRigidBody* body = bodies[i];
     body->setHitFraction(1.f);
 
@@ -145,7 +145,7 @@ void MyDynamicsWorld::createPredictiveContactsInternal_ex(btRigidBody** bodies,
                                      sweepResults.m_hitNormalWorld, distance);
 
             bool isPredictive = true;
-            int index = manifold->addManifoldPoint(newPoint, isPredictive);
+            int32_t index = manifold->addManifoldPoint(newPoint, isPredictive);
             btManifoldPoint& pt = manifold->getContactPoint(index);
             pt.m_combinedRestitution = 0;
             pt.m_combinedFriction = btManifoldResult::calculateCombinedFriction(

@@ -12,12 +12,12 @@ template <typename DataType> class DataPool {
 private:
   struct InternalData : public DataType {
   public:
-    unsigned int _index;
+    uint32_t _index;
   };
 
 private:
   std::vector<InternalData> _allItems;
-  std::vector<int> _unusedIndices;
+  std::vector<int32_t> _unusedIndices;
 
 public:
   DataPool(std::size_t poolSize = 128) {
@@ -45,20 +45,20 @@ public:
     if (_unusedIndices.empty())
       grow(_allItems.size() * 2);
 
-    const int index = _unusedIndices.back();
+    const int32_t index = _unusedIndices.back();
     _unusedIndices.pop_back();
     InternalData* pData = &_allItems[index];
     pData->_index = index;
     return pData;
   }
 
-  inline DataType* get(unsigned int index) {
+  inline DataType* get(uint32_t index) {
     return reinterpret_cast<DataType*>(&_allItems[index]);
   }
 
-  inline unsigned int getIndex(DataType* pTarget) const {
+  inline uint32_t getIndex(DataType* pTarget) const {
     return reinterpret_cast<InternalData*>(pTarget)->_index;
   }
 
-  inline void release(unsigned int index) { _unusedIndices.push_back(index); }
+  inline void release(uint32_t index) { _unusedIndices.push_back(index); }
 };

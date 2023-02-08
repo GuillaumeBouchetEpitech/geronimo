@@ -67,12 +67,12 @@ void PhysicVehicleManager::removeVehicle(
 }
 
 PhysicVehicleManager::VehicleWeakRef
-PhysicVehicleManager::getVehicle(unsigned int index) {
+PhysicVehicleManager::getVehicle(uint32_t index) {
   return _vehicles.get(index);
 }
 
 const PhysicVehicleManager::VehicleWeakRef
-PhysicVehicleManager::getVehicle(unsigned int index) const {
+PhysicVehicleManager::getVehicle(uint32_t index) const {
   return _vehicles.get(index);
 }
 

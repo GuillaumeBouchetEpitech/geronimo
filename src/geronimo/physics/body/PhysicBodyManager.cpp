@@ -67,12 +67,12 @@ void PhysicBodyManager::removeBody(PhysicBodyManager::BodyWeakRef ref) {
   removeBody(*ref.get());
 }
 
-PhysicBodyManager::BodyWeakRef PhysicBodyManager::getBody(unsigned int index) {
+PhysicBodyManager::BodyWeakRef PhysicBodyManager::getBody(uint32_t index) {
   return _bodies.get(index);
 }
 
 const PhysicBodyManager::BodyWeakRef
-PhysicBodyManager::getBody(unsigned int index) const {
+PhysicBodyManager::getBody(uint32_t index) const {
   return _bodies.get(index);
 }
 

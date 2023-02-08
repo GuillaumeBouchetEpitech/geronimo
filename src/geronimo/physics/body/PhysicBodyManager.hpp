@@ -39,8 +39,8 @@ public:
   void removeBody(AbstractPhysicBody& body);
   void removeBody(BodyWeakRef ref);
 
-  BodyWeakRef getBody(unsigned int index);
-  const BodyWeakRef getBody(unsigned int index) const;
+  BodyWeakRef getBody(uint32_t index);
+  const BodyWeakRef getBody(uint32_t index) const;
   // BodyWeakRef getBody(const AbstractPhysicBody& body);
   // const BodyWeakRef getBody(const AbstractPhysicBody& body) const;
   std::size_t size() const;

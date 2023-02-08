@@ -12,7 +12,7 @@ public:
   virtual ~MyDynamicsWorld();
 
 protected:
-  void createPredictiveContactsInternal_ex(btRigidBody** bodies, int numBodies,
+  void createPredictiveContactsInternal_ex(btRigidBody** bodies, int32_t numBodies,
                                            btScalar timeStep);
   virtual void createPredictiveContacts(btScalar timeStep) override;
 };

@@ -17,10 +17,10 @@ using OnNewPhysicBodyCallback = std::function<bool(AbstractPhysicBody*)>;
 struct MyContactResultCallback
   : public btCollisionWorld::ContactResultCallback {
 
-  int m_bodyUniqueIdA;
-  int m_bodyUniqueIdB;
-  int m_linkIndexA;
-  int m_linkIndexB;
+  int32_t m_bodyUniqueIdA;
+  int32_t m_bodyUniqueIdB;
+  int32_t m_linkIndexA;
+  int32_t m_linkIndexB;
   btScalar m_deltaTime;
 
   PhysicWorld& _physicWorld;
@@ -33,8 +33,8 @@ struct MyContactResultCallback
 
   MyContactResultCallback(PhysicWorld& physicWorld,
                           btPairCachingGhostObject& volume,
-                          int collisionGroup,
-                          int collisionMask,
+                          int32_t collisionGroup,
+                          int32_t collisionMask,
                           void* toIgnore,
                           const OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
     : _physicWorld(physicWorld)
@@ -55,9 +55,9 @@ struct MyContactResultCallback
 
   virtual btScalar addSingleResult(btManifoldPoint& cp,
                                    const btCollisionObjectWrapper* colObj0Wrap,
-                                   int partId0, int index0,
+                                   int32_t partId0, int32_t index0,
                                    const btCollisionObjectWrapper* colObj1Wrap,
-                                   int partId1, int index1) {
+                                   int32_t partId1, int32_t index1) {
     static_cast<void>(cp);      // unused
     static_cast<void>(partId0); // unused
     static_cast<void>(index0);  // unused
