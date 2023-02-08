@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <vector>
