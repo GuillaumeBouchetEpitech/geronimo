@@ -25,9 +25,9 @@ TEST(basic_regexp_parser, get1UI) {
       regexpParser.get1UI(toSearch, 600);
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("cannot parse 1UI, type=get1UI, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse 1UI, type=get1UI, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -39,9 +39,9 @@ TEST(basic_regexp_parser, get1UI) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value of 1UI is too high, type=get1UI, toSearch=\"" << toSearch << "\"" << ", value=666, maxValue=600")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value of 1UI is too high, type=get1UI, toSearch=\"" << toSearch << "\"" << ", value=666, maxValue=600")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 }

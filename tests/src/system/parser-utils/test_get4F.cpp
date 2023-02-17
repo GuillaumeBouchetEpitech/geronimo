@@ -32,9 +32,9 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -600, +600);
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("cannot parse 4F, type=get4F, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse 4F, type=get4F, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -46,9 +46,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.x of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.x=-666.00, minValue=-600.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.x=-666.00, minValue=-600.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -60,9 +60,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.x of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.x=666.00, maxValue=600.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.x=666.00, maxValue=600.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -74,9 +74,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.y of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.y=-777.00, minValue=-700.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.y=-777.00, minValue=-700.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -88,9 +88,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.y of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.y=777.00, maxValue=700.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.y=777.00, maxValue=700.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -102,9 +102,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.z of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.z=-888.00, minValue=-800.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.z of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.z=-888.00, minValue=-800.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -116,9 +116,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.z of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.z=888.00, maxValue=800.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.z of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.z=888.00, maxValue=800.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -130,9 +130,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.w of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.w=-999.00, minValue=-900.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.w of 4F is too low, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.w=-999.00, minValue=-900.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 
@@ -144,9 +144,9 @@ TEST(basic_regexp_parser, get4F) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("value.w of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.w=999.00, maxValue=900.00")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value.w of 4F is too high, type=get4F, toSearch=\"" << toSearch << "\"" << ", value.w=999.00, maxValue=900.00")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 }

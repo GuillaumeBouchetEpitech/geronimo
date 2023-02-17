@@ -28,9 +28,9 @@ TEST(basic_regexp_parser, getFileName) {
 
       throw std::runtime_error("unreachable");
     } catch (std::runtime_error err) {
-      const std::string_view expectionMsg = err.what();
-      ASSERT_NE(expectionMsg, "unreachable") << "expectionMsg=" << expectionMsg;
-      ASSERT_NE(expectionMsg.find(D_SSTR("cannot parse file name, type=getFileName, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "expectionMsg=" << expectionMsg;
+      const std::string_view exceptionMsg = err.what();
+      ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse file name, type=getFileName, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
     }
   }
 }
