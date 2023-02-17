@@ -81,6 +81,7 @@ SRC_GERONIMO_SYSTEM+=	\
 		$(DIR_SRC)/geronimo/system/file-utils/*.cpp \
 		$(DIR_SRC)/geronimo/system/math/*.cpp \
 		$(DIR_SRC)/geronimo/system/messaging/*.cpp \
+		$(DIR_SRC)/geronimo/system/metrics/*.cpp \
 		$(DIR_SRC)/geronimo/system/multithreading/*.cpp \
 		$(DIR_SRC)/geronimo/system/multithreading/internals/*.cpp \
 		$(DIR_SRC)/geronimo/system/parser-utils/*.cpp \
