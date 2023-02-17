@@ -114,15 +114,28 @@ void Producer::waitUntilAllCompleted() {
   if (!_isRunning)
     D_THROW(std::runtime_error, "producer not running");
 
-  auto lock = _allTaskSynchroniser.makeScopedLock();
-
-  // this part is locked
-
   // make the (main) thread wait for all tasks to be completed
-  while (!allCompleted()) {
-    // wait -> release the lock for other thread(s)
-    _allTaskSynchroniser.waitUntilNotified(lock);
+
+  if (_avoidBlocking == false)
+  {
+    auto lock = _allTaskSynchroniser.makeScopedLock();
+
+    // this part is locked
+
+    while (!allCompleted()) {
+      // wait -> release the lock for other thread(s)
+      _allTaskSynchroniser.waitUntilNotified(lock, 1.0f);
+    }
   }
+  else
+  {
+    // avoid blocking on the main thread
+    while (!allCompleted()) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+  }
+
+
 }
 
 bool Producer::allCompleted() const {
