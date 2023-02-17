@@ -28,12 +28,12 @@ public:
   MessageView& operator>>(bool& data);
   MessageView& operator>>(char& data);
   MessageView& operator>>(unsigned char& data);
-  MessageView& operator>>(short& data);
-  MessageView& operator>>(unsigned short& data);
-  MessageView& operator>>(int& data);
-  MessageView& operator>>(unsigned int& data);
-  MessageView& operator>>(long& data);
-  MessageView& operator>>(unsigned long& data);
+  MessageView& operator>>(int16_t& data);
+  MessageView& operator>>(uint16_t& data);
+  MessageView& operator>>(int32_t& data);
+  MessageView& operator>>(uint32_t& data);
+  MessageView& operator>>(int64_t& data);
+  MessageView& operator>>(uint64_t& data);
   MessageView& operator>>(float& data);
   MessageView& operator>>(double& data);
   MessageView& operator>>(std::string& data);

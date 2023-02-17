@@ -59,27 +59,27 @@ MessageBuffer& MessageBuffer::operator<<(unsigned char data) {
   return append(&data, sizeof(data));
 }
 
-MessageBuffer& MessageBuffer::operator<<(short data) {
+MessageBuffer& MessageBuffer::operator<<(int16_t data) {
   return append(&data, sizeof(data));
 }
 
-MessageBuffer& MessageBuffer::operator<<(unsigned short data) {
+MessageBuffer& MessageBuffer::operator<<(uint16_t data) {
   return append(&data, sizeof(data));
 }
 
-MessageBuffer& MessageBuffer::operator<<(int data) {
+MessageBuffer& MessageBuffer::operator<<(int32_t data) {
   return append(&data, sizeof(data));
 }
 
-MessageBuffer& MessageBuffer::operator<<(unsigned int data) {
+MessageBuffer& MessageBuffer::operator<<(uint32_t data) {
   return append(&data, sizeof(data));
 }
 
-MessageBuffer& MessageBuffer::operator<<(long data) {
+MessageBuffer& MessageBuffer::operator<<(int64_t data) {
   return append(&data, sizeof(data));
 }
 
-MessageBuffer& MessageBuffer::operator<<(unsigned long data) {
+MessageBuffer& MessageBuffer::operator<<(uint64_t data) {
   return append(&data, sizeof(data));
 }
 

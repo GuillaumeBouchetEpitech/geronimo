@@ -26,12 +26,12 @@ public:
   MessageBuffer& operator<<(bool data);
   MessageBuffer& operator<<(char data);
   MessageBuffer& operator<<(unsigned char data);
-  MessageBuffer& operator<<(short data);
-  MessageBuffer& operator<<(unsigned short data);
-  MessageBuffer& operator<<(int data);
-  MessageBuffer& operator<<(unsigned int data);
-  MessageBuffer& operator<<(long data);
-  MessageBuffer& operator<<(unsigned long data);
+  MessageBuffer& operator<<(int16_t data);
+  MessageBuffer& operator<<(uint16_t data);
+  MessageBuffer& operator<<(int32_t data);
+  MessageBuffer& operator<<(uint32_t data);
+  MessageBuffer& operator<<(int64_t data);
+  MessageBuffer& operator<<(uint64_t data);
   MessageBuffer& operator<<(float data);
   MessageBuffer& operator<<(double data);
   MessageBuffer& operator<<(const std::string& data);

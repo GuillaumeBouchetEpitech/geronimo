@@ -51,27 +51,27 @@ MessageView& MessageView::operator>>(unsigned char& data) {
   return read(&data, sizeof(data));
 }
 
-MessageView& MessageView::operator>>(short& data) {
+MessageView& MessageView::operator>>(int16_t& data) {
   return read(&data, sizeof(data));
 }
 
-MessageView& MessageView::operator>>(unsigned short& data) {
+MessageView& MessageView::operator>>(uint16_t& data) {
   return read(&data, sizeof(data));
 }
 
-MessageView& MessageView::operator>>(int& data) {
+MessageView& MessageView::operator>>(int32_t& data) {
   return read(&data, sizeof(data));
 }
 
-MessageView& MessageView::operator>>(unsigned int& data) {
+MessageView& MessageView::operator>>(uint32_t& data) {
   return read(&data, sizeof(data));
 }
 
-MessageView& MessageView::operator>>(long& data) {
+MessageView& MessageView::operator>>(int64_t& data) {
   return read(&data, sizeof(data));
 }
 
-MessageView& MessageView::operator>>(unsigned long& data) {
+MessageView& MessageView::operator>>(uint64_t& data) {
   return read(&data, sizeof(data));
 }
 
