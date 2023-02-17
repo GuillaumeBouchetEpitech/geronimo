@@ -58,12 +58,17 @@ public:
   ~Texture();
 
 public:
-  void setFromImage(const Image& image, Quality quality = Quality::pixelated,
-                    Pattern pattern = Pattern::clamped);
-  void allocateBlank(const glm::uvec2& size,
-                     Quality quality = Quality::pixelated,
-                     Pattern pattern = Pattern::clamped,
-                     const void* pixels = nullptr);
+  void setFromImage(
+    const Image& image,
+    Quality quality = Quality::pixelated,
+    Pattern pattern = Pattern::clamped,
+    uint32_t packingInBytes = 4);
+  void allocateBlank(
+    const glm::uvec2& size,
+    Quality quality = Quality::pixelated,
+    Pattern pattern = Pattern::clamped,
+    const void* pixels = nullptr,
+    uint32_t packingInBytes = 4);
   void allocateFloatBlank(const glm::uvec2& size,
                           Quality quality = Quality::pixelated,
                           Pattern pattern = Pattern::clamped,

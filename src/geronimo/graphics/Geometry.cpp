@@ -56,27 +56,47 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
       // auto determine stride value
       uint32_t lastAttrIndex = 0;
       for (const auto& attr : attrs) {
-        uint32_t liveAttrIndex =
-          attr.index >= 0 ? uint32_t(attr.index) : lastAttrIndex;
+
+        uint32_t liveAttrIndex = attr.index >= 0 ? uint32_t(attr.index) : lastAttrIndex;
         switch (attr.type) {
-        case AttrType::Float:
+
+        //
+
+        case AttrType::Int8:
+        case AttrType::UInt8:
           liveAttrIndex += 1;
           break;
-        case AttrType::Vec2f:
-          liveAttrIndex += 2;
+
+        case AttrType::Int16:
+        case AttrType::UInt16:
+          liveAttrIndex += 1;
           break;
-        case AttrType::Vec3f:
-          liveAttrIndex += 3;
+
+        case AttrType::Int32:
+        case AttrType::UInt32:
+          liveAttrIndex += 1;
           break;
-        case AttrType::Vec4f:
-          liveAttrIndex += 4;
-          break;
-        case AttrType::Mat3f:
-          liveAttrIndex += 9;
-          break;
-        case AttrType::Mat4f:
-          liveAttrIndex += 16;
-          break;
+
+        //
+
+        case AttrType::Float: liveAttrIndex += 1; break;
+        case AttrType::Vec2f: liveAttrIndex += 2; break;
+        case AttrType::Vec3f: liveAttrIndex += 3; break;
+        case AttrType::Vec4f: liveAttrIndex += 4; break;
+        case AttrType::Mat3f: liveAttrIndex += 3 * 3; break;
+        case AttrType::Mat4f: liveAttrIndex += 4 * 4; break;
+
+        //
+
+        // case AttrType::Double: liveAttrIndex += 2 * 1; break;
+        // case AttrType::Vec2d: liveAttrIndex += 2 * 2; break;
+        // case AttrType::Vec3d: liveAttrIndex += 2 * 3; break;
+        // case AttrType::Vec4d: liveAttrIndex += 2 * 4; break;
+        // case AttrType::Mat3d: liveAttrIndex += 2 * 3 * 3; break;
+        // case AttrType::Mat4d: liveAttrIndex += 2 * 4 * 4; break;
+
+        //
+
         }
         lastAttrIndex = liveAttrIndex;
       }
@@ -87,47 +107,139 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
 
     for (const auto& attr : attrs) {
       uint32_t rowSize = 1;
-      uint32_t totalRows = 1;
+
+
+      GlContext::VertexBufferObject::AttribType nextType = GlContext::VertexBufferObject::AttribType::Float;
+
+
       switch (attr.type) {
+
+        //
+
+      case AttrType::Int8:
+        nextType = GlContext::VertexBufferObject::AttribType::Int8;
+        rowSize = 1;
+        break;
+      case AttrType::UInt8:
+        nextType = GlContext::VertexBufferObject::AttribType::UInt8;
+        rowSize = 1;
+        break;
+
+      case AttrType::Int16:
+        nextType = GlContext::VertexBufferObject::AttribType::Int16;
+        rowSize = 2;
+        break;
+      case AttrType::UInt16:
+        nextType = GlContext::VertexBufferObject::AttribType::UInt16;
+        rowSize = 2;
+        break;
+
+      case AttrType::Int32:
+        nextType = GlContext::VertexBufferObject::AttribType::Int32;
+        rowSize = 4;
+        break;
+      case AttrType::UInt32:
+        nextType = GlContext::VertexBufferObject::AttribType::UInt32;
+        rowSize = 4;
+        break;
+
+        //
+
       case AttrType::Float:
+        nextType = GlContext::VertexBufferObject::AttribType::Float;
         rowSize = 1;
         break;
       case AttrType::Vec2f:
+        nextType = GlContext::VertexBufferObject::AttribType::Float;
         rowSize = 2;
         break;
       case AttrType::Vec3f:
+        nextType = GlContext::VertexBufferObject::AttribType::Float;
         rowSize = 3;
         break;
       case AttrType::Vec4f:
+        nextType = GlContext::VertexBufferObject::AttribType::Float;
         rowSize = 4;
         break;
       case AttrType::Mat3f:
+        nextType = GlContext::VertexBufferObject::AttribType::Float;
         rowSize = 3;
-        totalRows = 3;
         break;
       case AttrType::Mat4f:
+        nextType = GlContext::VertexBufferObject::AttribType::Float;
         rowSize = 4;
-        totalRows = 4;
         break;
+
+        //
+
+      // case AttrType::Double:
+      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+      //   rowSize = 1 * 2;
+      //   break;
+      // case AttrType::Vec2d:
+      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+      //   rowSize = 2 * 2;
+      //   break;
+      // case AttrType::Vec3d:
+      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+      //   rowSize = 3 * 2;
+      //   break;
+      // case AttrType::Vec4d:
+      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+      //   rowSize = 4 * 2;
+      //   break;
+      // case AttrType::Mat3d:
+      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+      //   rowSize = 3 * 2;
+      //   break;
+      // case AttrType::Mat4d:
+      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+      //   rowSize = 4 * 2;
+      //   break;
+
+        //
+
       }
+
+      //
+
+      uint32_t totalRows = 1;
+
+      if (
+        attr.type == AttrType::Mat3f //|| attr.type == AttrType::Mat3d
+      ) {
+        totalRows = 3;
+      }
+      else
+      if (
+        attr.type == AttrType::Mat4f //|| attr.type == AttrType::Mat4d
+      ) {
+        totalRows = 4;
+      }
+
 
       // TODO: check if the index is 0 on k>0 and assert/throw on it
 
-      const uint32_t liveAttrIndex =
-        attr.index >= 0 ? uint32_t(attr.index) : lastAttrIndex;
+      const uint32_t liveAttrIndex = attr.index >= 0 ? uint32_t(attr.index) : lastAttrIndex;
 
       if (attr.ignored == false) {
 
         const int32_t attrLocation = shader.getAttribute(attr.name.c_str());
 
-        for (uint32_t kk = 0; kk < totalRows; ++kk) {
+        for (uint32_t kk = 0; kk < totalRows; ++kk)
+        {
           const uint32_t attrId = uint32_t(attrLocation) + kk;
-          const uint32_t rowIndex =
-            (liveAttrIndex + kk * rowSize) * uint32_t(sizeof(float));
+          const uint32_t rowIndex = (liveAttrIndex + kk * rowSize) * uint32_t(sizeof(float));
 
           GlContext::VertexBufferObject::enableAttribArray(attrId);
-          GlContext::VertexBufferObject::setAttribPointer(attrId, rowSize,
-                                                          vboStride, rowIndex);
+          GlContext::VertexBufferObject::setAttribPointer(
+            attrId,
+            rowSize,
+            vboStride,
+            rowIndex,
+            nextType
+          );
+
           if (vbo.instanced) {
             GlContext::VertexBufferObject::enableAttribDivisor(attrId);
 

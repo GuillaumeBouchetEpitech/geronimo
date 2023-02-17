@@ -19,14 +19,18 @@ Texture::~Texture() { dispose(); }
 
 void Texture::setFromImage(const Image& image,
                            Quality quality /*= Quality::pixelated*/,
-                           Pattern pattern /*= Pattern::clamped*/) {
-  allocateBlank(image.getSize(), quality, pattern, image.getPixels());
+                           Pattern pattern /*= Pattern::clamped*/,
+                           uint32_t packingInBytes /*= 4*/)
+{
+  allocateBlank(image.getSize(), quality, pattern, image.getPixels(), packingInBytes);
 }
 
 void Texture::allocateBlank(const glm::uvec2& size,
                             Quality quality /*= Quality::pixelated*/,
                             Pattern pattern /*= Pattern::clamped*/,
-                            const void* pixels /*= nullptr*/) {
+                            const void* pixels /*= nullptr*/,
+                            uint32_t packingInBytes /*= 4*/)
+{
   if (size.x == 0 || size.y == 0)
     D_THROW(std::runtime_error,
             "texture allocated with incorrect size, size.x: "
@@ -42,6 +46,8 @@ void Texture::allocateBlank(const glm::uvec2& size,
     _textureId = GlContext::Texture::generateOne();
 
   GlContext::Texture::bind(_textureId);
+
+  GlContext::Texture::setPixelUnpackAlignment(packingInBytes);
 
   GlContext::Texture::uploadPixels(uint32_t(_size.x), uint32_t(_size.y),
                                    pixels);

@@ -7,6 +7,7 @@
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/asValue.hpp"
+#include "geronimo/system/math/clamp.hpp"
 
 #include <memory>
 
@@ -147,6 +148,21 @@ void setTextureAsSmoothed(bool generateMipMap /* = false */) {
   if (generateMipMap)
     glCheck(glGenerateMipmap(GL_TEXTURE_2D));
 }
+
+
+void setPixelPackAlignment(uint32_t inValueInBytes)
+{
+  const int32_t tmpVal = gero::math::clamp(int32_t(inValueInBytes), 0, 4);
+  glCheck(glPixelStorei(GL_PACK_ALIGNMENT, tmpVal));
+}
+
+void setPixelUnpackAlignment(uint32_t inValueInBytes)
+{
+  const int32_t tmpVal = gero::math::clamp(int32_t(inValueInBytes), 0, 4);
+  glCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, tmpVal));
+}
+
+
 
 } // namespace Texture
 

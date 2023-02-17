@@ -42,9 +42,20 @@ void generateMany(uint32_t total, uint32_t* buffers);
 void deleteMany(uint32_t total, const uint32_t* buffers);
 void bind(uint32_t vboId);
 
+enum class AttribType {
+  Int8,
+  UInt8,
+  Int16,
+  UInt16,
+  Int32,
+  UInt32,
+  Float,
+  Double,
+};
+
 void enableAttribArray(uint32_t attrId);
 void setAttribPointer(uint32_t attrId, uint32_t rowSize, uint32_t stride,
-                      uint32_t rowIndex);
+                      uint32_t rowIndex, AttribType type);
 void enableAttribDivisor(uint32_t attrId);
 void uploadBuffer(const void* data, uint32_t dataSize, bool dynamic);
 void drawArrays(Primitives primitive, uint32_t primitiveStart,
@@ -127,6 +138,11 @@ void setTextureAsRepeat(bool repeat);
 void setTextureAsPixelated();
 void setTextureAsSmoothed(bool generateMipMap = false);
 
+
+void setPixelPackAlignment(uint32_t inValueInBytes);
+void setPixelUnpackAlignment(uint32_t inValueInBytes);
+
+
 } // namespace Texture
 
 namespace VertexArrayObject {
@@ -156,7 +172,7 @@ void setDepthMask(bool isEnabled);
 enum class BlendFuncs {
   one,
   srcAlpha,
-  oneMinuxSrcAlpha,
+  oneMinusSrcAlpha,
 };
 void setBlendFunc(BlendFuncs sfactor, BlendFuncs dfactor);
 

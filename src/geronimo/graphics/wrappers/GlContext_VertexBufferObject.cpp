@@ -32,10 +32,24 @@ void enableAttribArray(uint32_t attrId) {
 }
 
 void setAttribPointer(uint32_t attrId, uint32_t rowSize, uint32_t stride,
-                      uint32_t rowIndex) {
+                      uint32_t rowIndex, AttribType inType) {
+
   const void* rowAddr = reinterpret_cast<void*>(rowIndex);
-  glCheck(glVertexAttribPointer(attrId, GLsizei(rowSize), GL_FLOAT, GL_FALSE,
-                                GLsizei(stride), rowAddr));
+
+  GLenum rawType = GL_FLOAT;
+  switch (inType)
+  {
+    case AttribType::Int8   :  rawType = GL_BYTE;           break;
+    case AttribType::UInt8  :  rawType = GL_UNSIGNED_BYTE;  break;
+    case AttribType::Int16  :  rawType = GL_SHORT;          break;
+    case AttribType::UInt16 :  rawType = GL_UNSIGNED_SHORT; break;
+    case AttribType::Int32  :  rawType = GL_INT;            break;
+    case AttribType::UInt32 :  rawType = GL_UNSIGNED_INT;   break;
+    case AttribType::Float  :  rawType = GL_FLOAT;          break;
+    case AttribType::Double :  rawType = GL_DOUBLE;         break;
+  };
+
+  glCheck(glVertexAttribPointer(attrId, GLsizei(rowSize), rawType, GL_FALSE, GLsizei(stride), rowAddr));
 }
 
 void enableAttribDivisor(uint32_t attrId) {

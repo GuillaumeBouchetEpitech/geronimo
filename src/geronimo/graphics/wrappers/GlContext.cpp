@@ -137,14 +137,6 @@ void setDepthMask(bool isEnabled)
   glDepthMask(isEnabled ? GL_TRUE : GL_FALSE);
 }
 
-// enum class BlendFuncs
-// {
-//   srcAlpha,
-//   oneMinuxSrcAlpha,
-// };
-
-// GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA
-
 namespace {
 GLenum getRawBlendFunc(BlendFuncs func) {
   switch (func) {
@@ -154,7 +146,7 @@ GLenum getRawBlendFunc(BlendFuncs func) {
   case BlendFuncs::srcAlpha:
     return GL_SRC_ALPHA;
     break;
-  case BlendFuncs::oneMinuxSrcAlpha:
+  case BlendFuncs::oneMinusSrcAlpha:
     return GL_ONE_MINUS_SRC_ALPHA;
     break;
 

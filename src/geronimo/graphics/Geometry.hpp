@@ -19,7 +19,29 @@ class ShaderProgram;
 
 class Geometry {
 public:
-  enum class AttrType : uint32_t { Float, Vec2f, Vec3f, Vec4f, Mat3f, Mat4f };
+  enum class AttrType : uint32_t {
+
+    Int8,
+    UInt8,
+    Int16,
+    UInt16,
+    Int32,
+    UInt32,
+
+    Float,
+    Vec2f,
+    Vec3f,
+    Vec4f,
+    Mat3f,
+    Mat4f,
+
+    // Double,
+    // Vec2d,
+    // Vec3d,
+    // Vec4d,
+    // Mat3d,
+    // Mat4d
+  };
 
   enum class PrimitiveType : uint32_t {
     lines,
