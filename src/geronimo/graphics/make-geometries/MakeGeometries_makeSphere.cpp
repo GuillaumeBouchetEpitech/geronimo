@@ -33,7 +33,7 @@ void _drawSpherePatch(MakeGeometries::Vertices& vertices, uint32_t quality,
 
 namespace MakeGeometries {
 
-void makeShpere(Vertices& vertices, uint32_t quality, float radius) {
+void makeSphere(Vertices& vertices, uint32_t quality, float radius) {
   constexpr float k_icx = 0.525731112119133606f;
   constexpr float k_icz = 0.850650808352039932f;
 

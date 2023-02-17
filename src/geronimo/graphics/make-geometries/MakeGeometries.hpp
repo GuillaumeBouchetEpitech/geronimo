@@ -17,7 +17,7 @@ struct Vertex {
 
 using Vertices = std::vector<Vertex>;
 
-void makeShpere(Vertices& vertices, uint32_t quality, float radius);
+void makeSphere(Vertices& vertices, uint32_t quality, float radius);
 
 void makeDisk(Vertices& vertices, uint32_t quality, float radiusIn,
               float radiusOut);
