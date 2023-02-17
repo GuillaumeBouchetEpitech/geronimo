@@ -6,51 +6,7 @@
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/math/validation-helpers.hpp"
 
-namespace string_view_regexp {
-
-  using match = std::match_results<std::string_view::const_iterator>;
-  using sub_match = std::sub_match<std::string_view::const_iterator>;
-
-  inline std::string_view get_string_view(const sub_match& m)
-  {
-    return std::string_view(m.first, std::size_t(m.length()));
-  }
-
-  inline bool regex_match(
-    std::string_view sv,
-    match& m,
-    const std::regex& e,
-    std::regex_constants::match_flag_type flags = std::regex_constants::match_default)
-  {
-    return std::regex_match(sv.begin(), sv.end(), m, e, flags);
-  }
-
-  inline bool regex_match(
-    std::string_view sv,
-    const std::regex& e,
-    std::regex_constants::match_flag_type flags = std::regex_constants::match_default)
-  {
-    return std::regex_match(sv.begin(), sv.end(), e, flags);
-  }
-
-  inline bool regex_search(
-    std::string_view sv,
-    match& m,
-    std::regex& r)
-  {
-    return std::regex_search(sv.begin(), sv.end(), m, r);
-  }
-
-  inline bool regex_search(
-    std::string_view::const_iterator start,
-    std::string_view::const_iterator end,
-    match& m,
-    std::regex& r)
-  {
-    return std::regex_search(start, end, m, r);
-  }
-
-}
+#include "string_view_regexp.hpp"
 
 namespace gero {
 namespace parserUtils {
@@ -60,28 +16,11 @@ BasicRegexParser::BasicRegexParser() {
   const std::string_view matchStrName = R"(([\w\-]+))";
   const std::string_view matchStrFileName = R"(([\w\-\.\/]+))";
   const std::string_view matchStrValue = R"(\"(.+?)\")";
-  const std::string_view matchMaybeSpace = R"(\s*?)";
   const std::string matchMain = D_SSTR(matchStrName << "=" << matchStrValue);
-  const std::string_view match1UI = R"(([+-]?\d+))";
-  const std::string_view match1F = R"(([+-]?\d+(?:\.\d+)?))";
-  const std::string matchS1UI = D_SSTR(matchMaybeSpace << match1UI << matchMaybeSpace);
-  const std::string matchS2UI = D_SSTR(matchS1UI << "," << matchS1UI);
-  const std::string matchS3UI = D_SSTR(matchS1UI << "," << matchS1UI << "," << matchS1UI);
-  const std::string matchS1F = D_SSTR(matchMaybeSpace << match1F << matchMaybeSpace);
-  const std::string matchS2F = D_SSTR(matchS1F << "," << matchS1F);
-  const std::string matchS3F = D_SSTR(matchS1F << "," << matchS1F << "," << matchS1F);
-  const std::string matchS4F = D_SSTR(matchS1F << "," << matchS1F << "," << matchS1F << "," << matchS1F);
 
   _regexps.regexpMain = std::regex(matchMain.data(), matchMain.size());
   _regexps.regexpName = std::regex(matchStrName.data(), matchStrName.size());
   _regexps.regexpFileName = std::regex(matchStrFileName.data(), matchStrFileName.size());
-  _regexps.regexpS1UI = std::regex(matchS1UI.data(), matchS1UI.size());
-  _regexps.regexpS2UI = std::regex(matchS2UI.data(), matchS2UI.size());
-  _regexps.regexpS3UI = std::regex(matchS3UI.data(), matchS3UI.size());
-  _regexps.regexpS1F = std::regex(match1F.data(), match1F.size());
-  _regexps.regexpS2F = std::regex(matchS2F.data(), matchS2F.size());
-  _regexps.regexpS3F = std::regex(matchS3F.data(), matchS3F.size());
-  _regexps.regexpS4F = std::regex(matchS4F.data(), matchS4F.size());
 }
 
 void BasicRegexParser::setErrorHint(const std::string_view errorHint) {
@@ -116,14 +55,15 @@ std::string_view BasicRegexParser::getFileName(const std::string_view toSearch) 
 }
 
 uint32_t BasicRegexParser::get1UI(const std::string_view toSearch) {
-  string_view_regexp::match subMatch;
-  string_view_regexp::regex_search(toSearch, subMatch, _regexps.regexpS1UI);
-  if (subMatch.empty())
+
+  auto result = _intValueParser.validate(toSearch);
+
+  if (!result)
     D_THROW(std::runtime_error, "cannot parse 1UI"
       << ", type=" << _errorHint
       << ", toSearch=\"" << toSearch << "\"");
 
-  return uint32_t(std::atoi(subMatch[1].str().c_str()));
+  return uint32_t(*result);
 }
 
 uint32_t BasicRegexParser::get1UI(const std::string_view toSearch,
@@ -139,15 +79,15 @@ uint32_t BasicRegexParser::get1UI(const std::string_view toSearch,
 }
 
 glm::uvec2 BasicRegexParser::get2UI(const std::string_view toSearch) {
-  string_view_regexp::match subMatch;
-  string_view_regexp::regex_search(toSearch, subMatch, _regexps.regexpS2UI);
-  if (subMatch.empty())
+
+  auto result = _intVec2ValueParser.validate(toSearch);
+
+  if (!result)
     D_THROW(std::runtime_error, "cannot parse 2UI"
       << ", type=" << _errorHint
       << ", toSearch=\"" << toSearch << "\"");
 
-  return {uint32_t(std::atoi(subMatch[1].str().c_str())),
-          uint32_t(std::atoi(subMatch[2].str().c_str()))};
+  return glm::uvec2(result->x, result->y);
 }
 
 glm::uvec2 BasicRegexParser::get2UI(const std::string_view toSearch,
@@ -171,16 +111,15 @@ glm::uvec2 BasicRegexParser::get2UI(const std::string_view toSearch,
 }
 
 glm::uvec3 BasicRegexParser::get3UI(const std::string_view toSearch) {
-  string_view_regexp::match subMatch;
-  string_view_regexp::regex_search(toSearch, subMatch, _regexps.regexpS3UI);
-  if (subMatch.empty())
+
+  auto result = _intVec3ValueParser.validate(toSearch);
+
+  if (!result)
     D_THROW(std::runtime_error, "cannot parse 3UI"
       << ", type=" << _errorHint
       << ", toSearch=\"" << toSearch << "\"");
 
-  return {uint32_t(std::atoi(subMatch[1].str().c_str())),
-          uint32_t(std::atoi(subMatch[2].str().c_str())),
-          uint32_t(std::atoi(subMatch[3].str().c_str()))};
+  return glm::uvec3(result->x, result->y, result->z);
 }
 
 glm::uvec3 BasicRegexParser::get3UI(const std::string_view toSearch,
@@ -208,14 +147,15 @@ glm::uvec3 BasicRegexParser::get3UI(const std::string_view toSearch,
 }
 
 float BasicRegexParser::get1F(const std::string_view toSearch) {
-  string_view_regexp::match subMatch;
-  string_view_regexp::regex_search(toSearch, subMatch, _regexps.regexpS1F);
-  if (subMatch.empty())
+
+  auto result = _floatValueParser.validate(toSearch);
+
+  if (!result)
     D_THROW(std::runtime_error, "cannot parse 1F"
       << ", type=" << _errorHint
       << ", toSearch=\"" << toSearch << "\"");
 
-  return _getValidFloat(subMatch[1].str());
+  return *result;
 }
 
 float BasicRegexParser::get1F(const std::string_view toSearch, float minValue,
@@ -239,14 +179,15 @@ float BasicRegexParser::get1F(const std::string_view toSearch, float minValue,
 }
 
 glm::vec2 BasicRegexParser::get2F(const std::string_view toSearch) {
-  string_view_regexp::match subMatch;
-  string_view_regexp::regex_search(toSearch, subMatch, _regexps.regexpS2F);
-  if (subMatch.empty())
+
+  auto result = _floatVec2ValueParser.validate(toSearch);
+
+  if (!result)
     D_THROW(std::runtime_error, "cannot parse 2F"
       << ", type=" << _errorHint
       << ", toSearch=\"" << toSearch << "\"");
 
-  return {_getValidFloat(subMatch[1].str()), _getValidFloat(subMatch[2].str())};
+  return *result;
 }
 
 glm::vec2 BasicRegexParser::get2F(const std::string_view toSearch, float minValue,
@@ -283,15 +224,15 @@ glm::vec2 BasicRegexParser::get2F(const std::string_view toSearch, float minValu
 }
 
 glm::vec3 BasicRegexParser::get3F(const std::string_view toSearch) {
-  string_view_regexp::match subMatch;
-  string_view_regexp::regex_search(toSearch, subMatch, _regexps.regexpS3F);
-  if (subMatch.empty())
+
+  auto result = _floatVec3ValueParser.validate(toSearch);
+
+  if (!result)
     D_THROW(std::runtime_error, "cannot parse 3F"
       << ", type=" << _errorHint
       << ", toSearch=\"" << toSearch << "\"");
 
-  return {_getValidFloat(subMatch[1].str()), _getValidFloat(subMatch[2].str()),
-          _getValidFloat(subMatch[3].str())};
+  return *result;
 }
 
 glm::vec3 BasicRegexParser::get3F(const std::string_view toSearch, float minValue,
@@ -341,15 +282,15 @@ glm::vec3 BasicRegexParser::get3F(const std::string_view toSearch, float minValu
 }
 
 glm::vec4 BasicRegexParser::get4F(const std::string_view toSearch) {
-  string_view_regexp::match subMatch;
-  string_view_regexp::regex_search(toSearch, subMatch, _regexps.regexpS4F);
-  if (subMatch.empty())
+
+  auto result = _floatVec4ValueParser.validate(toSearch);
+
+  if (!result)
     D_THROW(std::runtime_error, "cannot parse 4F"
       << ", type=" << _errorHint
       << ", toSearch=\"" << toSearch << "\"");
 
-  return {_getValidFloat(subMatch[1].str()), _getValidFloat(subMatch[2].str()),
-          _getValidFloat(subMatch[3].str()), _getValidFloat(subMatch[4].str())};
+  return *result;
 }
 
 glm::vec4 BasicRegexParser::get4F(const std::string_view toSearch, float minValue,

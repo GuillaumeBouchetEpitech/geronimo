@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "ValuesParsers.hpp"
+
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <regex>
@@ -14,14 +16,15 @@ private:
     std::regex regexpMain;
     std::regex regexpName;
     std::regex regexpFileName;
-    std::regex regexpS1UI;
-    std::regex regexpS2UI;
-    std::regex regexpS3UI;
-    std::regex regexpS1F;
-    std::regex regexpS2F;
-    std::regex regexpS3F;
-    std::regex regexpS4F;
   } _regexps;
+
+  valuesParsers::IntValueParser _intValueParser;
+  valuesParsers::IntVec2ValueParser _intVec2ValueParser;
+  valuesParsers::IntVec3ValueParser _intVec3ValueParser;
+  valuesParsers::FloatValueParser _floatValueParser;
+  valuesParsers::FloatVec2ValueParser _floatVec2ValueParser;
+  valuesParsers::FloatVec3ValueParser _floatVec3ValueParser;
+  valuesParsers::FloatVec4ValueParser _floatVec4ValueParser;
 
   std::string _errorHint;
 
