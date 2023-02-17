@@ -23,6 +23,8 @@ private:
   PhysicWorld& _physicWorld;
   VehiclesPool _vehicles;
 
+  uint32_t _totalLiveVehicles = 0;
+
 private:
   PhysicVehicleManager(PhysicWorld& physicWorld);
   ~PhysicVehicleManager();
@@ -41,6 +43,7 @@ public:
   VehicleWeakRef getVehicle(uint32_t index);
   const VehicleWeakRef getVehicle(uint32_t index) const;
   std::size_t vehicleSize() const;
+  uint32_t totalLiveVehicles() const;
   bool vehicleEmpty() const;
 };
 

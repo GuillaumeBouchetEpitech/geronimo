@@ -52,6 +52,8 @@ void PhysicVehicleManager::addVehicle(
   _physicWorld._bullet.dynamicsWorld->addVehicle(
     implementation->_bullet.vehicle);
   implementation->_isAdded = true;
+
+  _totalLiveVehicles += 1;
 }
 
 void PhysicVehicleManager::removeVehicle(
@@ -64,6 +66,8 @@ void PhysicVehicleManager::removeVehicle(
   _physicWorld._bullet.dynamicsWorld->removeVehicle(
     implementation->_bullet.vehicle);
   implementation->_isAdded = false;
+
+  _totalLiveVehicles -= 1;
 }
 
 PhysicVehicleManager::VehicleWeakRef
@@ -78,6 +82,10 @@ PhysicVehicleManager::getVehicle(uint32_t index) const {
 
 std::size_t PhysicVehicleManager::vehicleSize() const {
   return _vehicles.size();
+}
+
+uint32_t PhysicVehicleManager::totalLiveVehicles() const {
+  return _totalLiveVehicles;
 }
 
 bool PhysicVehicleManager::vehicleEmpty() const { return _vehicles.is_empty(); }
