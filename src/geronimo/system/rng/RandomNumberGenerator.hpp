@@ -15,9 +15,6 @@ public:
   static void ensureRandomSeed();
 
 public:
-  static int getValue();
-
-public:
   static float getNormalisedValue();
 
   template <typename T> static T getRangedValue(T min, T max) {
