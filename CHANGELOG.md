@@ -1,6 +1,18 @@
 
 # Changelog
 
+## [0.0.8] - 2023-02-17
+### Changed
+- chore: rng -> unused method
+- chore: typo in tests
+- feat: parsers -> better separation
+- feat: threading -> increased "avoid blocking" feature support
+- feat: more types support for messaging
+- chore: correct invalidFloat logic
+- feat: total live vehicle (physics)
+- chore: typo (graphics)
+- feat: texture pack/unpack + vbo types
+- feat: performance profiler
 
 ## [0.0.7] - 2023-02-08
 ### Changed
