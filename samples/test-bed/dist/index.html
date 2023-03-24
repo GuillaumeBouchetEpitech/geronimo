@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Test Bed</title>
+
+    <style>
+      body {
+        background-color: #0F0F0F;
+        border: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        font-family: arial;
+        color: #8F8F8F;
+      }
+
+      #renderArea {
+        border: 0px none;
+        margin: 0px auto; /* center */
+        padding: 0px none;
+        background-color: black;
+        width: 800px;
+        height: 600px;
+      }
+
+      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+      #canvas {
+        border: 0px none;
+        margin: 0px auto;
+        padding: 0px none;
+        width: 800px; /* <= fix Apple retina display issue(s)*/
+        height: 600px; /* <= fix Apple retina display issue(s)*/
+        display: none;
+      }
+
+      #errorText {
+        position: relative;
+        left: 10px;
+        top: 10px;
+        margin: 0px auto;
+        padding: 0px none;
+        border: 0px none;
+        color: white;
+        font-family: 'Lucida Console', Monaco, monospace;
+        text-align: center;
+        outline: none;
+        display: block;
+      }
+
+      #loggerOutput {
+        width: 99%;
+        margin: 0px auto;
+        border: 0px none;
+        padding: 0px none;
+        background-color: black;
+        color: white;
+        font-family: 'Lucida Console', Monaco, monospace;
+        outline: none;
+        display: block;
+      }
+    </style>
+
+    <script type="module" src="js/bundle.js"></script>
+  </head>
+  <body>
+
+    <div id="renderArea">
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <p id="errorText">Loading</p>
+    </div>
+
+    <textarea id="loggerOutput" rows="10" readonly></textarea>
+
+  </body>
+</html>
