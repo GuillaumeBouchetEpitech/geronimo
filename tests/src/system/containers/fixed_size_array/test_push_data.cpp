@@ -12,7 +12,8 @@ TEST_F(system_fixed_size_array, push_back_copy) {
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultFixedArray;
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultFixedArray;
 
   ASSERT_EQ(myDefaultFixedArray.size(), 0);
   ASSERT_EQ(myDefaultFixedArray.capacity(), 5);
@@ -108,7 +109,8 @@ TEST_F(system_fixed_size_array, push_back_move) {
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultFixedArray;
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultFixedArray;
 
   ASSERT_EQ(myDefaultFixedArray.size(), 0);
   ASSERT_EQ(myDefaultFixedArray.capacity(), 5);
@@ -208,7 +210,8 @@ TEST_F(system_fixed_size_array, emplace_back) {
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultFixedArray;
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultFixedArray;
 
   ASSERT_EQ(myDefaultFixedArray.size(), 0);
   ASSERT_EQ(myDefaultFixedArray.capacity(), 5);

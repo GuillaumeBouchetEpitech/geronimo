@@ -3,8 +3,8 @@
 
 #include "geronimo/helpers/GLMath.hpp"
 
-#include <regex>
 #include <optional>
+#include <regex>
 
 namespace gero {
 namespace valuesParsers {
@@ -12,12 +12,13 @@ namespace valuesParsers {
 //
 //
 
-class IntValueParser
-{
+class IntValueParser {
 private:
   std::regex _regexp;
+
 public:
   IntValueParser();
+
 public:
   std::optional<int32_t> validate(const std::string_view toSearch);
 };
@@ -25,12 +26,13 @@ public:
 //
 //
 
-class IntVec2ValueParser
-{
+class IntVec2ValueParser {
 private:
   std::regex _regexp;
+
 public:
   IntVec2ValueParser();
+
 public:
   std::optional<glm::ivec2> validate(const std::string_view toSearch);
 };
@@ -38,12 +40,13 @@ public:
 //
 //
 
-class IntVec3ValueParser
-{
+class IntVec3ValueParser {
 private:
   std::regex _regexp;
+
 public:
   IntVec3ValueParser();
+
 public:
   std::optional<glm::ivec3> validate(const std::string_view toSearch);
 };
@@ -51,12 +54,27 @@ public:
 //
 //
 
-class FloatValueParser
-{
+class IntVec4ValueParser {
 private:
   std::regex _regexp;
+
+public:
+  IntVec4ValueParser();
+
+public:
+  std::optional<glm::ivec4> validate(const std::string_view toSearch);
+};
+
+//
+//
+
+class FloatValueParser {
+private:
+  std::regex _regexp;
+
 public:
   FloatValueParser();
+
 public:
   std::optional<float> validate(const std::string_view toSearch);
 };
@@ -64,12 +82,13 @@ public:
 //
 //
 
-class FloatVec2ValueParser
-{
+class FloatVec2ValueParser {
 private:
   std::regex _regexp;
+
 public:
   FloatVec2ValueParser();
+
 public:
   std::optional<glm::vec2> validate(const std::string_view toSearch);
 };
@@ -80,12 +99,13 @@ public:
 //
 //
 
-class FloatVec3ValueParser
-{
+class FloatVec3ValueParser {
 private:
   std::regex _regexp;
+
 public:
   FloatVec3ValueParser();
+
 public:
   std::optional<glm::vec3> validate(const std::string_view toSearch);
 };
@@ -96,12 +116,13 @@ public:
 //
 //
 
-class FloatVec4ValueParser
-{
+class FloatVec4ValueParser {
 private:
   std::regex _regexp;
+
 public:
   FloatVec4ValueParser();
+
 public:
   std::optional<glm::vec4> validate(const std::string_view toSearch);
 };
@@ -109,5 +130,5 @@ public:
 //
 //
 
-}
-}
+} // namespace valuesParsers
+} // namespace gero

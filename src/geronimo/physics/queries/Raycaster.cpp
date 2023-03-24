@@ -22,8 +22,7 @@ Raycaster::Raycaster(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
 //
 //
 
-template <typename ResultCallback>
-struct BaseCustomRayResultCallback : public ResultCallback {
+template <typename ResultCallback> struct BaseCustomRayResultCallback : public ResultCallback {
 
   PhysicWorld& _physicWorld;
   void* _toIgnore;
@@ -31,26 +30,22 @@ struct BaseCustomRayResultCallback : public ResultCallback {
   Raycaster::OnNewPhysicBodyCallback _onNewPhysicBodyCallback;
   bool _isCompleted = false;
 
-  BaseCustomRayResultCallback(PhysicWorld& physicWorld, void* toIgnore,
+  BaseCustomRayResultCallback(PhysicWorld& physicWorld,
+                              void* toIgnore,
                               Raycaster::RaycastParams::Type type,
                               const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
-    : _physicWorld(physicWorld)
-    , _toIgnore(toIgnore)
-    , _type(type)
-    , _onNewPhysicBodyCallback(onNewPhysicBodyCallback)
-  {}
+    : _physicWorld(physicWorld), _toIgnore(toIgnore), _type(type), _onNewPhysicBodyCallback(onNewPhysicBodyCallback) {}
 
   bool _isValid(const btCollisionObject* pCollisionObject) const {
     const btRigidBody* pRigidBody = btRigidBody::upcast(pCollisionObject);
-    return (
-      _isCompleted == false &&
-      pRigidBody && pRigidBody->hasContactResponse() &&
-      pRigidBody->getUserPointer() != nullptr &&
-      (_toIgnore == nullptr || pRigidBody->getUserPointer() != _toIgnore));
+    return (_isCompleted == false && pRigidBody && pRigidBody->hasContactResponse() &&
+            pRigidBody->getUserPointer() != nullptr &&
+            (_toIgnore == nullptr || pRigidBody->getUserPointer() != _toIgnore));
   }
 
   void _process(const btCollisionObject* pCollisionObject,
-                const btVector3& hitNormalLocal, const btVector3& hitPointWorld,
+                const btVector3& hitNormalLocal,
+                const btVector3& hitPointWorld,
                 bool normalInWorldSpace) {
 
     const btRigidBody* pRigidBody = btRigidBody::upcast(pCollisionObject);
@@ -63,15 +58,12 @@ struct BaseCustomRayResultCallback : public ResultCallback {
       hitNormal = pRigidBody->getWorldTransform().getBasis() * hitNormalLocal;
     }
 
-    const glm::vec3 impactPoint =
-      glm::vec3(hitPointWorld[0], hitPointWorld[1], hitPointWorld[2]);
-    const glm::vec3 impactNormal =
-      glm::vec3(hitNormal[0], hitNormal[1], hitNormal[2]);
+    const glm::vec3 impactPoint = glm::vec3(hitPointWorld[0], hitPointWorld[1], hitPointWorld[2]);
+    const glm::vec3 impactNormal = glm::vec3(hitNormal[0], hitNormal[1], hitNormal[2]);
 
-    AbstractPhysicBody* pPhysicBody =
-      static_cast<AbstractPhysicBody*>(pRigidBody->getUserPointer());
+    AbstractPhysicBody* pPhysicBody = static_cast<AbstractPhysicBody*>(pRigidBody->getUserPointer());
 
-    if (!_onNewPhysicBodyCallback({ impactPoint, impactNormal, pPhysicBody }))
+    if (!_onNewPhysicBodyCallback({impactPoint, impactNormal, pPhysicBody}))
       _isCompleted = true;
   }
 };
@@ -87,16 +79,16 @@ struct BaseCustomRayResultCallback : public ResultCallback {
 //
 //
 
-struct CustomRayResultCallback
-  : public BaseCustomRayResultCallback<btCollisionWorld::RayResultCallback> {
+struct CustomRayResultCallback : public BaseCustomRayResultCallback<btCollisionWorld::RayResultCallback> {
 
   CustomRayResultCallback(PhysicWorld& physicWorld,
                           const btVector3& rayFromWorld,
-                          const btVector3& rayToWorld, void* toIgnore,
+                          const btVector3& rayToWorld,
+                          void* toIgnore,
                           Raycaster::RaycastParams::Type type,
                           const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
-    : BaseCustomRayResultCallback(physicWorld, toIgnore, type, onNewPhysicBodyCallback),
-      _rayFromWorld(rayFromWorld), _rayToWorld(rayToWorld) {
+    : BaseCustomRayResultCallback(physicWorld, toIgnore, type, onNewPhysicBodyCallback), _rayFromWorld(rayFromWorld),
+      _rayToWorld(rayToWorld) {
 
     // //@BP Mod - allow backface filtering and unflipped normals
     // enum EFlags
@@ -123,8 +115,7 @@ struct CustomRayResultCallback
   btVector3 _rayFromWorld;
   btVector3 _rayToWorld;
 
-  virtual btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult,
-                                   bool normalInWorldSpace) override {
+  virtual btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace) override {
 
     m_collisionObject = rayResult.m_collisionObject;
     m_closestHitFraction = rayResult.m_hitFraction;
@@ -134,8 +125,7 @@ struct CustomRayResultCallback
       btVector3 hitPos;
       hitPos.setInterpolate3(_rayFromWorld, _rayToWorld, m_closestHitFraction);
 
-      _process(rayResult.m_collisionObject, rayResult.m_hitNormalLocal, hitPos,
-               normalInWorldSpace);
+      _process(rayResult.m_collisionObject, rayResult.m_hitNormalLocal, hitPos, normalInWorldSpace);
     }
 
     if (_type == Raycaster::RaycastParams::Type::everything)
@@ -150,7 +140,8 @@ void Raycaster::_normalRaycast(RaycastParams& params,
   btVector3 rayFrom(params.from.x, params.from.y, params.from.z);
   btVector3 rayTo(params.to.x, params.to.y, params.to.z);
 
-  CustomRayResultCallback rayCallback(_physicWorld, rayFrom, rayTo, params.toIgnore, params.type, onNewPhysicBodyCallback);
+  CustomRayResultCallback rayCallback(
+    _physicWorld, rayFrom, rayTo, params.toIgnore, params.type, onNewPhysicBodyCallback);
   rayCallback.m_collisionFilterGroup = params.collisionGroup;
   rayCallback.m_collisionFilterMask = params.collisionMask;
 
@@ -168,15 +159,14 @@ void Raycaster::_normalRaycast(RaycastParams& params,
 //
 //
 
-struct CustomConvexResultCallback
-  : public BaseCustomRayResultCallback<btCollisionWorld::ConvexResultCallback> {
-  CustomConvexResultCallback(PhysicWorld& physicWorld, void* toIgnore,
+struct CustomConvexResultCallback : public BaseCustomRayResultCallback<btCollisionWorld::ConvexResultCallback> {
+  CustomConvexResultCallback(PhysicWorld& physicWorld,
+                             void* toIgnore,
                              Raycaster::RaycastParams::Type type,
-                              const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
+                             const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
     : BaseCustomRayResultCallback(physicWorld, toIgnore, type, onNewPhysicBodyCallback) {}
 
-  virtual btScalar
-  addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace) {
+  virtual btScalar addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace) {
 
     // // caller already does the filter on the m_closestHitFraction
     // btAssert(convexResult.m_hitFraction <= m_closestHitFraction);
@@ -184,8 +174,10 @@ struct CustomConvexResultCallback
     m_closestHitFraction = convexResult.m_hitFraction;
 
     if (_isValid(convexResult.m_hitCollisionObject)) {
-      _process(convexResult.m_hitCollisionObject, convexResult.m_hitNormalLocal,
-               convexResult.m_hitPointLocal, normalInWorldSpace);
+      _process(convexResult.m_hitCollisionObject,
+               convexResult.m_hitNormalLocal,
+               convexResult.m_hitPointLocal,
+               normalInWorldSpace);
     }
 
     if (_type == Raycaster::RaycastParams::Type::everything)
@@ -194,8 +186,7 @@ struct CustomConvexResultCallback
   }
 };
 
-void Raycaster::_convexSweep(RaycastParams& params,
-                             const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
+void Raycaster::_convexSweep(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
 
   btVector3 rayFrom(params.from.x, params.from.y, params.from.z);
   btVector3 rayTo(params.to.x, params.to.y, params.to.z);
@@ -212,15 +203,13 @@ void Raycaster::_convexSweep(RaycastParams& params,
   to.setIdentity();
   to.setOrigin(rayTo);
 
-  CustomConvexResultCallback sweepCallback(_physicWorld, params.toIgnore,
-                                           params.type, onNewPhysicBodyCallback);
+  CustomConvexResultCallback sweepCallback(_physicWorld, params.toIgnore, params.type, onNewPhysicBodyCallback);
   sweepCallback.m_collisionFilterGroup = params.collisionGroup;
   sweepCallback.m_collisionFilterMask = params.collisionMask;
 
   btScalar allowedCcdPenetration = 0.0f;
 
-  _physicWorld._bullet.dynamicsWorld->convexSweepTest(
-    &sphereShape, from, to, sweepCallback, allowedCcdPenetration);
+  _physicWorld._bullet.dynamicsWorld->convexSweepTest(&sphereShape, from, to, sweepCallback, allowedCcdPenetration);
 }
 
 //
@@ -234,8 +223,7 @@ void Raycaster::_convexSweep(RaycastParams& params,
 //
 //
 
-void Raycaster::_raycast(RaycastParams& inParams,
-                         const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
+void Raycaster::_raycast(RaycastParams& inParams, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
 
   if (inParams.radius <= 0.0f) {
     _normalRaycast(inParams, onNewPhysicBodyCallback);
@@ -244,25 +232,18 @@ void Raycaster::_raycast(RaycastParams& inParams,
   }
 }
 
-bool Raycaster::raycast(RaycastParams& inParams, std::vector<RaycastParams::ResultImpact>& outResultVector)
-{
+bool Raycaster::raycast(RaycastParams& inParams, std::vector<RaycastParams::ResultImpact>& outResultVector) {
   outResultVector.reserve(256);
 
-  const OnNewPhysicBodyCallback callback = [&inParams, &outResultVector](const RaycastParams::ResultImpact& inResult) -> bool
-  {
-    if (inParams.type == RaycastParams::Type::closest)
-    {
-      if (outResultVector.empty())
-      {
+  const OnNewPhysicBodyCallback callback = [&inParams,
+                                            &outResultVector](const RaycastParams::ResultImpact& inResult) -> bool {
+    if (inParams.type == RaycastParams::Type::closest) {
+      if (outResultVector.empty()) {
         outResultVector.push_back(inResult);
-      }
-      else
-      {
+      } else {
         outResultVector.front() = inResult;
       }
-    }
-    else
-    {
+    } else {
       // check duplicates
       for (std::size_t ii = 0; ii < outResultVector.size(); ++ii)
         if (outResultVector[ii].body == inResult.body)

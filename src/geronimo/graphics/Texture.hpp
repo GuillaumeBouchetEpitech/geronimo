@@ -36,8 +36,8 @@ public:
   };
 
   enum class DepthType {
-    unsingedShort,
-    unsingedInt,
+    unsignedShort,
+    unsignedInt,
     float32,
   };
 
@@ -48,7 +48,7 @@ private:
   struct DepthCompatibleValues {
     bool computed = false;
     DepthFormat depthFormat = DepthFormat::depth32;
-    DepthType depthType = DepthType::unsingedInt;
+    DepthType depthType = DepthType::unsignedInt;
   };
 
   static DepthCompatibleValues s_depthCompatibleValues;
@@ -58,25 +58,21 @@ public:
   ~Texture();
 
 public:
-  void setFromImage(
-    const Image& image,
-    Quality quality = Quality::pixelated,
-    Pattern pattern = Pattern::clamped,
-    uint32_t packingInBytes = 4);
-  void allocateBlank(
-    const glm::uvec2& size,
-    Quality quality = Quality::pixelated,
-    Pattern pattern = Pattern::clamped,
-    const void* pixels = nullptr,
-    uint32_t packingInBytes = 4);
+  void setFromImage(const Image& image,
+                    Quality quality = Quality::pixelated,
+                    Pattern pattern = Pattern::clamped,
+                    uint32_t packingInBytes = 4);
+  void allocateBlank(const glm::uvec2& size,
+                     Quality quality = Quality::pixelated,
+                     Pattern pattern = Pattern::clamped,
+                     const void* pixels = nullptr,
+                     uint32_t packingInBytes = 4);
   void allocateFloatBlank(const glm::uvec2& size,
                           Quality quality = Quality::pixelated,
                           Pattern pattern = Pattern::clamped,
                           const void* pixels = nullptr);
-  void allocateSingleFloat(const glm::uvec2& size,
-                           const void* pixels = nullptr);
-  void allocateDepth(const glm::uvec2& size, DepthFormat depthFormat,
-                     DepthType depthType);
+  void allocateSingleFloat(const glm::uvec2& size, const void* pixels = nullptr);
+  void allocateDepth(const glm::uvec2& size, DepthFormat depthFormat, DepthType depthType);
   void allocateCompatibleDepth(const glm::uvec2& size);
   static void ensureCompatibleDepth();
   void dispose();

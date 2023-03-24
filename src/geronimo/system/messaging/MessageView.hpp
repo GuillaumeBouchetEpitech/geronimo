@@ -12,22 +12,22 @@ namespace messaging {
 
 class MessageView : public AbstractMessage {
 private:
-  unsigned int _readIndex = 0;
+  uint32_t _readIndex = 0;
 
 public:
   MessageView() = default;
-  MessageView(const char* dataPointer, unsigned int size);
+  MessageView(const char* dataPointer, uint32_t size);
 
 public:
   virtual void clear() override;
 
 public:
-  MessageView& read(void* dataPointer, unsigned int size);
+  MessageView& read(void* dataPointer, uint32_t size);
 
 public:
   MessageView& operator>>(bool& data);
-  MessageView& operator>>(char& data);
-  MessageView& operator>>(unsigned char& data);
+  MessageView& operator>>(int8_t& data);
+  MessageView& operator>>(uint8_t& data);
   MessageView& operator>>(int16_t& data);
   MessageView& operator>>(uint16_t& data);
   MessageView& operator>>(int32_t& data);

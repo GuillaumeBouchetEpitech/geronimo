@@ -6,5 +6,5 @@
 using ContactCallback = std::function<void(ContactEvent, PhysicContactData*)>;
 
 namespace physicsContactEventsHandler {
-void initialise(ContactCallback callback);
+void initialize(ContactCallback callback);
 };

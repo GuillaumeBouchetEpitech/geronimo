@@ -12,8 +12,7 @@ LoadCallback getDefaulCallback() {
   return [](const std::string& filename, std::string& outFileContent) {
     outFileContent.clear();
     if (!getFileContent(filename, outFileContent))
-      D_THROW(std::runtime_error,
-              "ERROR: Could not load file: \"" << filename << "\"");
+      D_THROW(std::runtime_error, "ERROR: Could not load file: \"" << filename << "\"");
   };
 }
 

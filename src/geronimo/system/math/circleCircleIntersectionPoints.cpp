@@ -34,8 +34,7 @@ namespace math {
 
 // Given two circles this method finds the intersection
 // point(s) of the two circles (if any exists)
-bool circleCircleIntersectionPoints(const Circle& c1, const Circle& c2,
-                                    glm::vec2& res1, glm::vec2& res2) {
+bool circleCircleIntersectionPoints(const Circle& c1, const Circle& c2, glm::vec2& res1, glm::vec2& res2) {
 
   float r, R, d, dx, dy, cx, cy, Cx, Cy;
 

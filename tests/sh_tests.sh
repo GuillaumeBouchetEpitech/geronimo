@@ -21,11 +21,25 @@
 
 reset
 
+CURR_DIR=$PWD
+cd ../
+# make build_platform="native" all -j3
+make build_mode="debug" build_platform="native" all -j3
+cd $CURR_DIR
+
 # make build_mode="debug" build_platform="native" framework fclean
-make build_mode="debug" build_platform="native" framework -j6
+make build_mode="debug" build_platform="native" all -j3
 
 # make build_mode="debug" build_platform="native" fclean_tests
 # make build_mode="debug" build_platform="native" build-tests -j6
 
 # ./bin/exec
-valgrind --leak-check=full ./bin/exec
+# valgrind --leak-check=full ./bin/exec
+# valgrind --leak-check=full ./bin/exec --gtest_filter=angles*
+
+
+valgrind --leak-check=full ./bin/exec --gtest_filter=system_weak_ref_data_pool*
+# valgrind --leak-check=full ./bin/exec --gtest_filter=system_basic_double_linked_list*
+
+
+

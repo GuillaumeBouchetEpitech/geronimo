@@ -5,12 +5,10 @@
 
 namespace gero {
 
-template <
-typename PublicType,
-typename InternalType = PublicType,
-std::size_t initial_size = 0,
-typename Allocator = std::allocator<InternalType>
->
+template <typename PublicType,
+          typename InternalType = PublicType,
+          std::size_t initial_size = 0,
+          typename Allocator = std::allocator<InternalType>>
 class dynamic_heap_array : public generic_array_container<PublicType, InternalType> {
 
   using value_type = PublicType;
@@ -56,8 +54,7 @@ protected:
   }
 
   // call the move constructor only, do not allocate memory
-  template <typename... Args>
-  internal_type& emplace_move_constructor(internal_type* dataPtr, Args&&... args) {
+  template <typename... Args> internal_type& emplace_move_constructor(internal_type* dataPtr, Args&&... args) {
     Allocator alloc;
     traits_t::construct(alloc, dataPtr, std::forward<Args>(args)...);
     return *dataPtr;
@@ -80,8 +77,7 @@ public:
   dynamic_heap_array& operator=(const dynamic_heap_array& other) = delete;
   // disable copy
 
-  dynamic_heap_array(dynamic_heap_array&& other)
-    : base_class(std::move(other)) {
+  dynamic_heap_array(dynamic_heap_array&& other) : base_class(std::move(other)) {
     std::swap(_capacity, other._capacity);
   }
 
@@ -194,8 +190,7 @@ public:
   }
 
   // may reallocate
-  template <typename... Args>
-  value_type& emplace_back(Args&&... args) {
+  template <typename... Args> value_type& emplace_back(Args&&... args) {
     if (this->_size == _capacity)
       _realloc(_capacity * 2);
 

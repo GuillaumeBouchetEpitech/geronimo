@@ -20,15 +20,12 @@ DataBuffer::DataBuffer(const std::uint8_t* inData, std::size_t inSize) {
 DataBuffer::DataBuffer(const std::int8_t* inData, std::size_t inSize)
   : DataBuffer(reinterpret_cast<const std::uint8_t*>(inData), inSize) {}
 
-DataBuffer::DataBuffer(const std::uint8_t* str)
-  : DataBuffer(str, strlen(reinterpret_cast<const char*>(str))) {}
+DataBuffer::DataBuffer(const std::uint8_t* str) : DataBuffer(str, strlen(reinterpret_cast<const char*>(str))) {}
 
-DataBuffer::DataBuffer(const std::int8_t* str)
-  : DataBuffer(str, strlen(reinterpret_cast<const char*>(str))) {}
+DataBuffer::DataBuffer(const std::int8_t* str) : DataBuffer(str, strlen(reinterpret_cast<const char*>(str))) {}
 
 DataBuffer::DataBuffer(const std::string& str)
-  : DataBuffer(reinterpret_cast<const std::uint8_t*>(str.c_str()), str.size()) {
-}
+  : DataBuffer(reinterpret_cast<const std::uint8_t*>(str.c_str()), str.size()) {}
 
 DataBuffer::DataBuffer(DataBuffer&& other) // allow move
 {
@@ -45,17 +42,11 @@ DataBuffer& DataBuffer::operator=(DataBuffer&& other) // allow move
   return *this;
 }
 
-const unsigned char* DataBuffer::getUCharData() const { return _data.get(); }
-const char* DataBuffer::getCharData() const {
-  return reinterpret_cast<char*>(_data.get());
-}
+const uint8_t* DataBuffer::getUCharData() const { return _data.get(); }
+const char* DataBuffer::getCharData() const { return reinterpret_cast<char*>(_data.get()); }
 std::size_t DataBuffer::getSize() const { return _size; }
-const std::string_view DataBuffer::asStringView() const {
-  return std::string_view(getCharData(), _size - 1);
-}
-void DataBuffer::fillString(std::string& outFileContent) const {
-  outFileContent.assign(getCharData(), getSize() - 1);
-}
+const std::string_view DataBuffer::asStringView() const { return std::string_view(getCharData(), _size - 1); }
+void DataBuffer::fillString(std::string& outFileContent) const { outFileContent.assign(getCharData(), getSize() - 1); }
 
 void FileManager::load(const std::string& filename) {
   if (_buffersMap.count(filename) > 0)
@@ -63,8 +54,7 @@ void FileManager::load(const std::string& filename) {
 
   std::string fileContent;
   if (!fileUtils::getFileContent(filename, fileContent)) {
-    D_THROW(std::runtime_error,
-            "ERROR: Could not load file: \"" << filename << "\"");
+    D_THROW(std::runtime_error, "ERROR: Could not load file: \"" << filename << "\"");
   }
 
   auto ref = _buffersPool.acquire(fileContent);
@@ -76,22 +66,20 @@ void FileManager::load(const std::string& filename) {
   _buffersMap[filename] = ref;
 }
 
-FileManager::BufferWeakRef
-FileManager::getDataBuffer(const std::string& filename) {
+BufferWeakRef FileManager::getDataBuffer(const std::string& filename) {
   auto it = _buffersMap.find(filename);
   if (it == _buffersMap.end())
-    return FileManager::BufferWeakRef::make_invalid();
+    return BufferWeakRef::make_invalid();
   return it->second;
 }
 
 LoadCallback getFileManagerCallback(FileManager& fileManager) {
-  return
-    [&fileManager](const std::string& filename, std::string& outFileContent) {
-      outFileContent.clear();
-      fileManager.load(filename);
-      auto ref = fileManager.getDataBuffer(filename);
-      ref->fillString(outFileContent);
-    };
+  return [&fileManager](const std::string& filename, std::string& outFileContent) {
+    outFileContent.clear();
+    fileManager.load(filename);
+    auto ref = fileManager.getDataBuffer(filename);
+    ref->fillString(outFileContent);
+  };
 }
 
 } // namespace fileUtils

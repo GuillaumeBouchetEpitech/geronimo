@@ -16,7 +16,6 @@
 #include "gtest/gtest.h"
 
 template <std::size_t N>
-using shorthand_fixed_size_array =
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, N>;
+using shorthand_fixed_size_array = gero::fixed_size_array<common::TestStructure, common::TestStructure, N>;
 
 struct system_fixed_size_array : public common::threadsafe_fixture {};

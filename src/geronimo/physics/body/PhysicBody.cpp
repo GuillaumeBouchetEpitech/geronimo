@@ -12,8 +12,7 @@
 namespace gero {
 namespace physics {
 
-PhysicBody::PhysicBody(const PhysicBodyDef& def)
-{
+PhysicBody::PhysicBody(const PhysicBodyDef& def) {
   _shapeDef = def.shape;
   _mass = std::max(def.mass, 0.0f);
 
@@ -27,8 +26,7 @@ PhysicBody::PhysicBody(const PhysicBodyDef& def)
   btVector3 localInertia(0, 0, 0);
   _shape->getRawShape()->calculateLocalInertia(_mass, localInertia);
 
-  btRigidBody::btRigidBodyConstructionInfo rbInfo(
-    _mass, _bullet.motionState, _shape->getRawShape(), localInertia);
+  btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, _bullet.motionState, _shape->getRawShape(), localInertia);
 
   _bullet.body = new btRigidBody(rbInfo);
 
@@ -151,8 +149,7 @@ glm::vec3 PhysicBody::getPosition() const {
   return glm::vec3(origin[0], origin[1], origin[2]);
 }
 
-glm::quat PhysicBody::getOrientation() const
-{
+glm::quat PhysicBody::getOrientation() const {
   auto transform = _bullet.body->getWorldTransform();
   auto rotation = transform.getRotation();
 
@@ -207,17 +204,11 @@ void PhysicBody::setEulerXYZ(float x, float y, float z) {
   transform.setRotation(rotation);
 }
 
-void PhysicBody::setEulerXYZ(const glm::vec3& euler) {
-  setEulerXYZ(euler.x, euler.y, euler.z);
-}
+void PhysicBody::setEulerXYZ(const glm::vec3& euler) { setEulerXYZ(euler.x, euler.y, euler.z); }
 
-void PhysicBody::setAngularFactor(float x, float y, float z) {
-  _bullet.body->setAngularFactor(btVector3(x, y, z));
-}
+void PhysicBody::setAngularFactor(float x, float y, float z) { _bullet.body->setAngularFactor(btVector3(x, y, z)); }
 
-void PhysicBody::setAngularFactor(const glm::vec3& factor) {
-  setAngularFactor(factor.x, factor.y, factor.z);
-}
+void PhysicBody::setAngularFactor(const glm::vec3& factor) { setAngularFactor(factor.x, factor.y, factor.z); }
 
 void PhysicBody::clearForces() { _bullet.body->clearForces(); }
 
@@ -233,29 +224,17 @@ glm::vec3 PhysicBody::getAngularVelocity() const {
   return glm::vec3(vel[0], vel[1], vel[2]);
 }
 
-void PhysicBody::setLinearVelocity(float x, float y, float z) {
-  _bullet.body->setLinearVelocity(btVector3(x, y, z));
-}
+void PhysicBody::setLinearVelocity(float x, float y, float z) { _bullet.body->setLinearVelocity(btVector3(x, y, z)); }
 
-void PhysicBody::setLinearVelocity(const glm::vec3& vel) {
-  setLinearVelocity(vel.x, vel.y, vel.z);
-}
+void PhysicBody::setLinearVelocity(const glm::vec3& vel) { setLinearVelocity(vel.x, vel.y, vel.z); }
 
-void PhysicBody::setAngularVelocity(float x, float y, float z) {
-  _bullet.body->setAngularVelocity(btVector3(x, y, z));
-}
+void PhysicBody::setAngularVelocity(float x, float y, float z) { _bullet.body->setAngularVelocity(btVector3(x, y, z)); }
 
-void PhysicBody::setAngularVelocity(const glm::vec3& vel) {
-  setAngularVelocity(vel.x, vel.y, vel.z);
-}
+void PhysicBody::setAngularVelocity(const glm::vec3& vel) { setAngularVelocity(vel.x, vel.y, vel.z); }
 
-void PhysicBody::setGravity(float x, float y, float z) {
-  _bullet.body->setGravity(btVector3(x, y, z));
-}
+void PhysicBody::setGravity(float x, float y, float z) { _bullet.body->setGravity(btVector3(x, y, z)); }
 
-void PhysicBody::setGravity(const glm::vec3& grav) {
-  setGravity(grav.x, grav.y, grav.z);
-}
+void PhysicBody::setGravity(const glm::vec3& grav) { setGravity(grav.x, grav.y, grav.z); }
 
 glm::vec3 PhysicBody::getGravity() const {
   const btVector3& grav = _bullet.body->getGravity();
@@ -263,13 +242,9 @@ glm::vec3 PhysicBody::getGravity() const {
   return glm::vec3(grav[0], grav[1], grav[2]);
 }
 
-void PhysicBody::setFriction(float friction) {
-  _bullet.body->setFriction(std::max(friction, 0.0f));
-}
+void PhysicBody::setFriction(float friction) { _bullet.body->setFriction(std::max(friction, 0.0f)); }
 
-float PhysicBody::getFriction() const {
-  return float(_bullet.body->getFriction());
-}
+float PhysicBody::getFriction() const { return float(_bullet.body->getFriction()); }
 
 void PhysicBody::setUserValue(int32_t userValue) { _userValue = userValue; }
 int32_t PhysicBody::getUserValue() const { return _userValue; }
@@ -284,10 +259,8 @@ void PhysicBody::applyCentralImpulse(const glm::vec3& acc) {
   _bullet.body->applyCentralImpulse(btVector3(acc.x, acc.y, acc.z));
 }
 
-void PhysicBody::applyImpulse(const glm::vec3& force,
-                              const glm::vec3& rel_pos) {
-  _bullet.body->applyImpulse(btVector3(force.x, force.y, force.z),
-                             btVector3(rel_pos.x, rel_pos.y, rel_pos.z));
+void PhysicBody::applyImpulse(const glm::vec3& force, const glm::vec3& rel_pos) {
+  _bullet.body->applyImpulse(btVector3(force.x, force.y, force.z), btVector3(rel_pos.x, rel_pos.y, rel_pos.z));
 }
 
 void PhysicBody::applyCentralForce(const glm::vec3& force) {
@@ -295,8 +268,7 @@ void PhysicBody::applyCentralForce(const glm::vec3& force) {
 }
 
 void PhysicBody::applyForce(const glm::vec3& force, const glm::vec3& rel_pos) {
-  _bullet.body->applyForce(btVector3(force.x, force.y, force.z),
-                           btVector3(rel_pos.x, rel_pos.y, rel_pos.z));
+  _bullet.body->applyForce(btVector3(force.x, force.y, force.z), btVector3(rel_pos.x, rel_pos.y, rel_pos.z));
 }
 
 void PhysicBody::disableSleep() {
@@ -331,11 +303,7 @@ void PhysicBody::dumpData() {
   D_MYERR("  _isAdded " << _isAdded);
 }
 
-const PhysicShapeDef& PhysicBody::getShapeDefinition() const
-{
-  return _shapeDef;
-}
-
+const PhysicShapeDef& PhysicBody::getShapeDefinition() const { return _shapeDef; }
 
 // const std::vector<ContactPoint>& PhysicBody::getContacts() const
 // {

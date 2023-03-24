@@ -48,21 +48,20 @@ public:
       std::size_t allBodiesTotal;
     };
 
-    QueryShapeParams(const glm::vec3& inPosition, PhysicShapeDef inShape,
-                     short inGroup = -1, short inMask = -1,
+    QueryShapeParams(const glm::vec3& inPosition,
+                     PhysicShapeDef inShape,
+                     short inGroup = -1,
+                     short inMask = -1,
                      void* inToIgnore = nullptr)
-      : position(inPosition), shape(inShape), collisionGroup(inGroup),
-        collisionMask(inMask), toIgnore(inToIgnore) {}
+      : position(inPosition), shape(inShape), collisionGroup(inGroup), collisionMask(inMask), toIgnore(inToIgnore) {}
   };
 
 private:
-  bool _queryShape(QueryShapeParams& inParams,
-                   QueryShapeParams::ResultRaw& outResultArray);
+  bool _queryShape(QueryShapeParams& inParams, QueryShapeParams::ResultRaw& outResultArray);
 
 public:
   template <std::size_t N>
-  bool queryShape(QueryShapeParams& inParams,
-                  QueryShapeParams::ResultArray<N>& outResultArray) {
+  bool queryShape(QueryShapeParams& inParams, QueryShapeParams::ResultArray<N>& outResultArray) {
     QueryShapeParams::ResultRaw resultRaw;
     resultRaw.allRawBodiesData = outResultArray.allBodiesData.data();
     resultRaw.allBodiesMaxSize = N;
@@ -75,9 +74,7 @@ public:
     return hasHit;
   }
 
-  bool queryShape(QueryShapeParams& inParams,
-                  std::vector<AbstractPhysicBody*>& outResultVector);
-
+  bool queryShape(QueryShapeParams& inParams, std::vector<AbstractPhysicBody*>& outResultVector);
 };
 
 } // namespace physics

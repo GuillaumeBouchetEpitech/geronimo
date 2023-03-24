@@ -10,10 +10,17 @@ struct basic_double_linked_list {
   struct link {
     link* prev_link = nullptr;
     link* next_link = nullptr;
+    void* user_data = nullptr;
   };
 
   link* head_link = nullptr;
   uint32_t size = 0;
+
+  static void reset_link(link& old_link) {
+    old_link.prev_link = nullptr;
+    old_link.next_link = nullptr;
+    old_link.user_data = nullptr;
+  }
 
   static void add_link_to_list(basic_double_linked_list& list, link& new_link) {
     // add as head of list
@@ -30,9 +37,11 @@ struct basic_double_linked_list {
     list.size += 1;
   }
 
-  static void remove_link_from_list(basic_double_linked_list& list,
-                                    link& old_link) {
+  static void remove_link_from_list(basic_double_linked_list& list, link& old_link) {
     // remove from list
+
+    if (is_empty_list(list))
+      return;
 
     // FROM: ... <--> (oldLink) <--> ...
     // TO:   ... <--> ...
@@ -52,9 +61,11 @@ struct basic_double_linked_list {
     list.size -= 1;
   }
 
-  static void swap_two_links_from_same_list(basic_double_linked_list& list,
-                                            link& link_a, link& link_b) {
+  static void swap_two_links_from_same_list(basic_double_linked_list& list, link& link_a, link& link_b) {
     // swap in list
+
+    if (is_empty_list(list))
+      return;
 
     // FROM: ... <--> (link_a) <--> ... <--> (link_b) <--> ...
     // TO:   ... <--> (link_b) <--> ... <--> (link_a) <--> ...
@@ -79,17 +90,16 @@ struct basic_double_linked_list {
       list.head_link = &link_a;
   }
 
-  static void reset_link(link& old_link) {
-    old_link.prev_link = nullptr;
-    old_link.next_link = nullptr;
-  }
+  static bool is_empty_list(basic_double_linked_list& list) { return (list.head_link == nullptr || list.size == 0); }
 
   static void reset_list(basic_double_linked_list& list) {
-    link* curr_link = list.head_link;
-    while (curr_link) {
-      link* to_reset_link = curr_link;
-      curr_link = curr_link->next_link;
-      reset_link(*to_reset_link);
+    if (!is_empty_list(list)) {
+      link* curr_link = list.head_link;
+      while (curr_link) {
+        link* to_reset_link = curr_link;
+        curr_link = curr_link->next_link;
+        reset_link(*to_reset_link);
+      }
     }
     list.head_link = nullptr;
     list.size = 0;
@@ -98,24 +108,29 @@ struct basic_double_linked_list {
   // TODO: loop -> for_each ?
 
   template <typename T>
-  static void loop_list_links(basic_double_linked_list& list,
-                              const std::function<void(T*)>& callback) {
+  static void loop_list_links(basic_double_linked_list& list, const std::function<void(T*)>& callback) {
+
+    if (is_empty_list(list))
+      return;
+
     link* curr_link = list.head_link;
     while (curr_link) {
-      callback(static_cast<T*>(curr_link));
+      callback(static_cast<T*>(curr_link->user_data));
       curr_link = curr_link->next_link;
     }
   }
 
   template <typename T>
-  static void
-  loop_list_links_and_reset(basic_double_linked_list& list,
-                            const std::function<void(T*)>& callback) {
+  static void loop_list_links_and_reset(basic_double_linked_list& list, const std::function<void(T*)>& callback) {
+
+    if (is_empty_list(list))
+      return;
+
     link* curr_link = list.head_link;
     while (curr_link) {
       link* to_reset_link = curr_link;
 
-      callback(static_cast<T*>(curr_link));
+      callback(static_cast<T*>(curr_link->user_data));
       curr_link = curr_link->next_link;
 
       reset_link(*to_reset_link);

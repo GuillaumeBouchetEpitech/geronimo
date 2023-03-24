@@ -11,8 +11,7 @@
 namespace gero {
 namespace graphics {
 
-void DataTexture::upload(const glm::vec4* inDataPointer,
-                         uint32_t inDataLength) {
+void DataTexture::upload(const glm::vec4* inDataPointer, uint32_t inDataLength) {
   _dataLength = inDataLength;
   if (_dataLength == 0)
     return;
@@ -20,8 +19,7 @@ void DataTexture::upload(const glm::vec4* inDataPointer,
   // TODO: use the full range of the 2d texture (height > 1)
 
   // _texture.allocateSingleFloat({ _dataLength, 1 }, inDataPointer);
-  _texture.allocateFloatBlank({_dataLength, 1}, Texture::Quality::pixelated,
-                              Texture::Pattern::clamped, inDataPointer);
+  _texture.allocateFloatBlank({_dataLength, 1}, Texture::Quality::pixelated, Texture::Pattern::clamped, inDataPointer);
 }
 
 void DataTexture::upload(const std::vector<glm::vec4>& data) {

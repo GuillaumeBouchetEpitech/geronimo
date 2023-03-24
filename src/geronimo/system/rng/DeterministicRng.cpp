@@ -22,9 +22,7 @@ int DeterministicRng::getValue() {
   return int((_seed = uint64_t(x)) % (k_randMax + 1));
 }
 
-float DeterministicRng::getNormalisedValue() {
-  return float(getValue()) / float(k_randMax);
-}
+float DeterministicRng::getNormalisedValue() { return float(getValue()) / float(k_randMax); }
 
 int DeterministicRng::getRangedValue(int minVal, int maxVal) {
   return int(getRangedValue(float(minVal), float(maxVal)));

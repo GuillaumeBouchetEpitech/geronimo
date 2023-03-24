@@ -18,8 +18,7 @@ glm::vec3 getForward(const MakeGeometries::Vertex& inVertex, float inRadius) {
 
 namespace MakeGeometries {
 
-void makeTorus(Vertices& vertices, uint32_t ringQuality, uint32_t tubeQuality,
-               float ringRadius, float tubeRadius) {
+void makeTorus(Vertices& vertices, uint32_t ringQuality, uint32_t tubeQuality, float ringRadius, float tubeRadius) {
   Vertices tubeSliceVertices;
   tubeSliceVertices.resize(tubeQuality);
 
@@ -44,17 +43,14 @@ void makeTorus(Vertices& vertices, uint32_t ringQuality, uint32_t tubeQuality,
     const float angle = coef * math::pi2;
 
     {
-      const glm::mat4 transformNormal =
-        glm::rotate(glm::identity<glm::mat4>(), angle, glm::vec3(0, 0, 1));
-      const glm::mat4 transformVertex =
-        glm::translate(transformNormal, glm::vec3(ringRadius, 0, 0));
+      const glm::mat4 transformNormal = glm::rotate(glm::identity<glm::mat4>(), angle, glm::vec3(0, 0, 1));
+      const glm::mat4 transformVertex = glm::translate(transformNormal, glm::vec3(ringRadius, 0, 0));
 
       for (int32_t tubeIndex = 0; tubeIndex < int32_t(tubeQuality); ++tubeIndex) {
         const Vertex& sliceVertex = tubeSliceVertices[std::size_t(tubeIndex)];
 
         Vertex& vertex = ringVertices(ringIndex, tubeIndex);
-        vertex.position =
-          transformVertex * glm::vec4(sliceVertex.position, 1.0f);
+        vertex.position = transformVertex * glm::vec4(sliceVertex.position, 1.0f);
         vertex.normal = transformNormal * glm::vec4(sliceVertex.normal, 0.0f);
       }
     }
@@ -105,9 +101,14 @@ void makeTorus(Vertices& vertices, uint32_t ringQuality, uint32_t tubeQuality,
   }
 }
 
-void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
-                      uint32_t tubeQuality, float ringRadius, float tubeRadius,
-                      bool closedStart, bool closedEnd, float startAngle,
+void makePartialTorus(Vertices& vertices,
+                      uint32_t ringQuality,
+                      uint32_t tubeQuality,
+                      float ringRadius,
+                      float tubeRadius,
+                      bool closedStart,
+                      bool closedEnd,
+                      float startAngle,
                       float sweepAngle) {
   Vertices tubeSliceVertices;
   tubeSliceVertices.resize(tubeQuality);
@@ -136,13 +137,10 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
     const float angle = startAngle + coef * sweepAngle;
 
     const float radAngle = glm::radians(angle);
-    ringCenters.push_back(
-      {ringRadius * std::cos(radAngle), ringRadius * std::sin(radAngle), 0});
+    ringCenters.push_back({ringRadius * std::cos(radAngle), ringRadius * std::sin(radAngle), 0});
 
-    const glm::mat4 transformNormal =
-      glm::rotate(glm::identity<glm::mat4>(), radAngle, glm::vec3(0, 0, 1));
-    const glm::mat4 transformVertex =
-      glm::translate(transformNormal, glm::vec3(ringRadius, 0, 0));
+    const glm::mat4 transformNormal = glm::rotate(glm::identity<glm::mat4>(), radAngle, glm::vec3(0, 0, 1));
+    const glm::mat4 transformVertex = glm::translate(transformNormal, glm::vec3(ringRadius, 0, 0));
 
     for (int32_t tubeIndex = 0; tubeIndex < int32_t(tubeQuality); ++tubeIndex) {
       const Vertex& sliceVertex = tubeSliceVertices[std::size_t(tubeIndex)];
@@ -212,8 +210,7 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
       }
 
       if (closedEnd) {
-        auto it =
-          ringVertices.beginColumns(uint32_t(ringVertices.height()) - 1);
+        auto it = ringVertices.beginColumns(uint32_t(ringVertices.height()) - 1);
         const glm::vec3 posA = getForward(*(it + 0), tubeRadius);
         const glm::vec3 posB = getForward(*(it + 1), tubeRadius);
         const glm::vec3 posC = getForward(*(it + 2), tubeRadius);
@@ -243,8 +240,7 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
       }
 
       if (closedEnd) {
-        auto it =
-          ringVertices.beginColumns(uint32_t(ringVertices.height()) - 1);
+        auto it = ringVertices.beginColumns(uint32_t(ringVertices.height()) - 1);
         const glm::vec3 posA = getForward(*(it + 0), tubeRadius);
         const glm::vec3 posB = getForward(*(it + 1), tubeRadius);
         const glm::vec3 posC = getForward(*(it + 2), tubeRadius);
@@ -269,12 +265,9 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
         const int32_t index2 = (tubeIndex + 1) % int32_t(tubeQuality);
 
         if (closedStart) {
-          const glm::vec3 posF1 =
-            getForward(ringVertices(0, index1), tubeRadius);
-          const glm::vec3 posF2 =
-            getForward(ringVertices(0, index2), tubeRadius);
-          const glm::vec3 normalF =
-            glm::cross(centerF - posF1, centerF - posF2);
+          const glm::vec3 posF1 = getForward(ringVertices(0, index1), tubeRadius);
+          const glm::vec3 posF2 = getForward(ringVertices(0, index2), tubeRadius);
+          const glm::vec3 normalF = glm::cross(centerF - posF1, centerF - posF2);
 
           vertices.push_back({centerF, normalF});
           vertices.push_back({posF1, normalF});
@@ -282,12 +275,10 @@ void makePartialTorus(Vertices& vertices, uint32_t ringQuality,
         }
 
         if (closedEnd) {
-          auto it =
-            ringVertices.beginColumns(uint32_t(ringVertices.height()) - 1);
+          auto it = ringVertices.beginColumns(uint32_t(ringVertices.height()) - 1);
           const glm::vec3 posB1 = getForward(*(it + index1), tubeRadius);
           const glm::vec3 posB2 = getForward(*(it + index2), tubeRadius);
-          const glm::vec3 normalB =
-            -glm::cross(centerB - posB1, centerB - posB2);
+          const glm::vec3 normalB = -glm::cross(centerB - posB1, centerB - posB2);
 
           vertices.push_back({centerB, normalB});
           vertices.push_back({posB2, normalB});

@@ -14,8 +14,7 @@ TEST(physic_wrapper, raycast_nothing) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(1000, 0, 10),
-                                                    glm::vec3(1000, 0, -10));
+  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(1000, 0, 10), glm::vec3(1000, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
@@ -63,8 +62,7 @@ TEST(physic_wrapper, raycast_closest_static_object) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10),
-                                                    glm::vec3(0, 0, -10));
+  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
@@ -151,8 +149,7 @@ TEST(physic_wrapper, raycast_closest_static_object_with_collision_filters) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10),
-                                                    glm::vec3(0, 0, -10));
+  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = filter2;
   paramsRay.collisionMask = filter2;
@@ -236,8 +233,7 @@ TEST(physic_wrapper, raycast_closest_static_object_with_ignore_parameter) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10),
-                                                    glm::vec3(0, 0, -10));
+  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
@@ -321,8 +317,7 @@ TEST(physic_wrapper, raycast_every_static_objects) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10),
-                                                    glm::vec3(0, 0, -10));
+  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
@@ -442,8 +437,7 @@ TEST(physic_wrapper, raycast_every_static_objects_with_ignore_parameter) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10),
-                                                    glm::vec3(0, 0, -10));
+  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
@@ -565,8 +559,7 @@ TEST(physic_wrapper, raycast_every_static_objects_being_looped) {
 
   for (int ii = 0; ii < 10; ++ii) {
 
-    gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10),
-                                                      glm::vec3(0, 0, -10));
+    gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
     paramsRay.radius = 0.0f;
     paramsRay.collisionGroup = -1;
     paramsRay.collisionMask = -1;

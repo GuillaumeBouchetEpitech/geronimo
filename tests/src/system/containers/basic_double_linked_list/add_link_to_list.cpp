@@ -41,8 +41,7 @@ TEST(system_basic_double_linked_list, can_add_link_to_list_twice) {
   ASSERT_EQ(link1.next_link, nullptr);
 }
 
-TEST(system_basic_double_linked_list,
-     can_add_link_to_list_three_times) {
+TEST(system_basic_double_linked_list, can_add_link_to_list_three_times) {
   List list;
   Link link1;
   Link link2;

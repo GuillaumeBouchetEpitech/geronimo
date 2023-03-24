@@ -20,8 +20,7 @@ RenderBuffer::~RenderBuffer() { dispose(); }
 //
 
 namespace {
-GlContext::RenderBuffer::DepthFormat
-getRawDepthFormat(RenderBuffer::DepthFormat depthFormat) {
+GlContext::RenderBuffer::DepthFormat getRawDepthFormat(RenderBuffer::DepthFormat depthFormat) {
   switch (depthFormat) {
   case RenderBuffer::DepthFormat::depth16:
     return GlContext::RenderBuffer::DepthFormat::depth16;
@@ -35,8 +34,7 @@ getRawDepthFormat(RenderBuffer::DepthFormat depthFormat) {
 }
 } // namespace
 
-void RenderBuffer::allocateDepth(const glm::uvec2& size,
-                                 DepthFormat depthFormat) {
+void RenderBuffer::allocateDepth(const glm::uvec2& size, DepthFormat depthFormat) {
 
   _size = size;
 
@@ -46,12 +44,10 @@ void RenderBuffer::allocateDepth(const glm::uvec2& size,
   if (_bufferId == 0)
     GlContext::RenderBuffer::generateMany(1, &_bufferId);
 
-  const GlContext::RenderBuffer::DepthFormat rawFormat =
-    getRawDepthFormat(depthFormat);
+  const GlContext::RenderBuffer::DepthFormat rawFormat = getRawDepthFormat(depthFormat);
 
   GlContext::RenderBuffer::bind(_bufferId);
-  GlContext::RenderBuffer::setSize(uint32_t(_size.x), uint32_t(_size.y),
-                                   rawFormat);
+  GlContext::RenderBuffer::setSize(uint32_t(_size.x), uint32_t(_size.y), rawFormat);
   GlContext::RenderBuffer::bind(0);
 }
 
@@ -92,7 +88,7 @@ void RenderBuffer::ensureCompatibleDepth() {
     FrameBuffer::Definition def;
     def.colorTextures.push_back({0, &tmpColorTexture});
     def.renderBuffer = &tmpRenderBuffer;
-    if (tmpFrameBuffer.initialise(def, false)) {
+    if (tmpFrameBuffer.initialize(def, false)) {
       s_depthCompatibleValues.depthFormat = currConfig.format;
       // D_MYLOG("currConfig.msg " << currConfig.msg);
       break;
@@ -113,9 +109,7 @@ void RenderBuffer::dispose() {
 
 const glm::uvec2& RenderBuffer::getSize() const { return _size; }
 
-bool RenderBuffer::isValid() const {
-  return _size.x > 0 && _size.x > 0 && _bufferId != 0;
-}
+bool RenderBuffer::isValid() const { return _size.x > 0 && _size.x > 0 && _bufferId != 0; }
 
 //
 

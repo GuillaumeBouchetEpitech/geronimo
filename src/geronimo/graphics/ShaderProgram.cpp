@@ -19,7 +19,8 @@ namespace graphics {
 
 namespace utilities {
 
-bool getShaderSource(const std::string& filename, std::string& source,
+bool getShaderSource(const std::string& filename,
+                     std::string& source,
                      const fileUtils::LoadCallback& loadFileCallback) {
   std::string subSource;
   loadFileCallback(filename, subSource);
@@ -65,75 +66,62 @@ bool getShaderSource(const std::string& filename, std::string& source,
 
 //
 
-ShaderProgram::ShaderProgram(const Definition& def)
-  : ShaderProgram(def, fileUtils::getDefaulCallback()) {}
+ShaderProgram::ShaderProgram(const Definition& def) : ShaderProgram(def, fileUtils::getDefaulCallback()) {}
 
-ShaderProgram::ShaderProgram(const Definition& def,
-                             fileUtils::FileManager& fileManager)
+ShaderProgram::ShaderProgram(const Definition& def, fileUtils::FileManager& fileManager)
   : ShaderProgram(def, fileUtils::getFileManagerCallback(fileManager)) {}
 
-ShaderProgram::ShaderProgram(const Definition& def,
-                             const fileUtils::LoadCallback& loadFileCallback) {
+ShaderProgram::ShaderProgram(const Definition& def, const fileUtils::LoadCallback& loadFileCallback) {
   std::string vertexSourceCode;
   std::string fragmentSourceCode;
 
-  if (!utilities::getShaderSource(def.filenames.vertex, vertexSourceCode,
-                                  loadFileCallback))
-    D_THROW(std::invalid_argument,
-            "fail to read a file, filename=" << def.filenames.vertex);
+  if (!utilities::getShaderSource(def.filenames.vertex, vertexSourceCode, loadFileCallback))
+    D_THROW(std::invalid_argument, "fail to read a file, filename=" << def.filenames.vertex);
 
-  if (!utilities::getShaderSource(def.filenames.fragment, fragmentSourceCode,
-                                  loadFileCallback))
-    D_THROW(std::invalid_argument,
-            "fail to read a file, filename=" << def.filenames.fragment);
+  if (!utilities::getShaderSource(def.filenames.fragment, fragmentSourceCode, loadFileCallback))
+    D_THROW(std::invalid_argument, "fail to read a file, filename=" << def.filenames.fragment);
 
-  uint32_t vertexShader =
-    GlContext::Shader::loadVertexShader(def.filenames.vertex, vertexSourceCode);
-  uint32_t fragmentShader = GlContext::Shader::loadFragmentShader(
-    def.filenames.fragment, fragmentSourceCode);
+  uint32_t vertexShader = GlContext::Shader::loadVertexShader(def.filenames.vertex, vertexSourceCode);
+  uint32_t fragmentShader = GlContext::Shader::loadFragmentShader(def.filenames.fragment, fragmentSourceCode);
 
   _programId = GlContext::Shader::createProgram();
 
   if (!_programId)
     D_THROW(std::invalid_argument, "fail to create a shader program");
 
-  if (!GlContext::Shader::linkProgram(_programId, vertexShader,
-                                      fragmentShader)) {
+  if (!GlContext::Shader::linkProgram(_programId, vertexShader, fragmentShader)) {
 
     GlContext::Shader::deleteProgram(_programId);
 
-    D_THROW(std::runtime_error, "fail to link a shader"
-                                  << ", vertex=" << def.filenames.vertex
-                                  << ", fragment=" << def.filenames.fragment);
+    D_THROW(std::runtime_error,
+            "fail to link a shader"
+              << ", vertex=" << def.filenames.vertex << ", fragment=" << def.filenames.fragment);
   }
 
   for (const auto& attribute : def.attributes) {
     if (_attributesMap.count(attribute) > 0)
-      D_THROW(std::runtime_error, "duplicate attribute"
-                                    << ", input=" << attribute
-                                    << ", vertex=" << def.filenames.vertex);
+      D_THROW(std::runtime_error,
+              "duplicate attribute"
+                << ", input=" << attribute << ", vertex=" << def.filenames.vertex);
 
-    const int32_t location =
-      GlContext::Shader::getAttribLocation(_programId, attribute.c_str());
+    const int32_t location = GlContext::Shader::getAttribLocation(_programId, attribute.c_str());
 
     if (location == -1)
       D_THROW(std::runtime_error,
               "fail to find an attribute location (missing or unused)"
-                << ", input=" << attribute
-                << ", vertex=" << def.filenames.vertex);
+                << ", input=" << attribute << ", vertex=" << def.filenames.vertex);
 
     _attributesMap[attribute] = location;
   }
 
   for (const auto& uniform : def.uniforms) {
     if (_uniformsMap.count(uniform) > 0)
-      D_THROW(std::runtime_error, "duplicate uniform"
-                                    << ", input=" << uniform
-                                    << ", vertex=" << def.filenames.vertex
-                                    << ", fragment=" << def.filenames.fragment);
+      D_THROW(std::runtime_error,
+              "duplicate uniform"
+                << ", input=" << uniform << ", vertex=" << def.filenames.vertex
+                << ", fragment=" << def.filenames.fragment);
 
-    const int32_t location =
-      GlContext::Shader::getUniformLocation(_programId, uniform.c_str());
+    const int32_t location = GlContext::Shader::getUniformLocation(_programId, uniform.c_str());
 
     if (location == -1)
       D_THROW(std::runtime_error,
@@ -154,7 +142,7 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::bind() const {
   if (!_programId)
-    D_THROW(std::runtime_error, "shader not initialised");
+    D_THROW(std::runtime_error, "shader not initialized");
 
   GlContext::Shader::useProgram(_programId);
 }
@@ -181,48 +169,33 @@ int32_t ShaderProgram::getUniform(const char* name) const {
   return it->second;
 }
 
-bool ShaderProgram::hasAttribute(const char* name) const {
-  return (_attributesMap.find(name) != _attributesMap.end());
-}
+bool ShaderProgram::hasAttribute(const char* name) const { return (_attributesMap.find(name) != _attributesMap.end()); }
 
-bool ShaderProgram::hasUniform(const char* name) const {
-  return (_uniformsMap.count(name) > 0);
-}
+bool ShaderProgram::hasUniform(const char* name) const { return (_uniformsMap.count(name) > 0); }
 
 //
 
-void ShaderProgram::setUniform(const char* name, int32_t value) const {
-  setUniform(getUniform(name), value);
-}
+void ShaderProgram::setUniform(const char* name, int32_t value) const { setUniform(getUniform(name), value); }
 
-void ShaderProgram::setUniform(const char* name, int32_t x, int32_t y) const {
-  setUniform(getUniform(name), x, y);
-}
+void ShaderProgram::setUniform(const char* name, int32_t x, int32_t y) const { setUniform(getUniform(name), x, y); }
 
 void ShaderProgram::setUniform(const char* name, int32_t x, int32_t y, int32_t z) const {
   setUniform(getUniform(name), x, y, z);
 }
 
-void ShaderProgram::setUniform(const char* name, int32_t x, int32_t y, int32_t z,
-                               int32_t w) const {
+void ShaderProgram::setUniform(const char* name, int32_t x, int32_t y, int32_t z, int32_t w) const {
   setUniform(getUniform(name), x, y, z, w);
 }
 
-void ShaderProgram::setUniform(const char* name, float value) const {
-  setUniform(getUniform(name), value);
-}
+void ShaderProgram::setUniform(const char* name, float value) const { setUniform(getUniform(name), value); }
 
-void ShaderProgram::setUniform(const char* name, float x, float y) const {
-  setUniform(getUniform(name), x, y);
-}
+void ShaderProgram::setUniform(const char* name, float x, float y) const { setUniform(getUniform(name), x, y); }
 
-void ShaderProgram::setUniform(const char* name, float x, float y,
-                               float z) const {
+void ShaderProgram::setUniform(const char* name, float x, float y, float z) const {
   setUniform(getUniform(name), x, y, z);
 }
 
-void ShaderProgram::setUniform(const char* name, float x, float y, float z,
-                               float w) const {
+void ShaderProgram::setUniform(const char* name, float x, float y, float z, float w) const {
   setUniform(getUniform(name), x, y, z, w);
 }
 
@@ -234,13 +207,9 @@ void ShaderProgram::setUniform(const char* name, const glm::vec4& vec4) const {
   setUniform(getUniform(name), vec4.x, vec4.y, vec4.z, vec4.w);
 }
 
-void ShaderProgram::setUniform(const char* name, const glm::mat3& mat3) const {
-  setUniform(getUniform(name), mat3);
-}
+void ShaderProgram::setUniform(const char* name, const glm::mat3& mat3) const { setUniform(getUniform(name), mat3); }
 
-void ShaderProgram::setUniform(const char* name, const glm::mat4& mat4) const {
-  setUniform(getUniform(name), mat4);
-}
+void ShaderProgram::setUniform(const char* name, const glm::mat4& mat4) const { setUniform(getUniform(name), mat4); }
 
 //
 
@@ -260,9 +229,7 @@ void ShaderProgram::setUniform(int32_t location, int32_t x, int32_t y, int32_t z
   GlContext::Shader::setUniform(location, x, y, z, w);
 }
 
-void ShaderProgram::setUniform(int32_t location, float value) const {
-  GlContext::Shader::setUniform(location, value);
-}
+void ShaderProgram::setUniform(int32_t location, float value) const { GlContext::Shader::setUniform(location, value); }
 
 void ShaderProgram::setUniform(int32_t location, float x, float y) const {
   GlContext::Shader::setUniform(location, x, y);
@@ -272,8 +239,7 @@ void ShaderProgram::setUniform(int32_t location, float x, float y, float z) cons
   GlContext::Shader::setUniform(location, x, y, z);
 }
 
-void ShaderProgram::setUniform(int32_t location, float x, float y, float z,
-                               float w) const {
+void ShaderProgram::setUniform(int32_t location, float x, float y, float z, float w) const {
   GlContext::Shader::setUniform(location, x, y, z, w);
 }
 

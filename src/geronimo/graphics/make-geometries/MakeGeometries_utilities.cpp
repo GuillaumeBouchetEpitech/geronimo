@@ -13,8 +13,7 @@ namespace MakeGeometries {
 void executeTransform(const glm::mat4& transform, Vertices& vertices) {
   for (Vertex& vertex : vertices) {
     vertex.position = transform * glm::vec4(vertex.position, 1.0f);
-    vertex.normal =
-      glm::normalize(glm::vec3(transform * glm::vec4(vertex.normal, 0.0f)));
+    vertex.normal = glm::normalize(glm::vec3(transform * glm::vec4(vertex.normal, 0.0f)));
   }
 }
 

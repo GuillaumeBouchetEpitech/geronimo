@@ -22,11 +22,9 @@ private:
 
 public:
   CustomVehicleRaycaster(btDynamicsWorld& world, short group, short mask)
-    : btDefaultVehicleRaycaster(&world), _dynamicsWorld(world), _group(group),
-      _mask(mask) {}
+    : btDefaultVehicleRaycaster(&world), _dynamicsWorld(world), _group(group), _mask(mask) {}
 
-  virtual void* castRay(const btVector3& from, const btVector3& to,
-                        btVehicleRaycasterResult& result) override {
+  virtual void* castRay(const btVector3& from, const btVector3& to, btVehicleRaycasterResult& result) override {
     btCollisionWorld::ClosestRayResultCallback rayCallback(from, to);
 
     // added value => we can specify the group/mask
@@ -38,8 +36,7 @@ public:
     if (!rayCallback.hasHit())
       return nullptr;
 
-    const btRigidBody* body =
-      btRigidBody::upcast(rayCallback.m_collisionObject);
+    const btRigidBody* body = btRigidBody::upcast(rayCallback.m_collisionObject);
     if (!body || !body->hasContactResponse())
       return nullptr;
 
@@ -56,21 +53,19 @@ public:
 namespace gero {
 namespace physics {
 
-PhysicVehicle::PhysicVehicle(btDiscreteDynamicsWorld& dynamicsWorld,
-                             const PhysicVehicleDef& def) {
+PhysicVehicle::PhysicVehicle(btDiscreteDynamicsWorld& dynamicsWorld, const PhysicVehicleDef& def) {
   if (!def.body)
     D_THROW(std::runtime_error, "physic vehicle need a physic body");
 
   _body = def.body;
 
   btRaycastVehicle::btVehicleTuning tuning;
-  _bullet.vehicleRayCaster = new CustomVehicleRaycaster(
-    dynamicsWorld, def.wheelsCollisionGroup, def.wheelsCollisionMask);
+  _bullet.vehicleRayCaster =
+    new CustomVehicleRaycaster(dynamicsWorld, def.wheelsCollisionGroup, def.wheelsCollisionMask);
 
   PhysicBody* implementation = reinterpret_cast<PhysicBody*>(_body.get());
 
-  _bullet.vehicle = new btRaycastVehicle(tuning, implementation->_bullet.body,
-                                         _bullet.vehicleRayCaster);
+  _bullet.vehicle = new btRaycastVehicle(tuning, implementation->_bullet.body, _bullet.vehicleRayCaster);
 
   // // never allow the deactivation (sleep) state of the vehicle
   // _bullet.carChassis->setActivationState(DISABLE_DEACTIVATION);
@@ -82,18 +77,16 @@ PhysicVehicle::PhysicVehicle(btDiscreteDynamicsWorld& dynamicsWorld,
   // float connectionHeight = 0.5f;
 
   // choose coordinate system
-  _bullet.vehicle->setCoordinateSystem(
-    def.coordinateSystem.x, def.coordinateSystem.y, def.coordinateSystem.z);
+  _bullet.vehicle->setCoordinateSystem(def.coordinateSystem.x, def.coordinateSystem.y, def.coordinateSystem.z);
 
   for (const auto& wheelStats : def.allWheelStats) {
     btWheelInfo& wheelInfo = _bullet.vehicle->addWheel(
-      btVector3(wheelStats.connectionPoint.x, wheelStats.connectionPoint.y,
-                wheelStats.connectionPoint.z),
-      btVector3(wheelStats.wheelDirectionCS0.x, wheelStats.wheelDirectionCS0.y,
-                wheelStats.wheelDirectionCS0.z),
-      btVector3(wheelStats.wheelAxleCS.x, wheelStats.wheelAxleCS.y,
-                wheelStats.wheelAxleCS.z),
-      wheelStats.suspensionRestLength, wheelStats.wheelRadius, tuning,
+      btVector3(wheelStats.connectionPoint.x, wheelStats.connectionPoint.y, wheelStats.connectionPoint.z),
+      btVector3(wheelStats.wheelDirectionCS0.x, wheelStats.wheelDirectionCS0.y, wheelStats.wheelDirectionCS0.z),
+      btVector3(wheelStats.wheelAxleCS.x, wheelStats.wheelAxleCS.y, wheelStats.wheelAxleCS.z),
+      wheelStats.suspensionRestLength,
+      wheelStats.wheelRadius,
+      tuning,
       wheelStats.isFrontWheel);
 
     wheelInfo.m_suspensionStiffness = wheelStats.suspensionStiffness;
@@ -135,13 +128,9 @@ PhysicVehicle& PhysicVehicle::operator=(PhysicVehicle&& other) {
 //
 //
 
-void PhysicVehicle::applyEngineForce(int32_t index, float force) {
-  _bullet.vehicle->applyEngineForce(force, index);
-}
+void PhysicVehicle::applyEngineForce(int32_t index, float force) { _bullet.vehicle->applyEngineForce(force, index); }
 
-void PhysicVehicle::applyBrake(int32_t index, float force) {
-  _bullet.vehicle->setBrake(force, index);
-}
+void PhysicVehicle::applyBrake(int32_t index, float force) { _bullet.vehicle->setBrake(force, index); }
 
 void PhysicVehicle::setSteeringValue(int32_t index, float steering) {
   _bullet.vehicle->setSteeringValue(steering, index);
@@ -163,12 +152,9 @@ void PhysicVehicle::reset() {
     applyBrake(ii, 0);
 }
 
-int32_t PhysicVehicle::getNumWheels() const {
-  return _bullet.vehicle->getNumWheels();
-}
+int32_t PhysicVehicle::getNumWheels() const { return _bullet.vehicle->getNumWheels(); }
 
-const glm::mat4& PhysicVehicle::getWheelTransform(int32_t index,
-                                                  glm::mat4& mat4x4) const {
+const glm::mat4& PhysicVehicle::getWheelTransform(int32_t index, glm::mat4& mat4x4) const {
 
   // _bullet.vehicle->getWheelTransformWS(index).getOpenGLMatrix(glm::value_ptr(mat4x4));
 
@@ -178,25 +164,22 @@ const glm::mat4& PhysicVehicle::getWheelTransform(int32_t index,
   return mat4x4;
 }
 
-glm::vec3 PhysicVehicle::getWheelPosition(int32_t index) const
-{
+glm::vec3 PhysicVehicle::getWheelPosition(int32_t index) const {
   auto transform = _bullet.vehicle->getWheelTransformWS(index);
   auto origin = transform.getOrigin();
   return glm::vec3(origin[0], origin[1], origin[2]);
 }
 
-glm::quat PhysicVehicle::getWheelOrientation(int32_t index) const
-{
+glm::quat PhysicVehicle::getWheelOrientation(int32_t index) const {
   auto transform = _bullet.vehicle->getWheelTransformWS(index);
   auto rotation = transform.getRotation();
   return glm::quat(rotation[3], rotation[0], rotation[1], rotation[2]);
 }
 
-float PhysicVehicle::getCurrentSpeedKmHour() const {
-  return float(_bullet.vehicle->getCurrentSpeedKmHour());
-}
+float PhysicVehicle::getCurrentSpeedKmHour() const { return float(_bullet.vehicle->getCurrentSpeedKmHour()); }
 
-PhysicBodyManager::BodyWeakRef PhysicVehicle::getPhysicBody() { return _body; }
+BodyWeakRef PhysicVehicle::getPhysicBody() { return _body; }
+const BodyWeakRef PhysicVehicle::getPhysicBody() const { return _body; }
 
 } // namespace physics
 } // namespace gero

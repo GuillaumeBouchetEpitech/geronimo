@@ -8,8 +8,7 @@
 namespace gero {
 namespace physics {
 
-PhysicBodyManager::PhysicBodyManager(PhysicWorld& physicWorld)
-  : _physicWorld(physicWorld) {
+PhysicBodyManager::PhysicBodyManager(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {
   _bodies.pre_allocate(1024);
 }
 
@@ -20,19 +19,15 @@ void PhysicBodyManager::clear() {
   _bodies.clear();
 }
 
-PhysicBodyManager::BodyWeakRef
-PhysicBodyManager::createBody(const PhysicBodyDef& def) {
-  return _bodies.acquire(def);
-}
+BodyWeakRef PhysicBodyManager::createBody(const PhysicBodyDef& def) { return _bodies.acquire(def); }
 
-PhysicBodyManager::BodyWeakRef
-PhysicBodyManager::createAndAddBody(const PhysicBodyDef& def) {
+BodyWeakRef PhysicBodyManager::createAndAddBody(const PhysicBodyDef& def) {
   auto ref = createBody(def);
   addBody(ref, def.group, def.mask);
   return ref;
 }
 
-void PhysicBodyManager::destroyBody(PhysicBodyManager::BodyWeakRef ref) {
+void PhysicBodyManager::destroyBody(BodyWeakRef ref) {
   if (!ref)
     return;
 
@@ -40,15 +35,13 @@ void PhysicBodyManager::destroyBody(PhysicBodyManager::BodyWeakRef ref) {
   _bodies.release(ref);
 }
 
-void PhysicBodyManager::addBody(PhysicBodyManager::BodyWeakRef ref, short group,
-                                short mask) {
+void PhysicBodyManager::addBody(BodyWeakRef ref, short group, short mask) {
   if (!ref)
     return;
   PhysicBody* implementation = reinterpret_cast<PhysicBody*>(ref.get());
   if (implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->addRigidBody(implementation->_bullet.body,
-                                                   group, mask);
+  _physicWorld._bullet.dynamicsWorld->addRigidBody(implementation->_bullet.body, group, mask);
   implementation->_isAdded = true;
 }
 
@@ -56,27 +49,21 @@ void PhysicBodyManager::removeBody(AbstractPhysicBody& body) {
   PhysicBody& implementation = reinterpret_cast<PhysicBody&>(body);
   if (!implementation._isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->removeRigidBody(
-    implementation._bullet.body);
+  _physicWorld._bullet.dynamicsWorld->removeRigidBody(implementation._bullet.body);
   implementation._isAdded = false;
 }
 
-void PhysicBodyManager::removeBody(PhysicBodyManager::BodyWeakRef ref) {
+void PhysicBodyManager::removeBody(BodyWeakRef ref) {
   if (!ref)
     return;
   removeBody(*ref.get());
 }
 
-PhysicBodyManager::BodyWeakRef PhysicBodyManager::getBody(uint32_t index) {
-  return _bodies.get(index);
-}
+BodyWeakRef PhysicBodyManager::getBody(uint32_t index) { return _bodies.get(index); }
 
-const PhysicBodyManager::BodyWeakRef
-PhysicBodyManager::getBody(uint32_t index) const {
-  return _bodies.get(index);
-}
+const BodyWeakRef PhysicBodyManager::getBody(uint32_t index) const { return _bodies.get(index); }
 
-// PhysicBodyManager::BodyWeakRef PhysicBodyManager::getBody(const
+// BodyWeakRef PhysicBodyManager::getBody(const
 // AbstractPhysicBody& inBody)
 // {
 //   // return _bodies.get(inBody);
@@ -84,7 +71,7 @@ PhysicBodyManager::getBody(uint32_t index) const {
 //   &body == &inBody; });
 // }
 
-// const PhysicBodyManager::BodyWeakRef PhysicBodyManager::getBody(const
+// const BodyWeakRef PhysicBodyManager::getBody(const
 // AbstractPhysicBody& inBody) const
 // {
 //   // return _bodies.get(inBody);

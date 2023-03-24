@@ -14,8 +14,7 @@ namespace {
 using OnNewPhysicBodyCallback = std::function<bool(AbstractPhysicBody*)>;
 
 /// ContactResultCallback is used to report contact points
-struct MyContactResultCallback
-  : public btCollisionWorld::ContactResultCallback {
+struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback {
 
   int32_t m_bodyUniqueIdA;
   int32_t m_bodyUniqueIdB;
@@ -37,11 +36,8 @@ struct MyContactResultCallback
                           int32_t collisionMask,
                           void* toIgnore,
                           const OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
-    : _physicWorld(physicWorld)
-    , _volume(volume)
-    , _toIgnore(toIgnore)
-    , _onNewPhysicBodyCallback(onNewPhysicBodyCallback)
-  {
+    : _physicWorld(physicWorld), _volume(volume), _toIgnore(toIgnore),
+      _onNewPhysicBodyCallback(onNewPhysicBodyCallback) {
     m_collisionFilterGroup = collisionGroup;
     m_collisionFilterMask = collisionMask;
   }
@@ -55,9 +51,11 @@ struct MyContactResultCallback
 
   virtual btScalar addSingleResult(btManifoldPoint& cp,
                                    const btCollisionObjectWrapper* colObj0Wrap,
-                                   int32_t partId0, int32_t index0,
+                                   int32_t partId0,
+                                   int32_t index0,
                                    const btCollisionObjectWrapper* colObj1Wrap,
-                                   int32_t partId1, int32_t index1) {
+                                   int32_t partId1,
+                                   int32_t index1) {
     static_cast<void>(cp);      // unused
     static_cast<void>(partId0); // unused
     static_cast<void>(index0);  // unused
@@ -69,16 +67,13 @@ struct MyContactResultCallback
 
     const btCollisionObjectWrapper* pObject = (colObj0Wrap->m_collisionObject != &_volume ? colObj0Wrap : colObj1Wrap);
 
-    const btRigidBody* pRigidBody =
-      btRigidBody::upcast(pObject->m_collisionObject);
-    if (pRigidBody == nullptr || !pRigidBody->hasContactResponse() ||
-        pRigidBody->getUserPointer() == nullptr ||
+    const btRigidBody* pRigidBody = btRigidBody::upcast(pObject->m_collisionObject);
+    if (pRigidBody == nullptr || !pRigidBody->hasContactResponse() || pRigidBody->getUserPointer() == nullptr ||
         (_toIgnore != nullptr && pRigidBody->getUserPointer() == _toIgnore)) {
       return 1;
     }
 
-    AbstractPhysicBody* pPhysicBody =
-      static_cast<AbstractPhysicBody*>(pRigidBody->getUserPointer());
+    AbstractPhysicBody* pPhysicBody = static_cast<AbstractPhysicBody*>(pRigidBody->getUserPointer());
 
     if (!_onNewPhysicBodyCallback(pPhysicBody))
       _isCompleted = true;
@@ -91,25 +86,21 @@ struct MyContactResultCallback
 
 QueryShape::QueryShape(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
 
-bool QueryShape::_queryShape(QueryShapeParams& inParams,
-                             QueryShapeParams::ResultRaw& outResultArray) {
+bool QueryShape::_queryShape(QueryShapeParams& inParams, QueryShapeParams::ResultRaw& outResultArray) {
   outResultArray.allBodiesTotal = 0;
 
   PhysicShape* pShape = PhysicShape::create(inParams.shape, false);
 
   btPairCachingGhostObject volume = btPairCachingGhostObject();
   volume.setCollisionShape(pShape->getRawShape());
-  volume.setCollisionFlags(volume.getCollisionFlags() |
-                           btCollisionObject::CF_NO_CONTACT_RESPONSE);
+  volume.setCollisionFlags(volume.getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 
   btTransform tr;
   tr.setIdentity();
-  tr.setOrigin(
-    btVector3(inParams.position.x, inParams.position.y, inParams.position.z));
+  tr.setOrigin(btVector3(inParams.position.x, inParams.position.y, inParams.position.z));
   volume.setWorldTransform(tr);
 
-  const OnNewPhysicBodyCallback callback = [&outResultArray](AbstractPhysicBody* pPhysicBody) -> bool
-  {
+  const OnNewPhysicBodyCallback callback = [&outResultArray](AbstractPhysicBody* pPhysicBody) -> bool {
     if (outResultArray.allBodiesTotal >= outResultArray.allBodiesMaxSize)
       return false;
 
@@ -123,10 +114,8 @@ bool QueryShape::_queryShape(QueryShapeParams& inParams,
     return true;
   };
 
-  MyContactResultCallback cr(_physicWorld, volume,
-                             inParams.collisionGroup, inParams.collisionMask,
-                             inParams.toIgnore,
-                             callback);
+  MyContactResultCallback cr(
+    _physicWorld, volume, inParams.collisionGroup, inParams.collisionMask, inParams.toIgnore, callback);
 
   _physicWorld._bullet.dynamicsWorld->contactTest(&volume, cr);
 
@@ -136,8 +125,7 @@ bool QueryShape::_queryShape(QueryShapeParams& inParams,
   return outResultArray.hasHit;
 }
 
-bool QueryShape::queryShape(QueryShapeParams& inParams,
-                            std::vector<AbstractPhysicBody*>& outResultVector) {
+bool QueryShape::queryShape(QueryShapeParams& inParams, std::vector<AbstractPhysicBody*>& outResultVector) {
 
   outResultVector.clear();
   outResultVector.reserve(256);
@@ -146,17 +134,14 @@ bool QueryShape::queryShape(QueryShapeParams& inParams,
 
   btPairCachingGhostObject volume = btPairCachingGhostObject();
   volume.setCollisionShape(pShape->getRawShape());
-  volume.setCollisionFlags(volume.getCollisionFlags() |
-                           btCollisionObject::CF_NO_CONTACT_RESPONSE);
+  volume.setCollisionFlags(volume.getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 
   btTransform tr;
   tr.setIdentity();
-  tr.setOrigin(
-    btVector3(inParams.position.x, inParams.position.y, inParams.position.z));
+  tr.setOrigin(btVector3(inParams.position.x, inParams.position.y, inParams.position.z));
   volume.setWorldTransform(tr);
 
-  const OnNewPhysicBodyCallback callback = [&outResultVector](AbstractPhysicBody* pPhysicBody) -> bool
-  {
+  const OnNewPhysicBodyCallback callback = [&outResultVector](AbstractPhysicBody* pPhysicBody) -> bool {
     // check duplicates
     for (std::size_t ii = 0; ii < outResultVector.size(); ++ii)
       if (outResultVector[ii] == pPhysicBody)
@@ -166,10 +151,8 @@ bool QueryShape::queryShape(QueryShapeParams& inParams,
     return true;
   };
 
-  MyContactResultCallback cr(_physicWorld, volume,
-                             inParams.collisionGroup, inParams.collisionMask,
-                             inParams.toIgnore,
-                             callback);
+  MyContactResultCallback cr(
+    _physicWorld, volume, inParams.collisionGroup, inParams.collisionMask, inParams.toIgnore, callback);
 
   _physicWorld._bullet.dynamicsWorld->contactTest(&volume, cr);
 

@@ -24,8 +24,8 @@ public:
 
 public:
   MessageBuffer& operator<<(bool data);
-  MessageBuffer& operator<<(char data);
-  MessageBuffer& operator<<(unsigned char data);
+  MessageBuffer& operator<<(int8_t data);
+  MessageBuffer& operator<<(uint8_t data);
   MessageBuffer& operator<<(int16_t data);
   MessageBuffer& operator<<(uint16_t data);
   MessageBuffer& operator<<(int32_t data);

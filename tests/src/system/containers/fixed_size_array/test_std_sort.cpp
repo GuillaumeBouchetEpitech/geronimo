@@ -24,5 +24,4 @@ TEST_F(system_fixed_size_array, std_sort) {
   ASSERT_EQ(myDefaultFixedArray.at(3), 444);
   ASSERT_EQ(myDefaultFixedArray.at(4), 555);
   ASSERT_EQ(myDefaultFixedArray.at(5), 666);
-
 }

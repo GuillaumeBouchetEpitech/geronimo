@@ -2,9 +2,7 @@
 #include "headers.hpp"
 
 TEST(system_weak_ref_data_pool, can_filter_pool) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto ref0 = myPool.acquire(0, "test");
   auto ref1 = myPool.acquire(1, "test");
@@ -23,9 +21,7 @@ TEST(system_weak_ref_data_pool, can_filter_pool) {
     ASSERT_EQ(myPool.get(ii).get()->my_string, "test");
   }
 
-  myPool.filter([](common::TestStructure& currValue) {
-    return (currValue.value % 2 == 0);
-  });
+  myPool.filter([](common::TestStructure& currValue) { return (currValue.value % 2 == 0); });
 
   ASSERT_EQ(myPool.size(), 5);
 
@@ -64,9 +60,7 @@ TEST(system_weak_ref_data_pool, can_filter_pool) {
 }
 
 TEST(system_weak_ref_data_pool, can_loop_pool) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto ref0 = myPool.acquire(0, "test");
   auto ref1 = myPool.acquire(1, "test");
@@ -104,9 +98,7 @@ TEST(system_weak_ref_data_pool, can_loop_pool) {
 }
 
 TEST(system_weak_ref_data_pool, can_find_if) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto ref0 = myPool.acquire(0, "test");
   auto ref1 = myPool.acquire(1, "test");
@@ -123,9 +115,7 @@ TEST(system_weak_ref_data_pool, can_find_if) {
 
   {
     auto foundRef =
-      myPool.find_if([](const common::TestStructure& currValue) -> bool {
-        return (currValue.value == 6);
-      });
+      myPool.find_if([](const common::TestStructure& currValue) -> bool { return (currValue.value == 6); });
     ASSERT_EQ(foundRef.is_active(), true);
     ASSERT_EQ(foundRef, true);
     ASSERT_EQ(foundRef->value, 6);
@@ -135,9 +125,7 @@ TEST(system_weak_ref_data_pool, can_find_if) {
   {
     const auto& cmyPool = myPool;
     auto foundRef =
-      cmyPool.find_if([](const common::TestStructure& currValue) -> bool {
-        return (currValue.value == 6);
-      });
+      cmyPool.find_if([](const common::TestStructure& currValue) -> bool { return (currValue.value == 6); });
     ASSERT_EQ(foundRef.is_active(), true);
     ASSERT_EQ(foundRef, true);
     ASSERT_EQ(foundRef->value, 6);

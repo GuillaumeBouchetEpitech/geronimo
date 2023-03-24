@@ -31,7 +31,7 @@ TEST(physic_wrapper, test_consistence_raw) {
 
   struct TestData {
     int expectedVal;
-    gero::physics::PhysicBodyManager::BodyWeakRef* pRef;
+    gero::physics::BodyWeakRef* pRef;
   };
 
   {
@@ -52,12 +52,9 @@ TEST(physic_wrapper, test_consistence_raw) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.index(), index)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.index(), index) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -80,12 +77,9 @@ TEST(physic_wrapper, test_consistence_raw) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.index(), index)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.index(), index) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -109,12 +103,9 @@ TEST(physic_wrapper, test_consistence_raw) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.index(), index)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.index(), index) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -138,12 +129,9 @@ TEST(physic_wrapper, test_consistence_raw) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.index(), index)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.index(), index) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -167,12 +155,9 @@ TEST(physic_wrapper, test_consistence_raw) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.index(), index)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.index(), index) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 }
@@ -186,7 +171,7 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
     gero::physics::PhysicWorld& _world;
 
     int _val;
-    gero::physics::PhysicBodyManager::BodyWeakRef _bodyRef;
+    gero::physics::BodyWeakRef _bodyRef;
 
     TestClass(gero::physics::PhysicWorld& world, int val) : _world(world) {
       _val = val;
@@ -266,16 +251,11 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.index(), index)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_val, currVal)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.index(), index) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_val, currVal) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -298,14 +278,10 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_val, currVal)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_val, currVal) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -329,14 +305,10 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_val, currVal)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_val, currVal) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -360,14 +332,10 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_val, currVal)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_val, currVal) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 
@@ -391,14 +359,10 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
 
       ASSERT_EQ(bodyManager.getBody(uint32_t(index))->getUserValue(), currVal)
         << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_val, currVal)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef.is_active(), true)
-        << " => index: " << index << ", value: " << currVal;
-      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal)
-        << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_val, currVal) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef.is_active(), true) << " => index: " << index << ", value: " << currVal;
+      ASSERT_EQ(currRef->_bodyRef->getUserValue(), currVal) << " => index: " << index << ", value: " << currVal;
     }
   }
 }

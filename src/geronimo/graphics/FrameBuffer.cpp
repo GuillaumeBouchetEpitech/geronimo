@@ -13,36 +13,29 @@ FrameBuffer::~FrameBuffer() { dispose(); }
 
 //
 
-bool FrameBuffer::initialise(const Definition& def,
-                             bool throwException /*= true*/) {
-  if (def.colorTextures.empty())
-    D_THROW(std::runtime_error, "empty frame buffer color texture array");
+bool FrameBuffer::initialize(const Definition& def, bool throwException /*= true*/) {
+  // if (def.colorTextures.empty())
+  //   D_THROW(std::runtime_error, "empty frame buffer color texture array");
   for (const auto& currColorTexture : def.colorTextures) {
     if (currColorTexture.texture == nullptr)
-      D_THROW(std::runtime_error,
-              "null color texture in frame buffer color texture array");
+      D_THROW(std::runtime_error, "null color texture in frame buffer color texture array");
 
     uint32_t totalSameIndex = 0;
     for (const auto& otherColorTexture : def.colorTextures)
       if (currColorTexture.index == otherColorTexture.index)
         totalSameIndex += 1;
     if (totalSameIndex > 1)
-      D_THROW(
-        std::runtime_error,
-        "duplicated color texture index in frame buffer color texture array");
+      D_THROW(std::runtime_error, "duplicated color texture index in frame buffer color texture array");
 
     uint32_t totalSameTexture = 0;
     for (const auto& otherColorTexture : def.colorTextures)
       if (currColorTexture.texture == otherColorTexture.texture)
         totalSameTexture += 1;
     if (totalSameTexture > 1)
-      D_THROW(
-        std::runtime_error,
-        "duplicated color texture pointer in frame buffer color texture array");
+      D_THROW(std::runtime_error, "duplicated color texture pointer in frame buffer color texture array");
   }
   if (def.depthTexture && def.renderBuffer)
-    D_THROW(std::runtime_error,
-            "cannot specify frame buffer depth texture and render buffer");
+    D_THROW(std::runtime_error, "cannot specify frame buffer depth texture and render buffer");
   // if (!def.depthTexture && !def.renderBuffer)
   //   D_THROW(std::runtime_error, "must specify frame buffer depth texture or
   //   render buffer");
@@ -71,11 +64,9 @@ bool FrameBuffer::initialise(const Definition& def,
     std::vector<uint32_t> drawBuffers;
     drawBuffers.reserve(def.colorTextures.size());
     for (const auto& currColorTexture : def.colorTextures)
-      drawBuffers.push_back(
-        GlContext::FrameBuffers::getColorAttachment(currColorTexture.index));
+      drawBuffers.push_back(GlContext::FrameBuffers::getColorAttachment(currColorTexture.index));
 
-    GlContext::FrameBuffers::drawMany(uint32_t(drawBuffers.size()),
-                                      drawBuffers.data());
+    GlContext::FrameBuffers::drawMany(uint32_t(drawBuffers.size()), drawBuffers.data());
   }
 
   _isLinked = GlContext::FrameBuffers::check(throwException);
@@ -93,12 +84,9 @@ void FrameBuffer::dispose() {
   _frameBufferId = 0;
 }
 
-void FrameBuffer::_attachColorTexture(uint32_t index,
-                                      const Texture& colorTexture) {
+void FrameBuffer::_attachColorTexture(uint32_t index, const Texture& colorTexture) {
   colorTexture.bind();
-  GlContext::FrameBuffers::attachTexture2D(
-    GlContext::FrameBuffers::getColorAttachment(index),
-    colorTexture._textureId);
+  GlContext::FrameBuffers::attachTexture2D(GlContext::FrameBuffers::getColorAttachment(index), colorTexture._textureId);
 }
 
 void FrameBuffer::_attachDepthTexture(const Texture& depthTexture) {
@@ -108,7 +96,7 @@ void FrameBuffer::_attachDepthTexture(const Texture& depthTexture) {
 
 void FrameBuffer::_attachDepthRenderBuffer(const RenderBuffer& buffer) {
   buffer.bind();
-  GlContext::FrameBuffers::attachRenderbuffer(buffer._bufferId);
+  GlContext::FrameBuffers::attachRenderBuffer(buffer._bufferId);
 }
 
 //
@@ -126,8 +114,7 @@ bool FrameBuffer::isValid() const { return _frameBufferId != 0; }
 
 bool FrameBuffer::isLinked() const { return _isLinked; }
 
-void FrameBuffer::getAsImage(Image& image, uint32_t posX, uint32_t posY,
-                             uint32_t width, uint32_t height) const {
+void FrameBuffer::getAsImage(Image& image, uint32_t posX, uint32_t posY, uint32_t width, uint32_t height) const {
   if (!isValid())
     D_THROW(std::runtime_error, "framebuffer not valid");
 

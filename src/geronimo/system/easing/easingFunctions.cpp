@@ -10,17 +10,13 @@ float easeInSine(float t) { return std::sin(1.5707963f * t); }
 
 float easeOutSine(float t) { return 1.0f + std::sin(1.5707963f * (t - 1.0f)); }
 
-float easeInOutSine(float t) {
-  return 0.5f * (1.0f + std::sin(3.1415926f * (t - 0.5f)));
-}
+float easeInOutSine(float t) { return 0.5f * (1.0f + std::sin(3.1415926f * (t - 0.5f))); }
 
 float easeInQuad(float t) { return t * t; }
 
 float easeOutQuad(float t) { return t * (2.0f - t); }
 
-float easeInOutQuad(float t) {
-  return t < 0.5f ? 2.0f * t * t : t * (4 - 2.0f * t) - 1.0f;
-}
+float easeInOutQuad(float t) { return t < 0.5f ? 2.0f * t * t : t * (4 - 2.0f * t) - 1.0f; }
 
 float easeInCubic(float t) { return t * t * t; }
 
@@ -136,22 +132,14 @@ float easeInOutElastic(float t) {
   return 1.0f - 8.0f * t2 * t2 * std::sin(t * math::pi * 9.0f);
 }
 
-float easeInBounce(float t) {
-  return std::pow(2.0f, 6.0f * (t - 1.0f)) *
-         std::abs(std::sin(t * math::pi * 3.5f));
-}
+float easeInBounce(float t) { return std::pow(2.0f, 6.0f * (t - 1.0f)) * std::abs(std::sin(t * math::pi * 3.5f)); }
 
-float easeOutBounce(float t) {
-  return 1.0f -
-         std::pow(2.0f, -6.0f * t) * std::abs(std::cos(t * math::pi * 3.5f));
-}
+float easeOutBounce(float t) { return 1.0f - std::pow(2.0f, -6.0f * t) * std::abs(std::cos(t * math::pi * 3.5f)); }
 
 float easeInOutBounce(float t) {
   if (t < 0.5f)
-    return 8.0f * std::pow(2.0f, 8.0f * (t - 1.0f)) *
-           std::abs(std::sin(t * math::pi * 7.0f));
-  return 1.0f - 8.0f * std::pow(2.0f, -8.0f * t) *
-                  std::abs(std::sin(t * math::pi * 7.0f));
+    return 8.0f * std::pow(2.0f, 8.0f * (t - 1.0f)) * std::abs(std::sin(t * math::pi * 7.0f));
+  return 1.0f - 8.0f * std::pow(2.0f, -8.0f * t) * std::abs(std::sin(t * math::pi * 7.0f));
 }
 
 } // namespace easing

@@ -48,8 +48,7 @@ public:
   typedef std::vector<glm::vec3> t_vertices;
   typedef std::vector<int32_t> t_indices;
 
-  using debuggerPushLineCallback =
-    std::function<void(const glm::vec3&, const glm::vec3&, const glm::vec3&)>;
+  using debuggerPushLineCallback = std::function<void(const glm::vec3&, const glm::vec3&, const glm::vec3&)>;
 
 private:
   struct bullet {

@@ -11,8 +11,6 @@ namespace graphics {
 namespace MakeGeometries {
 
 void makeBox(Vertices& vertices, float sizeX, float sizeY, float sizeZ) {
-  std::vector<glm::vec3> tubeDiskVertices;
-  tubeDiskVertices.reserve(6 * 3 * 2);
 
   const float hSizeX = sizeX * 0.5f;
   const float hSizeY = sizeY * 0.5f;

@@ -36,8 +36,7 @@ public:
   ThreadSynchroniser() = default;
 
 public:
-  bool waitUntilNotified(std::unique_lock<std::mutex>& lock,
-                         float seconds = 0.0f);
+  bool waitUntilNotified(std::unique_lock<std::mutex>& lock, float seconds = 0.0f);
   void notify();
 
 public:

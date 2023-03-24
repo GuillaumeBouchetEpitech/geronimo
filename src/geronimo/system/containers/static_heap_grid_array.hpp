@@ -14,8 +14,7 @@
 namespace gero {
 
 template <typename static_heap_grid_array>
-class static_heap_grid_array_base_column_iterator
-  : public basic_double_linked_list::link {
+class static_heap_grid_array_base_column_iterator : public basic_double_linked_list::link {
 
   friend static_heap_grid_array;
 
@@ -28,17 +27,14 @@ protected:
   int _column;
 
 public:
-  static_heap_grid_array_base_column_iterator(static_heap_grid_array& container,
-                                              int row, int column)
+  static_heap_grid_array_base_column_iterator(static_heap_grid_array& container, int row, int column)
     : _container(&container), _row(row), _column(column) {
-    basic_double_linked_list::add_link_to_list(
-      _container->_column_iterators_list, *this);
+    basic_double_linked_list::add_link_to_list(_container->_column_iterators_list, *this);
   }
 
   ~static_heap_grid_array_base_column_iterator() {
     if (_container)
-      basic_double_linked_list::remove_link_from_list(
-        _container->_column_iterators_list, *this);
+      basic_double_linked_list::remove_link_from_list(_container->_column_iterators_list, *this);
   }
 
 public:
@@ -80,15 +76,10 @@ public:
   }
 
 public:
-  bool
-  operator==(const static_heap_grid_array_base_column_iterator& other) const {
-    return (_container == other._container && _row == other._row &&
-            _column == other._column);
+  bool operator==(const static_heap_grid_array_base_column_iterator& other) const {
+    return (_container == other._container && _row == other._row && _column == other._column);
   }
-  bool
-  operator!=(const static_heap_grid_array_base_column_iterator& other) const {
-    return !(*this == other);
-  }
+  bool operator!=(const static_heap_grid_array_base_column_iterator& other) const { return !(*this == other); }
 };
 
 template <typename static_heap_grid_array>
@@ -98,13 +89,11 @@ class static_heap_grid_array_column_iterator
   friend static_heap_grid_array;
 
 public:
-  using base_type =
-    static_heap_grid_array_base_column_iterator<static_heap_grid_array>;
+  using base_type = static_heap_grid_array_base_column_iterator<static_heap_grid_array>;
   using value_type = typename base_type::value_type;
 
 public:
-  static_heap_grid_array_column_iterator(static_heap_grid_array& container,
-                                         int row, int column)
+  static_heap_grid_array_column_iterator(static_heap_grid_array& container, int row, int column)
     : base_type(container, row, column) {}
 
 public:
@@ -153,13 +142,11 @@ class static_heap_grid_array_const_column_iterator
   friend static_heap_grid_array;
 
 public:
-  using base_type =
-    static_heap_grid_array_base_column_iterator<static_heap_grid_array>;
+  using base_type = static_heap_grid_array_base_column_iterator<static_heap_grid_array>;
   using value_type = typename base_type::value_type;
 
 public:
-  static_heap_grid_array_const_column_iterator(
-    static_heap_grid_array& container, int row, int column)
+  static_heap_grid_array_const_column_iterator(static_heap_grid_array& container, int row, int column)
     : base_type(container, row, column) {}
 
 public:
@@ -196,8 +183,7 @@ public:
 //
 
 template <typename static_heap_grid_array>
-class static_heap_grid_array_base_row_iterator
-  : public basic_double_linked_list::link {
+class static_heap_grid_array_base_row_iterator : public basic_double_linked_list::link {
 
   friend static_heap_grid_array;
 
@@ -210,17 +196,14 @@ protected:
   int _column;
 
 public:
-  static_heap_grid_array_base_row_iterator(static_heap_grid_array& container,
-                                           int row, int column)
+  static_heap_grid_array_base_row_iterator(static_heap_grid_array& container, int row, int column)
     : _container(&container), _row(row), _column(column) {
-    basic_double_linked_list::add_link_to_list(_container->_row_iterators_list,
-                                               *this);
+    basic_double_linked_list::add_link_to_list(_container->_row_iterators_list, *this);
   }
 
   ~static_heap_grid_array_base_row_iterator() {
     if (_container)
-      basic_double_linked_list::remove_link_from_list(
-        _container->_row_iterators_list, *this);
+      basic_double_linked_list::remove_link_from_list(_container->_row_iterators_list, *this);
   }
 
 public:
@@ -263,31 +246,24 @@ public:
 
 public:
   bool operator==(const static_heap_grid_array_base_row_iterator& other) const {
-    return (_container == other._container && _row == other._row &&
-            _column == other._column);
+    return (_container == other._container && _row == other._row && _column == other._column);
   }
-  bool operator!=(const static_heap_grid_array_base_row_iterator& other) const {
-    return !(*this == other);
-  }
+  bool operator!=(const static_heap_grid_array_base_row_iterator& other) const { return !(*this == other); }
 };
 
 template <typename static_heap_grid_array>
-class static_heap_grid_array_row_iterator
-  : public static_heap_grid_array_base_row_iterator<static_heap_grid_array> {
+class static_heap_grid_array_row_iterator : public static_heap_grid_array_base_row_iterator<static_heap_grid_array> {
 
   friend static_heap_grid_array;
 
 public:
-  using base_type =
-    static_heap_grid_array_base_row_iterator<static_heap_grid_array>;
+  using base_type = static_heap_grid_array_base_row_iterator<static_heap_grid_array>;
   using column_iterator = typename static_heap_grid_array::column_iterator;
-  using const_column_iterator =
-    typename static_heap_grid_array::const_column_iterator;
+  using const_column_iterator = typename static_heap_grid_array::const_column_iterator;
   using value_type = typename base_type::value_type;
 
 public:
-  static_heap_grid_array_row_iterator(static_heap_grid_array& container,
-                                      int row, int column)
+  static_heap_grid_array_row_iterator(static_heap_grid_array& container, int row, int column)
     : base_type(container, row, column) {}
 
 public:
@@ -317,19 +293,15 @@ public:
   }
 
 public:
-  column_iterator beginColumns() {
-    return column_iterator(*this->_container, this->_row, this->_column);
-  }
+  column_iterator beginColumns() { return column_iterator(*this->_container, this->_row, this->_column); }
   column_iterator endColumns() {
-    return column_iterator(*this->_container, this->_row,
-                          this->_column + int(this->_container->_width));
+    return column_iterator(*this->_container, this->_row, this->_column + int(this->_container->_width));
   }
   const_column_iterator beginColumns() const {
     return const_column_iterator(*this->_container, this->_row, this->_column);
   }
   const_column_iterator endColumns() const {
-    return const_column_iterator(*this->_container, this->_row,
-                               this->_column + int(this->_container->_width));
+    return const_column_iterator(*this->_container, this->_row, this->_column + int(this->_container->_width));
   }
 
 public:
@@ -352,15 +324,12 @@ class static_heap_grid_array_const_row_iterator
   friend static_heap_grid_array;
 
 public:
-  using base_type =
-    static_heap_grid_array_base_row_iterator<static_heap_grid_array>;
-  using const_column_iterator =
-    typename static_heap_grid_array::const_column_iterator;
+  using base_type = static_heap_grid_array_base_row_iterator<static_heap_grid_array>;
+  using const_column_iterator = typename static_heap_grid_array::const_column_iterator;
   using value_type = typename base_type::value_type;
 
 public:
-  static_heap_grid_array_const_row_iterator(static_heap_grid_array& container,
-                                            int row, int column)
+  static_heap_grid_array_const_row_iterator(static_heap_grid_array& container, int row, int column)
     : base_type(container, row, column) {}
 
 public:
@@ -382,8 +351,7 @@ public:
     return const_column_iterator(*this->_container, this->_row, this->_column);
   }
   const_column_iterator endColumns() const {
-    return const_column_iterator(*this->_container, this->_row,
-                               this->_column + int(this->_container->_width));
+    return const_column_iterator(*this->_container, this->_row, this->_column + int(this->_container->_width));
   }
 
 public:
@@ -414,18 +382,12 @@ template <typename InternalBaseType, typename PublicBaseType = InternalBaseType>
 public:
   using value_type = PublicBaseType;
   using internal_type = InternalBaseType;
-  using base_column_iterator =
-    static_heap_grid_array_base_column_iterator<static_heap_grid_array<value_type>>;
-  using column_iterator =
-    static_heap_grid_array_column_iterator<static_heap_grid_array<value_type>>;
-  using const_column_iterator =
-    static_heap_grid_array_const_column_iterator<static_heap_grid_array<value_type>>;
-  using base_row_iterator =
-    static_heap_grid_array_base_row_iterator<static_heap_grid_array<value_type>>;
-  using row_iterator =
-    static_heap_grid_array_row_iterator<static_heap_grid_array<value_type>>;
-  using const_row_iterator =
-    static_heap_grid_array_const_row_iterator<static_heap_grid_array<value_type>>;
+  using base_column_iterator = static_heap_grid_array_base_column_iterator<static_heap_grid_array<value_type>>;
+  using column_iterator = static_heap_grid_array_column_iterator<static_heap_grid_array<value_type>>;
+  using const_column_iterator = static_heap_grid_array_const_column_iterator<static_heap_grid_array<value_type>>;
+  using base_row_iterator = static_heap_grid_array_base_row_iterator<static_heap_grid_array<value_type>>;
+  using row_iterator = static_heap_grid_array_row_iterator<static_heap_grid_array<value_type>>;
+  using const_row_iterator = static_heap_grid_array_const_row_iterator<static_heap_grid_array<value_type>>;
 
 protected:
   friend base_column_iterator;
@@ -450,8 +412,7 @@ public:
   // disable move/copy
   static_heap_grid_array(const static_heap_grid_array& other) = delete;
   static_heap_grid_array(static_heap_grid_array&& other) = delete;
-  static_heap_grid_array&
-  operator=(const static_heap_grid_array& other) = delete;
+  static_heap_grid_array& operator=(const static_heap_grid_array& other) = delete;
   static_heap_grid_array& operator=(static_heap_grid_array&& other) = delete;
   // disable move/copy
 
@@ -484,9 +445,7 @@ public:
   value_type& get(int row, int column) { return _data[_get_data_index(row, column)]; }
   value_type& operator()(int row, int column) { return get(row, column); }
 
-  const value_type& get(int row, int column) const {
-    return _data[_get_data_index(row, column)];
-  }
+  const value_type& get(int row, int column) const { return _data[_get_data_index(row, column)]; }
   const value_type& operator()(int row, int column) const { return get(row, column); }
 
   const value_type& operator[](int index) const { return _data[index]; }
@@ -499,69 +458,48 @@ public:
 
 public:
   column_iterator beginColumns() { return column_iterator(*this, 0, 0); }
-  column_iterator endColumns() {
-    return column_iterator(*this, int(_height), int(_width));
-  }
+  column_iterator endColumns() { return column_iterator(*this, int(_height), int(_width)); }
   const_column_iterator beginColumns() const {
-    return const_column_iterator(*const_cast<static_heap_grid_array*>(this), 0,
-                               0);
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this), 0, 0);
   }
   const_column_iterator endColumns() const {
-    return const_column_iterator(*const_cast<static_heap_grid_array*>(this),
-                               int(_height), int(_width));
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this), int(_height), int(_width));
   }
 
 public:
-  column_iterator beginColumns(uint32_t row) {
-    return column_iterator(*this, int(row), 0);
-  }
-  column_iterator endColumns(uint32_t row) {
-    return column_iterator(*this, int(row), int(_width));
-  }
+  column_iterator beginColumns(uint32_t row) { return column_iterator(*this, int(row), 0); }
+  column_iterator endColumns(uint32_t row) { return column_iterator(*this, int(row), int(_width)); }
   const_column_iterator beginColumns(uint32_t row) const {
-    return const_column_iterator(*const_cast<static_heap_grid_array*>(this),
-                               int(row), 0);
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this), int(row), 0);
   }
   const_column_iterator endColumns(uint32_t row) const {
-    return const_column_iterator(*const_cast<static_heap_grid_array*>(this),
-                               int(row), int(_width));
+    return const_column_iterator(*const_cast<static_heap_grid_array*>(this), int(row), int(_width));
   }
 
 public:
-  row_iterator beginRows(uint32_t row) {
-    return row_iterator(*this, int(row), 0);
-  }
-  row_iterator endRows(uint32_t row) {
-    return row_iterator(*this, int(row) + 1, 0);
-  }
+  row_iterator beginRows(uint32_t row) { return row_iterator(*this, int(row), 0); }
+  row_iterator endRows(uint32_t row) { return row_iterator(*this, int(row) + 1, 0); }
   const_row_iterator beginRows(uint32_t row) const {
-    return const_row_iterator(*const_cast<static_heap_grid_array*>(this),
-                            int(row), 0);
+    return const_row_iterator(*const_cast<static_heap_grid_array*>(this), int(row), 0);
   }
   const_row_iterator endRows(uint32_t row) const {
-    return const_row_iterator(*const_cast<static_heap_grid_array*>(this),
-                            int(row) + 1, 0);
+    return const_row_iterator(*const_cast<static_heap_grid_array*>(this), int(row) + 1, 0);
   }
 
 public:
   row_iterator beginRows() { return row_iterator(*this, 0, 0); }
   row_iterator endRows() { return row_iterator(*this, int(_height), 0); }
-  const_row_iterator beginRows() const {
-    return const_row_iterator(*const_cast<static_heap_grid_array*>(this), 0, 0);
-  }
+  const_row_iterator beginRows() const { return const_row_iterator(*const_cast<static_heap_grid_array*>(this), 0, 0); }
   const_row_iterator endRows() const {
-    return const_row_iterator(*const_cast<static_heap_grid_array*>(this),
-                            int(_height), 0);
+    return const_row_iterator(*const_cast<static_heap_grid_array*>(this), int(_height), 0);
   }
 
 public:
   void invalidate_all_iterators() {
     basic_double_linked_list::loop_list_links_and_reset<column_iterator>(
-      _column_iterators_list,
-      [](column_iterator* it) -> void { it->_container = nullptr; });
+      _column_iterators_list, [](column_iterator* it) -> void { it->_container = nullptr; });
     basic_double_linked_list::loop_list_links_and_reset<row_iterator>(
-      _row_iterators_list,
-      [](row_iterator* it) -> void { it->_container = nullptr; });
+      _row_iterators_list, [](row_iterator* it) -> void { it->_container = nullptr; });
   }
 };
 

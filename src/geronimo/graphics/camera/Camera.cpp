@@ -6,8 +6,7 @@
 namespace gero {
 namespace graphics {
 
-void Camera::lookAt(const glm::vec3& eye, const glm::vec3& target,
-                    const glm::vec3& up) {
+void Camera::lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up) {
   if (_eye != eye || _target != target) {
     const glm::vec3 diff = _target - _eye;
 
@@ -32,12 +31,10 @@ void Camera::computeMatrices() {
       if (_projectionType == ProjectionType::perspective) {
         const float aspectRatio = _viewportSize.x / _viewportSize.y;
         auto& proj = _projectionData.perspective;
-        _matricesData.projection = glm::perspective(
-          glm::radians(proj.fovy), aspectRatio, proj.near, proj.far);
+        _matricesData.projection = glm::perspective(glm::radians(proj.fovy), aspectRatio, proj.near, proj.far);
       } else {
         auto& proj = _projectionData.orthographic;
-        _matricesData.projection = glm::ortho(
-          proj.left, proj.right, proj.bottom, proj.top, proj.near, proj.far);
+        _matricesData.projection = glm::ortho(proj.left, proj.right, proj.bottom, proj.top, proj.near, proj.far);
       }
     }
 
@@ -46,33 +43,25 @@ void Camera::computeMatrices() {
 
     _matricesData.invComposed = glm::inverse(_matricesData.composed);
 
-    _frustumCulling.calculateFrustum(_matricesData.projection,
-                                     _matricesData.view);
+    _frustumCulling.calculateFrustum(_matricesData.projection, _matricesData.view);
 
   } // scene
 }
 
-const IFrustumCulling& Camera::getFrustumCulling() const {
-  return _frustumCulling;
-}
+const IFrustumCulling& Camera::getFrustumCulling() const { return _frustumCulling; }
 
-bool Camera::sceneToHudCoord(const glm::vec3& scenePos,
-                             glm::vec3& hudPos) const {
+bool Camera::sceneToHudCoord(const glm::vec3& scenePos, glm::vec3& hudPos) const {
   const glm::vec2 hudOrigin(0, 0); // TODO: hardcoded
 
-  return sceneToScreen(scenePos, _matricesData.view, _matricesData.projection,
-                       hudOrigin, _viewportSize, hudPos);
+  return sceneToScreen(scenePos, _matricesData.view, _matricesData.projection, hudOrigin, _viewportSize, hudPos);
 }
 
-void Camera::hudToSceneCoord(const glm::vec2& hudPos, glm::vec3& from,
-                             glm::vec3& to) {
-  glm::vec2 actualPos =
-    (glm::vec2(hudPos.x, hudPos.y) / _viewportSize) * 2.0f - 1.0f;
+void Camera::hudToSceneCoord(const glm::vec2& hudPos, glm::vec3& from, glm::vec3& to) {
+  glm::vec2 actualPos = (glm::vec2(hudPos.x, hudPos.y) / _viewportSize) * 2.0f - 1.0f;
   // origin is top-left and +y mouse is down
   actualPos.y = -actualPos.y;
 
-  glm::vec4 fromV4 =
-    _matricesData.invComposed * glm::vec4(actualPos, -1.0f, 1.0f);
+  glm::vec4 fromV4 = _matricesData.invComposed * glm::vec4(actualPos, -1.0f, 1.0f);
   glm::vec4 toV4 = _matricesData.invComposed * glm::vec4(actualPos, 1.0f, 1.0f);
 
   // perspective divide ("normalize" homogeneous coordinates)
@@ -106,8 +95,7 @@ void Camera::setPerspective(float fovy, float near, float far) {
   _dirtyProjectionMatrices = true;
 }
 
-void Camera::setOrthographic(float left, float right, float bottom, float top,
-                             float near, float far) {
+void Camera::setOrthographic(float left, float right, float bottom, float top, float near, float far) {
   _projectionType = ProjectionType::orthographic;
   _projectionData.orthographic.left = left;
   _projectionData.orthographic.right = right;
@@ -118,15 +106,11 @@ void Camera::setOrthographic(float left, float right, float bottom, float top,
   _dirtyProjectionMatrices = true;
 }
 
-Camera::ProjectionType Camera::getProjectionType() const {
-  return _projectionType;
-}
+Camera::ProjectionType Camera::getProjectionType() const { return _projectionType; }
 
 //
 
-const Camera::MatricesData& Camera::getMatricesData() const {
-  return _matricesData;
-}
+const Camera::MatricesData& Camera::getMatricesData() const { return _matricesData; }
 
 } // namespace graphics
 } // namespace gero

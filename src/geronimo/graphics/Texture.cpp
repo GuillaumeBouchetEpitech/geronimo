@@ -20,8 +20,7 @@ Texture::~Texture() { dispose(); }
 void Texture::setFromImage(const Image& image,
                            Quality quality /*= Quality::pixelated*/,
                            Pattern pattern /*= Pattern::clamped*/,
-                           uint32_t packingInBytes /*= 4*/)
-{
+                           uint32_t packingInBytes /*= 4*/) {
   allocateBlank(image.getSize(), quality, pattern, image.getPixels(), packingInBytes);
 }
 
@@ -29,12 +28,9 @@ void Texture::allocateBlank(const glm::uvec2& size,
                             Quality quality /*= Quality::pixelated*/,
                             Pattern pattern /*= Pattern::clamped*/,
                             const void* pixels /*= nullptr*/,
-                            uint32_t packingInBytes /*= 4*/)
-{
+                            uint32_t packingInBytes /*= 4*/) {
   if (size.x == 0 || size.y == 0)
-    D_THROW(std::runtime_error,
-            "texture allocated with incorrect size, size.x: "
-              << size.x << ", size.y: " << size.y);
+    D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
 
   // TODO: check max texture size
   // if (_size.x < 1 || _size.y < 1)
@@ -49,16 +45,14 @@ void Texture::allocateBlank(const glm::uvec2& size,
 
   GlContext::Texture::setPixelUnpackAlignment(packingInBytes);
 
-  GlContext::Texture::uploadPixels(uint32_t(_size.x), uint32_t(_size.y),
-                                   pixels);
+  GlContext::Texture::uploadPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
 
   GlContext::Texture::setTextureAsRepeat(pattern == Pattern::repeat);
 
   if (quality == Quality::pixelated) {
     GlContext::Texture::setTextureAsPixelated();
   } else {
-    GlContext::Texture::setTextureAsSmoothed(quality ==
-                                             Quality::smoothedAndMipMapped);
+    GlContext::Texture::setTextureAsSmoothed(quality == Quality::smoothedAndMipMapped);
   }
 
   GlContext::Texture::bind(0);
@@ -69,9 +63,7 @@ void Texture::allocateFloatBlank(const glm::uvec2& size,
                                  Pattern pattern /*= Pattern::clamped*/,
                                  const void* pixels /*= nullptr*/) {
   if (size.x == 0 || size.y == 0)
-    D_THROW(std::runtime_error,
-            "texture allocated with incorrect size, size.x: "
-              << size.x << ", size.y: " << size.y);
+    D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
 
   // TODO: check max texture size
   // if (_size.x < 1 || _size.y < 1)
@@ -84,27 +76,22 @@ void Texture::allocateFloatBlank(const glm::uvec2& size,
 
   GlContext::Texture::bind(_textureId);
 
-  GlContext::Texture::uploadFloatPixels(uint32_t(_size.x), uint32_t(_size.y),
-                                        pixels);
+  GlContext::Texture::uploadFloatPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
 
   GlContext::Texture::setTextureAsRepeat(pattern == Pattern::repeat);
 
   if (quality == Quality::pixelated) {
     GlContext::Texture::setTextureAsPixelated();
   } else {
-    GlContext::Texture::setTextureAsSmoothed(quality ==
-                                             Quality::smoothedAndMipMapped);
+    GlContext::Texture::setTextureAsSmoothed(quality == Quality::smoothedAndMipMapped);
   }
 
   GlContext::Texture::bind(0);
 }
 
-void Texture::allocateSingleFloat(const glm::uvec2& size,
-                                  const void* pixels /*= nullptr*/) {
+void Texture::allocateSingleFloat(const glm::uvec2& size, const void* pixels /*= nullptr*/) {
   if (size.x == 0 || size.y == 0)
-    D_THROW(std::runtime_error,
-            "texture allocated with incorrect size, size.x: "
-              << size.x << ", size.y: " << size.y);
+    D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
 
   // TODO: check max texture size
   // if (_size.x < 1 || _size.y < 1)
@@ -117,15 +104,13 @@ void Texture::allocateSingleFloat(const glm::uvec2& size,
 
   GlContext::Texture::bind(_textureId);
 
-  GlContext::Texture::uploadSingleFloatPixels(uint32_t(_size.x),
-                                              uint32_t(_size.y), pixels);
+  GlContext::Texture::uploadSingleFloatPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
 
   GlContext::Texture::bind(0);
 }
 
 namespace {
-GlContext::Texture::DepthFormat
-getRawDepthFormat(Texture::DepthFormat depthFormat) {
+GlContext::Texture::DepthFormat getRawDepthFormat(Texture::DepthFormat depthFormat) {
   switch (depthFormat) {
   case Texture::DepthFormat::depth16:
     return GlContext::Texture::DepthFormat::depth16;
@@ -141,16 +126,15 @@ GlContext::Texture::DepthType getRawDepthType(Texture::DepthType depthType) {
   switch (depthType) {
   case Texture::DepthType::float32:
     return GlContext::Texture::DepthType::float32;
-  case Texture::DepthType::unsingedInt:
-    return GlContext::Texture::DepthType::unsingedInt;
+  case Texture::DepthType::unsignedInt:
+    return GlContext::Texture::DepthType::unsignedInt;
   default:
-    return GlContext::Texture::DepthType::unsingedShort;
+    return GlContext::Texture::DepthType::unsignedShort;
   }
 }
 } // namespace
 
-void Texture::allocateDepth(const glm::uvec2& size, DepthFormat depthFormat,
-                            DepthType depthType) {
+void Texture::allocateDepth(const glm::uvec2& size, DepthFormat depthFormat, DepthType depthType) {
   _size = size;
 
   // TODO: check max texture size
@@ -160,8 +144,7 @@ void Texture::allocateDepth(const glm::uvec2& size, DepthFormat depthFormat,
   if (_textureId == 0)
     _textureId = GlContext::Texture::generateOne();
 
-  const GlContext::Texture::DepthFormat rawFormat =
-    getRawDepthFormat(depthFormat);
+  const GlContext::Texture::DepthFormat rawFormat = getRawDepthFormat(depthFormat);
   const GlContext::Texture::DepthType rawType = getRawDepthType(depthType);
 
   GlContext::Texture::bind(_textureId);
@@ -171,8 +154,7 @@ void Texture::allocateDepth(const glm::uvec2& size, DepthFormat depthFormat,
 
 void Texture::allocateCompatibleDepth(const glm::uvec2& size) {
   Texture::ensureCompatibleDepth();
-  allocateDepth(size, s_depthCompatibleValues.depthFormat,
-                s_depthCompatibleValues.depthType);
+  allocateDepth(size, s_depthCompatibleValues.depthFormat, s_depthCompatibleValues.depthType);
 }
 
 void Texture::ensureCompatibleDepth() {
@@ -190,14 +172,10 @@ void Texture::ensureCompatibleDepth() {
   std::array<DepthParameters, 4> allConfig = {{
     // { Texture::DepthFormat::depth32f, Texture::DepthType::float32, "float32"
     // },
-    {Texture::DepthFormat::depth32, Texture::DepthType::unsingedInt,
-     "depth32-int"},
-    {Texture::DepthFormat::depth24, Texture::DepthType::unsingedInt,
-     "depth24-int"},
-    {Texture::DepthFormat::depth16, Texture::DepthType::unsingedInt,
-     "depth16-int"},
-    {Texture::DepthFormat::depth16, Texture::DepthType::unsingedShort,
-     "depth16-short"},
+    {Texture::DepthFormat::depth32, Texture::DepthType::unsignedInt, "depth32-int"},
+    {Texture::DepthFormat::depth24, Texture::DepthType::unsignedInt, "depth24-int"},
+    {Texture::DepthFormat::depth16, Texture::DepthType::unsignedInt, "depth16-int"},
+    {Texture::DepthFormat::depth16, Texture::DepthType::unsignedShort, "depth16-short"},
   }};
 
   Texture tmpColorTexture;
@@ -213,7 +191,7 @@ void Texture::ensureCompatibleDepth() {
     FrameBuffer::Definition def;
     def.colorTextures.push_back({0, &tmpColorTexture});
     def.depthTexture = &tmpDepthTexture;
-    if (tmpFrameBuffer.initialise(def, false)) {
+    if (tmpFrameBuffer.initialize(def, false)) {
       s_depthCompatibleValues.depthFormat = currConfig.format;
       s_depthCompatibleValues.depthType = currConfig.type;
       // D_MYLOG("currConfig.msg " << currConfig.msg);
@@ -245,15 +223,13 @@ void Texture::getAsImage(Image& image) {
   def.colorTextures.push_back({0, this});
 
   FrameBuffer tmpFrameBuffer;
-  tmpFrameBuffer.initialise(def);
+  tmpFrameBuffer.initialize(def);
   tmpFrameBuffer.getAsImage(image, 0, 0, _size.x, _size.y);
 }
 
 const glm::uvec2& Texture::getSize() const { return _size; }
 
-bool Texture::isValid() const {
-  return _size.x > 0 && _size.x > 0 && _textureId != 0;
-}
+bool Texture::isValid() const { return _size.x > 0 && _size.x > 0 && _textureId != 0; }
 
 //
 

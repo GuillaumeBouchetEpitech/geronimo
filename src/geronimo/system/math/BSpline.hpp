@@ -10,16 +10,18 @@ namespace math {
 
 class BSpline {
 public:
+  using GetDataCallback = std::function<float(uint32_t)>;
+
   struct Definition {
-    const float* knotsData;
+    GetDataCallback getDataCallback;
     std::size_t knotsLength;
     uint32_t dimensions;
     uint32_t degree;
   };
 
 public:
-  void initialise(const Definition& def);
-  float calcAt(float coef, uint32_t dimension) const;
+  void initialize(const Definition& inDef);
+  float calcAt(float inCoef, uint32_t inDimension) const;
 
 private:
   using BaseFunc = float (*)(float);

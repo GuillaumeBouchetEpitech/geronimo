@@ -15,15 +15,16 @@
 namespace gero {
 namespace graphics {
 
-SDLWindowWrapper::SDLWindowWrapper(const char* name, uint32_t width,
-                                   uint32_t height, uint32_t framesPerSecond,
+SDLWindowWrapper::SDLWindowWrapper(const char* name,
+                                   uint32_t width,
+                                   uint32_t height,
+                                   uint32_t framesPerSecond,
                                    OpenGlEsVersion openGlEsVersion,
                                    bool enableResize /*= true*/) {
   _framesPerSecond = framesPerSecond;
 
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    D_THROW(std::runtime_error,
-            "Could not initialise SDL, error: " << SDL_GetError());
+    D_THROW(std::runtime_error, "Could not initialize SDL, error: " << SDL_GetError());
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, asValue(openGlEsVersion));
@@ -42,19 +43,16 @@ SDLWindowWrapper::SDLWindowWrapper(const char* name, uint32_t width,
   _window = SDL_CreateWindow(name, posX, posY, int32_t(width), int32_t(height), flags);
 
   if (!_window)
-    D_THROW(std::runtime_error,
-            "Could not create the window: " << SDL_GetError());
+    D_THROW(std::runtime_error, "Could not create the window: " << SDL_GetError());
 
   try {
     _glContextId = SDL_GL_CreateContext(_window);
     if (!_glContextId)
-      D_THROW(std::runtime_error,
-              "Failed to create GL context: " << SDL_GetError());
+      D_THROW(std::runtime_error, "Failed to create GL context: " << SDL_GetError());
 
     try {
       if (SDL_GL_MakeCurrent(_window, _glContextId) < 0)
-        D_THROW(std::runtime_error,
-                "Failed to make GL context current: " << SDL_GetError());
+        D_THROW(std::runtime_error, "Failed to make GL context current: " << SDL_GetError());
     } catch (const std::exception& error) {
       SDL_GL_DeleteContext(_glContextId);
 
@@ -96,7 +94,8 @@ void SDLWindowWrapper::_webStep(void* pData) {
   const uint32_t currentTime = SDL_GetTicks(); // in millisecond
   const uint32_t delta = currentTime - self->_startTime;
 
-  self->process(delta);
+  self->update(delta);
+  self->render();
 
   self->_startTime = currentTime;
 }
@@ -113,8 +112,7 @@ void SDLWindowWrapper::run() {
   // emscripten_set_main_loop_arg(SDLWindowWrapper::_webStep, (void*)this, 0,
   // true); emscripten_set_main_loop_arg(SDLWindowWrapper::_webStep,
   // (void*)this, 60, true);
-  emscripten_set_main_loop_arg(SDLWindowWrapper::_webStep, (void*)this,
-                               int32_t(_framesPerSecond), true);
+  emscripten_set_main_loop_arg(SDLWindowWrapper::_webStep, (void*)this, int32_t(_framesPerSecond), true);
 
   // unreachable <= "emscripten_set_main_loop_arg" does that
 
@@ -126,7 +124,8 @@ void SDLWindowWrapper::run() {
     const uint32_t startFrameTime = SDL_GetTicks(); // in millisecond
     const uint32_t delta = startFrameTime - _startTime;
 
-    process(delta);
+    update(delta);
+    render();
 
     _startTime = startFrameTime;
 
@@ -155,7 +154,7 @@ void SDLWindowWrapper::stop() {
 
 //
 
-void SDLWindowWrapper::process(uint32_t deltaTime) {
+void SDLWindowWrapper::update(uint32_t deltaTime) {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
 
@@ -208,7 +207,9 @@ void SDLWindowWrapper::process(uint32_t deltaTime) {
   }
 
   _onUpdate(deltaTime);
+}
 
+void SDLWindowWrapper::render() {
   if (!_visible)
     return;
 

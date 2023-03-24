@@ -17,16 +17,14 @@ Image::~Image() { dispose(); }
 
 //
 
-void Image::loadFromFile(const std::string& filename,
-                         bool supportNonPowerOfTwo /*= true*/) {
+void Image::loadFromFile(const std::string& filename, bool supportNonPowerOfTwo /*= true*/) {
   loadFromFile(fileUtils::getDefaulCallback(), filename, supportNonPowerOfTwo);
 }
 
 void Image::loadFromFile(fileUtils::FileManager& fileManager,
                          const std::string& filename,
                          bool supportNonPowerOfTwo /*= true*/) {
-  loadFromFile(fileUtils::getFileManagerCallback(fileManager), filename,
-               supportNonPowerOfTwo);
+  loadFromFile(fileUtils::getFileManagerCallback(fileManager), filename, supportNonPowerOfTwo);
 }
 
 void Image::loadFromFile(const fileUtils::LoadCallback& loadFileCallback,
@@ -38,16 +36,14 @@ void Image::loadFromFile(const fileUtils::LoadCallback& loadFileCallback,
   loadFromMemory(fileContent, supportNonPowerOfTwo);
 }
 
-void Image::loadFromMemory(const std::string& content,
-                           bool supportNonPowerOfTwo /*= true*/) {
+void Image::loadFromMemory(const std::string& content, bool supportNonPowerOfTwo /*= true*/) {
   dispose();
 
   int32_t width;
   int32_t height;
   int32_t bpp;
   _stbPixels = stbi_load_from_memory(
-    reinterpret_cast<const uint8_t*>(content.c_str()),
-    int32_t(content.size()), &width, &height, &bpp, 0);
+    reinterpret_cast<const uint8_t*>(content.c_str()), int32_t(content.size()), &width, &height, &bpp, 0);
 
   if (!_stbPixels)
     D_THROW(std::runtime_error, "image not found");
@@ -85,21 +81,17 @@ void Image::dispose() {
 
 bool Image::save(const std::string& filename) {
   if (!isValid())
-    D_THROW(std::runtime_error,
-            "image not initialised, filename: " << filename);
+    D_THROW(std::runtime_error, "image not initialized, filename: " << filename);
 
   return Image::save(filename, _size.x, _size.y, _rawPixels);
 }
 
-bool Image::save(const std::string& filename, uint32_t width, uint32_t height,
-                 const uint8_t* pixels) {
+bool Image::save(const std::string& filename, uint32_t width, uint32_t height, const uint8_t* pixels) {
   fs::path filePath = filename;
   if (filePath.extension() == ".png")
-    return stbi_write_png(filename.c_str(), int32_t(width), int32_t(height), 4, pixels,
-                          0);
+    return stbi_write_png(filename.c_str(), int32_t(width), int32_t(height), 4, pixels, 0);
   if (filePath.extension() == ".jpg")
-    return stbi_write_jpg(filename.c_str(), int32_t(width), int32_t(height), 4, pixels,
-                          0);
+    return stbi_write_jpg(filename.c_str(), int32_t(width), int32_t(height), 4, pixels, 0);
   if (filePath.extension() == ".bmp")
     return stbi_write_bmp(filename.c_str(), int32_t(width), int32_t(height), 4, pixels);
 
@@ -108,13 +100,12 @@ bool Image::save(const std::string& filename, uint32_t width, uint32_t height,
 
 void Image::flipY() {
   if (!isValid())
-    D_THROW(std::runtime_error, "image not initialised");
+    D_THROW(std::runtime_error, "image not initialized");
 
   const uint32_t hsize = _size.y / 2;
   for (uint32_t yy = 0; yy < hsize; ++yy)
     for (uint32_t xx = 0; xx < _size.x; ++xx)
-      std::swap(_rawPixels[yy * _size.x + xx],
-                _rawPixels[(_size.y - yy) * _size.x + xx]);
+      std::swap(_rawPixels[yy * _size.x + xx], _rawPixels[(_size.y - yy) * _size.x + xx]);
 }
 
 //
@@ -122,9 +113,7 @@ void Image::flipY() {
 const glm::uvec2& Image::getSize() const { return _size; }
 const uint8_t* Image::getPixels() const { return _rawPixels; }
 
-bool Image::isValid() const {
-  return _size.x > 0 && _size.y > 0 && _rawPixels != nullptr;
-}
+bool Image::isValid() const { return _size.x > 0 && _size.y > 0 && _rawPixels != nullptr; }
 
 } // namespace graphics
 } // namespace gero

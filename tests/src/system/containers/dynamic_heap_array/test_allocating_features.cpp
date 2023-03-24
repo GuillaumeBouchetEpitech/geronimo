@@ -3,8 +3,7 @@
 
 #include "system/containers/generic_array_container_commons/common.hpp"
 
-TEST_F(system_dynamic_heap_array,
-       not_pre_allocated__pre_allocate) {
+TEST_F(system_dynamic_heap_array, not_pre_allocated__pre_allocate) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -13,7 +12,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 0);
@@ -42,8 +42,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__pre_allocate_same) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__pre_allocate_same) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -52,7 +51,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -81,8 +81,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__pre_allocate_less) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__pre_allocate_less) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -91,7 +90,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -120,8 +120,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__pre_allocate_more) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__pre_allocate_more) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -130,7 +129,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -159,8 +159,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       not_pre_allocated__ensure_size) {
+TEST_F(system_dynamic_heap_array, not_pre_allocated__ensure_size) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -169,7 +168,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 0);
@@ -208,8 +208,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__ensure_size_same) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__ensure_size_same) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -218,7 +217,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -257,8 +257,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__ensure_size_less) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__ensure_size_less) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -267,7 +266,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -304,8 +304,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__ensure_size_more) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__ensure_size_more) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -314,7 +313,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 0);
   ASSERT_EQ(myDefaultDynamicArray.capacity(), 5);
@@ -363,8 +363,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       not_pre_allocated__ensure_size_grow_existing) {
+TEST_F(system_dynamic_heap_array, not_pre_allocated__ensure_size_grow_existing) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -373,7 +372,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 0, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 5);
@@ -423,8 +423,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__ensure_size_grow_existing_same) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__ensure_size_grow_existing_same) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -433,7 +432,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 5);
@@ -483,8 +483,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__ensure_size_grow_existing_less) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__ensure_size_grow_existing_less) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -493,7 +492,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 5);
@@ -539,8 +539,7 @@ TEST_F(system_dynamic_heap_array,
   common::reset();
 }
 
-TEST_F(system_dynamic_heap_array,
-       is_pre_allocated__ensure_size_grow_existing_more) {
+TEST_F(system_dynamic_heap_array, is_pre_allocated__ensure_size_grow_existing_more) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -549,7 +548,8 @@ TEST_F(system_dynamic_heap_array,
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>> myDefaultDynamicArray;
+  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 10, common::MyAllocator<common::TestStructure>>
+    myDefaultDynamicArray;
   myDefaultDynamicArray.ensure_size(5);
 
   ASSERT_EQ(myDefaultDynamicArray.size(), 5);

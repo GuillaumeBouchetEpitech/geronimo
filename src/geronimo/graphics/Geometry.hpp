@@ -60,8 +60,7 @@ public:
         Attr() = default;
         ~Attr() = default;
 
-        Attr(const std::string& inName, AttrType inType, int32_t inIndex,
-             bool inIgnored)
+        Attr(const std::string& inName, AttrType inType, int32_t inIndex, bool inIgnored)
           : name(inName), type(inType), index(inIndex), ignored(inIgnored) {}
       };
 
@@ -93,19 +92,17 @@ public:
   Geometry() = default;
 
 public:
-  void initialise(ShaderProgram& shader, const Definition& def);
+  void initialize(ShaderProgram& shader, const Definition& def);
 
 public:
-  void updateBuffer(uint32_t index, const void* data, uint32_t dataSize,
-                    bool dynamic = false) const;
+  void updateBuffer(uint32_t index, const void* data, uint32_t dataSize, bool dynamic = false) const;
   void render() const;
 
 public:
   template <typename VertexType>
-  void updateBuffer(uint32_t index, const std::vector<VertexType>& data,
-                    bool dynamic = false) const {
-    updateBuffer(index, static_cast<const void*>(data.data()),
-                 uint32_t(data.size()) * uint32_t(sizeof(VertexType)), dynamic);
+  void updateBuffer(uint32_t index, const std::vector<VertexType>& data, bool dynamic = false) const {
+    updateBuffer(
+      index, static_cast<const void*>(data.data()), uint32_t(data.size()) * uint32_t(sizeof(VertexType)), dynamic);
   }
 
   void setPrimitiveStart(uint32_t start);

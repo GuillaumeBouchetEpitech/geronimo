@@ -51,8 +51,7 @@ TEST(physic_wrapper, query_shape_static_object) {
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
   shapeDef.data.sphere.radius = 5.0f;
 
-  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(5, 0, 0),
-                                                     shapeDef);
+  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(5, 0, 0), shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<5> resultStack;
@@ -73,7 +72,7 @@ TEST(physic_wrapper, query_shape_static_object) {
 TEST(physic_wrapper, query_shape_all_static_objects) {
   gero::physics::PhysicWorld world;
 
-  std::vector<gero::physics::PhysicBodyManager::BodyWeakRef> allBodyRef;
+  std::vector<gero::physics::BodyWeakRef> allBodyRef;
   allBodyRef.reserve(10);
 
   std::array<glm::vec3, 7> allBodyPos = {{
@@ -106,8 +105,7 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
   shapeDef.data.sphere.radius = 5.0f;
 
-  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(0, 0, 0),
-                                                     shapeDef);
+  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(0, 0, 0), shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
@@ -119,15 +117,12 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
   ASSERT_EQ(resultStack.hasHit, true);
   ASSERT_EQ(resultStack.allBodiesTotal, 7);
 
-  auto findBody =
-    [&allBodyRef](const gero::physics::AbstractPhysicBody* inBody) {
-      auto it = std::find_if(
-        allBodyRef.begin(), allBodyRef.end(),
-        [inBody](const gero::physics::PhysicBodyManager::BodyWeakRef& bodyRef) {
-          return inBody == bodyRef.get();
-        });
-      return it != allBodyRef.end();
-    };
+  auto findBody = [&allBodyRef](const gero::physics::AbstractPhysicBody* inBody) {
+    auto it = std::find_if(allBodyRef.begin(), allBodyRef.end(), [inBody](const gero::physics::BodyWeakRef& bodyRef) {
+      return inBody == bodyRef.get();
+    });
+    return it != allBodyRef.end();
+  };
 
   ASSERT_EQ(resultStack.allBodiesData.size(), 10);
   ASSERT_EQ(findBody(resultStack.allBodiesData.at(0)), true);
@@ -151,7 +146,7 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
 TEST(physic_wrapper, query_shape_some_static_objects) {
   gero::physics::PhysicWorld world;
 
-  std::vector<gero::physics::PhysicBodyManager::BodyWeakRef> allBodyRef;
+  std::vector<gero::physics::BodyWeakRef> allBodyRef;
   allBodyRef.reserve(10);
 
   std::array<glm::vec3, 7> allBodyPos = {{
@@ -184,8 +179,7 @@ TEST(physic_wrapper, query_shape_some_static_objects) {
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
   shapeDef.data.sphere.radius = 2.0f;
 
-  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(2, 2, 0),
-                                                     shapeDef);
+  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(2, 2, 0), shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
@@ -197,15 +191,12 @@ TEST(physic_wrapper, query_shape_some_static_objects) {
   ASSERT_EQ(resultStack.hasHit, true);
   ASSERT_EQ(resultStack.allBodiesTotal, 3);
 
-  auto findBody =
-    [&allBodyRef](const gero::physics::AbstractPhysicBody* inBody) {
-      auto it = std::find_if(
-        allBodyRef.begin(), allBodyRef.end(),
-        [inBody](const gero::physics::PhysicBodyManager::BodyWeakRef& bodyRef) {
-          return inBody == bodyRef.get();
-        });
-      return it != allBodyRef.end();
-    };
+  auto findBody = [&allBodyRef](const gero::physics::AbstractPhysicBody* inBody) {
+    auto it = std::find_if(allBodyRef.begin(), allBodyRef.end(), [inBody](const gero::physics::BodyWeakRef& bodyRef) {
+      return inBody == bodyRef.get();
+    });
+    return it != allBodyRef.end();
+  };
 
   ASSERT_EQ(resultStack.allBodiesData.size(), 10);
   ASSERT_EQ(findBody(resultStack.allBodiesData.at(0)), true);
@@ -243,7 +234,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
 
   const std::set<std::size_t> allExpectedIndices = {{0, 2, 5}};
 
-  std::vector<gero::physics::PhysicBodyManager::BodyWeakRef> allBodyRef;
+  std::vector<gero::physics::BodyWeakRef> allBodyRef;
   allBodyRef.reserve(10);
 
   for (const TestDef& testDef : allBodyPos) {
@@ -253,8 +244,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
     bodyDef.mass = 0.0f;
     auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
     bodyRef->setPosition(testDef.pos);
-    world.getPhysicBodyManager().addBody(bodyRef, testDef.filter,
-                                         testDef.filter);
+    world.getPhysicBodyManager().addBody(bodyRef, testDef.filter, testDef.filter);
 
     allBodyRef.push_back(bodyRef);
   }
@@ -265,8 +255,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
   shapeDef.data.sphere.radius = 5.0f;
 
-  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(0, 0, 0),
-                                                     shapeDef);
+  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(0, 0, 0), shapeDef);
   params.collisionGroup = filter1;
   params.collisionMask = filter1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
@@ -284,8 +273,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
     int totalFound = 0;
     for (std::size_t ii = 0; ii < resultStack.allBodiesTotal; ++ii) {
       for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
-        if (resultStack.allBodiesData[ii] == allBodyRef[index].get() &&
-            allExpectedIndices.count(index) > 0) {
+        if (resultStack.allBodiesData[ii] == allBodyRef[index].get() && allExpectedIndices.count(index) > 0) {
           ++totalFound;
         }
       }
@@ -300,8 +288,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
     int totalFound = 0;
     for (std::size_t ii = 0; ii < resultHeap.size(); ++ii) {
       for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
-        if (resultHeap[ii] == allBodyRef[index].get() &&
-            allExpectedIndices.count(index) > 0) {
+        if (resultHeap[ii] == allBodyRef[index].get() && allExpectedIndices.count(index) > 0) {
           ++totalFound;
         }
       }
@@ -309,7 +296,6 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
 
     ASSERT_EQ(totalFound, 3);
   }
-
 }
 
 TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
@@ -329,7 +315,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
 
   const std::set<std::size_t> allExpectedIndices = {{0, 1, 2, 3, /*4,*/ 5, 6}};
 
-  std::vector<gero::physics::PhysicBodyManager::BodyWeakRef> allBodyRef;
+  std::vector<gero::physics::BodyWeakRef> allBodyRef;
   allBodyRef.reserve(10);
 
   for (const glm::vec3& pos : allBodyPos) {
@@ -350,8 +336,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
   shapeDef.data.sphere.radius = 5.0f;
 
-  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(0, 0, 0),
-                                                     shapeDef);
+  gero::physics::QueryShape::QueryShapeParams params(glm::vec3(0, 0, 0), shapeDef);
   params.collisionGroup = -1;
   params.collisionMask = -1;
   params.toIgnore = &(*allBodyRef[4]);
@@ -370,8 +355,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
     int totalFound = 0;
     for (std::size_t ii = 0; ii < resultStack.allBodiesTotal; ++ii) {
       for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
-        if (resultStack.allBodiesData[ii] == allBodyRef[index].get() &&
-            allExpectedIndices.count(index) > 0) {
+        if (resultStack.allBodiesData[ii] == allBodyRef[index].get() && allExpectedIndices.count(index) > 0) {
           ++totalFound;
         }
       }
@@ -386,8 +370,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
     int totalFound = 0;
     for (std::size_t ii = 0; ii < resultHeap.size(); ++ii) {
       for (std::size_t index = 0; index < allBodyRef.size(); ++index) {
-        if (resultHeap[ii] == allBodyRef[index].get() &&
-            allExpectedIndices.count(index) > 0) {
+        if (resultHeap[ii] == allBodyRef[index].get() && allExpectedIndices.count(index) > 0) {
           ++totalFound;
         }
       }

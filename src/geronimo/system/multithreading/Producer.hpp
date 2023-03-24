@@ -45,7 +45,7 @@ public:
   virtual ~Producer();
 
 public:
-  void initialise(uint32_t inTotalCores, bool inAvoidBlocking = false);
+  void initialize(uint32_t inTotalCores, bool inAvoidBlocking = false);
   void push(const WorkCallback& inWorkCallback);
   void quit();
   void waitUntilAllCompleted();

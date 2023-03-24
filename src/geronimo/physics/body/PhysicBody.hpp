@@ -25,7 +25,7 @@ class PhysicVehicle;
 // class PhysicHingeConstraint;
 // class PhysicFixedConstraint;
 
-class AbstractPhysicBody {
+class AbstractPhysicBody : public gero::weak_ref_data_pool_base_class {
 public:
   AbstractPhysicBody() = default;
   virtual ~AbstractPhysicBody() = default;
@@ -74,8 +74,7 @@ public:
   virtual void* getUserData() = 0;
 
   virtual void applyCentralImpulse(const glm::vec3& acc) = 0;
-  virtual void applyImpulse(const glm::vec3& force,
-                            const glm::vec3& rel_pos) = 0;
+  virtual void applyImpulse(const glm::vec3& force, const glm::vec3& rel_pos) = 0;
   virtual void applyCentralForce(const glm::vec3& force) = 0;
   virtual void applyForce(const glm::vec3& force, const glm::vec3& rel_pos) = 0;
   virtual void disableSleep() = 0;
@@ -167,11 +166,9 @@ public:
   virtual void* getUserData() override;
 
   virtual void applyCentralImpulse(const glm::vec3& acc) override;
-  virtual void applyImpulse(const glm::vec3& force,
-                            const glm::vec3& rel_pos) override;
+  virtual void applyImpulse(const glm::vec3& force, const glm::vec3& rel_pos) override;
   virtual void applyCentralForce(const glm::vec3& force) override;
-  virtual void applyForce(const glm::vec3& force,
-                          const glm::vec3& rel_pos) override;
+  virtual void applyForce(const glm::vec3& force, const glm::vec3& rel_pos) override;
   virtual void disableSleep() override;
   virtual void forceActivate() override;
 
@@ -185,6 +182,9 @@ public:
   // const std::vector<ContactPoint>& getContacts() const;
   // void setContactCallback(const std::function<void()>& callback);
 };
+
+using BodyContainer = safe_weak_ref_data_pool<PhysicBody, AbstractPhysicBody, 256, false>;
+using BodyWeakRef = BodyContainer::weak_ref;
 
 } // namespace physics
 } // namespace gero

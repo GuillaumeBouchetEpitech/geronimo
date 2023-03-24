@@ -21,6 +21,7 @@ private:
   valuesParsers::IntValueParser _intValueParser;
   valuesParsers::IntVec2ValueParser _intVec2ValueParser;
   valuesParsers::IntVec3ValueParser _intVec3ValueParser;
+  valuesParsers::IntVec4ValueParser _intVec4ValueParser;
   valuesParsers::FloatValueParser _floatValueParser;
   valuesParsers::FloatVec2ValueParser _floatVec2ValueParser;
   valuesParsers::FloatVec3ValueParser _floatVec3ValueParser;
@@ -45,6 +46,9 @@ public:
   glm::uvec3 get3UI(const std::string_view toSearch);
   glm::uvec3 get3UI(const std::string_view toSearch, uint32_t maxValue);
 
+  glm::uvec4 get4UI(const std::string_view toSearch);
+  glm::uvec4 get4UI(const std::string_view toSearch, uint32_t maxValue);
+
   float get1F(const std::string_view toSearch);
   float get1F(const std::string_view toSearch, float minValue, float maxValue);
 
@@ -58,8 +62,7 @@ public:
   glm::vec4 get4F(const std::string_view toSearch, float minValue, float maxValue);
 
   void forEachArgs(const std::string_view toSearch,
-                   const std::function<void(const std::string_view,
-                                            const std::string_view)>& callback);
+                   const std::function<void(const std::string_view, const std::string_view)>& callback);
 
 private:
   float _getValidFloat(const std::string_view toSearch);

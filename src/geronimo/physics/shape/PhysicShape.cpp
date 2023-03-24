@@ -48,8 +48,7 @@ CapsuleShape::CapsuleShape(const PhysicShapeDef& def) : PhysicShape(def) {
 
 BoxShape::BoxShape(const PhysicShapeDef& def) : PhysicShape(def) {
   const glm::vec3& size = def.data.box.size;
-  _bullet.shape =
-    new btBoxShape(btVector3(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f));
+  _bullet.shape = new btBoxShape(btVector3(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f));
 }
 
 //
@@ -64,8 +63,7 @@ SphereShape::SphereShape(const PhysicShapeDef& def) : PhysicShape(def) {
 //
 //
 
-StaticMeshShape::StaticMeshShape(const PhysicShapeDef& def, bool isDynamic)
-  : PhysicShape(def) {
+StaticMeshShape::StaticMeshShape(const PhysicShapeDef& def, bool isDynamic) : PhysicShape(def) {
   if (isDynamic)
     D_THROW(std::runtime_error, "physic staticMesh cannot have non zero mass");
 
@@ -89,30 +87,24 @@ StaticMeshShape::StaticMeshShape(const PhysicShapeDef& def, bool isDynamic)
   const int32_t triangleNumber = int32_t(data.indicesLength) / 3;
   _indicesData = std::make_unique<int32_t[]>(std::size_t(data.indicesLength));
   int32_t* indicesDataRaw = _indicesData.get();
-  const uint32_t indicesSizeInBytes =
-    uint32_t(data.indicesLength) * uint32_t(sizeof(int32_t));
+  const uint32_t indicesSizeInBytes = uint32_t(data.indicesLength) * uint32_t(sizeof(int32_t));
   std::memcpy(indicesDataRaw, data.indicesData, indicesSizeInBytes);
   const int32_t indicesStride = 3 * sizeof(int32_t);
 
   _indexVertexArrays = new btTriangleIndexVertexArray(
-    triangleNumber, indicesDataRaw, indicesStride, totalDecimals,
-    verticesDataRaw, verticesStride);
+    triangleNumber, indicesDataRaw, indicesStride, totalDecimals, verticesDataRaw, verticesStride);
 
   constexpr bool useQuantizedAabbCompression = false;
-  _bullet.shape =
-    new btBvhTriangleMeshShape(_indexVertexArrays, useQuantizedAabbCompression);
+  _bullet.shape = new btBvhTriangleMeshShape(_indexVertexArrays, useQuantizedAabbCompression);
 }
 
-StaticMeshShape::~StaticMeshShape() {
-  delete _indexVertexArrays, _indexVertexArrays = nullptr;
-}
+StaticMeshShape::~StaticMeshShape() { delete _indexVertexArrays, _indexVertexArrays = nullptr; }
 
 //
 //
 //
 
-CompoundShape::CompoundShape(const PhysicShapeDef& def, bool isDynamic)
-  : PhysicShape(def) {
+CompoundShape::CompoundShape(const PhysicShapeDef& def, bool isDynamic) : PhysicShape(def) {
   const auto& data = def.data.compound;
 
   btCompoundShape* compoundShape = new btCompoundShape();

@@ -15,7 +15,7 @@ namespace audio {
 
 OpenALSoundManager::OpenALSoundManager() {
 
-  _context = OpenAlContext::initialise();
+  _context = OpenAlContext::initialize();
 
   { // listener
 
@@ -32,7 +32,7 @@ OpenALSoundManager::OpenALSoundManager() {
     OpenAlContext::genSources(allSources.size(), allSources.data());
 
     _sources.reserve(totalSources); // pre-allocate
-    for (unsigned int ii = 0; ii < allSources.size(); ++ii) {
+    for (std::size_t ii = 0; ii < allSources.size(); ++ii) {
 
       const uint32_t currSource = allSources.at(ii);
 
@@ -64,29 +64,26 @@ void OpenALSoundManager::setEnabled(bool enabled) {
 
 bool OpenALSoundManager::isEnabled() const { return _enabled; }
 
-void OpenALSoundManager::loadOggFromFile(uint32_t alias,
-                                         const std::string& filename) {
+void OpenALSoundManager::loadOggFromFile(uint32_t alias, const std::string& filename) {
   loadOggFromFile(alias, filename, fileUtils::getDefaulCallback());
 }
 
 void OpenALSoundManager::loadOggFromFile(uint32_t alias,
                                          const std::string& filename,
                                          fileUtils::FileManager& fileManager) {
-  loadOggFromFile(alias, filename,
-                  fileUtils::getFileManagerCallback(fileManager));
+  loadOggFromFile(alias, filename, fileUtils::getFileManagerCallback(fileManager));
 }
 
-void OpenALSoundManager::loadOggFromFile(
-  uint32_t alias, const std::string& filename,
-  fileUtils::LoadCallback loadFileCallback) {
+void OpenALSoundManager::loadOggFromFile(uint32_t alias,
+                                         const std::string& filename,
+                                         fileUtils::LoadCallback loadFileCallback) {
   std::string content;
   loadFileCallback(filename, content);
 
   loadOggFromMemory(alias, content);
 }
 
-void OpenALSoundManager::loadOggFromMemory(uint32_t alias,
-                                           const std::string& content) {
+void OpenALSoundManager::loadOggFromMemory(uint32_t alias, const std::string& content) {
   if (_bufferSoundsMap.count(alias) != 0)
     return;
 
@@ -97,8 +94,7 @@ void OpenALSoundManager::loadOggFromMemory(uint32_t alias,
   std::int32_t sampleRate;
   std::int32_t bitsPerSample;
   uint32_t size;
-  char* soundData =
-    decoders::ogg::decode(content, channels, sampleRate, bitsPerSample, size);
+  char* soundData = decoders::ogg::decode(content, channels, sampleRate, bitsPerSample, size);
 
   OpenAlContext::BufferFormat format;
   if (channels == 1 && bitsPerSample == 8)
@@ -110,9 +106,9 @@ void OpenALSoundManager::loadOggFromMemory(uint32_t alias,
   else if (channels == 2 && bitsPerSample == 16)
     format = OpenAlContext::BufferFormat::stereo16;
   else
-    D_THROW(std::runtime_error, "ERROR: unrecognised ogg format"
-                                  << ", channels=" << channels
-                                  << ", bitsPerSample=" << bitsPerSample);
+    D_THROW(std::runtime_error,
+            "ERROR: unrecognised ogg format"
+              << ", channels=" << channels << ", bitsPerSample=" << bitsPerSample);
 
   // D_MYLOG("channels " << channels);
   // D_MYLOG("bitsPerSample " << bitsPerSample);
@@ -125,8 +121,7 @@ void OpenALSoundManager::loadOggFromMemory(uint32_t alias,
   _bufferSoundsMap[alias] = newBuffer;
 }
 
-void OpenALSoundManager::playSound(uint32_t alias, const glm::vec3& pos,
-                                   float volume, float pitch) {
+void OpenALSoundManager::playSound(uint32_t alias, const glm::vec3& pos, float volume, float pitch) {
 
   if (!_enabled)
     return;
@@ -143,8 +138,7 @@ void OpenALSoundManager::playSound(uint32_t alias, const glm::vec3& pos,
 
   _currentSource = (_currentSource + 1) % _sources.size();
 
-  OpenAlContext::SourceStates state =
-    OpenAlContext::getSourceState(_currentSource);
+  OpenAlContext::SourceStates state = OpenAlContext::getSourceState(_currentSource);
   if (state != OpenAlContext::SourceStates::stopped) {
     OpenAlContext::stopSource(currSource);
   }
@@ -166,13 +160,9 @@ void OpenALSoundManager::playSound(uint32_t alias, const glm::vec3& pos,
 //
 //
 
-void OpenALSoundManager::setVolume(float level) {
-  OpenAlContext::setListenerVolume(math::clamp(level, 0.0f, 1.0f));
-}
+void OpenALSoundManager::setVolume(float level) { OpenAlContext::setListenerVolume(math::clamp(level, 0.0f, 1.0f)); }
 
-void OpenALSoundManager::setListener(const glm::vec3& pos,
-                                     const glm::vec3& front,
-                                     const glm::vec3& up) {
+void OpenALSoundManager::setListener(const glm::vec3& pos, const glm::vec3& front, const glm::vec3& up) {
   OpenAlContext::setListenerPosition(pos.x, pos.y, pos.z);
   OpenAlContext::setListenerOrientation(front, up);
 }

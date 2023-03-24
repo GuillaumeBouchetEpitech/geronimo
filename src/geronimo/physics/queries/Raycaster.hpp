@@ -51,11 +51,15 @@ public:
       std::size_t allImpactsTotal;
     };
 
-    RaycastParams(const glm::vec3& rayFrom, const glm::vec3& rayTo,
-                  float sweepRadius = 0.0f, short group = -1, short mask = -1,
-                  Type inType = Type::closest, void* inToIgnore = nullptr)
-      : from(rayFrom), to(rayTo), radius(sweepRadius), collisionGroup(group),
-        collisionMask(mask), type(inType), toIgnore(inToIgnore) {}
+    RaycastParams(const glm::vec3& rayFrom,
+                  const glm::vec3& rayTo,
+                  float sweepRadius = 0.0f,
+                  short group = -1,
+                  short mask = -1,
+                  Type inType = Type::closest,
+                  void* inToIgnore = nullptr)
+      : from(rayFrom), to(rayTo), radius(sweepRadius), collisionGroup(group), collisionMask(mask), type(inType),
+        toIgnore(inToIgnore) {}
   };
 
 public:
@@ -67,22 +71,17 @@ private:
   void _raycast(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
 
 public:
-  template <std::size_t N>
-  bool raycast(RaycastParams& inParams,
-               RaycastParams::ResultArray<N>& outResultArray) {
+  template <std::size_t N> bool raycast(RaycastParams& inParams, RaycastParams::ResultArray<N>& outResultArray) {
 
     outResultArray.hasHit = false;
     outResultArray.allImpactsTotal = 0;
 
-    const OnNewPhysicBodyCallback callback = [&inParams, &outResultArray](const RaycastParams::ResultImpact& inResult) -> bool
-    {
-      if (inParams.type == RaycastParams::Type::closest)
-      {
+    const OnNewPhysicBodyCallback callback = [&inParams,
+                                              &outResultArray](const RaycastParams::ResultImpact& inResult) -> bool {
+      if (inParams.type == RaycastParams::Type::closest) {
         outResultArray.allImpactsData[0] = inResult;
         outResultArray.allImpactsTotal = 1;
-      }
-      else
-      {
+      } else {
         if (outResultArray.allImpactsTotal >= outResultArray.allImpactsData.size())
           return false;
 

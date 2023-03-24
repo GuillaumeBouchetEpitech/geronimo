@@ -15,14 +15,13 @@ namespace physics {
 class PhysicWorld;
 class PhysicVehicleManager;
 
-class AbstractPhysicVehicle {
+class AbstractPhysicVehicle : public gero::weak_ref_data_pool_base_class {
 public:
   AbstractPhysicVehicle() = default;
   virtual ~AbstractPhysicVehicle() = default;
   AbstractPhysicVehicle(AbstractPhysicVehicle& other) = delete;
   AbstractPhysicVehicle& operator=(const AbstractPhysicVehicle& other) = delete;
-  AbstractPhysicVehicle&
-  operator=(const AbstractPhysicVehicle&& other) = delete;
+  AbstractPhysicVehicle& operator=(const AbstractPhysicVehicle&& other) = delete;
 
 public:
   virtual void applyEngineForce(int32_t index, float force) = 0;
@@ -36,7 +35,8 @@ public:
   virtual glm::vec3 getWheelPosition(int32_t index) const = 0;
   virtual glm::quat getWheelOrientation(int32_t index) const = 0;
   virtual float getCurrentSpeedKmHour() const = 0;
-  virtual PhysicBodyManager::BodyWeakRef getPhysicBody() = 0;
+  virtual BodyWeakRef getPhysicBody() = 0;
+  virtual const BodyWeakRef getPhysicBody() const = 0;
 };
 
 class PhysicVehicle : public AbstractPhysicVehicle {
@@ -49,13 +49,12 @@ private:
     btRaycastVehicle* vehicle = nullptr;
   } _bullet;
 
-  PhysicBodyManager::BodyWeakRef _body;
+  BodyWeakRef _body;
 
   bool _isAdded = false;
 
 public:
-  PhysicVehicle(btDiscreteDynamicsWorld& dynamicsWorld,
-                const PhysicVehicleDef& def);
+  PhysicVehicle(btDiscreteDynamicsWorld& dynamicsWorld, const PhysicVehicleDef& def);
   virtual ~PhysicVehicle();
 
   PhysicVehicle(PhysicVehicle& other) = delete;
@@ -75,8 +74,12 @@ public:
   virtual glm::vec3 getWheelPosition(int32_t index) const override;
   virtual glm::quat getWheelOrientation(int32_t index) const override;
   virtual float getCurrentSpeedKmHour() const override;
-  virtual PhysicBodyManager::BodyWeakRef getPhysicBody() override;
+  virtual BodyWeakRef getPhysicBody() override;
+  virtual const BodyWeakRef getPhysicBody() const override;
 };
+
+using VehiclesPool = safe_weak_ref_data_pool<PhysicVehicle, AbstractPhysicVehicle, 256, false>;
+using VehicleWeakRef = VehiclesPool::weak_ref;
 
 } // namespace physics
 } // namespace gero

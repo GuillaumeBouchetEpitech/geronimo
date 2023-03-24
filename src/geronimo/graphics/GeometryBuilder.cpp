@@ -24,8 +24,7 @@ GeometryBuilder& GeometryBuilder::setShader(ShaderProgram& shader) {
   return *this;
 }
 
-GeometryBuilder&
-GeometryBuilder::setPrimitiveType(Geometry::PrimitiveType primitiveType) {
+GeometryBuilder& GeometryBuilder::setPrimitiveType(Geometry::PrimitiveType primitiveType) {
   _def.primitiveType = primitiveType;
 
   return *this;
@@ -58,20 +57,16 @@ GeometryBuilder& GeometryBuilder::addVboAttribute(const std::string& name,
   return *this;
 }
 
-GeometryBuilder& GeometryBuilder::addVboAttribute(const std::string& name,
-                                                  Geometry::AttrType type) {
+GeometryBuilder& GeometryBuilder::addVboAttribute(const std::string& name, Geometry::AttrType type) {
   return addVboAttribute(name, type, -1, false);
 }
 
-GeometryBuilder&
-GeometryBuilder::addIgnoredVboAttribute(const std::string& name,
-                                        Geometry::AttrType type) {
+GeometryBuilder& GeometryBuilder::addIgnoredVboAttribute(const std::string& name, Geometry::AttrType type) {
   return addVboAttribute(name, type, -1, true);
 }
 
 GeometryBuilder&
-GeometryBuilder::addIgnoredVboAttribute(const std::string& name,
-                                        Geometry::AttrType type, int32_t index) {
+GeometryBuilder::addIgnoredVboAttribute(const std::string& name, Geometry::AttrType type, int32_t index) {
   return addVboAttribute(name, type, index, true);
 }
 
@@ -100,7 +95,7 @@ GeometryBuilder& GeometryBuilder::validate() {
 
 Geometry& GeometryBuilder::build(Geometry& geometry) {
   validate();
-  geometry.initialise(*_shader, _def);
+  geometry.initialize(*_shader, _def);
   return geometry;
 }
 

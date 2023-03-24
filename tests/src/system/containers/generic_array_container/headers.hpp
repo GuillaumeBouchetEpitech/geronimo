@@ -16,8 +16,6 @@
 #include "gtest/gtest.h"
 
 template <std::size_t N>
-using shorthand_dynamic_heap_array =
-  gero::dynamic_heap_array<common::TestStructure, common::TestStructure, N>;
-
+using shorthand_dynamic_heap_array = gero::dynamic_heap_array<common::TestStructure, common::TestStructure, N>;
 
 struct system_generic_array_container : public common::threadsafe_fixture {};

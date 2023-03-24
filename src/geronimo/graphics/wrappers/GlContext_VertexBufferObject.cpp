@@ -17,54 +17,58 @@ namespace GlContext {
 
 namespace VertexBufferObject {
 
-void generateMany(uint32_t total, uint32_t* buffers) {
-  glCheck(glGenBuffers(GLsizei(total), buffers));
-}
+void generateMany(uint32_t total, uint32_t* buffers) { glCheck(glGenBuffers(GLsizei(total), buffers)); }
 
-void deleteMany(uint32_t total, const uint32_t* buffers) {
-  glCheck(glDeleteBuffers(GLsizei(total), buffers));
-}
+void deleteMany(uint32_t total, const uint32_t* buffers) { glCheck(glDeleteBuffers(GLsizei(total), buffers)); }
 
 void bind(uint32_t vboId) { glCheck(glBindBuffer(GL_ARRAY_BUFFER, vboId)); }
 
-void enableAttribArray(uint32_t attrId) {
-  glCheck(glEnableVertexAttribArray(attrId));
-}
+void enableAttribArray(uint32_t attrId) { glCheck(glEnableVertexAttribArray(attrId)); }
 
-void setAttribPointer(uint32_t attrId, uint32_t rowSize, uint32_t stride,
-                      uint32_t rowIndex, AttribType inType) {
+void setAttribPointer(uint32_t attrId, uint32_t rowSize, uint32_t stride, uint32_t rowIndex, AttribType inType) {
 
   const void* rowAddr = reinterpret_cast<void*>(rowIndex);
 
   GLenum rawType = GL_FLOAT;
-  switch (inType)
-  {
-    case AttribType::Int8   :  rawType = GL_BYTE;           break;
-    case AttribType::UInt8  :  rawType = GL_UNSIGNED_BYTE;  break;
-    case AttribType::Int16  :  rawType = GL_SHORT;          break;
-    case AttribType::UInt16 :  rawType = GL_UNSIGNED_SHORT; break;
-    case AttribType::Int32  :  rawType = GL_INT;            break;
-    case AttribType::UInt32 :  rawType = GL_UNSIGNED_INT;   break;
-    case AttribType::Float  :  rawType = GL_FLOAT;          break;
-    case AttribType::Double :  rawType = GL_DOUBLE;         break;
+  switch (inType) {
+  case AttribType::Int8:
+    rawType = GL_BYTE;
+    break;
+  case AttribType::UInt8:
+    rawType = GL_UNSIGNED_BYTE;
+    break;
+  case AttribType::Int16:
+    rawType = GL_SHORT;
+    break;
+  case AttribType::UInt16:
+    rawType = GL_UNSIGNED_SHORT;
+    break;
+  case AttribType::Int32:
+    rawType = GL_INT;
+    break;
+  case AttribType::UInt32:
+    rawType = GL_UNSIGNED_INT;
+    break;
+  case AttribType::Float:
+    rawType = GL_FLOAT;
+    break;
+  case AttribType::Double:
+    rawType = GL_DOUBLE;
+    break;
   };
 
   glCheck(glVertexAttribPointer(attrId, GLsizei(rowSize), rawType, GL_FALSE, GLsizei(stride), rowAddr));
 }
 
-void enableAttribDivisor(uint32_t attrId) {
-  glCheck(glVertexAttribDivisor(attrId, 1));
-}
+void enableAttribDivisor(uint32_t attrId) { glCheck(glVertexAttribDivisor(attrId, 1)); }
 
 void uploadBuffer(const void* data, uint32_t dataSize, bool dynamic) {
   const GLenum usage = (dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 
-  glCheck(
-    glBufferData(GL_ARRAY_BUFFER, GLsizeiptr(dataSize), data, GLenum(usage)));
+  glCheck(glBufferData(GL_ARRAY_BUFFER, GLsizeiptr(dataSize), data, GLenum(usage)));
 }
 
-void drawArrays(Primitives primitive, uint32_t primitiveStart,
-                uint32_t primitiveCount) {
+void drawArrays(Primitives primitive, uint32_t primitiveStart, uint32_t primitiveCount) {
   int32_t rawPrimitive = GL_LINES;
   switch (primitive) {
   case Primitives::lines:
@@ -80,12 +84,13 @@ void drawArrays(Primitives primitive, uint32_t primitiveStart,
     D_THROW(std::runtime_error, "unknown primitive");
     break;
   }
-  glCheck(glDrawArrays(GLenum(rawPrimitive), GLint(primitiveStart),
-                       GLsizei(primitiveCount)));
+  glCheck(glDrawArrays(GLenum(rawPrimitive), GLint(primitiveStart), GLsizei(primitiveCount)));
 }
 
-void drawInstancedArrays(Primitives primitive, uint32_t primitiveStart,
-                         uint32_t primitiveCount, uint32_t instanceCount) {
+void drawInstancedArrays(Primitives primitive,
+                         uint32_t primitiveStart,
+                         uint32_t primitiveCount,
+                         uint32_t instanceCount) {
   int32_t rawPrimitive = GL_LINES;
   switch (primitive) {
   case Primitives::lines:
@@ -101,9 +106,8 @@ void drawInstancedArrays(Primitives primitive, uint32_t primitiveStart,
     D_THROW(std::runtime_error, "unknown primitive");
     break;
   }
-  glCheck(glDrawArraysInstanced(GLenum(rawPrimitive), GLint(primitiveStart),
-                                GLsizei(primitiveCount),
-                                GLsizei(instanceCount)));
+  glCheck(glDrawArraysInstanced(
+    GLenum(rawPrimitive), GLint(primitiveStart), GLsizei(primitiveCount), GLsizei(instanceCount)));
 }
 
 } // namespace VertexBufferObject

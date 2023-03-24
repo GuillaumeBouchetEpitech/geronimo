@@ -22,8 +22,7 @@ DataPool<PhysicContactData>* _contactDataPool = nullptr;
 //
 // local function(s)
 
-bool almostEqualRelativeAndAbs(float A, float B, float maxDiff,
-                               float maxRelDiff = FLT_EPSILON) {
+bool almostEqualRelativeAndAbs(float A, float B, float maxDiff, float maxRelDiff = FLT_EPSILON) {
   // Check if the numbers are really close -- needed
   // when comparing numbers near zero.
   const float diff = fabs(A - B);
@@ -39,8 +38,7 @@ bool almostEqualRelativeAndAbs(float A, float B, float maxDiff,
   return false;
 }
 
-bool onContactProcessed(btManifoldPoint& contactPoint, void* pBody0,
-                        void* pBody1) {
+bool onContactProcessed(btManifoldPoint& contactPoint, void* pBody0, void* pBody1) {
   btRigidBody* pRigidBody0 = reinterpret_cast<btRigidBody*>(pBody0);
   btRigidBody* pRigidBody1 = reinterpret_cast<btRigidBody*>(pBody1);
 
@@ -58,14 +56,13 @@ bool onContactProcessed(btManifoldPoint& contactPoint, void* pBody0,
 
   // Create (on begin) or Get (on update) the contact data
   if (isBeginContact) {
-    pContactData = _contactDataPool->pop(); // <= auto-growing internal pool
-    const int32_t contactIndex =
-      _contactDataPool->getIndex(pContactData); // <= FAST
+    pContactData = _contactDataPool->pop();                                // <= auto-growing internal pool
+    const int32_t contactIndex = _contactDataPool->getIndex(pContactData); // <= FAST
 
     contactId = contactIndex + 1; // index => id
     *pContactId = contactId;
 
-    pContactData->id = static_cast<unsigned short>(contactId);
+    pContactData->id = static_cast<uint16_t>(contactId);
     pContactData->pBodyA = pRigidBody0;
     pContactData->pBodyB = pRigidBody1;
   } else {
@@ -89,27 +86,19 @@ bool onContactProcessed(btManifoldPoint& contactPoint, void* pBody0,
     constexpr float maxDiff = 0.001f;
     constexpr float maxRelDiff = 0.01f;
 
-    const bool needUpdate =
-      (!almostEqualRelativeAndAbs(currPos[0], prevPos[0], maxDiff,
-                                  maxRelDiff) ||
-       !almostEqualRelativeAndAbs(currPos[1], prevPos[1], maxDiff,
-                                  maxRelDiff) ||
-       !almostEqualRelativeAndAbs(currPos[2], prevPos[2], maxDiff,
-                                  maxRelDiff) ||
-       !almostEqualRelativeAndAbs(currNormal[0], prevNormal[0], maxDiff,
-                                  maxRelDiff) ||
-       !almostEqualRelativeAndAbs(currNormal[1], prevNormal[1], maxDiff,
-                                  maxRelDiff) ||
-       !almostEqualRelativeAndAbs(currNormal[2], prevNormal[2], maxDiff,
-                                  maxRelDiff));
+    const bool needUpdate = (!almostEqualRelativeAndAbs(currPos[0], prevPos[0], maxDiff, maxRelDiff) ||
+                             !almostEqualRelativeAndAbs(currPos[1], prevPos[1], maxDiff, maxRelDiff) ||
+                             !almostEqualRelativeAndAbs(currPos[2], prevPos[2], maxDiff, maxRelDiff) ||
+                             !almostEqualRelativeAndAbs(currNormal[0], prevNormal[0], maxDiff, maxRelDiff) ||
+                             !almostEqualRelativeAndAbs(currNormal[1], prevNormal[1], maxDiff, maxRelDiff) ||
+                             !almostEqualRelativeAndAbs(currNormal[2], prevNormal[2], maxDiff, maxRelDiff));
 
     if (!needUpdate)
       return true;
   }
 
   pContactData->posB = glm::vec3(currPos[0], currPos[1], currPos[2]);
-  pContactData->normalB =
-    glm::vec3(currNormal[0], currNormal[1], currNormal[2]);
+  pContactData->normalB = glm::vec3(currNormal[0], currNormal[1], currNormal[2]);
 
   if (isBeginContact)
     _contactEventCallback(ContactEvent::BEGIN, pContactData);
@@ -141,9 +130,9 @@ bool onContactDestroyed(void* userPersistentData) {
 
 namespace physicsContactEventsHandler {
 
-void initialise(ContactCallback callback) {
+void initialize(ContactCallback callback) {
   if (_contactEventCallback)
-    D_THROW(std::runtime_error, "already initialised");
+    D_THROW(std::runtime_error, "already initialized");
 
   _contactDataPool = new DataPool<PhysicContactData>();
 

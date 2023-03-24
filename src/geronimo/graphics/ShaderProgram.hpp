@@ -38,8 +38,7 @@ private:
 public:
   ShaderProgram(const Definition& def);
   ShaderProgram(const Definition& def, fileUtils::FileManager& fileManager);
-  ShaderProgram(const Definition& def,
-                const fileUtils::LoadCallback& loadFileCallback);
+  ShaderProgram(const Definition& def, const fileUtils::LoadCallback& loadFileCallback);
   ~ShaderProgram();
 
 public:

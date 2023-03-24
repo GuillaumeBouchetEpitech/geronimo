@@ -21,39 +21,34 @@ private:
   PhysicWorld::debuggerPushLineCallback _debuggerPushLineCallback;
 
 public:
-  MyDebugDrawer(const PhysicWorld::debuggerPushLineCallback& callback)
-    : _debuggerPushLineCallback(callback) {}
+  MyDebugDrawer(const PhysicWorld::debuggerPushLineCallback& callback) : _debuggerPushLineCallback(callback) {}
 
 public:
-  virtual void drawLine(const btVector3& from, const btVector3& to,
-                        const btVector3& color) override {
+  virtual void drawLine(const btVector3& from, const btVector3& to, const btVector3& color) override {
     if (!_debuggerPushLineCallback)
       return;
 
-    _debuggerPushLineCallback(glm::vec3(from[0], from[1], from[2]),
-                              glm::vec3(to[0], to[1], to[2]),
-                              glm::vec3(color[0], color[1], color[2]));
+    _debuggerPushLineCallback(
+      glm::vec3(from[0], from[1], from[2]), glm::vec3(to[0], to[1], to[2]), glm::vec3(color[0], color[1], color[2]));
   }
 
   virtual void drawContactPoint(const btVector3& PointOnB,
-                                const btVector3& normalOnB, btScalar distance,
-                                int32_t lifeTime, const btVector3& color) override {
+                                const btVector3& normalOnB,
+                                btScalar distance,
+                                int32_t lifeTime,
+                                const btVector3& color) override {
     static_cast<void>(distance); // unused
     static_cast<void>(lifeTime); // unused
 
     glm::vec3 point = glm::vec3(PointOnB[0], PointOnB[1], PointOnB[2]);
     glm::vec3 normal = glm::vec3(normalOnB[0], normalOnB[1], normalOnB[2]);
 
-    _debuggerPushLineCallback(point, point + normal * 0.5f,
-                              glm::vec3(color[0], color[1], color[2]));
+    _debuggerPushLineCallback(point, point + normal * 0.5f, glm::vec3(color[0], color[1], color[2]));
   }
 
-  virtual void reportErrorWarning(const char* warningString) override {
-    D_MYLOG("warningString: " << warningString);
-  }
+  virtual void reportErrorWarning(const char* warningString) override { D_MYLOG("warningString: " << warningString); }
 
-  virtual void draw3dText(const btVector3& location,
-                          const char* textString) override {
+  virtual void draw3dText(const btVector3& location, const char* textString) override {
     static_cast<void>(location); // unused
 
     D_MYLOG("textString: " << textString);
@@ -67,22 +62,19 @@ public:
 // PhysicWorld* PhysicWorld::self = nullptr;
 
 PhysicWorld::PhysicWorld()
-  : _physicBodyManager(*this), _physicVehicleManager(*this), _raycaster(*this),
-    _queryShape(*this) {
+  : _physicBodyManager(*this), _physicVehicleManager(*this), _raycaster(*this), _queryShape(*this) {
   // PhysicWorld::self = this;
 
   _bullet.broadphase = new btDbvtBroadphase();
   _bullet.collisionConfiguration = new btDefaultCollisionConfiguration();
-  _bullet.dispatcher =
-    new btCollisionDispatcher(_bullet.collisionConfiguration);
+  _bullet.dispatcher = new btCollisionDispatcher(_bullet.collisionConfiguration);
   _bullet.solver = new btSequentialImpulseConstraintSolver;
   // _bullet.dynamicsWorld = new MyDynamicsWorld(
   _bullet.dynamicsWorld =
-    new btDiscreteDynamicsWorld(_bullet.dispatcher, _bullet.broadphase,
-                                _bullet.solver, _bullet.collisionConfiguration);
+    new btDiscreteDynamicsWorld(_bullet.dispatcher, _bullet.broadphase, _bullet.solver, _bullet.collisionConfiguration);
   _bullet.dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
-  // PhysicContactEventsHandler::initialise([](ContactEvent event,
+  // PhysicContactEventsHandler::initialize([](ContactEvent event,
   // PhysicContactData* contactData)
   // {
   //   // D_MYLOG("event=" << int32_t(event));
@@ -112,8 +104,7 @@ PhysicWorld::~PhysicWorld() {
   delete _bullet.dispatcher;
 }
 
-void PhysicWorld::setDebuggerPushLine(
-  const debuggerPushLineCallback& callback) {
+void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) {
   // _debuggerPushLineCallback = callback;
 
   btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
@@ -121,21 +112,18 @@ void PhysicWorld::setDebuggerPushLine(
     delete currentDebugDrawer;
 
   MyDebugDrawer* newDebugDrawer = new MyDebugDrawer(callback);
-  newDebugDrawer->setDebugMode(
-    btIDebugDraw::DebugDrawModes::DBG_DrawWireframe
-    // | btIDebugDraw::DebugDrawModes::DBG_DrawAabb
-    | btIDebugDraw::DebugDrawModes::DBG_DrawContactPoints |
-    btIDebugDraw::DebugDrawModes::DBG_DrawConstraints
-    // | btIDebugDraw::DebugDrawModes::DBG_DrawConstraintLimits
+  newDebugDrawer->setDebugMode(btIDebugDraw::DebugDrawModes::DBG_DrawWireframe
+                               // | btIDebugDraw::DebugDrawModes::DBG_DrawAabb
+                               | btIDebugDraw::DebugDrawModes::DBG_DrawContactPoints |
+                               btIDebugDraw::DebugDrawModes::DBG_DrawConstraints
+                               // | btIDebugDraw::DebugDrawModes::DBG_DrawConstraintLimits
   );
 
   _bullet.dynamicsWorld->setDebugDrawer(newDebugDrawer);
 }
 
-void PhysicWorld::step(float elapsedTime, uint32_t maxSubSteps,
-                       float fixedTimeStep) {
-  _bullet.dynamicsWorld->stepSimulation(elapsedTime, int32_t(maxSubSteps),
-                                        fixedTimeStep);
+void PhysicWorld::step(float elapsedTime, uint32_t maxSubSteps, float fixedTimeStep) {
+  _bullet.dynamicsWorld->stepSimulation(elapsedTime, int32_t(maxSubSteps), fixedTimeStep);
 }
 
 void PhysicWorld::render() { _bullet.dynamicsWorld->debugDrawWorld(); }
@@ -146,13 +134,9 @@ void PhysicWorld::render() { _bullet.dynamicsWorld->debugDrawWorld(); }
 //
 //
 
-PhysicBodyManager& PhysicWorld::getPhysicBodyManager() {
-  return _physicBodyManager;
-}
+PhysicBodyManager& PhysicWorld::getPhysicBodyManager() { return _physicBodyManager; }
 
-const PhysicBodyManager& PhysicWorld::getPhysicBodyManager() const {
-  return _physicBodyManager;
-}
+const PhysicBodyManager& PhysicWorld::getPhysicBodyManager() const { return _physicBodyManager; }
 
 //
 //
@@ -160,13 +144,9 @@ const PhysicBodyManager& PhysicWorld::getPhysicBodyManager() const {
 //
 //
 
-PhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() {
-  return _physicVehicleManager;
-}
+PhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() { return _physicVehicleManager; }
 
-const PhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const {
-  return _physicVehicleManager;
-}
+const PhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const { return _physicVehicleManager; }
 
 //
 //

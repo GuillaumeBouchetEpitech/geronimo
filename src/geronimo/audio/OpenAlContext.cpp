@@ -61,7 +61,7 @@ void checkAlErrors(const char* filename, const char* funcname, int line) {
 namespace gero {
 namespace audio {
 
-OpenAlContext::Context OpenAlContext::initialise() {
+OpenAlContext::Context OpenAlContext::initialize() {
   Context newContext;
   newContext.device = alcOpenDevice(NULL);
   if (!newContext.device) {
@@ -90,21 +90,15 @@ void OpenAlContext::setListenerPosition(float x, float y, float z) {
   D_CHECK_AL_ERRORS();
 }
 
-void OpenAlContext::setListenerPosition(const glm::vec3& pos) {
-  setListenerPosition(pos.x, pos.y, pos.z);
-}
+void OpenAlContext::setListenerPosition(const glm::vec3& pos) { setListenerPosition(pos.x, pos.y, pos.z); }
 
-void OpenAlContext::setListenerOrientation(float frontX, float frontY,
-                                           float frontZ, float upX, float upY,
-                                           float upZ) {
-  std::array<ALfloat, 6> listenerOri = {
-    {frontX, frontY, frontZ, upX, upY, upZ}};
+void OpenAlContext::setListenerOrientation(float frontX, float frontY, float frontZ, float upX, float upY, float upZ) {
+  std::array<ALfloat, 6> listenerOri = {{frontX, frontY, frontZ, upX, upY, upZ}};
   alListenerfv(AL_ORIENTATION, listenerOri.data());
   D_CHECK_AL_ERRORS();
 }
 
-void OpenAlContext::setListenerOrientation(const glm::vec3& front,
-                                           const glm::vec3& up) {
+void OpenAlContext::setListenerOrientation(const glm::vec3& front, const glm::vec3& up) {
   setListenerOrientation(front.x, front.y, front.z, up.x, up.y, up.z);
 }
 
@@ -147,8 +141,7 @@ void OpenAlContext::setSourcePitch(uint32_t source, float pitch) {
   D_CHECK_AL_ERRORS();
 }
 
-void OpenAlContext::setSourcePosition(uint32_t source, float x, float y,
-                                      float z) {
+void OpenAlContext::setSourcePosition(uint32_t source, float x, float y, float z) {
   alSource3f(source, AL_POSITION, x, y, z);
   D_CHECK_AL_ERRORS();
 }
@@ -168,14 +161,12 @@ void OpenAlContext::setSourceMaxVolume(uint32_t source, float volume) {
   D_CHECK_AL_ERRORS();
 }
 
-void OpenAlContext::setSourceDirection(uint32_t source, float x, float y,
-                                       float z) {
+void OpenAlContext::setSourceDirection(uint32_t source, float x, float y, float z) {
   alSource3f(source, AL_DIRECTION, x, y, z);
   D_CHECK_AL_ERRORS();
 }
 
-void OpenAlContext::setSourceVelocity(uint32_t source, float x, float y,
-                                      float z) {
+void OpenAlContext::setSourceVelocity(uint32_t source, float x, float y, float z) {
   alSource3f(source, AL_VELOCITY, x, y, z);
   D_CHECK_AL_ERRORS();
 }
@@ -205,27 +196,23 @@ void OpenAlContext::deleteBuffers(uint32_t total, const uint32_t* buffers) {
   D_CHECK_AL_ERRORS();
 }
 
-void OpenAlContext::setBufferData(uint32_t buffer, BufferFormat format,
-                                  const char* soundData, uint32_t size,
-                                  std::int32_t sampleRate) {
+void OpenAlContext::setBufferData(
+  uint32_t buffer, BufferFormat format, const char* soundData, uint32_t size, std::int32_t sampleRate) {
   switch (format) {
   case BufferFormat::mono8: {
     alBufferData(buffer, AL_FORMAT_MONO8, soundData, (ALsizei)size, sampleRate);
     break;
   }
   case BufferFormat::mono16: {
-    alBufferData(buffer, AL_FORMAT_MONO16, soundData, (ALsizei)size,
-                 sampleRate);
+    alBufferData(buffer, AL_FORMAT_MONO16, soundData, (ALsizei)size, sampleRate);
     break;
   }
   case BufferFormat::stereo8: {
-    alBufferData(buffer, AL_FORMAT_STEREO8, soundData, (ALsizei)size,
-                 sampleRate);
+    alBufferData(buffer, AL_FORMAT_STEREO8, soundData, (ALsizei)size, sampleRate);
     break;
   }
   case BufferFormat::stereo16: {
-    alBufferData(buffer, AL_FORMAT_STEREO16, soundData, (ALsizei)size,
-                 sampleRate);
+    alBufferData(buffer, AL_FORMAT_STEREO16, soundData, (ALsizei)size, sampleRate);
     break;
   }
   }

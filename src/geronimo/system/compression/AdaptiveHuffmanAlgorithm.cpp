@@ -217,8 +217,7 @@ static void increment(huff_t* huff, node_t* node) {
 
 void Huff_addRef(huff_t* huff, byte ch) {
   node_t *tnode, *tnode2;
-  if (huff->loc[int(ch)] ==
-      nullptr) { /* if this is the first transmission of this node */
+  if (huff->loc[int(ch)] == nullptr) { /* if this is the first transmission of this node */
     tnode = &(huff->nodeList[huff->blocNode++]);
     tnode2 = &(huff->nodeList[huff->blocNode++]);
 
@@ -262,8 +261,7 @@ void Huff_addRef(huff_t* huff, byte ch) {
     tnode->left = tnode->right = nullptr;
 
     if (huff->lhead->parent) {
-      if (huff->lhead->parent->left ==
-          huff->lhead) { /* lhead is guaranteed to by the NYT */
+      if (huff->lhead->parent->left == huff->lhead) { /* lhead is guaranteed to by the NYT */
         huff->lhead->parent->left = tnode2;
       } else {
         huff->lhead->parent->right = tnode2;
@@ -363,14 +361,12 @@ void Huff_Init(huffman_t* huff) {
   std::memset(&huff->decompressor, 0, sizeof(huff_t));
 
   // Initialize the tree & list with the NYT node
-  huff->decompressor.tree = huff->decompressor.lhead =
-    huff->decompressor.ltail = huff->decompressor.loc[NYT] =
-      &(huff->decompressor.nodeList[huff->decompressor.blocNode++]);
+  huff->decompressor.tree = huff->decompressor.lhead = huff->decompressor.ltail = huff->decompressor.loc[NYT] =
+    &(huff->decompressor.nodeList[huff->decompressor.blocNode++]);
   huff->decompressor.tree->symbol = NYT;
   huff->decompressor.tree->weight = 0;
   huff->decompressor.lhead->next = huff->decompressor.lhead->prev = nullptr;
-  huff->decompressor.tree->parent = huff->decompressor.tree->left =
-    huff->decompressor.tree->right = nullptr;
+  huff->decompressor.tree->parent = huff->decompressor.tree->left = huff->decompressor.tree->right = nullptr;
 
   // Add the NYT (not yet transmitted) node into the tree/list */
   huff->compressor.tree = huff->compressor.lhead = huff->compressor.loc[NYT] =
@@ -378,8 +374,7 @@ void Huff_Init(huffman_t* huff) {
   huff->compressor.tree->symbol = NYT;
   huff->compressor.tree->weight = 0;
   huff->compressor.lhead->next = huff->compressor.lhead->prev = nullptr;
-  huff->compressor.tree->parent = huff->compressor.tree->left =
-    huff->compressor.tree->right = nullptr;
+  huff->compressor.tree->parent = huff->compressor.tree->left = huff->compressor.tree->right = nullptr;
   huff->compressor.loc[NYT] = huff->compressor.tree;
 }
 
@@ -442,8 +437,7 @@ void decompress(char* inData, int& inOutSize, int inMaxSize, int inOffset) {
 
   std::memset(&huff, 0, sizeof(huff_t));
   // Initialize the tree & list with the NYT node
-  huff.tree = huff.lhead = huff.ltail = huff.loc[NYT] =
-    &(huff.nodeList[huff.blocNode++]);
+  huff.tree = huff.lhead = huff.ltail = huff.loc[NYT] = &(huff.nodeList[huff.blocNode++]);
   huff.tree->symbol = NYT;
   huff.tree->weight = 0;
   huff.lhead->next = huff.lhead->prev = nullptr;
@@ -466,7 +460,7 @@ void decompress(char* inData, int& inOutSize, int inMaxSize, int inOffset) {
       break;
     }
     Huff_Receive(huff.tree, &ch, buffer); /* Get a character */
-    if (ch == NYT) { /* We got a NYT, get the symbol associated with it */
+    if (ch == NYT) {                      /* We got a NYT, get the symbol associated with it */
       ch = 0;
       for (i = 0; i < 8; i++) {
         ch = (ch << 1) + get_bit(buffer);

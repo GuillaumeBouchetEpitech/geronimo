@@ -13,8 +13,10 @@ namespace decoders {
 
 namespace ogg {
 
-char* decode(const std::string& content, std::int32_t& outChannels,
-             std::int32_t& outSampleRate, std::int32_t& outBitsPerSample,
+char* decode(const std::string& content,
+             std::int32_t& outChannels,
+             std::int32_t& outSampleRate,
+             std::int32_t& outBitsPerSample,
              uint32_t& outSize) {
 
   // https://cpp.hotexamples.com/examples/-/-/stb_vorbis_decode_memory/cpp-stb_vorbis_decode_memory-function-examples.html
@@ -23,8 +25,7 @@ char* decode(const std::string& content, std::int32_t& outChannels,
   short* soundSamples;
 
   const std::int32_t numSamples = stb_vorbis_decode_memory(
-    reinterpret_cast<const unsigned char*>(content.data()), int(content.size()),
-    &channels, &sampleRate, &soundSamples);
+    reinterpret_cast<const uint8_t*>(content.data()), int(content.size()), &channels, &sampleRate, &soundSamples);
 
   if (numSamples < 0) {
     D_THROW(std::runtime_error, "ERROR: Could not decode ogg file");
@@ -33,8 +34,7 @@ char* decode(const std::string& content, std::int32_t& outChannels,
   outChannels = channels;
   outSampleRate = sampleRate;
   outBitsPerSample = 16;
-  outSize =
-    uint32_t(numSamples * channels * std::int32_t(sizeof(std::int16_t)));
+  outSize = uint32_t(numSamples * channels * std::int32_t(sizeof(std::int16_t)));
 
   // D_MYLOG("numSamples " << numSamples);
   // D_MYLOG("outChannels " << outChannels);

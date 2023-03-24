@@ -11,8 +11,7 @@ namespace threading {
 //
 // ScopedLockedNotifier
 
-ThreadSynchroniser::ScopedLockedNotifier::ScopedLockedNotifier(
-  ThreadSynchroniser& synchroniser)
+ThreadSynchroniser::ScopedLockedNotifier::ScopedLockedNotifier(ThreadSynchroniser& synchroniser)
   : _synchroniser(synchroniser) {
   _synchroniser._mutex.lock(); // scoped lock part
 }
@@ -29,8 +28,7 @@ ThreadSynchroniser::ScopedLockedNotifier::~ScopedLockedNotifier() {
 //
 //
 
-bool ThreadSynchroniser::waitUntilNotified(std::unique_lock<std::mutex>& lock,
-                                           float seconds /*= 0.0f*/) {
+bool ThreadSynchroniser::waitUntilNotified(std::unique_lock<std::mutex>& lock, float seconds /*= 0.0f*/) {
   _isNotified = false;
 
   // no need to wait for a timeout
@@ -58,12 +56,9 @@ void ThreadSynchroniser::notify() {
   _condVar.notify_one();
 }
 
-std::unique_lock<std::mutex> ThreadSynchroniser::makeScopedLock() {
-  return std::unique_lock<std::mutex>(_mutex);
-}
+std::unique_lock<std::mutex> ThreadSynchroniser::makeScopedLock() { return std::unique_lock<std::mutex>(_mutex); }
 
-ThreadSynchroniser::ScopedLockedNotifier
-ThreadSynchroniser::makeScopedLockNotifier() {
+ThreadSynchroniser::ScopedLockedNotifier ThreadSynchroniser::makeScopedLockNotifier() {
   return ScopedLockedNotifier(*this);
 }
 

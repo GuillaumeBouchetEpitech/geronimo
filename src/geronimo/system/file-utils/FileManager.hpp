@@ -13,7 +13,7 @@
 namespace gero {
 namespace fileUtils {
 
-class DataBuffer {
+class DataBuffer : public gero::weak_ref_data_pool_base_class {
 private:
   std::size_t _size;
   std::unique_ptr<std::uint8_t[]> _data;
@@ -36,17 +36,17 @@ public:
   DataBuffer& operator=(DataBuffer&& other); // allow move
 
 public:
-  const unsigned char* getUCharData() const;
+  const uint8_t* getUCharData() const;
   const char* getCharData() const;
   std::size_t getSize() const;
   const std::string_view asStringView() const;
   void fillString(std::string& outFileContent) const;
 };
 
+using BuffersPool = safe_weak_ref_data_pool<DataBuffer, DataBuffer, 256, false>;
+using BufferWeakRef = BuffersPool::weak_ref;
+
 class FileManager {
-public:
-  using BuffersPool = weak_ref_data_pool<DataBuffer, DataBuffer, 256, false>;
-  using BufferWeakRef = BuffersPool::weak_ref;
 
 private:
   BuffersPool _buffersPool;

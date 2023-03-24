@@ -20,17 +20,15 @@ public:
   };
 
 public:
-  static Context initialise();
+  static Context initialize();
   static void close(Context& context);
 
 public:
   static void setListenerPosition(float x, float y, float z);
   static void setListenerPosition(const glm::vec3& pos);
 
-  static void setListenerOrientation(float frontX, float frontY, float frontZ,
-                                     float upX, float upY, float upZ);
-  static void setListenerOrientation(const glm::vec3& front,
-                                     const glm::vec3& up);
+  static void setListenerOrientation(float frontX, float frontY, float frontZ, float upX, float upY, float upZ);
+  static void setListenerOrientation(const glm::vec3& front, const glm::vec3& up);
 
   static void setListenerVolume(float volume);
 
@@ -69,9 +67,8 @@ public:
     stereo16,
   };
 
-  static void setBufferData(uint32_t buffer, BufferFormat format,
-                            const char* soundData, uint32_t size,
-                            std::int32_t sampleRate);
+  static void
+  setBufferData(uint32_t buffer, BufferFormat format, const char* soundData, uint32_t size, std::int32_t sampleRate);
 };
 
 } // namespace audio

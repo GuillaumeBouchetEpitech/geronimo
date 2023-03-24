@@ -6,6 +6,7 @@
                 "${workspaceFolder}/src/**",
                 "${workspaceFolder}/thirdparties/**",
                 "${workspaceFolder}/tests/src/**",
+                "${workspaceFolder}/samples/test-bed/src/**",
                 "/usr/include/SDL2/",
                 "${EMSDK}/upstream/emscripten/system/include/**"
             ],

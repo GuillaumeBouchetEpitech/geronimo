@@ -1,5 +1,8 @@
 
-#include "headers.hpp"
+#include "geronimo/system/TraceLogger.hpp"
+#include "geronimo/system/math/circleCircleIntersectionPoints.hpp"
+
+#include "gtest/gtest.h"
 
 TEST(system_circleCircleIntersectionPoints, find_90_degrees_positions) {
   gero::math::Circle c1;
@@ -15,8 +18,7 @@ TEST(system_circleCircleIntersectionPoints, find_90_degrees_positions) {
   glm::vec2 res1;
   glm::vec2 res2;
 
-  const bool result =
-    gero::math::circleCircleIntersectionPoints(c1, c2, res1, res2);
+  const bool result = gero::math::circleCircleIntersectionPoints(c1, c2, res1, res2);
 
   ASSERT_EQ(result, true);
 
@@ -56,8 +58,7 @@ TEST(system_circleCircleIntersectionPoints, find_straigth_positions) {
   glm::vec2 res1;
   glm::vec2 res2;
 
-  const bool result =
-    gero::math::circleCircleIntersectionPoints(c1, c2, res1, res2);
+  const bool result = gero::math::circleCircleIntersectionPoints(c1, c2, res1, res2);
 
   ASSERT_EQ(result, true);
 
@@ -74,8 +75,7 @@ TEST(system_circleCircleIntersectionPoints, find_straigth_positions) {
   ASSERT_NEAR(glm::degrees(res2ParentAngle), 0.0f, 0.01f);
 }
 
-TEST(system_circleCircleIntersectionPoints,
-     find_90_degrees_positions_with_different_radius) {
+TEST(system_circleCircleIntersectionPoints, find_90_degrees_positions_with_different_radius) {
   gero::math::Circle c1;
   c1.center.x = 0;
   c1.center.y = 0;
@@ -89,8 +89,7 @@ TEST(system_circleCircleIntersectionPoints,
   glm::vec2 res1;
   glm::vec2 res2;
 
-  const bool result =
-    gero::math::circleCircleIntersectionPoints(c1, c2, res1, res2);
+  const bool result = gero::math::circleCircleIntersectionPoints(c1, c2, res1, res2);
 
   ASSERT_EQ(result, true);
 

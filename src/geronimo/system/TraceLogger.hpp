@@ -62,27 +62,25 @@ template <> TraceLogger& TraceLogger::operator<<<glm::quat>(glm::quat data);
 } // namespace gero
 
 // this will reduce the "__FILE__" macro to it's filename -> friendlier to read
-#define D_MYLOG_FILENAME                                                       \
-  (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#define D_MYLOG_FILENAME (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 // this is just to make the "D_MYLOG" macro source code easier to read
 #define D_MYLOG_STACK D_MYLOG_FILENAME << "|" << __func__ << "|" << __LINE__
 
-#define D_MYLOG_PREFIX                                                         \
-  "[" << gero::TraceLogger::getTime() << "] (" << D_MYLOG_STACK << ") -> "
+#define D_MYLOG_PREFIX "[" << gero::TraceLogger::getTime() << "] (" << D_MYLOG_STACK << ") -> "
 
 // one line logging macro
-#define D_MYLOG(streamMsg)                                                     \
-  {                                                                            \
-    gero::TraceLogger logger;                                                  \
-    logger << "MYLOG " << D_MYLOG_PREFIX << streamMsg;                         \
-    logger.dump();                                                             \
+#define D_MYLOG(streamMsg)                                                                                             \
+  {                                                                                                                    \
+    gero::TraceLogger logger;                                                                                          \
+    logger << "MYLOG " << D_MYLOG_PREFIX << streamMsg;                                                                 \
+    logger.dump();                                                                                                     \
   }
 
 // one line logging macro
-#define D_MYERR(streamMsg)                                                     \
-  {                                                                            \
-    gero::TraceLogger logger;                                                  \
-    logger << "MYERR " << D_MYLOG_PREFIX << streamMsg;                         \
-    logger.dumpErr();                                                          \
+#define D_MYERR(streamMsg)                                                                                             \
+  {                                                                                                                    \
+    gero::TraceLogger logger;                                                                                          \
+    logger << "MYERR " << D_MYLOG_PREFIX << streamMsg;                                                                 \
+    logger.dumpErr();                                                                                                  \
   }

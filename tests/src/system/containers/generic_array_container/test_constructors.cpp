@@ -47,8 +47,7 @@ TEST_F(system_generic_array_container, comparison_operators) {
   }
 }
 
-TEST_F(system_generic_array_container,
-       do_not_call_any_ctor_when_moving_containers) {
+TEST_F(system_generic_array_container, do_not_call_any_ctor_when_moving_containers) {
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);
   ASSERT_EQ(common::getTotalMoveCtor(), 0);
@@ -56,7 +55,10 @@ TEST_F(system_generic_array_container,
   ASSERT_EQ(common::getTotalAlloc(), 0);
   ASSERT_EQ(common::getTotalDealloc(), 0);
 
-  auto mySizedDynamicArray1 = std::make_unique<gero::dynamic_heap_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>>();
+  auto mySizedDynamicArray1 = std::make_unique<gero::dynamic_heap_array<common::TestStructure,
+                                                                        common::TestStructure,
+                                                                        5,
+                                                                        common::MyAllocator<common::TestStructure>>>();
 
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);

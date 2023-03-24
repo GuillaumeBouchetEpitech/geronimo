@@ -37,7 +37,7 @@ public:
   ~FrameBuffer();
 
 public:
-  bool initialise(const Definition& def, bool throwException = true);
+  bool initialize(const Definition& def, bool throwException = true);
   void dispose();
 
 private:
@@ -56,8 +56,7 @@ public:
   bool isLinked() const;
 
 public:
-  void getAsImage(Image& image, uint32_t posX, uint32_t posY, uint32_t width,
-                  uint32_t height) const;
+  void getAsImage(Image& image, uint32_t posX, uint32_t posY, uint32_t width, uint32_t height) const;
 };
 
 } // namespace graphics

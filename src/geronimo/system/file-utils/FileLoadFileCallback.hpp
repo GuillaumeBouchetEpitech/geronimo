@@ -7,8 +7,7 @@
 namespace gero {
 namespace fileUtils {
 
-using LoadCallback =
-  std::function<void(const std::string& filename, std::string& source)>;
+using LoadCallback = std::function<void(const std::string& filename, std::string& source)>;
 
 LoadCallback getDefaulCallback();
 

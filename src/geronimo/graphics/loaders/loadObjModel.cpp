@@ -10,8 +10,7 @@ namespace graphics {
 
 namespace loader {
 
-void loadObjModel(const std::string& filename, const std::string& mtlDir,
-                  ModelVertices& vertices) {
+void loadObjModel(const std::string& filename, const std::string& mtlDir, ModelVertices& vertices) {
   vertices.reserve(8 * 1024);
 
   tinyobj::attrib_t attrib;
@@ -19,8 +18,7 @@ void loadObjModel(const std::string& filename, const std::string& mtlDir,
   std::vector<tinyobj::material_t> materials;
   std::string errMsg;
 
-  const bool loadingSuccess = tinyobj::LoadObj(
-    &attrib, &shapes, &materials, &errMsg, filename.c_str(), mtlDir.c_str());
+  const bool loadingSuccess = tinyobj::LoadObj(&attrib, &shapes, &materials, &errMsg, filename.c_str(), mtlDir.c_str());
 
   if (!loadingSuccess)
     D_THROW(std::runtime_error, "tinyobj::LoadObj failed to open");

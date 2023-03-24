@@ -41,8 +41,7 @@ void reset() {
 void lockThread() { g_singleThread.lock(); }
 void unlockThread() { g_singleThread.unlock(); }
 
-TestStructure::TestStructure(int inValue /* = 0 */,
-                             const char* inString /*= ""*/)
+TestStructure::TestStructure(int inValue /* = 0 */, const char* inString /*= ""*/)
   : value(inValue), my_string(inString) {
   ++totalCtor;
 }

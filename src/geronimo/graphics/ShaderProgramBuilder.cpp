@@ -21,26 +21,22 @@ ShaderProgramBuilder& ShaderProgramBuilder::reset() {
   return *this;
 }
 
-ShaderProgramBuilder&
-ShaderProgramBuilder::setVertexFilename(const std::string& filename) {
+ShaderProgramBuilder& ShaderProgramBuilder::setVertexFilename(const std::string& filename) {
   _def.filenames.vertex = filename;
   return *this;
 }
 
-ShaderProgramBuilder&
-ShaderProgramBuilder::setFragmentFilename(const std::string& filename) {
+ShaderProgramBuilder& ShaderProgramBuilder::setFragmentFilename(const std::string& filename) {
   _def.filenames.fragment = filename;
   return *this;
 }
 
-ShaderProgramBuilder&
-ShaderProgramBuilder::addAttribute(const std::string& name) {
+ShaderProgramBuilder& ShaderProgramBuilder::addAttribute(const std::string& name) {
   _def.attributes.push_back(name);
   return *this;
 }
 
-ShaderProgramBuilder&
-ShaderProgramBuilder::addUniform(const std::string& name) {
+ShaderProgramBuilder& ShaderProgramBuilder::addUniform(const std::string& name) {
   _def.uniforms.push_back(name);
   return *this;
 }

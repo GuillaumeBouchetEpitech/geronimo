@@ -52,7 +52,7 @@ Files expected to be created:
 lib/
 └── native
     ├── lib-geronimo-audio.a
-    ├── lib-geronimo-graphic.a
+    ├── lib-geronimo-graphics.a
     ├── lib-geronimo-physics.a
     └── lib-geronimo-system.a
 ```
@@ -98,7 +98,7 @@ Files expected to be created:
 lib/
 └── web-wasm
     ├── lib-geronimo-audio.bc
-    ├── lib-geronimo-graphic.bc
+    ├── lib-geronimo-graphics.bc
     ├── lib-geronimo-physics.bc
     └── lib-geronimo-system.bc
 ```

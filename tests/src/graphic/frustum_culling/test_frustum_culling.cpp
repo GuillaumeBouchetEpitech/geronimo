@@ -41,8 +41,7 @@ constexpr float k_step = 10000.0f;
 
 } // namespace
 
-TEST(graphic_frustum_culling,
-     confirm_under_multiple_angles_the_point_in_frustum_feature) {
+TEST(graphic_frustum_culling, confirm_under_multiple_angles_the_point_in_frustum_feature) {
   for (int zz = -k_range; zz <= k_range; ++zz)
     for (int yy = -k_range; yy <= k_range; ++yy)
       for (int xx = -k_range; xx <= k_range; ++xx) {
@@ -53,13 +52,10 @@ TEST(graphic_frustum_culling,
           currData.center = baseData.center + currOffset;
           currData.up = baseData.up;
 
-          const glm::vec3 forward =
-            glm::normalize(baseData.center - baseData.eye);
+          const glm::vec3 forward = glm::normalize(baseData.center - baseData.eye);
 
-          const glm::mat4 proj =
-            glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
-          const glm::mat4 view =
-            glm::lookAt(currData.eye, currData.center, currData.up);
+          const glm::mat4 proj = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
+          const glm::mat4 view = glm::lookAt(currData.eye, currData.center, currData.up);
 
           gero::graphics::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
@@ -68,16 +64,13 @@ TEST(graphic_frustum_culling,
 
           for (glm::vec3 dir : k_longDirections)
             ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + dir), false);
-          ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 10.0f),
-                    true);
-          ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 90.0f),
-                    true);
+          ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 10.0f), true);
+          ASSERT_EQ(frustumCulling.pointInFrustum(currOffset + forward * 90.0f), true);
         }
       }
 }
 
-TEST(graphic_frustum_culling,
-     confirm_under_multiple_angles_the_sphere_in_frustum_feature) {
+TEST(graphic_frustum_culling, confirm_under_multiple_angles_the_sphere_in_frustum_feature) {
   for (int zz = -k_range; zz <= k_range; ++zz)
     for (int yy = -k_range; yy <= k_range; ++yy)
       for (int xx = -k_range; xx <= k_range; ++xx) {
@@ -88,13 +81,10 @@ TEST(graphic_frustum_culling,
           currData.center = baseData.center + currOffset;
           currData.up = baseData.up;
 
-          const glm::vec3 forward =
-            glm::normalize(baseData.center - baseData.eye);
+          const glm::vec3 forward = glm::normalize(baseData.center - baseData.eye);
 
-          const glm::mat4 proj =
-            glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
-          const glm::mat4 view =
-            glm::lookAt(currData.eye, currData.center, currData.up);
+          const glm::mat4 proj = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
+          const glm::mat4 view = glm::lookAt(currData.eye, currData.center, currData.up);
 
           gero::graphics::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
@@ -102,23 +92,16 @@ TEST(graphic_frustum_culling,
           //
 
           for (glm::vec3 dir : k_longDirections)
-            ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f),
-                      false);
+            ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f), false);
           for (glm::vec3 dir : k_shortDirections)
-            ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f),
-                      true);
-          ASSERT_EQ(
-            frustumCulling.sphereInFrustum(currOffset + forward * 10.0f, 20.0f),
-            true);
-          ASSERT_EQ(
-            frustumCulling.sphereInFrustum(currOffset + forward * 90.0f, 20.0f),
-            true);
+            ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + dir, 50.0f), true);
+          ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + forward * 10.0f, 20.0f), true);
+          ASSERT_EQ(frustumCulling.sphereInFrustum(currOffset + forward * 90.0f, 20.0f), true);
         }
       }
 }
 
-TEST(graphic_frustum_culling,
-     confirm_under_multiple_angles_the_cube_in_frustum_feature) {
+TEST(graphic_frustum_culling, confirm_under_multiple_angles_the_cube_in_frustum_feature) {
   for (int zz = -k_range; zz <= k_range; ++zz)
     for (int yy = -k_range; yy <= k_range; ++yy)
       for (int xx = -k_range; xx <= k_range; ++xx) {
@@ -129,13 +112,10 @@ TEST(graphic_frustum_culling,
           currData.center = baseData.center + currOffset;
           currData.up = baseData.up;
 
-          const glm::vec3 forward =
-            glm::normalize(baseData.center - baseData.eye);
+          const glm::vec3 forward = glm::normalize(baseData.center - baseData.eye);
 
-          const glm::mat4 proj =
-            glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
-          const glm::mat4 view =
-            glm::lookAt(currData.eye, currData.center, currData.up);
+          const glm::mat4 proj = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
+          const glm::mat4 view = glm::lookAt(currData.eye, currData.center, currData.up);
 
           gero::graphics::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
@@ -143,19 +123,11 @@ TEST(graphic_frustum_culling,
           //
 
           for (glm::vec3 dir : k_longDirections)
-            ASSERT_EQ(
-              frustumCulling.cubeInFrustum(currOffset + dir, glm::vec3(20.0f)),
-              false);
+            ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + dir, glm::vec3(20.0f)), false);
           for (glm::vec3 dir : k_shortDirections)
-            ASSERT_EQ(
-              frustumCulling.cubeInFrustum(currOffset + dir, glm::vec3(100.0f)),
-              true);
-          ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 10.0f,
-                                                 glm::vec3(20.0f)),
-                    true);
-          ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 90.0f,
-                                                 glm::vec3(20.0f)),
-                    true);
+            ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + dir, glm::vec3(100.0f)), true);
+          ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 10.0f, glm::vec3(20.0f)), true);
+          ASSERT_EQ(frustumCulling.cubeInFrustum(currOffset + forward * 90.0f, glm::vec3(20.0f)), true);
         }
       }
 }

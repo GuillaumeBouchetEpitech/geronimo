@@ -22,5 +22,4 @@ TEST_F(system_dynamic_heap_array, std_sort) {
   ASSERT_EQ(myDynamicArray.at(3), 444);
   ASSERT_EQ(myDynamicArray.at(4), 555);
   ASSERT_EQ(myDynamicArray.at(5), 666);
-
 }

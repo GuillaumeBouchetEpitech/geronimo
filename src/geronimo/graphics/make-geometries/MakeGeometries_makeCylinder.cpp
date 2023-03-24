@@ -8,8 +8,12 @@ namespace graphics {
 
 namespace MakeGeometries {
 
-void makeCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
-                  float radiusBottom, float height, bool closedTop,
+void makeCylinder(Vertices& vertices,
+                  uint32_t quality,
+                  float radiusTop,
+                  float radiusBottom,
+                  float height,
+                  bool closedTop,
                   bool closedBottom) {
   std::vector<glm::vec3> outlineVertices;
   outlineVertices.reserve(quality);
@@ -36,19 +40,13 @@ void makeCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
     const glm::vec3 normalA = {rayA.x, rayA.y, 0};
     const glm::vec3 normalB = {rayB.x, rayB.y, 0};
 
-    vertices.push_back(
-      {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
-    vertices.push_back(
-      {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalB});
-    vertices.push_back(
-      {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
+    vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
+    vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalB});
+    vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
 
-    vertices.push_back(
-      {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
-    vertices.push_back(
-      {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
-    vertices.push_back(
-      {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalA});
+    vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
+    vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
+    vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalA});
   }
 
   if (closedTop || closedBottom) {
@@ -61,24 +59,15 @@ void makeCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
       const glm::vec3& rayC = outlineVertices[2];
 
       if (closedBottom && radiusBottom > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight},
-           normalDown});
+        vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalDown});
       }
 
       if (closedTop && radiusTop > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
       }
     } else if (quality == 4) {
       const glm::vec3& rayA = outlineVertices[0];
@@ -87,41 +76,23 @@ void makeCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
       const glm::vec3& rayD = outlineVertices[3];
 
       if (closedBottom && radiusBottom > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight},
-           normalDown});
+        vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalDown});
 
-        vertices.push_back(
-          {{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayD.x * radiusBottom, rayD.y * radiusBottom, minHeight},
-           normalDown});
+        vertices.push_back({{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayD.x * radiusBottom, rayD.y * radiusBottom, minHeight}, normalDown});
       }
 
       if (closedTop && radiusTop > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
 
-        vertices.push_back(
-          {{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayD.x * radiusTop, rayD.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayD.x * radiusTop, rayD.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
       }
     } else {
 
@@ -136,20 +107,14 @@ void makeCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
         const glm::vec3& rayB = outlineVertices[indexB];
 
         if (closedBottom && radiusBottom > 0.0f) {
-          vertices.push_back(
-            {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-             normalDown});
+          vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
           vertices.push_back({bottomCenter, normalDown});
-          vertices.push_back(
-            {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight},
-             normalDown});
+          vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalDown});
         }
 
         if (closedTop && radiusTop > 0.0f) {
-          vertices.push_back(
-            {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
-          vertices.push_back(
-            {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
+          vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+          vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
           vertices.push_back({topCenter, normalUp});
         }
       }
@@ -157,9 +122,14 @@ void makeCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
   }
 }
 
-void makePartialCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
-                         float radiusBottom, float height, bool closedTop,
-                         bool closedBottom, float startAngle,
+void makePartialCylinder(Vertices& vertices,
+                         uint32_t quality,
+                         float radiusTop,
+                         float radiusBottom,
+                         float height,
+                         bool closedTop,
+                         bool closedBottom,
+                         float startAngle,
                          float sweepAngle) {
   std::vector<glm::vec3> outlineVertices;
   outlineVertices.reserve(quality);
@@ -187,19 +157,13 @@ void makePartialCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
     const glm::vec3 normalA = {rayA.x, rayA.y, 0};
     const glm::vec3 normalB = {rayB.x, rayB.y, 0};
 
-    vertices.push_back(
-      {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
-    vertices.push_back(
-      {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalB});
-    vertices.push_back(
-      {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
+    vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
+    vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalB});
+    vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
 
-    vertices.push_back(
-      {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
-    vertices.push_back(
-      {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
-    vertices.push_back(
-      {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalA});
+    vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalA});
+    vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalB});
+    vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalA});
   }
 
   if (closedTop || closedBottom) {
@@ -212,24 +176,15 @@ void makePartialCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
       const glm::vec3& rayC = outlineVertices[2];
 
       if (closedBottom && radiusBottom > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight},
-           normalDown});
+        vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalDown});
       }
 
       if (closedTop && radiusTop > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
       }
     } else if (quality == 4) {
       const glm::vec3& rayA = outlineVertices[0];
@@ -238,41 +193,23 @@ void makePartialCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
       const glm::vec3& rayD = outlineVertices[3];
 
       if (closedBottom && radiusBottom > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight},
-           normalDown});
+        vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalDown});
 
-        vertices.push_back(
-          {{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-           normalDown});
-        vertices.push_back(
-          {{rayD.x * radiusBottom, rayD.y * radiusBottom, minHeight},
-           normalDown});
+        vertices.push_back({{rayC.x * radiusBottom, rayC.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
+        vertices.push_back({{rayD.x * radiusBottom, rayD.y * radiusBottom, minHeight}, normalDown});
       }
 
       if (closedTop && radiusTop > 0.0f) {
-        vertices.push_back(
-          {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
 
-        vertices.push_back(
-          {{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayD.x * radiusTop, rayD.y * radiusTop, maxHeight}, normalUp});
-        vertices.push_back(
-          {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayC.x * radiusTop, rayC.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayD.x * radiusTop, rayD.y * radiusTop, maxHeight}, normalUp});
+        vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
       }
     } else {
 
@@ -287,20 +224,14 @@ void makePartialCylinder(Vertices& vertices, uint32_t quality, float radiusTop,
         const glm::vec3& rayB = outlineVertices[indexB];
 
         if (closedBottom && radiusBottom > 0.0f) {
-          vertices.push_back(
-            {{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight},
-             normalDown});
+          vertices.push_back({{rayA.x * radiusBottom, rayA.y * radiusBottom, minHeight}, normalDown});
           vertices.push_back({bottomCenter, normalDown});
-          vertices.push_back(
-            {{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight},
-             normalDown});
+          vertices.push_back({{rayB.x * radiusBottom, rayB.y * radiusBottom, minHeight}, normalDown});
         }
 
         if (closedTop && radiusTop > 0.0f) {
-          vertices.push_back(
-            {{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
-          vertices.push_back(
-            {{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
+          vertices.push_back({{rayA.x * radiusTop, rayA.y * radiusTop, maxHeight}, normalUp});
+          vertices.push_back({{rayB.x * radiusTop, rayB.y * radiusTop, maxHeight}, normalUp});
           vertices.push_back({topCenter, normalUp});
         }
       }

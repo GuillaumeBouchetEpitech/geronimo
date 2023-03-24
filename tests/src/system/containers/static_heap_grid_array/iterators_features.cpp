@@ -27,14 +27,12 @@ TEST(system_static_heap_grid_array, iterators_features) {
     int totalItertions = 0;
 
     int tmpRowIndex = 0;
-    for (auto itRow = staticGrid.beginRows(); itRow != staticGrid.endRows();
-         ++itRow) {
+    for (auto itRow = staticGrid.beginRows(); itRow != staticGrid.endRows(); ++itRow) {
 
       ASSERT_EQ(itRow->value, tmpRowIndex + 1);
 
       int tmpColumnIndex = tmpRowIndex + 1;
-      for (auto itColumn = itRow.beginColumns(); itColumn != itRow.endColumns();
-           ++itColumn) {
+      for (auto itColumn = itRow.beginColumns(); itColumn != itRow.endColumns(); ++itColumn) {
         ASSERT_EQ(itColumn->value, tmpColumnIndex++);
         ++totalItertions;
       }
@@ -51,14 +49,12 @@ TEST(system_static_heap_grid_array, iterators_features) {
     int totalItertions = 0;
 
     int tmpRowIndex = 0;
-    for (auto itRow = cstaticGrid.beginRows(); itRow != cstaticGrid.endRows();
-         ++itRow) {
+    for (auto itRow = cstaticGrid.beginRows(); itRow != cstaticGrid.endRows(); ++itRow) {
 
       ASSERT_EQ(itRow->value, tmpRowIndex + 1);
 
       int tmpColumnIndex = tmpRowIndex + 1;
-      for (auto itColumn = itRow.beginColumns(); itColumn != itRow.endColumns();
-           ++itColumn) {
+      for (auto itColumn = itRow.beginColumns(); itColumn != itRow.endColumns(); ++itColumn) {
         ASSERT_EQ(itColumn->value, tmpColumnIndex++);
         ++totalItertions;
       }

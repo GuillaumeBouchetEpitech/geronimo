@@ -14,8 +14,7 @@ const std::string& preTrim(std::string& str) {
 
 const std::string& postTrim(std::string& str) {
   auto isNotSpace = [](int c) { return !std::isspace(c); };
-  str.erase(std::find_if(str.rbegin(), str.rend(), isNotSpace).base(),
-            str.end());
+  str.erase(std::find_if(str.rbegin(), str.rend(), isNotSpace).base(), str.end());
   return str;
 }
 

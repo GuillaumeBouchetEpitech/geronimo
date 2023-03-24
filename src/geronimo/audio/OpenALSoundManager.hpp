@@ -22,7 +22,7 @@ private:
   OpenAlContext::Context _context;
 
   std::vector<uint32_t> _sources;
-  unsigned int _currentSource = 0;
+  uint32_t _currentSource = 0;
 
   std::unordered_map<uint32_t, uint32_t> _bufferSoundsMap;
 
@@ -36,20 +36,16 @@ public:
 
 public:
   void loadOggFromFile(uint32_t alias, const std::string& filename);
-  void loadOggFromFile(uint32_t alias, const std::string& filename,
-                       fileUtils::FileManager& fileManager);
-  void loadOggFromFile(uint32_t alias, const std::string& filename,
-                       fileUtils::LoadCallback loadFileCallback);
+  void loadOggFromFile(uint32_t alias, const std::string& filename, fileUtils::FileManager& fileManager);
+  void loadOggFromFile(uint32_t alias, const std::string& filename, fileUtils::LoadCallback loadFileCallback);
   void loadOggFromMemory(uint32_t alias, const std::string& content);
 
 public:
-  void playSound(uint32_t alias, const glm::vec3& pos, float volume,
-                 float pitch);
+  void playSound(uint32_t alias, const glm::vec3& pos, float volume, float pitch);
 
 public:
   void setVolume(float level);
-  void setListener(const glm::vec3& pos, const glm::vec3& front,
-                   const glm::vec3& up);
+  void setListener(const glm::vec3& pos, const glm::vec3& front, const glm::vec3& up);
 };
 
 } // namespace audio

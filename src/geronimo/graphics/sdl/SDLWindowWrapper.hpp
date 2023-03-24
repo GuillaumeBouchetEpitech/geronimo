@@ -28,8 +28,11 @@ private:
   bool _visible = false;
 
 public:
-  SDLWindowWrapper(const char* name, uint32_t width, uint32_t height,
-                   uint32_t framesPerSecond, OpenGlEsVersion openGlEsVersion,
+  SDLWindowWrapper(const char* name,
+                   uint32_t width,
+                   uint32_t height,
+                   uint32_t framesPerSecond,
+                   OpenGlEsVersion openGlEsVersion,
                    bool enableResize = true);
   virtual ~SDLWindowWrapper();
 
@@ -45,7 +48,8 @@ public:
   void stop();
 
 public:
-  void process(uint32_t deltaTime);
+  void update(uint32_t deltaTime);
+  void render();
 
 protected:
   virtual void _onEvent(const SDL_Event& event) = 0; // TODO: convert event?

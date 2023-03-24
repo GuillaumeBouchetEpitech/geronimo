@@ -21,8 +21,7 @@ float RandomNumberGenerator::getNormalisedValue() {
   return dist(_engine);
 }
 
-template <>
-double RandomNumberGenerator::getRangedValue<double>(double min, double max) {
+template <> double RandomNumberGenerator::getRangedValue<double>(double min, double max) {
   std::uniform_real_distribution<double> dist(min, max);
   return dist(_engine);
 }

@@ -1,8 +1,7 @@
 
 #include "headers.hpp"
 
-TEST_F(system_generic_array_container,
-     can_be_iterator_looped_and_set_and_then_get_values_afterward) {
+TEST_F(system_generic_array_container, can_be_iterator_looped_and_set_and_then_get_values_afterward) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
 
@@ -29,8 +28,7 @@ TEST_F(system_generic_array_container,
 
     {
       int index = 100;
-      for (auto it = mySizedDynamicArray.begin();
-           it != mySizedDynamicArray.end(); ++it) {
+      for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
         it->value = index++;
         it->my_string = "test";
       }
@@ -38,8 +36,7 @@ TEST_F(system_generic_array_container,
 
     {
       int index = 100;
-      for (auto it = mySizedDynamicArray.begin();
-           it != mySizedDynamicArray.end(); ++it) {
+      for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
         ASSERT_EQ(it->value, index++);
         ASSERT_EQ(it->my_string, "test");
       }
@@ -47,8 +44,7 @@ TEST_F(system_generic_array_container,
   }
 }
 
-TEST_F(system_generic_array_container,
-     can_be_const_iterator_looped_and_set_and_then_get_values_afterward) {
+TEST_F(system_generic_array_container, can_be_const_iterator_looped_and_set_and_then_get_values_afterward) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
 
@@ -99,8 +95,7 @@ TEST_F(system_generic_array_container,
   {
 
     {int index = 100;
-  for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end();
-       ++it) {
+  for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
     (*it).value = index++;
     (*it).my_string = "test";
   }
@@ -109,8 +104,7 @@ TEST_F(system_generic_array_container,
 {
   int index = 100;
   const auto& cmySizedDynamicArray = mySizedDynamicArray;
-  for (auto it = cmySizedDynamicArray.begin(); it != cmySizedDynamicArray.end();
-       ++it) {
+  for (auto it = cmySizedDynamicArray.begin(); it != cmySizedDynamicArray.end(); ++it) {
     ASSERT_EQ((*it).value, index++);
     ASSERT_EQ((*it).my_string, "test");
   }
@@ -121,8 +115,7 @@ TEST_F(system_generic_array_container,
 
   {
     int index = 100;
-    for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end();
-         ++it) {
+    for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
       (*it).value = index++;
       (*it).my_string = "test";
     }
@@ -131,8 +124,7 @@ TEST_F(system_generic_array_container,
   {
     int index = 100;
     const auto& cmySizedDynamicArray = mySizedDynamicArray;
-    for (auto it = cmySizedDynamicArray.begin();
-         it != cmySizedDynamicArray.end(); ++it) {
+    for (auto it = cmySizedDynamicArray.begin(); it != cmySizedDynamicArray.end(); ++it) {
       ASSERT_EQ((*it).value, index++);
       ASSERT_EQ((*it).my_string, "test");
     }
@@ -141,8 +133,7 @@ TEST_F(system_generic_array_container,
 }
 }
 
-TEST_F(system_generic_array_container,
-     can_be_iterator_incremented_and_set_and_then_get_values_afterward) {
+TEST_F(system_generic_array_container, can_be_iterator_incremented_and_set_and_then_get_values_afterward) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
 
@@ -190,8 +181,7 @@ TEST_F(system_generic_array_container,
   }
 }
 
-TEST_F(system_generic_array_container,
-     can_be_const_iterator_incremented_and_set_and_then_get_values_afterward) {
+TEST_F(system_generic_array_container, can_be_const_iterator_incremented_and_set_and_then_get_values_afterward) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
 
@@ -239,9 +229,7 @@ TEST_F(system_generic_array_container,
   }
 }
 
-TEST_F(
-  system_generic_array_container,
-  can_be_increment_or_decrement_iterators_to_access_earlier_or_later_values) {
+TEST_F(system_generic_array_container, can_be_increment_or_decrement_iterators_to_access_earlier_or_later_values) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
 
@@ -291,8 +279,7 @@ TEST_F(
 
 #ifdef D_REF_TRACKER_ITERATORS
 
-TEST_F(system_generic_array_container,
-     can_make_and_count_total_live_iterators) {
+TEST_F(system_generic_array_container, can_make_and_count_total_live_iterators) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
 
@@ -396,11 +383,9 @@ TEST_F(system_generic_array_container, can_invalidate_all_iterators) {
   }
 }
 
-TEST_F(system_generic_array_container,
-     must_invalidate_all_iterators_on_container_destruction) {
+TEST_F(system_generic_array_container, must_invalidate_all_iterators_on_container_destruction) {
   {
-    auto mySaticArray =
-      std::make_unique<gero::static_array<common::TestStructure, 5>>();
+    auto mySaticArray = std::make_unique<gero::static_array<common::TestStructure, 5>>();
 
     ASSERT_EQ(mySaticArray->total_iterators(), 0);
 
@@ -426,8 +411,7 @@ TEST_F(system_generic_array_container,
   }
 
   {
-    auto mySizedDynamicArray =
-      std::make_unique<shorthand_dynamic_heap_array<5>>();
+    auto mySizedDynamicArray = std::make_unique<shorthand_dynamic_heap_array<5>>();
     mySizedDynamicArray->ensure_size(5);
 
     // for (std::size_t ii = 0; ii < mySizedDynamicArray->size(); ++ii)

@@ -45,9 +45,8 @@ public:
    * @param[in] persistence  Persistence is the loss of amplitude between
    * successive octaves (usually 1/lacunarity)
    */
-  explicit SimplexNoise(float frequency = 1.0f, float amplitude = 1.0f,
-                        float lacunarity = 2.0f, float persistence = 0.5f,
-                        int seed = 0);
+  explicit SimplexNoise(
+    float frequency = 1.0f, float amplitude = 1.0f, float lacunarity = 2.0f, float persistence = 0.5f, int seed = 0);
 
 private:
   // Parameters of Fractional Brownian Motion (fBm) : sum of N "octaves" of

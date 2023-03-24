@@ -4,12 +4,10 @@
 
 namespace gero {
 
-template <
-typename PublicType,
-typename InternalType = PublicType,
-std::size_t _Capacity = 0,
-typename Allocator = std::allocator<InternalType>
->
+template <typename PublicType,
+          typename InternalType = PublicType,
+          std::size_t _Capacity = 0,
+          typename Allocator = std::allocator<InternalType>>
 class fixed_size_array : public generic_array_container<InternalType, PublicType> {
 
   using value_type = PublicType;
@@ -52,8 +50,7 @@ protected:
   }
 
   // call the move constructor only, do not allocate memory
-  template <typename... Args>
-  internal_type& emplace_move_constructor(internal_type* dataPtr, Args&&... args) {
+  template <typename... Args> internal_type& emplace_move_constructor(internal_type* dataPtr, Args&&... args) {
     Allocator alloc;
     traits_t::construct(alloc, dataPtr, std::forward<Args>(args)...);
     return *dataPtr;
@@ -85,9 +82,7 @@ public:
   fixed_size_array& operator=(fixed_size_array&& other) = delete;
   // disable move
 
-  virtual ~fixed_size_array() {
-    clear();
-  }
+  virtual ~fixed_size_array() { clear(); }
 
 public:
   // may reallocate
@@ -111,8 +106,7 @@ public:
   }
 
   // may reallocate
-  template <typename... Args>
-  value_type& emplace_back(Args&&... args) {
+  template <typename... Args> value_type& emplace_back(Args&&... args) {
     if (this->_size == _Capacity)
       D_THROW(std::runtime_error, "full capacity reached");
 
@@ -183,7 +177,6 @@ public:
 
 public:
   constexpr std::size_t capacity() const { return _Capacity; }
-
 };
 
 } // namespace gero

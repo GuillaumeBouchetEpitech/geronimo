@@ -81,12 +81,12 @@ echo "building thirdparties libraries"
 echo "  native version"
 cd ./thirdparties
 
-make build_mode="release" build_platform="native" all -j6
+make build_mode="release" build_platform="native" all -j4
 
 case $WEB_WASM_AVAILABLE in
 yes)
   echo "  web-wasm version"
-  make build_mode="release" build_platform="web-wasm" all -j6
+  make build_mode="release" build_platform="web-wasm" all -j4
   ;;
 esac
 
@@ -100,12 +100,12 @@ cd $DIR_ROOT
 
 echo "building main libraries"
 echo "  native version"
-make build_mode="release" build_platform="native" all -j6
+make build_mode="release" build_platform="native" all -j4
 
 case $WEB_WASM_AVAILABLE in
 yes)
   echo "  web-wasm version"
-  make build_mode="release" build_platform="web-wasm" all -j6
+  make build_mode="release" build_platform="web-wasm" all -j4
   ;;
 esac
 

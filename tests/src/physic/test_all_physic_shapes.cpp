@@ -26,8 +26,7 @@ TEST(physic_wrapper, test_all_shapes) {
       auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group,
-                                           bodyDef.mask);
+      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -40,8 +39,7 @@ TEST(physic_wrapper, test_all_shapes) {
       auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group,
-                                           bodyDef.mask);
+      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -55,8 +53,7 @@ TEST(physic_wrapper, test_all_shapes) {
       auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group,
-                                           bodyDef.mask);
+      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -74,8 +71,7 @@ TEST(physic_wrapper, test_all_shapes) {
       auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group,
-                                           bodyDef.mask);
+      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -86,31 +82,27 @@ TEST(physic_wrapper, test_all_shapes) {
         auto shapeDef = std::make_shared<gero::physics::PhysicShapeDef>();
         shapeDef->type = gero::physics::PhysicShapeDef::Type::sphere;
         shapeDef->data.sphere.radius = 0.5f;
-        bodyDef.shape.data.compound.childShapes.push_back(
-          {glm::identity<glm::mat4>(), shapeDef});
+        bodyDef.shape.data.compound.childShapes.push_back({glm::identity<glm::mat4>(), shapeDef});
       }
       {
         auto shapeDef = std::make_shared<gero::physics::PhysicShapeDef>();
         shapeDef->type = gero::physics::PhysicShapeDef::Type::box;
         shapeDef->data.box.size = {0.5f, 0.5f, 0.5f};
-        bodyDef.shape.data.compound.childShapes.push_back(
-          {glm::identity<glm::mat4>(), shapeDef});
+        bodyDef.shape.data.compound.childShapes.push_back({glm::identity<glm::mat4>(), shapeDef});
       }
       {
         auto shapeDef = std::make_shared<gero::physics::PhysicShapeDef>();
         shapeDef->type = gero::physics::PhysicShapeDef::Type::capsule;
         shapeDef->data.capsule.radius = 0.5f;
         shapeDef->data.capsule.height = 1.0f;
-        bodyDef.shape.data.compound.childShapes.push_back(
-          {glm::identity<glm::mat4>(), shapeDef});
+        bodyDef.shape.data.compound.childShapes.push_back({glm::identity<glm::mat4>(), shapeDef});
       }
       {
         auto shapeDef = std::make_shared<gero::physics::PhysicShapeDef>();
         shapeDef->type = gero::physics::PhysicShapeDef::Type::capsule;
         shapeDef->data.capsule.radius = 0.5f;
         shapeDef->data.capsule.height = 1.0f;
-        bodyDef.shape.data.compound.childShapes.push_back(
-          {glm::identity<glm::mat4>(), shapeDef});
+        bodyDef.shape.data.compound.childShapes.push_back({glm::identity<glm::mat4>(), shapeDef});
       }
       {
         auto shapeDef = std::make_shared<gero::physics::PhysicShapeDef>();
@@ -119,8 +111,7 @@ TEST(physic_wrapper, test_all_shapes) {
         shapeDef->data.staticMesh.verticesLength = k_rawVertices.size();
         shapeDef->data.staticMesh.indicesData = k_rawIndices.data();
         shapeDef->data.staticMesh.indicesLength = k_rawIndices.size();
-        bodyDef.shape.data.compound.childShapes.push_back(
-          {glm::identity<glm::mat4>(), shapeDef});
+        bodyDef.shape.data.compound.childShapes.push_back({glm::identity<glm::mat4>(), shapeDef});
       }
       {
         auto shapeDef = std::make_shared<gero::physics::PhysicShapeDef>();
@@ -129,11 +120,9 @@ TEST(physic_wrapper, test_all_shapes) {
           auto subShapeDef = std::make_shared<gero::physics::PhysicShapeDef>();
           subShapeDef->type = gero::physics::PhysicShapeDef::Type::sphere;
           subShapeDef->data.sphere.radius = 0.5f;
-          shapeDef->data.compound.childShapes.push_back(
-            {glm::identity<glm::mat4>(), subShapeDef});
+          shapeDef->data.compound.childShapes.push_back({glm::identity<glm::mat4>(), subShapeDef});
         }
-        bodyDef.shape.data.compound.childShapes.push_back(
-          {glm::identity<glm::mat4>(), shapeDef});
+        bodyDef.shape.data.compound.childShapes.push_back({glm::identity<glm::mat4>(), shapeDef});
       }
 
       bodyDef.mass = 0.0f;
@@ -142,8 +131,7 @@ TEST(physic_wrapper, test_all_shapes) {
       auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group,
-                                           bodyDef.mask);
+      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     gero::physics::PhysicBodyDef bodyDef_2;

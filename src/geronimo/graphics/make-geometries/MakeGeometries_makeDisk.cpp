@@ -8,8 +8,7 @@ namespace graphics {
 
 namespace MakeGeometries {
 
-void makeDisk(Vertices& vertices, uint32_t quality, float radiusIn,
-              float radiusOut) {
+void makeDisk(Vertices& vertices, uint32_t quality, float radiusIn, float radiusOut) {
   std::vector<glm::vec3> outlineVertices;
   outlineVertices.reserve(1024);
 
@@ -38,8 +37,8 @@ void makeDisk(Vertices& vertices, uint32_t quality, float radiusIn,
   }
 }
 
-void makePartialDisk(Vertices& vertices, uint32_t quality, float radiusIn,
-                     float radiusOut, float startAngle, float sweepAngle) {
+void makePartialDisk(
+  Vertices& vertices, uint32_t quality, float radiusIn, float radiusOut, float startAngle, float sweepAngle) {
   std::vector<glm::vec3> outlineVertices;
   outlineVertices.reserve(1024);
 

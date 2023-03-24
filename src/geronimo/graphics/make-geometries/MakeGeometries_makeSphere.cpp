@@ -8,8 +8,11 @@ namespace graphics {
 
 namespace {
 
-void _drawSpherePatch(MakeGeometries::Vertices& vertices, uint32_t quality,
-                      float radius, const glm::vec3& v01, const glm::vec3& v02,
+void _drawSpherePatch(MakeGeometries::Vertices& vertices,
+                      uint32_t quality,
+                      float radius,
+                      const glm::vec3& v01,
+                      const glm::vec3& v02,
                       const glm::vec3& v03) {
   if (quality <= 0) {
     // hack: position = normal
@@ -53,16 +56,18 @@ void makeSphere(Vertices& vertices, uint32_t quality, float radius) {
   }};
 
   std::array<glm::ivec3, 20> tmpIndices = {{
-    {0, 4, 1},  {0, 9, 4},  {9, 5, 4},  {4, 5, 8},  {4, 8, 1},
-    {8, 10, 1}, {8, 3, 10}, {5, 3, 8},  {5, 2, 3},  {2, 7, 3},
-    {7, 10, 3}, {7, 6, 10}, {7, 11, 6}, {11, 0, 6}, {0, 1, 6},
-    {6, 1, 10}, {9, 0, 11}, {9, 11, 2}, {9, 2, 5},  {7, 2, 11},
+    {0, 4, 1}, {0, 9, 4},  {9, 5, 4},  {4, 5, 8},  {4, 8, 1},  {8, 10, 1}, {8, 3, 10},
+    {5, 3, 8}, {5, 2, 3},  {2, 7, 3},  {7, 10, 3}, {7, 6, 10}, {7, 11, 6}, {11, 0, 6},
+    {0, 1, 6}, {6, 1, 10}, {9, 0, 11}, {9, 11, 2}, {9, 2, 5},  {7, 2, 11},
   }};
 
   for (const glm::ivec3& index : tmpIndices)
-    _drawSpherePatch(
-      vertices, quality, radius, tmpVertices[std::size_t(index.x)],
-      tmpVertices[std::size_t(index.y)], tmpVertices[std::size_t(index.z)]);
+    _drawSpherePatch(vertices,
+                     quality,
+                     radius,
+                     tmpVertices[std::size_t(index.x)],
+                     tmpVertices[std::size_t(index.y)],
+                     tmpVertices[std::size_t(index.z)]);
 }
 
 } // namespace MakeGeometries

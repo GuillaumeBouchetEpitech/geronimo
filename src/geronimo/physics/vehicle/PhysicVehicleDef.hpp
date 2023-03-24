@@ -14,7 +14,7 @@ namespace physics {
 // class AbstractPhysicBody;
 
 struct PhysicVehicleDef {
-  PhysicBodyManager::BodyWeakRef body;
+  BodyWeakRef body;
 
   short wheelsCollisionGroup = -1;
   short wheelsCollisionMask = -1;

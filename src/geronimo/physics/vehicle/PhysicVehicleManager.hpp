@@ -14,11 +14,6 @@ class PhysicWorld;
 class PhysicVehicleManager {
   friend PhysicWorld;
 
-public:
-  using VehiclesPool =
-    weak_ref_data_pool<PhysicVehicle, AbstractPhysicVehicle, 256, false>;
-  using VehicleWeakRef = VehiclesPool::weak_ref;
-
 private:
   PhysicWorld& _physicWorld;
   VehiclesPool _vehicles;

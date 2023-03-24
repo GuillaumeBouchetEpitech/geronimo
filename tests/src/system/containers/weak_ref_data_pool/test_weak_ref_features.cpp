@@ -1,11 +1,10 @@
 
 #include "headers.hpp"
 
-TEST(system_weak_ref_data_pool,
-     can_acquire_weak_ref_and_get_the_values_from_it) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+#include <list>
+
+TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_get_the_values_from_it) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto ref = myPool.acquire(555, "test");
 
@@ -19,11 +18,8 @@ TEST(system_weak_ref_data_pool,
   ASSERT_EQ(ref->my_string, "test");
 }
 
-TEST(system_weak_ref_data_pool,
-     can_acquire_weak_ref_and_copy_and_move_it) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_copy_and_move_it) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto mainRef = myPool.acquire(555, "test");
   auto copiedRef1 = mainRef;    // copy
@@ -61,11 +57,8 @@ TEST(system_weak_ref_data_pool,
   ASSERT_EQ(copiedRef3->my_string, "test");
 }
 
-TEST(system_weak_ref_data_pool,
-     can_acquire_weak_ref_and_get_and_set_the_values_of_it) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_get_and_set_the_values_of_it) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto ref = myPool.acquire(555, "test");
 
@@ -85,11 +78,8 @@ TEST(system_weak_ref_data_pool,
   ASSERT_EQ(ref->my_string, "test test");
 }
 
-TEST(system_weak_ref_data_pool,
-     can_acquire_weak_ref_and_get_total_ref_count_from_the_pool) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_get_total_ref_count_from_the_pool) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto ref = myPool.acquire(555, "test");
 
@@ -110,11 +100,8 @@ TEST(system_weak_ref_data_pool,
   ASSERT_EQ(ref, false);
 }
 
-TEST(system_weak_ref_data_pool,
-     can_acquire_weak_ref_and_invalidate_it) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_invalidate_it) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto mainRef = myPool.acquire(555, "test");
   auto copiedRef1 = mainRef;    // copy
@@ -240,9 +227,7 @@ TEST(system_weak_ref_data_pool,
 }
 
 TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_release_it) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto mainRef = myPool.acquire(555, "test");
   auto copiedRef1 = mainRef;    // copy
@@ -293,11 +278,60 @@ TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_release_it) {
   ASSERT_EQ(copiedRef3, false);
 }
 
-TEST(system_weak_ref_data_pool,
-     can_acquire_several_weak_ref_and_release_them_one_by_one) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+TEST(system_weak_ref_data_pool, can_acquire_weak_ref_and_release_by_index) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
+
+  auto mainRef = myPool.acquire(555, "test");
+  auto copiedRef1 = mainRef;    // copy
+  auto copiedRef2 = copiedRef1; // copy
+  auto copiedRef3 = copiedRef2; // copy
+
+  ASSERT_EQ(myPool.size(), 1);
+  ASSERT_EQ(myPool.get_index(mainRef), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef1), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef2), 0);
+  ASSERT_EQ(myPool.get_index(copiedRef3), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 4);
+
+  ASSERT_EQ(mainRef.is_active(), true);
+  ASSERT_EQ(mainRef, true);
+  ASSERT_EQ(mainRef.get(), myPool.get(0).get());
+  ASSERT_EQ(mainRef->value, 555);
+  ASSERT_EQ(mainRef->my_string, "test");
+
+  ASSERT_EQ(copiedRef1.is_active(), true);
+  ASSERT_EQ(copiedRef1, true);
+  ASSERT_EQ(copiedRef1.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef1->value, 555);
+  ASSERT_EQ(copiedRef1->my_string, "test");
+
+  ASSERT_EQ(copiedRef2.is_active(), true);
+  ASSERT_EQ(copiedRef2, true);
+  ASSERT_EQ(copiedRef2.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef2->value, 555);
+  ASSERT_EQ(copiedRef2->my_string, "test");
+
+  ASSERT_EQ(copiedRef3.is_active(), true);
+  ASSERT_EQ(copiedRef3, true);
+  ASSERT_EQ(copiedRef3.get(), myPool.get(0).get());
+  ASSERT_EQ(copiedRef3->value, 555);
+  ASSERT_EQ(copiedRef3->my_string, "test");
+
+  myPool.release(0);
+
+  ASSERT_EQ(myPool.size(), 0);
+  ASSERT_EQ(mainRef.is_active(), false);
+  ASSERT_EQ(mainRef, false);
+  ASSERT_EQ(copiedRef1.is_active(), false);
+  ASSERT_EQ(copiedRef1, false);
+  ASSERT_EQ(copiedRef2.is_active(), false);
+  ASSERT_EQ(copiedRef2, false);
+  ASSERT_EQ(copiedRef3.is_active(), false);
+  ASSERT_EQ(copiedRef3, false);
+}
+
+TEST(system_weak_ref_data_pool, can_acquire_several_weak_ref_and_release_them_one_by_one) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto ref1 = myPool.acquire(555, "test");
   auto ref2 = myPool.acquire(666, "test");
@@ -384,11 +418,279 @@ TEST(system_weak_ref_data_pool,
   ASSERT_EQ(ref3, false);
 }
 
-TEST(system_weak_ref_data_pool,
-     can_acquire_several_weak_ref_and_clear_the_pool) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+TEST(system_weak_ref_data_pool, can_acquire_several_weak_ref_and_release_them_one_by_one_by_index) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
+
+  auto ref1 = myPool.acquire(555, "test");
+  auto ref2 = myPool.acquire(666, "test");
+  auto ref3 = myPool.acquire(777, "test");
+
+  ASSERT_EQ(myPool.size(), 3);
+
+  ASSERT_EQ(myPool.get_index(ref1), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref1.is_active(), true);
+  ASSERT_EQ(ref1, true);
+  ASSERT_EQ(ref1.get(), myPool.get(0).get());
+  ASSERT_EQ(ref1->value, 555);
+  ASSERT_EQ(ref1->my_string, "test");
+
+  ASSERT_EQ(myPool.get_index(ref2), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(ref2.is_active(), true);
+  ASSERT_EQ(ref2, true);
+  ASSERT_EQ(ref2.get(), myPool.get(1).get());
+  ASSERT_EQ(ref2->value, 666);
+  ASSERT_EQ(ref2->my_string, "test");
+
+  ASSERT_EQ(myPool.get_index(ref3), 2);
+  ASSERT_EQ(myPool.get_ref_count(2), 1);
+  ASSERT_EQ(ref3.is_active(), true);
+  ASSERT_EQ(ref3, true);
+  ASSERT_EQ(ref3.get(), myPool.get(2).get());
+  ASSERT_EQ(ref3->value, 777);
+  ASSERT_EQ(ref3->my_string, "test");
+
+  myPool.release(1);
+
+  ASSERT_EQ(myPool.size(), 2);
+
+  ASSERT_EQ(myPool.get_index(ref1), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref1.is_active(), true);
+  ASSERT_EQ(ref1, true);
+  ASSERT_EQ(ref1.get(), myPool.get(0).get());
+  ASSERT_EQ(ref1->value, 555);
+  ASSERT_EQ(ref1->my_string, "test");
+
+  ASSERT_EQ(ref2.is_active(), false);
+  ASSERT_EQ(ref2, false);
+
+  ASSERT_EQ(myPool.get_index(ref3), 1);
+  ASSERT_EQ(myPool.get_ref_count(1), 1);
+  ASSERT_EQ(ref3.is_active(), true);
+  ASSERT_EQ(ref3, true);
+  ASSERT_EQ(ref3.get(), myPool.get(1).get());
+  ASSERT_EQ(ref3->value, 777);
+  ASSERT_EQ(ref3->my_string, "test");
+
+  myPool.release(0);
+
+  ASSERT_EQ(myPool.size(), 1);
+
+  ASSERT_EQ(ref1.is_active(), false);
+  ASSERT_EQ(ref1, false);
+
+  ASSERT_EQ(ref2.is_active(), false);
+  ASSERT_EQ(ref2, false);
+
+  ASSERT_EQ(myPool.get_index(ref3), 0);
+  ASSERT_EQ(myPool.get_ref_count(0), 1);
+  ASSERT_EQ(ref3.is_active(), true);
+  ASSERT_EQ(ref3, true);
+  ASSERT_EQ(ref3.get(), myPool.get(0).get());
+  ASSERT_EQ(ref3->value, 777);
+  ASSERT_EQ(ref3->my_string, "test");
+
+  myPool.release(0);
+
+  ASSERT_EQ(myPool.size(), 0);
+
+  ASSERT_EQ(ref1.is_active(), false);
+  ASSERT_EQ(ref1, false);
+
+  ASSERT_EQ(ref2.is_active(), false);
+  ASSERT_EQ(ref2, false);
+
+  ASSERT_EQ(ref3.is_active(), false);
+  ASSERT_EQ(ref3, false);
+}
+
+namespace {
+
+void rec_expand(const std::vector<int>& inData, std::vector<std::vector<int>>& inoutResults) {
+  if (inData.empty())
+    return;
+
+  if (inData.size() == 1) {
+    std::vector<int> tmpRes;
+    tmpRes.push_back(inData[0]);
+    inoutResults.push_back(tmpRes);
+    return;
+  }
+
+  for (std::size_t ii = 0; ii < inData.size(); ++ii) {
+    std::vector<int> copiedData = inData;
+
+    copiedData.erase(copiedData.begin() + int(ii));
+
+    std::vector<std::vector<int>> subRes;
+    rec_expand(copiedData, subRes);
+
+    for (const auto& currRes : subRes) {
+      std::vector<int> tmpRes;
+
+      tmpRes.push_back(inData[ii]);
+
+      for (int currVal : currRes)
+        tmpRes.push_back(currVal);
+
+      inoutResults.push_back(tmpRes);
+    }
+  }
+}
+
+} // namespace
+
+TEST(system_weak_ref_data_pool, can_acquire_several_weak_ref_and_release_them_one_by_one_by_index_LOL) {
+
+  constexpr int k_totalIndices = 6;
+
+  std::vector<int> indices;
+  indices.reserve(k_totalIndices);
+  for (int ii = 0; ii < k_totalIndices; ++ii)
+    indices.push_back(ii);
+
+  std::vector<std::vector<int>> allResults;
+  rec_expand(indices, allResults);
+
+  for (std::vector<int>& currResult : allResults) {
+    using test = gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true>;
+    test myPool;
+
+    std::list<test::weak_ref> allRefsList;
+    for (std::size_t ii = 0; ii < indices.size(); ++ii)
+      allRefsList.push_back(myPool.acquire((ii + 1) * 100, "test"));
+
+    std::vector<test::weak_ref> allRefsArray;
+    std::vector<std::size_t> allIndicesArray;
+    allRefsArray.reserve(allRefsList.size());
+    allIndicesArray.reserve(allRefsList.size());
+    for (test::weak_ref tmpRef : allRefsList)
+      allRefsArray.push_back(tmpRef);
+    for (std::size_t ii = 0; ii < allRefsList.size(); ++ii)
+      allIndicesArray.push_back(ii);
+
+    ASSERT_EQ(myPool.size(), indices.size());
+
+    // D_MYLOG(" === ");
+    // for (int currIndex : currResult)
+    // {
+    //   D_MYLOG(" ->  " << currIndex);
+    // }
+    // D_MYLOG(" === ");
+
+    for (int currIndex : currResult) {
+
+      // D_MYLOG("currIndex " << currIndex);
+
+      for (std::size_t ii = 0; ii < allRefsArray.size(); ++ii) {
+        auto& tmpRef = allRefsArray[ii];
+        const std::size_t tmpIndex = allIndicesArray[ii];
+
+        ASSERT_EQ(myPool.get_index(tmpRef), ii);
+        ASSERT_EQ(myPool.get_ref_count(uint32_t(ii)), 2);
+        ASSERT_EQ(tmpRef.is_active(), true);
+        ASSERT_EQ(tmpRef, true);
+        ASSERT_EQ(tmpRef.get(), myPool.get(uint32_t(ii)).get());
+        ASSERT_EQ(tmpRef->value, (tmpIndex + 1) * 100);
+        ASSERT_EQ(tmpRef->my_string, "test");
+      }
+
+      ASSERT_EQ(myPool.get_ref_count(uint32_t(currIndex)), 2);
+
+      test::weak_ref ref1 = myPool.get(uint32_t(currIndex));
+      test::weak_ref ref2 = myPool.get(uint32_t(currIndex));
+      test::weak_ref ref3 = myPool.get(uint32_t(currIndex));
+      test::weak_ref ref4 = myPool.get(uint32_t(currIndex));
+      test::weak_ref ref5 = myPool.get(uint32_t(currIndex));
+
+      ASSERT_EQ(myPool.get_ref_count(uint32_t(currIndex)), 2 + 5);
+
+      ASSERT_EQ(ref1.is_active(), true);
+      ASSERT_EQ(ref2.is_active(), true);
+      ASSERT_EQ(ref3.is_active(), true);
+      ASSERT_EQ(ref4.is_active(), true);
+      ASSERT_EQ(ref5.is_active(), true);
+
+      ref3.invalidate();
+      ref4.invalidate();
+
+      ASSERT_EQ(myPool.get_ref_count(uint32_t(currIndex)), 2 + 3);
+
+      ASSERT_EQ(ref1.is_active(), true);
+      ASSERT_EQ(ref2.is_active(), true);
+      ASSERT_EQ(ref3.is_active(), false);
+      ASSERT_EQ(ref4.is_active(), false);
+      ASSERT_EQ(ref5.is_active(), true);
+
+      {
+
+        test::weak_ref ref6 = myPool.get(uint32_t(currIndex));
+        test::weak_ref ref7 = myPool.get(uint32_t(currIndex));
+        test::weak_ref ref8 = myPool.get(uint32_t(currIndex));
+
+        ASSERT_EQ(myPool.get_ref_count(uint32_t(currIndex)), 2 + 3 + 3);
+
+        ASSERT_EQ(ref6.is_active(), true);
+        ASSERT_EQ(ref7.is_active(), true);
+        ASSERT_EQ(ref8.is_active(), true);
+      }
+
+      ASSERT_EQ(myPool.get_ref_count(uint32_t(currIndex)), 2 + 3);
+
+      myPool.release(currIndex);
+
+      ASSERT_EQ(ref1.is_active(), false);
+      ASSERT_EQ(ref2.is_active(), false);
+      ASSERT_EQ(ref3.is_active(), false);
+      ASSERT_EQ(ref4.is_active(), false);
+      ASSERT_EQ(ref5.is_active(), false);
+
+      {
+        auto& tmpRef = allRefsArray[std::size_t(currIndex)];
+
+        // ASSERT_EQ(myPool.get_index(tmpRef), currIndex);
+        // ASSERT_EQ(myPool.get_ref_count(uint32_t(currIndex)), 2);
+        ASSERT_EQ(tmpRef.is_active(), false);
+        ASSERT_EQ(tmpRef, false);
+        // ASSERT_EQ(tmpRef.get(), myPool.get(uint32_t(currIndex)).get());
+        // ASSERT_EQ(tmpRef->value, (currIndex + 1) * 100);
+        // ASSERT_EQ(tmpRef->my_string, "test");
+      }
+
+      // allRefsArray.erase(allRefsArray.begin() + currIndex);
+      std::swap(allRefsArray.at(std::size_t(currIndex)), allRefsArray.back());
+      allRefsArray.pop_back();
+      std::swap(allIndicesArray.at(std::size_t(currIndex)), allIndicesArray.back());
+      allIndicesArray.pop_back();
+
+      for (int& currVal : currResult)
+        if (currVal > currIndex)
+          currVal -= 1;
+
+      ASSERT_EQ(myPool.size(), allRefsArray.size());
+
+      for (std::size_t ii = 0; ii < allRefsArray.size(); ++ii) {
+        auto& tmpRef = allRefsArray[ii];
+        const std::size_t tmpIndex = allIndicesArray[ii];
+
+        ASSERT_EQ(myPool.get_index(tmpRef), ii);
+        ASSERT_EQ(myPool.get_ref_count(uint32_t(ii)), 2);
+        ASSERT_EQ(tmpRef.is_active(), true);
+        ASSERT_EQ(tmpRef, true);
+        ASSERT_EQ(tmpRef.get(), myPool.get(uint32_t(ii)).get());
+        ASSERT_EQ(tmpRef->value, (tmpIndex + 1) * 100);
+        ASSERT_EQ(tmpRef->my_string, "test");
+      }
+    }
+
+    ASSERT_EQ(myPool.size(), 0);
+  }
+}
+
+TEST(system_weak_ref_data_pool, can_acquire_several_weak_ref_and_clear_the_pool) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   auto mainRef1 = myPool.acquire(555, "test");
   auto copiedRef1 = mainRef1; // copy
@@ -464,9 +766,7 @@ TEST(system_weak_ref_data_pool,
 }
 
 TEST(system_weak_ref_data_pool, can_directly_access_pool_data) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   myPool.acquire(555, "test");
   myPool.acquire(666, "test");
@@ -486,9 +786,7 @@ TEST(system_weak_ref_data_pool, can_directly_access_pool_data) {
 }
 
 TEST(system_weak_ref_data_pool, can_prevent_pool_growth) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   for (int ii = 0; ii < 20; ++ii) {
     auto ref = myPool.acquire(ii);
@@ -505,9 +803,7 @@ TEST(system_weak_ref_data_pool, can_prevent_pool_growth) {
 }
 
 TEST(system_weak_ref_data_pool, can_allow_pool_growth) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           false>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, false> myPool;
 
   for (int ii = 0; ii < 20; ++ii) {
     auto ref = myPool.acquire(ii);
@@ -520,9 +816,7 @@ TEST(system_weak_ref_data_pool, can_allow_pool_growth) {
 }
 
 TEST(system_weak_ref_data_pool, can_move_data_into_a_weak_ref) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           false>
-    myPool;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, false> myPool;
 
   auto mainRef = myPool.acquire(666, "test");
 
@@ -537,12 +831,8 @@ TEST(system_weak_ref_data_pool, can_move_data_into_a_weak_ref) {
 }
 
 TEST(system_weak_ref_data_pool, can_move_entire_pool) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           false>
-    myPool1;
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           false>
-    myPool2;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, false> myPool1;
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, false> myPool2;
 
   for (int ii = 0; ii < 20; ++ii)
     myPool1.acquire(ii, "test");
@@ -564,11 +854,8 @@ TEST(system_weak_ref_data_pool, can_move_entire_pool) {
   }
 }
 
-TEST(system_weak_ref_data_pool,
-     can_make_weak_ref_that_invalidate_once_out_of_scope) {
-  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10,
-                           true>
-    myPool;
+TEST(system_weak_ref_data_pool, can_make_weak_ref_that_invalidate_once_out_of_scope) {
+  gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true> myPool;
 
   myPool.acquire(555, "test");
   myPool.acquire(666, "test");
@@ -628,8 +915,7 @@ TEST(system_weak_ref_data_pool,
 
 namespace {
 
-using LocalPool = gero::weak_ref_data_pool<common::TestStructure,
-                                           common::TestStructure, 10, true>;
+using LocalPool = gero::weak_ref_data_pool<common::TestStructure, common::TestStructure, 10, true>;
 using LocalRef = LocalPool::weak_ref;
 using LocalValue = LocalPool::value_type;
 
@@ -655,9 +941,7 @@ template <std::size_t N> struct ResultArray {
 };
 } // namespace
 
-TEST(
-  weak_ref_data_pool,
-  can_make_weak_ref_that_invalidate_once_out_of_scope_with_get_index_feature_2) {
+TEST(weak_ref_data_pool, can_make_weak_ref_that_invalidate_once_out_of_scope_with_get_index_feature_2) {
 
   LocalPool myPool;
 
@@ -696,9 +980,7 @@ TEST(
   ASSERT_EQ(myPool.get_ref_count(2), 1);
 }
 
-TEST(
-  weak_ref_data_pool,
-  can_make_weak_ref_that_invalidate_once_out_of_scope_with_get_index_feature_3) {
+TEST(weak_ref_data_pool, can_make_weak_ref_that_invalidate_once_out_of_scope_with_get_index_feature_3) {
 
   LocalPool myPool;
 
@@ -740,9 +1022,7 @@ TEST(
 
 #if 1
 
-    LocalRef found = myPool.find_if([&mainRef2](const LocalValue& target) {
-      return &target == mainRef2.get();
-    });
+    LocalRef found = myPool.find_if([&mainRef2](const LocalValue& target) { return &target == mainRef2.get(); });
 
     D_MYERR("found._pool  " << found._pool);
     D_MYERR("found._index " << found._index);

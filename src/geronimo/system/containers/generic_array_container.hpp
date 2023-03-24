@@ -10,10 +10,8 @@
 #include <memory>
 #include <string>
 
-
 // will make it survive a container reallocation/destruction
 // #define D_REF_TRACKER_ITERATORS
-
 
 //
 //
@@ -47,7 +45,6 @@ class generic_array_container_base_iterator
   friend generic_array_container;
 
 public:
-
   // -> https://www.fluentcpp.com/2018/05/08/std-iterator-deprecated/
 
   using value_type = typename generic_array_container::value_type;
@@ -58,7 +55,6 @@ public:
   using pointer = value_type*;
   using reference = value_type&;
 
-
   // // using difference_type = typename std::iterator<std::random_access_iterator_tag, value_type>::difference_type;
   // using difference_type = int64_t;
 
@@ -67,19 +63,16 @@ protected:
   int _index;
 
 public:
-  generic_array_container_base_iterator(generic_array_container& container,
-                                        int index)
+  generic_array_container_base_iterator(generic_array_container& container, int index)
     : _container(&container), _index(index) {
 
 #ifdef D_REF_TRACKER_ITERATORS
-    basic_double_linked_list::add_link_to_list(_container->_iterators_list,
-                                               *this);
+    basic_double_linked_list::add_link_to_list(_container->_iterators_list, *this);
 #endif
   }
 
   // COPY
-  generic_array_container_base_iterator(
-    const generic_array_container_base_iterator& other) {
+  generic_array_container_base_iterator(const generic_array_container_base_iterator& other) {
     if (&other == this)
       return;
 
@@ -88,15 +81,13 @@ public:
 
 #ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
-      basic_double_linked_list::add_link_to_list(_container->_iterators_list,
-                                                 *this);
+      basic_double_linked_list::add_link_to_list(_container->_iterators_list, *this);
     }
 #endif
   }
 
   // MOVE
-  generic_array_container_base_iterator(
-    generic_array_container_base_iterator&& other) {
+  generic_array_container_base_iterator(generic_array_container_base_iterator&& other) {
     if (&other == this)
       return;
 
@@ -105,16 +96,13 @@ public:
 
 #ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
-      basic_double_linked_list::swap_two_links_from_same_list(
-        _container->_iterators_list, other, *this);
+      basic_double_linked_list::swap_two_links_from_same_list(_container->_iterators_list, other, *this);
     }
 #endif
-
   }
 
   // COPY
-  generic_array_container_base_iterator&
-  operator=(const generic_array_container_base_iterator& other) {
+  generic_array_container_base_iterator& operator=(const generic_array_container_base_iterator& other) {
     if (&other == this)
       return *this;
 
@@ -123,8 +111,7 @@ public:
 
 #ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
-      basic_double_linked_list::add_link_to_list(_container->_iterators_list,
-                                                 *this);
+      basic_double_linked_list::add_link_to_list(_container->_iterators_list, *this);
     }
 #endif
 
@@ -132,8 +119,7 @@ public:
   }
 
   // MOVE
-  generic_array_container_base_iterator&
-  operator=(generic_array_container_base_iterator&& other) {
+  generic_array_container_base_iterator& operator=(generic_array_container_base_iterator&& other) {
     if (&other == this)
       return *this;
 
@@ -142,8 +128,7 @@ public:
 
 #ifdef D_REF_TRACKER_ITERATORS
     if (_container != nullptr) {
-      basic_double_linked_list::swap_two_links_from_same_list(
-        _container->_iterators_list, other, *this);
+      basic_double_linked_list::swap_two_links_from_same_list(_container->_iterators_list, other, *this);
     }
 #endif
 
@@ -154,8 +139,7 @@ public:
 
 #ifdef D_REF_TRACKER_ITERATORS
     if (_container)
-      basic_double_linked_list::remove_link_from_list(
-        _container->_iterators_list, *this);
+      basic_double_linked_list::remove_link_from_list(_container->_iterators_list, *this);
 #endif
   }
 
@@ -169,7 +153,9 @@ protected:
   }
 
 public:
-  bool operator==(const generic_array_container_base_iterator& rhs) const { return (_container == rhs._container && _index == rhs._index); }
+  bool operator==(const generic_array_container_base_iterator& rhs) const {
+    return (_container == rhs._container && _index == rhs._index);
+  }
   bool operator<(const generic_array_container_base_iterator& rhs) const { return _index < rhs._index; }
 
 #if 0
@@ -178,20 +164,33 @@ public:
   bool operator<=(const generic_array_container_base_iterator& rhs) const { return _index <= rhs._index; }
   bool operator>=(const generic_array_container_base_iterator& rhs) const { return _index >= rhs._index; }
 #else
-  bool operator!=(const generic_array_container_base_iterator& rhs) const { return !generic_array_container_base_iterator::operator==(rhs); }
-  bool operator>(const generic_array_container_base_iterator& rhs) const { return (!generic_array_container_base_iterator::operator<(rhs) && !generic_array_container_base_iterator::operator==(rhs)); }
-  bool operator<=(const generic_array_container_base_iterator& rhs) const { return !generic_array_container_base_iterator::operator>(rhs); }
-  bool operator>=(const generic_array_container_base_iterator& rhs) const { return !generic_array_container_base_iterator::operator<(rhs); }
+  bool operator!=(const generic_array_container_base_iterator& rhs) const {
+    return !generic_array_container_base_iterator::operator==(rhs);
+  }
+  bool operator>(const generic_array_container_base_iterator& rhs) const {
+    return (!generic_array_container_base_iterator::operator<(rhs) &&
+            !generic_array_container_base_iterator::operator==(rhs));
+  }
+  bool operator<=(const generic_array_container_base_iterator& rhs) const {
+    return !generic_array_container_base_iterator::operator>(rhs);
+  }
+  bool operator>=(const generic_array_container_base_iterator& rhs) const {
+    return !generic_array_container_base_iterator::operator<(rhs);
+  }
 #endif
 
 public:
-
   difference_type operator-(const generic_array_container_base_iterator& rhs) const { return _index - rhs._index; }
   difference_type operator+(const generic_array_container_base_iterator& rhs) const { return _index + rhs._index; }
 
-  generic_array_container_base_iterator& operator+=(difference_type rhs) { _index += rhs; return *this; }
-  generic_array_container_base_iterator& operator-=(difference_type rhs) { _index -= rhs; return *this; }
-
+  generic_array_container_base_iterator& operator+=(difference_type rhs) {
+    _index += rhs;
+    return *this;
+  }
+  generic_array_container_base_iterator& operator-=(difference_type rhs) {
+    _index -= rhs;
+    return *this;
+  }
 };
 
 //
@@ -213,20 +212,16 @@ public:
 //
 
 template <typename generic_array_container>
-class generic_array_container_iterator
-  : public generic_array_container_base_iterator<generic_array_container> {
+class generic_array_container_iterator : public generic_array_container_base_iterator<generic_array_container> {
 
   friend generic_array_container;
 
 public:
-  using base_type =
-    generic_array_container_base_iterator<generic_array_container>;
+  using base_type = generic_array_container_base_iterator<generic_array_container>;
   using value_type = typename base_type::value_type;
 
 public:
-  generic_array_container_iterator(generic_array_container& container,
-                                   int index)
-    : base_type(container, index) {}
+  generic_array_container_iterator(generic_array_container& container, int index) : base_type(container, index) {}
 
 public:
   value_type& operator[](int index) {
@@ -255,7 +250,6 @@ public:
   }
 
 public:
-
   generic_array_container_iterator operator+(typename base_type::difference_type rhs) const {
     base_type::_ensure_is_valid();
     generic_array_container_iterator copy = *this;
@@ -272,14 +266,16 @@ public:
   //
   //
 
-  friend inline generic_array_container_iterator operator+(typename base_type::difference_type lhs, const generic_array_container_iterator& rhs) {
+  friend inline generic_array_container_iterator operator+(typename base_type::difference_type lhs,
+                                                           const generic_array_container_iterator& rhs) {
     base_type::_ensure_is_valid();
     generic_array_container_iterator copy = rhs;
     copy._index = lhs + rhs._index;
     return copy;
   }
 
-  friend inline generic_array_container_iterator operator-(typename base_type::difference_type lhs, const generic_array_container_iterator& rhs) {
+  friend inline generic_array_container_iterator operator-(typename base_type::difference_type lhs,
+                                                           const generic_array_container_iterator& rhs) {
     base_type::_ensure_is_valid();
     generic_array_container_iterator copy = rhs;
     copy._index = lhs - rhs._index;
@@ -327,12 +323,10 @@ public:
   //
   //
 
-  typename base_type::difference_type operator-(const generic_array_container_iterator& rhs) const
-  {
+  typename base_type::difference_type operator-(const generic_array_container_iterator& rhs) const {
     base_type::_ensure_is_valid();
     return base_type::_index - rhs._index;
   }
-
 };
 
 //
@@ -354,20 +348,16 @@ public:
 //
 
 template <typename generic_array_container>
-class generic_array_container_const_iterator
-  : public generic_array_container_base_iterator<generic_array_container> {
+class generic_array_container_const_iterator : public generic_array_container_base_iterator<generic_array_container> {
 
   friend generic_array_container;
 
 public:
-  using base_type =
-    generic_array_container_base_iterator<generic_array_container>;
+  using base_type = generic_array_container_base_iterator<generic_array_container>;
   using value_type = typename base_type::value_type;
 
 public:
-  generic_array_container_const_iterator(generic_array_container& container,
-                                         int index)
-    : base_type(container, index) {}
+  generic_array_container_const_iterator(generic_array_container& container, int index) : base_type(container, index) {}
 
 public:
   const value_type& operator[](int index) const {
@@ -395,13 +385,8 @@ public:
     return copy;
   }
 
-
-
-
-
-
-
-  friend inline generic_array_container_const_iterator operator+(typename base_type::difference_type lhs, const generic_array_container_const_iterator& rhs) {
+  friend inline generic_array_container_const_iterator operator+(typename base_type::difference_type lhs,
+                                                                 const generic_array_container_const_iterator& rhs) {
     // generic_array_container_const_iterator copy = *this;
     generic_array_container_const_iterator copy = rhs;
     copy._index = lhs + rhs._index;
@@ -409,19 +394,14 @@ public:
     // return generic_array_container_const_iterator(lhs+rhs._ptr);
   }
 
-  friend inline generic_array_container_const_iterator operator-(typename base_type::difference_type lhs, const generic_array_container_const_iterator& rhs) {
+  friend inline generic_array_container_const_iterator operator-(typename base_type::difference_type lhs,
+                                                                 const generic_array_container_const_iterator& rhs) {
     // generic_array_container_const_iterator copy = *this;
     generic_array_container_const_iterator copy = rhs;
     copy._index = lhs - rhs._index;
     return copy;
     // return generic_array_container_const_iterator(lhs-rhs._ptr);
   }
-
-
-
-
-
-
 
   generic_array_container_const_iterator operator++() // ++pre
   {
@@ -451,16 +431,6 @@ public:
     --(*this);
     return copy;
   }
-
-
-
-
-
-
-
-
-
-
 };
 
 //
@@ -481,18 +451,14 @@ public:
 //
 //
 
-template <typename InternalType, typename PublicType = InternalType>
-class generic_array_container {
+template <typename InternalType, typename PublicType = InternalType> class generic_array_container {
 
 public:
   using value_type = PublicType;
   using internal_type = InternalType;
-  using base_iterator =
-    generic_array_container_base_iterator<generic_array_container<value_type>>;
-  using iterator =
-    generic_array_container_iterator<generic_array_container<value_type>>;
-  using const_iterator =
-    generic_array_container_const_iterator<generic_array_container<value_type>>;
+  using base_iterator = generic_array_container_base_iterator<generic_array_container<value_type>>;
+  using iterator = generic_array_container_iterator<generic_array_container<value_type>>;
+  using const_iterator = generic_array_container_const_iterator<generic_array_container<value_type>>;
 
 protected:
   friend base_iterator;
@@ -513,8 +479,7 @@ public:
 
   // disable copy
   generic_array_container(const generic_array_container& other) = delete;
-  generic_array_container&
-  operator=(const generic_array_container& other) = delete;
+  generic_array_container& operator=(const generic_array_container& other) = delete;
   // disable copy
 
   generic_array_container(generic_array_container&& other) {
@@ -558,21 +523,15 @@ public:
   iterator begin() { return iterator(*this, 0); }
   iterator end() { return iterator(*this, int(_size)); }
 
-  const_iterator begin() const {
-    return const_iterator(*const_cast<generic_array_container*>(this), 0);
-  }
-  const_iterator end() const {
-    return const_iterator(*const_cast<generic_array_container*>(this),
-                         int(_size));
-  }
+  const_iterator begin() const { return const_iterator(*const_cast<generic_array_container*>(this), 0); }
+  const_iterator end() const { return const_iterator(*const_cast<generic_array_container*>(this), int(_size)); }
 
 #ifdef D_REF_TRACKER_ITERATORS
   void invalidate_all_iterators() {
     basic_double_linked_list::loop_list_links_and_reset<iterator>(
       _iterators_list, [](iterator* it) -> void { it->_container = nullptr; });
     basic_double_linked_list::loop_list_links_and_reset<const_iterator>(
-      _const_iterators_list,
-      [](const_iterator* it) -> void { it->_container = nullptr; });
+      _const_iterators_list, [](const_iterator* it) -> void { it->_container = nullptr; });
   }
 #endif
 
@@ -582,9 +541,7 @@ public:
   bool is_out_of_range(std::size_t index) const { return (index >= _size); }
 
 #ifdef D_REF_TRACKER_ITERATORS
-  std::size_t total_iterators() const {
-    return _iterators_list.size + _const_iterators_list.size;
-  }
+  std::size_t total_iterators() const { return _iterators_list.size + _const_iterators_list.size; }
 #endif
 
 public:
@@ -622,12 +579,8 @@ public:
   }
 
 public:
-  bool operator==(const generic_array_container& other) const {
-    return this == &other;
-  }
-  bool operator!=(const generic_array_container& other) const {
-    return !(*this == other);
-  }
+  bool operator==(const generic_array_container& other) const { return this == &other; }
+  bool operator!=(const generic_array_container& other) const { return !(*this == other); }
 };
 
 } // namespace gero

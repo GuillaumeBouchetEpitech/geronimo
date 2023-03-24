@@ -12,7 +12,8 @@ TEST_F(system_fixed_size_array, pop_back) {
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultFixedArray;
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultFixedArray;
   myDefaultFixedArray.push_back(common::TestStructure(1, "1"));
   myDefaultFixedArray.push_back(common::TestStructure(2, "2"));
   myDefaultFixedArray.push_back(common::TestStructure(3, "3"));
@@ -112,7 +113,8 @@ TEST_F(system_fixed_size_array, unsorted_erase) {
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultFixedArray;
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultFixedArray;
   myDefaultFixedArray.push_back(common::TestStructure(1, "1"));
   myDefaultFixedArray.push_back(common::TestStructure(2, "2"));
   myDefaultFixedArray.push_back(common::TestStructure(3, "3"));
@@ -212,7 +214,8 @@ TEST_F(system_fixed_size_array, sorted_erase) {
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultFixedArray;
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultFixedArray;
   myDefaultFixedArray.push_back(common::TestStructure(1, "1"));
   myDefaultFixedArray.push_back(common::TestStructure(2, "2"));
   myDefaultFixedArray.push_back(common::TestStructure(3, "3"));
@@ -312,7 +315,8 @@ TEST_F(system_fixed_size_array, clear) {
   ASSERT_EQ(common::getTotalDealloc(), 0);
   common::reset();
 
-  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>> myDefaultFixedArray;
+  gero::fixed_size_array<common::TestStructure, common::TestStructure, 5, common::MyAllocator<common::TestStructure>>
+    myDefaultFixedArray;
   myDefaultFixedArray.push_back(common::TestStructure(1, "1"));
   myDefaultFixedArray.push_back(common::TestStructure(2, "2"));
   myDefaultFixedArray.push_back(common::TestStructure(3, "3"));

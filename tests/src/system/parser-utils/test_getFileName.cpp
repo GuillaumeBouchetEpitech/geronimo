@@ -9,7 +9,6 @@ TEST(basic_regexp_parser, getFileName) {
 
   regexpParser.setErrorHint("getFileName");
 
-
   {
     const std::string_view toSearch = "my-name-test_lol_AAAA_1234___.png";
 
@@ -30,7 +29,9 @@ TEST(basic_regexp_parser, getFileName) {
     } catch (std::runtime_error err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
-      ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse file name, type=getFileName, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse file name, type=getFileName, toSearch=\"" << toSearch << "\"")),
+                std::string_view::npos)
+        << "exceptionMsg=" << exceptionMsg;
     }
   }
 }

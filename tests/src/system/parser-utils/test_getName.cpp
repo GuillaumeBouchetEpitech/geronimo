@@ -29,7 +29,9 @@ TEST(basic_regexp_parser, getName) {
     } catch (std::runtime_error err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
-      ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse name, type=getName, toSearch=\"" << toSearch << "\"")), std::string_view::npos) << "exceptionMsg=" << exceptionMsg;
+      ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse name, type=getName, toSearch=\"" << toSearch << "\"")),
+                std::string_view::npos)
+        << "exceptionMsg=" << exceptionMsg;
     }
   }
 }

@@ -4,6 +4,7 @@
 #include "geronimo/system/containers/dynamic_heap_array.hpp"
 
 #include <chrono>
+#include <optional>
 #include <string>
 #include <unordered_map>
 
@@ -20,15 +21,15 @@ public:
   private:
     std::chrono::high_resolution_clock::time_point _start;
     std::chrono::high_resolution_clock::time_point _stop;
-    int64_t _latestDuration = 0;
-    gero::dynamic_heap_array<int64_t, int64_t> _historicData;
+    int32_t _latestDuration = 0;
+    gero::dynamic_heap_array<int32_t, int32_t> _historicData;
     int32_t _historicIndex = 0;
-    int64_t _averageDuration = 0;
+    int32_t _averageDuration = 0;
 
   private:
     void _onStart();
     void _onStop();
-    void _pushNewValue(int64_t inDuration);
+    void _pushNewValue(int32_t inDuration);
 
   public:
     TimeData(std::size_t inPreAllocatedHistoricSize);
@@ -39,9 +40,8 @@ public:
     ~TimeData() = default;
 
   public:
-    int64_t getLatestDuration() const;
-    int64_t getAverageDuration() const;
-
+    int32_t getLatestDuration() const;
+    int32_t getAverageDuration() const;
   };
 
   using TimeDataMap = std::unordered_map<std::string, TimeData>;
@@ -49,6 +49,7 @@ public:
 private:
   std::size_t _preAllocatedHistoricSize;
   TimeDataMap _allTimes;
+  std::vector<std::string> _allDataKeys;
 
 public:
   PerformanceProfiler(std::size_t inPreAllocatedHistoricSize = 60);
@@ -57,13 +58,22 @@ public:
 public:
   void start(const std::string& name);
   void stop(const std::string& name);
-  void set(const std::string& name, int64_t inDuration);
+  void set(const std::string& name, int32_t inDuration);
+
+public:
   const TimeDataMap& getTimeDataMap() const;
+
+public:
+  using MaybeTimeDataRef = std::optional<std::reference_wrapper<const TimeData>>;
+
+  const MaybeTimeDataRef tryGetTimeData(const std::string& name) const;
+
+public:
+  const std::vector<std::string>& getAllDataKeys() const;
 
 private:
   TimeData& _getOrCreate(const std::string& name);
-
 };
 
-}
-}
+} // namespace metrics
+} // namespace gero

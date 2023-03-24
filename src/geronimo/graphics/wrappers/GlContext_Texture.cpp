@@ -18,13 +18,9 @@ namespace GlContext {
 
 namespace Texture {
 
-void generateMany(uint32_t total, uint32_t* buffers) {
-  glCheck(glGenTextures(GLsizei(total), buffers));
-}
+void generateMany(uint32_t total, uint32_t* buffers) { glCheck(glGenTextures(GLsizei(total), buffers)); }
 
-void deleteMany(uint32_t total, const uint32_t* buffers) {
-  glCheck(glDeleteTextures(GLsizei(total), buffers));
-}
+void deleteMany(uint32_t total, const uint32_t* buffers) { glCheck(glDeleteTextures(GLsizei(total), buffers)); }
 
 uint32_t generateOne() {
   uint32_t textureId;
@@ -36,34 +32,46 @@ void deleteOne(uint32_t textureId) { deleteMany(1, &textureId); }
 
 void active(uint32_t index) { glCheck(glActiveTexture(GL_TEXTURE0 + index)); }
 
-void bind(uint32_t textureId) {
-  glCheck(glBindTexture(GL_TEXTURE_2D, textureId));
-}
+void bind(uint32_t textureId) { glCheck(glBindTexture(GL_TEXTURE_2D, textureId)); }
 
 void uploadPixels(uint32_t width, uint32_t height, const void* pixels) {
   GLint level = 0;
   GLint border = 0;
-  glCheck(glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA, GLsizei(width),
-                       GLsizei(height), border, GL_RGBA, GL_UNSIGNED_BYTE,
-                       pixels));
+  GLenum format = GL_RGBA;
+  GLint internalFormat = GL_RGBA;
+  GLenum type = GL_UNSIGNED_BYTE;
+  glCheck(
+    glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
+}
+
+void uploadUIntPixels(uint32_t width, uint32_t height, const void* pixels) {
+  GLint level = 0;
+  GLint border = 0;
+  GLenum format = GL_RGBA;
+  GLint internalFormat = GL_RGBA8UI;
+  GLenum type = GL_UNSIGNED_BYTE;
+  glCheck(
+    glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
 }
 
 void uploadFloatPixels(uint32_t width, uint32_t height, const void* pixels) {
   GLint level = 0;
   GLint border = 0;
-  glCheck(glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA32F, GLsizei(width),
-                       GLsizei(height), border, GL_RGBA, GL_FLOAT, pixels));
+  GLenum format = GL_RGBA;
+  GLint internalFormat = GL_RGBA32F;
+  GLenum type = GL_FLOAT;
+  glCheck(
+    glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
 }
 
-void uploadSingleFloatPixels(uint32_t width, uint32_t height,
-                             const void* pixels) {
+void uploadSingleFloatPixels(uint32_t width, uint32_t height, const void* pixels) {
   GLint level = 0;
-  GLint internalFormat = GL_R32F;
   GLint border = 0;
   GLenum format = GL_RED;
+  GLint internalFormat = GL_R32F;
   GLenum type = GL_FLOAT;
-  glCheck(glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width),
-                       GLsizei(height), border, format, type, pixels));
+  glCheck(
+    glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
 }
 
 namespace {
@@ -81,10 +89,10 @@ int32_t getRawDepthFormat(DepthFormat depthFormat) {
 }
 int32_t getRawDepthType(DepthType depthType) {
   switch (depthType) {
-  case DepthType::unsingedShort:
+  case DepthType::unsignedShort:
     return GL_UNSIGNED_SHORT;
     break;
-  case DepthType::unsingedInt:
+  case DepthType::unsignedInt:
     return GL_UNSIGNED_INT;
     break;
   case DepthType::float32:
@@ -97,8 +105,7 @@ int32_t getRawDepthType(DepthType depthType) {
 }
 } // namespace
 
-void setAsDepthTexture(uint32_t width, uint32_t height, DepthFormat depthFormat,
-                       DepthType depthType) {
+void setAsDepthTexture(uint32_t width, uint32_t height, DepthFormat depthFormat, DepthType depthType) {
   // glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT16, width, height);
 
   // // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GLsizei(width), GLsizei(height),
@@ -118,8 +125,8 @@ void setAsDepthTexture(uint32_t width, uint32_t height, DepthFormat depthFormat,
   setTextureAsRepeat(false);
   setTextureAsPixelated();
 
-  glCheck(glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width),
-                       GLsizei(height), border, format, GLenum(type), nullptr));
+  glCheck(glTexImage2D(
+    GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, GLenum(type), nullptr));
 
   glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL));
   glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE));
@@ -149,20 +156,15 @@ void setTextureAsSmoothed(bool generateMipMap /* = false */) {
     glCheck(glGenerateMipmap(GL_TEXTURE_2D));
 }
 
-
-void setPixelPackAlignment(uint32_t inValueInBytes)
-{
+void setPixelPackAlignment(uint32_t inValueInBytes) {
   const int32_t tmpVal = gero::math::clamp(int32_t(inValueInBytes), 0, 4);
   glCheck(glPixelStorei(GL_PACK_ALIGNMENT, tmpVal));
 }
 
-void setPixelUnpackAlignment(uint32_t inValueInBytes)
-{
+void setPixelUnpackAlignment(uint32_t inValueInBytes) {
   const int32_t tmpVal = gero::math::clamp(int32_t(inValueInBytes), 0, 4);
   glCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, tmpVal));
 }
-
-
 
 } // namespace Texture
 

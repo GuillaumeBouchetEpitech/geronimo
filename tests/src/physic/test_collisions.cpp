@@ -67,9 +67,7 @@ TEST(physic_wrapper, dynamic_object_can_collide_with_static_object) {
   ASSERT_GT(bodyRef_1->getPosition().z, 0);
 }
 
-TEST(
-  physic_wrapper,
-  dynamic_object_cannot_collide_with_static_object_if_set_with_non_matching_collision_filter) {
+TEST(physic_wrapper, dynamic_object_cannot_collide_with_static_object_if_set_with_non_matching_collision_filter) {
   gero::physics::PhysicWorld world;
 
   const float frameTime = 1.0f / 60.0f;

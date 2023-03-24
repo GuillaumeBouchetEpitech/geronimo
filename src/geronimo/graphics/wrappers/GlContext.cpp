@@ -6,7 +6,6 @@
 #include "geronimo/helpers/internals/OpenGLES.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
-#include "geronimo/system/asValue.hpp"
 
 #include <memory>
 
@@ -23,17 +22,11 @@ namespace GlContext {
 
 namespace RenderBuffer {
 
-void generateMany(uint32_t total, uint32_t* buffers) {
-  glCheck(glGenRenderbuffers(GLsizei(total), buffers));
-}
+void generateMany(uint32_t total, uint32_t* buffers) { glCheck(glGenRenderbuffers(GLsizei(total), buffers)); }
 
-void deleteMany(uint32_t total, const uint32_t* buffers) {
-  glCheck(glDeleteRenderbuffers(GLsizei(total), buffers));
-}
+void deleteMany(uint32_t total, const uint32_t* buffers) { glCheck(glDeleteRenderbuffers(GLsizei(total), buffers)); }
 
-void bind(uint32_t renderBufferId) {
-  glCheck(glBindRenderbuffer(GL_RENDERBUFFER, renderBufferId));
-}
+void bind(uint32_t renderBufferId) { glCheck(glBindRenderbuffer(GL_RENDERBUFFER, renderBufferId)); }
 
 namespace {
 int32_t getRawDepthFormat(DepthFormat depthFormat) {
@@ -54,8 +47,7 @@ void setSize(uint32_t width, uint32_t height, DepthFormat depthFormat) {
 
   const int32_t internalFormat = getRawDepthFormat(depthFormat);
 
-  glCheck(glRenderbufferStorage(GL_RENDERBUFFER, GLenum(internalFormat),
-                                GLsizei(width), GLsizei(height)));
+  glCheck(glRenderbufferStorage(GL_RENDERBUFFER, GLenum(internalFormat), GLsizei(width), GLsizei(height)));
 }
 
 } // namespace RenderBuffer
@@ -68,13 +60,9 @@ void setSize(uint32_t width, uint32_t height, DepthFormat depthFormat) {
 
 namespace VertexArrayObject {
 
-void generateMany(uint32_t total, uint32_t* buffers) {
-  glCheck(glGenVertexArrays(GLsizei(total), buffers));
-}
+void generateMany(uint32_t total, uint32_t* buffers) { glCheck(glGenVertexArrays(GLsizei(total), buffers)); }
 
-void deleteMany(uint32_t total, const uint32_t* buffers) {
-  glCheck(glDeleteVertexArrays(GLsizei(total), buffers));
-}
+void deleteMany(uint32_t total, const uint32_t* buffers) { glCheck(glDeleteVertexArrays(GLsizei(total), buffers)); }
 
 void bind(uint32_t vaoId) { glCheck(glBindVertexArray(vaoId)); }
 
@@ -132,9 +120,11 @@ void setDepthFunc(DepthFuncs func) {
   }
 }
 
-void setDepthMask(bool isEnabled)
-{
-  glDepthMask(isEnabled ? GL_TRUE : GL_FALSE);
+void setDepthMask(bool isEnabled) { glDepthMask(isEnabled ? GL_TRUE : GL_FALSE); }
+
+void setColorMask(bool red, bool green, bool blue, bool alpha) {
+  glColorMask(
+    red ? GL_TRUE : GL_FALSE, green ? GL_TRUE : GL_FALSE, blue ? GL_TRUE : GL_FALSE, alpha ? GL_TRUE : GL_FALSE);
 }
 
 namespace {
@@ -232,9 +222,7 @@ void clear(int32_t mask) {
   glCheck(glClear(GLbitfield(rawMask)));
 }
 
-void clearColor(float r, float g, float b, float a) {
-  glCheck(glClearColor(r, g, b, a));
-}
+void clearColor(float r, float g, float b, float a) { glCheck(glClearColor(r, g, b, a)); }
 
 void clearDepth(float value) { glCheck(glClearDepthf(value)); }
 

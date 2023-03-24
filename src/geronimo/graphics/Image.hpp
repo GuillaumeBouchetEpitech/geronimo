@@ -26,16 +26,12 @@ public:
   ~Image();
 
 public:
-  void loadFromFile(const std::string& filename,
-                    bool supportNonPowerOfTwo = true);
+  void loadFromFile(const std::string& filename, bool supportNonPowerOfTwo = true);
   void loadFromFile(const fileUtils::LoadCallback& loadFileCallback,
                     const std::string& filename,
                     bool supportNonPowerOfTwo = true);
-  void loadFromFile(fileUtils::FileManager& fileManager,
-                    const std::string& filename,
-                    bool supportNonPowerOfTwo = true);
-  void loadFromMemory(const std::string& content,
-                      bool supportNonPowerOfTwo = true);
+  void loadFromFile(fileUtils::FileManager& fileManager, const std::string& filename, bool supportNonPowerOfTwo = true);
+  void loadFromMemory(const std::string& content, bool supportNonPowerOfTwo = true);
 
 public:
   void dispose();
@@ -43,8 +39,7 @@ public:
 public:
   bool save(const std::string& filename);
 
-  static bool save(const std::string& filename, uint32_t width, uint32_t height,
-                   const uint8_t* pixels);
+  static bool save(const std::string& filename, uint32_t width, uint32_t height, const uint8_t* pixels);
 
 public:
   void flipY();

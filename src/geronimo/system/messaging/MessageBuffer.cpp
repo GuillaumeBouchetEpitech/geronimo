@@ -18,8 +18,7 @@ MessageBuffer::MessageBuffer() {
   _dataContainer.reserve(1024); // pre-allocate
 }
 
-MessageBuffer& MessageBuffer::append(const void* dataPointer,
-                                     uint32_t dataSize) {
+MessageBuffer& MessageBuffer::append(const void* dataPointer, uint32_t dataSize) {
   if (dataPointer && dataSize > 0) {
     // this will cause a reallocation if not large enough
     _dataContainer.resize(_dataSize + dataSize);
@@ -42,54 +41,33 @@ MessageBuffer& MessageBuffer::append(const void* dataPointer,
 
 void MessageBuffer::clear() {
   AbstractMessage::clear();
-  _dataContainer
-    .clear(); // <= clear the used size but keep it's (cached) capacity
+  _dataContainer.clear(); // <= clear the used size but keep it's (cached) capacity
 }
 
 MessageBuffer& MessageBuffer::operator<<(bool data) {
-  *this << char(data); // <= write like a char
+  *this << int8_t(data); // <= write like a char
   return *this;
 }
 
-MessageBuffer& MessageBuffer::operator<<(char data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(int8_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(unsigned char data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(uint8_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(int16_t data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(int16_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(uint16_t data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(uint16_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(int32_t data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(int32_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(uint32_t data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(uint32_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(int64_t data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(int64_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(uint64_t data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(uint64_t data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(float data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(float data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(double data) {
-  return append(&data, sizeof(data));
-}
+MessageBuffer& MessageBuffer::operator<<(double data) { return append(&data, sizeof(data)); }
 
 MessageBuffer& MessageBuffer::operator<<(const std::string& data) {
   if (data.empty())
@@ -104,17 +82,11 @@ MessageBuffer& MessageBuffer::operator<<(const std::string& data) {
   return *this;
 }
 
-MessageBuffer& MessageBuffer::operator<<(const glm::vec3& data) {
-  return append(&data.x, sizeof(glm::vec3));
-}
+MessageBuffer& MessageBuffer::operator<<(const glm::vec3& data) { return append(&data.x, sizeof(glm::vec3)); }
 
-MessageBuffer& MessageBuffer::operator<<(const glm::vec4& data) {
-  return append(&data.x, sizeof(glm::vec4));
-}
+MessageBuffer& MessageBuffer::operator<<(const glm::vec4& data) { return append(&data.x, sizeof(glm::vec4)); }
 
-MessageBuffer& MessageBuffer::operator<<(const glm::quat& data) {
-  return append(&data.x, sizeof(glm::quat));
-}
+MessageBuffer& MessageBuffer::operator<<(const glm::quat& data) { return append(&data.x, sizeof(glm::quat)); }
 
 MessageBuffer& MessageBuffer::operator<<(const glm::mat4& data) {
   return append(glm::value_ptr(data), sizeof(glm::mat4));

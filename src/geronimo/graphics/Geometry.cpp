@@ -14,7 +14,7 @@
 namespace gero {
 namespace graphics {
 
-void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
+void Geometry::initialize(ShaderProgram& shader, const Definition& def) {
   if (_vao.isAllocated() || _vbo.isAllocated())
     D_THROW(std::runtime_error, "vao/vbo already allocated");
 
@@ -29,8 +29,7 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
 
     for (const auto& attr : attrs) {
       if (attr.ignored == false && !shader.hasAttribute(attr.name.c_str()))
-        D_THROW(std::runtime_error,
-                "attribute not found, name=\"" << attr.name << "\"");
+        D_THROW(std::runtime_error, "attribute not found, name=\"" << attr.name << "\"");
     }
   }
 
@@ -60,7 +59,7 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
         uint32_t liveAttrIndex = attr.index >= 0 ? uint32_t(attr.index) : lastAttrIndex;
         switch (attr.type) {
 
-        //
+          //
 
         case AttrType::Int8:
         case AttrType::UInt8:
@@ -77,26 +76,37 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
           liveAttrIndex += 1;
           break;
 
-        //
+          //
 
-        case AttrType::Float: liveAttrIndex += 1; break;
-        case AttrType::Vec2f: liveAttrIndex += 2; break;
-        case AttrType::Vec3f: liveAttrIndex += 3; break;
-        case AttrType::Vec4f: liveAttrIndex += 4; break;
-        case AttrType::Mat3f: liveAttrIndex += 3 * 3; break;
-        case AttrType::Mat4f: liveAttrIndex += 4 * 4; break;
+        case AttrType::Float:
+          liveAttrIndex += 1;
+          break;
+        case AttrType::Vec2f:
+          liveAttrIndex += 2;
+          break;
+        case AttrType::Vec3f:
+          liveAttrIndex += 3;
+          break;
+        case AttrType::Vec4f:
+          liveAttrIndex += 4;
+          break;
+        case AttrType::Mat3f:
+          liveAttrIndex += 3 * 3;
+          break;
+        case AttrType::Mat4f:
+          liveAttrIndex += 4 * 4;
+          break;
 
-        //
+          //
 
-        // case AttrType::Double: liveAttrIndex += 2 * 1; break;
-        // case AttrType::Vec2d: liveAttrIndex += 2 * 2; break;
-        // case AttrType::Vec3d: liveAttrIndex += 2 * 3; break;
-        // case AttrType::Vec4d: liveAttrIndex += 2 * 4; break;
-        // case AttrType::Mat3d: liveAttrIndex += 2 * 3 * 3; break;
-        // case AttrType::Mat4d: liveAttrIndex += 2 * 4 * 4; break;
+          // case AttrType::Double: liveAttrIndex += 2 * 1; break;
+          // case AttrType::Vec2d: liveAttrIndex += 2 * 2; break;
+          // case AttrType::Vec3d: liveAttrIndex += 2 * 3; break;
+          // case AttrType::Vec4d: liveAttrIndex += 2 * 4; break;
+          // case AttrType::Mat3d: liveAttrIndex += 2 * 3 * 3; break;
+          // case AttrType::Mat4d: liveAttrIndex += 2 * 4 * 4; break;
 
-        //
-
+          //
         }
         lastAttrIndex = liveAttrIndex;
       }
@@ -108,9 +118,7 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
     for (const auto& attr : attrs) {
       uint32_t rowSize = 1;
 
-
       GlContext::VertexBufferObject::AttribType nextType = GlContext::VertexBufferObject::AttribType::Float;
-
 
       switch (attr.type) {
 
@@ -172,51 +180,45 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
 
         //
 
-      // case AttrType::Double:
-      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
-      //   rowSize = 1 * 2;
-      //   break;
-      // case AttrType::Vec2d:
-      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
-      //   rowSize = 2 * 2;
-      //   break;
-      // case AttrType::Vec3d:
-      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
-      //   rowSize = 3 * 2;
-      //   break;
-      // case AttrType::Vec4d:
-      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
-      //   rowSize = 4 * 2;
-      //   break;
-      // case AttrType::Mat3d:
-      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
-      //   rowSize = 3 * 2;
-      //   break;
-      // case AttrType::Mat4d:
-      //   nextType = GlContext::VertexBufferObject::AttribType::Double;
-      //   rowSize = 4 * 2;
-      //   break;
+        // case AttrType::Double:
+        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   rowSize = 1 * 2;
+        //   break;
+        // case AttrType::Vec2d:
+        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   rowSize = 2 * 2;
+        //   break;
+        // case AttrType::Vec3d:
+        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   rowSize = 3 * 2;
+        //   break;
+        // case AttrType::Vec4d:
+        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   rowSize = 4 * 2;
+        //   break;
+        // case AttrType::Mat3d:
+        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   rowSize = 3 * 2;
+        //   break;
+        // case AttrType::Mat4d:
+        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   rowSize = 4 * 2;
+        //   break;
 
         //
-
       }
 
       //
 
       uint32_t totalRows = 1;
 
-      if (
-        attr.type == AttrType::Mat3f //|| attr.type == AttrType::Mat3d
+      if (attr.type == AttrType::Mat3f //|| attr.type == AttrType::Mat3d
       ) {
         totalRows = 3;
-      }
-      else
-      if (
-        attr.type == AttrType::Mat4f //|| attr.type == AttrType::Mat4d
+      } else if (attr.type == AttrType::Mat4f //|| attr.type == AttrType::Mat4d
       ) {
         totalRows = 4;
       }
-
 
       // TODO: check if the index is 0 on k>0 and assert/throw on it
 
@@ -226,19 +228,12 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
 
         const int32_t attrLocation = shader.getAttribute(attr.name.c_str());
 
-        for (uint32_t kk = 0; kk < totalRows; ++kk)
-        {
+        for (uint32_t kk = 0; kk < totalRows; ++kk) {
           const uint32_t attrId = uint32_t(attrLocation) + kk;
           const uint32_t rowIndex = (liveAttrIndex + kk * rowSize) * uint32_t(sizeof(float));
 
           GlContext::VertexBufferObject::enableAttribArray(attrId);
-          GlContext::VertexBufferObject::setAttribPointer(
-            attrId,
-            rowSize,
-            vboStride,
-            rowIndex,
-            nextType
-          );
+          GlContext::VertexBufferObject::setAttribPointer(attrId, rowSize, vboStride, rowIndex, nextType);
 
           if (vbo.instanced) {
             GlContext::VertexBufferObject::enableAttribDivisor(attrId);
@@ -256,8 +251,7 @@ void Geometry::initialise(ShaderProgram& shader, const Definition& def) {
   _vao.unbind();
 }
 
-void Geometry::updateBuffer(uint32_t index, const void* data, uint32_t dataSize,
-                            bool dynamic /*= false*/) const {
+void Geometry::updateBuffer(uint32_t index, const void* data, uint32_t dataSize, bool dynamic /*= false*/) const {
   if (!_vao.isAllocated() || !_vbo.isAllocated())
     D_THROW(std::runtime_error, "vao/vbo not allocated");
 
@@ -277,19 +271,16 @@ void Geometry::render() const {
 
   _vao.bind();
 
-  GlContext::VertexBufferObject::Primitives primitive =
-    GlContext::VertexBufferObject::Primitives::lines;
+  GlContext::VertexBufferObject::Primitives primitive = GlContext::VertexBufferObject::Primitives::lines;
   if (_primitiveType == PrimitiveType::triangles)
     primitive = GlContext::VertexBufferObject::Primitives::triangles;
   else if (_primitiveType == PrimitiveType::line_strip)
     primitive = GlContext::VertexBufferObject::Primitives::line_strip;
 
   if (_isInstanced)
-    GlContext::VertexBufferObject::drawInstancedArrays(
-      primitive, _primitiveStart, _primitiveCount, _instanceCount);
+    GlContext::VertexBufferObject::drawInstancedArrays(primitive, _primitiveStart, _primitiveCount, _instanceCount);
   else
-    GlContext::VertexBufferObject::drawArrays(primitive, _primitiveStart,
-                                              _primitiveCount);
+    GlContext::VertexBufferObject::drawArrays(primitive, _primitiveStart, _primitiveCount);
 
   _vao.unbind();
 }

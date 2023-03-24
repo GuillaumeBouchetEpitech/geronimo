@@ -19,8 +19,7 @@ struct ModelVertex {
 
 using ModelVertices = std::vector<ModelVertex>;
 
-void loadObjModel(const std::string& filename, const std::string& mtlDir,
-                  ModelVertices& vertices);
+void loadObjModel(const std::string& filename, const std::string& mtlDir, ModelVertices& vertices);
 
 } // namespace loader
 

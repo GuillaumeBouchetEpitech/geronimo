@@ -22,8 +22,7 @@ public:
   }
 };
 
-template <>
-double RandomNumberGenerator::getRangedValue<double>(double min, double max);
+template <> double RandomNumberGenerator::getRangedValue<double>(double min, double max);
 
 using RNG = RandomNumberGenerator;
 

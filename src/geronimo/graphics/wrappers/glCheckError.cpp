@@ -8,7 +8,7 @@ namespace graphics {
 
 namespace debug {
 
-void glCheckError(const char* file, uint32_t line, const int8_t* expression) {
+void glCheckError(const char* file, uint32_t line, const char* expression) {
   // Get the last error
   GLenum errorCode = glGetError();
 
@@ -22,8 +22,7 @@ void glCheckError(const char* file, uint32_t line, const int8_t* expression) {
   switch (errorCode) {
   case GL_INVALID_ENUM: {
     error = "GL_INVALID_ENUM";
-    description =
-      "An unacceptable value has been specified for an enumerated argument.";
+    description = "An unacceptable value has been specified for an enumerated argument.";
     break;
   }
 
@@ -35,8 +34,7 @@ void glCheckError(const char* file, uint32_t line, const int8_t* expression) {
 
   case GL_INVALID_OPERATION: {
     error = "GL_INVALID_OPERATION";
-    description =
-      "The specified operation is not allowed in the current state.";
+    description = "The specified operation is not allowed in the current state.";
     break;
   }
 

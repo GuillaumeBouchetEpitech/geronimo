@@ -43,8 +43,7 @@ public:
   ~Camera() = default;
 
 public:
-  void lookAt(const glm::vec3& eye, const glm::vec3& target,
-              const glm::vec3& up);
+  void lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up);
   void computeMatrices();
 
   const IFrustumCulling& getFrustumCulling() const;
@@ -62,8 +61,7 @@ public:
   const glm::vec2& getSize() const;
 
   void setPerspective(float fovy, float near, float far);
-  void setOrthographic(float left, float right, float bottom, float top,
-                       float near, float far);
+  void setOrthographic(float left, float right, float bottom, float top, float near, float far);
   ProjectionType getProjectionType() const;
 
 public:

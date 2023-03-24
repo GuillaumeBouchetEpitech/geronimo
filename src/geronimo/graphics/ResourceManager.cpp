@@ -13,10 +13,9 @@
 namespace gero {
 namespace graphics {
 
-std::shared_ptr<ShaderProgram>
-ResourceManager::createShader(int32_t aliasCode,
-                              const ShaderProgram::Definition def,
-                              bool allowDuplicates /*= false*/) {
+std::shared_ptr<ShaderProgram> ResourceManager::createShader(int32_t aliasCode,
+                                                             const ShaderProgram::Definition def,
+                                                             bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
   sstr << def.filenames.vertex << "-" << def.filenames.fragment;
   std::string shaderUniqueName = sstr.str();
@@ -37,9 +36,7 @@ ResourceManager::createShader(int32_t aliasCode,
   }
 
   if (_shadersMap.count(aliasCode) > 0)
-    D_THROW(std::runtime_error,
-            "resource manager new shader alias is duplicated, aliasCode="
-              << aliasCode);
+    D_THROW(std::runtime_error, "resource manager new shader alias is duplicated, aliasCode=" << aliasCode);
 
   auto newShader = std::make_shared<ShaderProgram>(def, _fileManager);
   _shadersMap[aliasCode] = newShader;
@@ -50,8 +47,7 @@ ResourceManager::createShader(int32_t aliasCode,
 std::shared_ptr<ShaderProgram> ResourceManager::getShader(int32_t aliasCode) {
   auto it = _shadersMap.find(aliasCode);
   if (it == _shadersMap.end())
-    D_THROW(std::runtime_error,
-            "resource manager shader does not exist, aliasCode=" << aliasCode);
+    D_THROW(std::runtime_error, "resource manager shader does not exist, aliasCode=" << aliasCode);
 
   return it->second;
 }
@@ -60,14 +56,13 @@ std::shared_ptr<ShaderProgram> ResourceManager::getShader(int32_t aliasCode) {
 //
 //
 
-std::shared_ptr<Texture> ResourceManager::createTexture(
-  int32_t aliasCode, const std::string& filename,
-  Texture::Quality quality /*= Texture::Quality::pixelated*/,
-  Texture::Pattern pattern /*= Texture::Pattern::clamped*/,
-  bool allowDuplicates /*= false*/) {
+std::shared_ptr<Texture> ResourceManager::createTexture(int32_t aliasCode,
+                                                        const std::string& filename,
+                                                        Texture::Quality quality /*= Texture::Quality::pixelated*/,
+                                                        Texture::Pattern pattern /*= Texture::Pattern::clamped*/,
+                                                        bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
-  sstr << filename << "-quality=" << asValue(quality)
-       << "-repeat=" << asValue(pattern);
+  sstr << filename << "-quality=" << asValue(quality) << "-repeat=" << asValue(pattern);
   std::string textureUniqueName = sstr.str();
 
   auto itDef = _textureDefsMap.find(textureUniqueName);
@@ -86,9 +81,7 @@ std::shared_ptr<Texture> ResourceManager::createTexture(
   }
 
   if (_texturesMap.count(aliasCode) > 0)
-    D_THROW(std::runtime_error,
-            "resource manager new texture alias is duplicated, aliasCode="
-              << aliasCode);
+    D_THROW(std::runtime_error, "resource manager new texture alias is duplicated, aliasCode=" << aliasCode);
 
   auto newTexture = std::make_shared<Texture>();
 
@@ -104,8 +97,7 @@ std::shared_ptr<Texture> ResourceManager::createTexture(
 std::shared_ptr<Texture> ResourceManager::getTexture(int32_t aliasCode) {
   auto it = _texturesMap.find(aliasCode);
   if (it == _texturesMap.end())
-    D_THROW(std::runtime_error,
-            "resource manager texture does not exist, aliasCode=" << aliasCode);
+    D_THROW(std::runtime_error, "resource manager texture does not exist, aliasCode=" << aliasCode);
 
   return it->second;
 }
@@ -114,10 +106,9 @@ std::shared_ptr<Texture> ResourceManager::getTexture(int32_t aliasCode) {
 //
 //
 
-const Geometry::Definition&
-ResourceManager::createGeometryDefinition(int32_t aliasCode,
-                                          const Geometry::Definition& def,
-                                          bool allowDuplicates /*= false*/) {
+const Geometry::Definition& ResourceManager::createGeometryDefinition(int32_t aliasCode,
+                                                                      const Geometry::Definition& def,
+                                                                      bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
 
   sstr << asValue(def.primitiveType) << "-" << def.vbos.size();
@@ -139,37 +130,30 @@ ResourceManager::createGeometryDefinition(int32_t aliasCode,
   if (itDef != _geometryDefsMap.end()) {
 
     if (!allowDuplicates) {
-      D_THROW(std::runtime_error,
-              "resource manager geometry definition is duplicated");
+      D_THROW(std::runtime_error, "resource manager geometry definition is duplicated");
     }
 
     auto itGeoDef = _geometriesMap.find(itDef->second);
     if (itGeoDef == _geometriesMap.end())
-      D_THROW(std::runtime_error,
-              "resource manager geometry definition map corrupted");
+      D_THROW(std::runtime_error, "resource manager geometry definition map corrupted");
 
     _geometriesMap[aliasCode] = itGeoDef->second; // save same under new alias
     return itGeoDef->second;
   }
 
   if (_geometriesMap.count(aliasCode) > 0)
-    D_THROW(
-      std::runtime_error,
-      "resource manager new geometry definition alias is duplicated, aliasCode="
-        << aliasCode);
+    D_THROW(std::runtime_error,
+            "resource manager new geometry definition alias is duplicated, aliasCode=" << aliasCode);
 
   _geometriesMap[aliasCode] = def; // hard copy
   _geometryDefsMap[geoDefUniqueName] = aliasCode;
   return def;
 }
 
-const Geometry::Definition&
-ResourceManager::getGeometryDefinition(int32_t aliasCode) {
+const Geometry::Definition& ResourceManager::getGeometryDefinition(int32_t aliasCode) {
   auto it = _geometriesMap.find(aliasCode);
   if (it == _geometriesMap.end())
-    D_THROW(std::runtime_error,
-            "resource manager geometry definition does not exist, aliasCode="
-              << aliasCode);
+    D_THROW(std::runtime_error, "resource manager geometry definition does not exist, aliasCode=" << aliasCode);
 
   return it->second;
 }

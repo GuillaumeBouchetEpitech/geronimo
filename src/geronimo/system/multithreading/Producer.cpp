@@ -16,7 +16,7 @@ Producer::~Producer() { quit(); }
 //
 //
 
-void Producer::initialise(uint32_t inTotalCores, bool inAvoidBlocking /*= false*/) {
+void Producer::initialize(uint32_t inTotalCores, bool inAvoidBlocking /*= false*/) {
 
   _avoidBlocking = inAvoidBlocking;
 
@@ -33,8 +33,7 @@ void Producer::initialise(uint32_t inTotalCores, bool inAvoidBlocking /*= false*
   //
   // launch producer thread
 
-  if (_avoidBlocking == false)
-  {
+  if (_avoidBlocking == false) {
     auto setupLock = _setupSynchroniser.makeScopedLock();
 
     _isRunning = false; // the producer's thread will set it to true
@@ -45,9 +44,7 @@ void Producer::initialise(uint32_t inTotalCores, bool inAvoidBlocking /*= false*
 
     // wait -> release the lock for other thread(s)
     _setupSynchroniser.waitUntilNotified(setupLock);
-  }
-  else
-  {
+  } else {
     _isRunning = false; // the producer's thread will set it to true
 
     _thread = std::thread(&Producer::_threadedMethod, this);
@@ -116,8 +113,7 @@ void Producer::waitUntilAllCompleted() {
 
   // make the (main) thread wait for all tasks to be completed
 
-  if (_avoidBlocking == false)
-  {
+  if (_avoidBlocking == false) {
     auto lock = _allTaskSynchroniser.makeScopedLock();
 
     // this part is locked
@@ -126,21 +122,15 @@ void Producer::waitUntilAllCompleted() {
       // wait -> release the lock for other thread(s)
       _allTaskSynchroniser.waitUntilNotified(lock, 1.0f);
     }
-  }
-  else
-  {
+  } else {
     // avoid blocking on the main thread
     while (!allCompleted()) {
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
   }
-
-
 }
 
-bool Producer::allCompleted() const {
-  return (_allPlannedTasks.empty() && _allRunningTasks.empty());
-}
+bool Producer::allCompleted() const { return (_allPlannedTasks.empty() && _allRunningTasks.empty()); }
 
 //
 //
@@ -151,9 +141,7 @@ void Producer::_notifyWorkDone(Consumer* inConsumer) {
   // this part is locked and will notify at the end of the scope
 
   // find the task per consumer in the "running" list
-  auto comparison = [inConsumer](const Task& currTask) {
-    return currTask.consumer.get() == inConsumer;
-  };
+  auto comparison = [inConsumer](const Task& currTask) { return currTask.consumer.get() == inConsumer; };
   auto itTask = std::find_if(_allRunningTasks.begin(), _allRunningTasks.end(), comparison);
 
   if (itTask == _allRunningTasks.end())
@@ -162,8 +150,7 @@ void Producer::_notifyWorkDone(Consumer* inConsumer) {
   // move consumer from free to busy
   auto currConsumer = itTask->consumer;
   _freeConsumers.push_back(currConsumer);
-  auto itConsumer =
-    std::find(_busyConsumers.begin(), _busyConsumers.end(), currConsumer);
+  auto itConsumer = std::find(_busyConsumers.begin(), _busyConsumers.end(), currConsumer);
   if (itConsumer != _busyConsumers.end()) // <= this should never fail
     _busyConsumers.erase(itConsumer);
 
@@ -180,17 +167,13 @@ void Producer::_threadedMethod() {
 
   // this part is locked
 
-
-  if (_avoidBlocking == false)
-  {
+  if (_avoidBlocking == false) {
     auto setupLockNotifier = _setupSynchroniser.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
     _isRunning = true;
-  }
-  else
-  {
+  } else {
     _isRunning = true;
   }
 

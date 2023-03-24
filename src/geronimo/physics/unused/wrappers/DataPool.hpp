@@ -52,13 +52,9 @@ public:
     return pData;
   }
 
-  inline DataType* get(uint32_t index) {
-    return reinterpret_cast<DataType*>(&_allItems[index]);
-  }
+  inline DataType* get(uint32_t index) { return reinterpret_cast<DataType*>(&_allItems[index]); }
 
-  inline uint32_t getIndex(DataType* pTarget) const {
-    return reinterpret_cast<InternalData*>(pTarget)->_index;
-  }
+  inline uint32_t getIndex(DataType* pTarget) const { return reinterpret_cast<InternalData*>(pTarget)->_index; }
 
   inline void release(uint32_t index) { _unusedIndices.push_back(index); }
 };

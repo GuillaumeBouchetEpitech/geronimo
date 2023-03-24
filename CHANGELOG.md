@@ -1,6 +1,16 @@
 
 # Changelog
 
+## [?.?.?] - ???-??-??
+### Changed
+- feat: new sample -> test-bed
+- chore: clang format
+- chore: typo initialise -> initialize
+- fix: basic_double_linked_list container is now stable
+- feat: safe_weak_ref_data_pool container
+- fix: weak_ref_data_pool container is now stable
+- feat: better parser utilities
+
 ## [0.0.8] - 2023-02-17
 ### Changed
 - chore: rng -> unused method
