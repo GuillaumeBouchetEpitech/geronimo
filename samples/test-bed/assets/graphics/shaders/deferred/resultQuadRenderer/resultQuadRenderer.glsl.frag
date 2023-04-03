@@ -5,6 +5,7 @@ precision lowp float;
 uniform sampler2D u_colorTexture;
 uniform sampler2D u_positionTexture;
 uniform sampler2D u_normalTexture;
+uniform sampler2D u_depthTexture;
 uniform sampler2D u_diffuseCoefTexture;
 uniform sampler2D u_specularCoefTexture;
 uniform float u_ambiantCoef;
@@ -42,10 +43,15 @@ void main(void)
 {
   vec4 tmpColor = texture(u_colorTexture, v_uv);
   vec4 tmpNormal = texture(u_normalTexture, v_uv);
+  float tmpDepth = texture(u_depthTexture, v_uv).x;
 
-  if (tmpNormal.a == 0.0)
+  if (tmpNormal.w < 0.25)
   {
     out_color = vec4(tmpColor.rgb, 1.0);
+  }
+  else if (tmpDepth == 1.0)
+  {
+    out_color = vec4(tmpColor.rgb * u_ambiantCoef, 1.0);
   }
   else
   {
@@ -57,7 +63,6 @@ void main(void)
     float tmpSpecularCoef = texture(u_specularCoefTexture, v_uv).x;
 
     float diffuseCoef = min(max(defaultCoefs.x, tmpDiffuseCoef), 1.0);
-    // float specularCoef = min(max(tmpSpecularCoef, 0.0), 1.0);
     float specularCoef = max(defaultCoefs.y, tmpSpecularCoef * 8.0);
 
     out_color = vec4(tmpColor.rgb * diffuseCoef + k_specularColor * specularCoef, 1.0);

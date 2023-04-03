@@ -1,18 +1,21 @@
 
 #include "ResultQuadRenderer.hpp"
 
-#include "geronimo/graphics/GeometryBuilder.hpp"
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
+#include "geronimo/graphics/GeometryBuilder.hpp"
 
 using namespace gero::graphics;
 using namespace gero::graphics::GlContext;
 
-ResultQuadRenderer::ResultQuadRenderer() {}
+ResultQuadRenderer::ResultQuadRenderer()
+{}
 
-ResultQuadRenderer::~ResultQuadRenderer() {}
+ResultQuadRenderer::~ResultQuadRenderer()
+{}
 
-void ResultQuadRenderer::initialize(const glm::ivec2& inFrameSize) {
+void ResultQuadRenderer::initialize(const glm::ivec2& inFrameSize)
+{
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   gero::graphics::GeometryBuilder geometryBuilder;
@@ -28,11 +31,13 @@ void ResultQuadRenderer::initialize(const glm::ivec2& inFrameSize) {
     .addUniform("u_colorTexture")
     .addUniform("u_positionTexture")
     .addUniform("u_normalTexture")
+    .addUniform("u_depthTexture")
     .addUniform("u_diffuseCoefTexture")
     .addUniform("u_specularCoefTexture")
     .addUniform("u_ambiantCoef")
     .addUniform("u_viewPos")
-    .addUniform("u_sunLightDirection");
+    .addUniform("u_sunLightDirection")
+    ;
 
   _quadShader = std::make_shared<gero::graphics::ShaderProgram>(shaderProgramBuilder.getDefinition());
 
@@ -46,9 +51,11 @@ void ResultQuadRenderer::initialize(const glm::ivec2& inFrameSize) {
   _quadGeometry.initialize(*_quadShader, geometryBuilder.getDefinition());
 
   resize(inFrameSize);
+
 }
 
-void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
+void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize)
+{
 
   if (_frameSize == inFrameSize)
     return;
@@ -63,12 +70,14 @@ void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
     glm::vec2 uv;
   };
 
-  const std::array<Vertex, 4> vertices = {{{{inFrameSize.x * 0.0f, inFrameSize.y * 0.0f, -0.5f}, {0.0f, 0.0f}},
-                                           {{inFrameSize.x * 1.0f, inFrameSize.y * 0.0f, -0.5f}, {1.0f, 0.0f}},
-                                           {{inFrameSize.x * 1.0f, inFrameSize.y * 1.0f, -0.5f}, {1.0f, 1.0f}},
-                                           {{inFrameSize.x * 0.0f, inFrameSize.y * 1.0f, -0.5f}, {0.0f, 1.0f}}}};
+  const std::array<Vertex, 4> vertices = {{
+    { { inFrameSize.x * 0.0f, inFrameSize.y * 0.0f, -0.5f }, { 0.0f, 0.0f } },
+    { { inFrameSize.x * 1.0f, inFrameSize.y * 0.0f, -0.5f }, { 1.0f, 0.0f } },
+    { { inFrameSize.x * 1.0f, inFrameSize.y * 1.0f, -0.5f }, { 1.0f, 1.0f } },
+    { { inFrameSize.x * 0.0f, inFrameSize.y * 1.0f, -0.5f }, { 0.0f, 1.0f } }
+  }};
 
-  const std::array<uint32_t, 6> indices = {{0, 1, 2, 2, 3, 0}};
+  const std::array<uint32_t, 6> indices = {{ 0, 1, 2, 2, 3, 0 }};
 
   std::vector<Vertex> buffer;
   buffer.reserve(indices.size());
@@ -80,15 +89,18 @@ void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
   _quadGeometry.setPrimitiveCount(uint32_t(buffer.size()));
 }
 
-void ResultQuadRenderer::render(const glm::vec3& eyePos,
-                                const glm::vec3& sunLightDirection,
-                                const glm::mat4& composedMatrix,
-                                const gero::graphics::Texture& colorTexture,
-                                const gero::graphics::Texture& positionTexture,
-                                const gero::graphics::Texture& normalTexture,
-                                const gero::graphics::Texture& diffuseCoefTexture,
-                                const gero::graphics::Texture& specularCoefTexture,
-                                float ambiantLightCoef) {
+void ResultQuadRenderer::render(
+  const glm::vec3& eyePos,
+  const glm::vec3& sunLightDirection,
+  const glm::mat4& composedMatrix,
+  const gero::graphics::Texture& colorTexture,
+  const gero::graphics::Texture& positionTexture,
+  const gero::graphics::Texture& normalTexture,
+  const gero::graphics::Texture& depthTexture,
+  const gero::graphics::Texture& diffuseCoefTexture,
+  const gero::graphics::Texture& specularCoefTexture,
+  float ambiantLightCoef
+) {
 
   _quadShader->bind();
   _quadShader->setUniform("u_composedMatrix", composedMatrix);
@@ -96,20 +108,24 @@ void ResultQuadRenderer::render(const glm::vec3& eyePos,
   _quadShader->setUniform("u_viewPos", eyePos);
   _quadShader->setUniform("u_sunLightDirection", sunLightDirection);
 
-  struct TextureData {
+
+  struct TextureData
+  {
     std::string_view name;
     const gero::graphics::Texture& texture;
   };
 
-  const std::array<TextureData, 5> allTextures = {{
-    {"u_colorTexture", colorTexture},
-    {"u_positionTexture", positionTexture},
-    {"u_normalTexture", normalTexture},
-    {"u_diffuseCoefTexture", diffuseCoefTexture},
-    {"u_specularCoefTexture", specularCoefTexture},
+  const std::array<TextureData, 6> allTextures = {{
+    { "u_colorTexture", colorTexture },
+    { "u_positionTexture", positionTexture },
+    { "u_normalTexture", normalTexture },
+    { "u_depthTexture", depthTexture },
+    { "u_diffuseCoefTexture", diffuseCoefTexture },
+    { "u_specularCoefTexture", specularCoefTexture },
   }};
 
-  for (std::size_t index = 0; index < allTextures.size(); ++index) {
+  for (std::size_t index = 0; index < allTextures.size(); ++index)
+  {
     const TextureData& currData = allTextures.at(index);
     GlContext::Texture::active(uint32_t(index));
     auto location = _quadShader->getUniform(currData.name.data());
@@ -121,3 +137,4 @@ void ResultQuadRenderer::render(const glm::vec3& eyePos,
 
   GlContext::Texture::active(0);
 }
+

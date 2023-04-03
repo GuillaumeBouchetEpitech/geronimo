@@ -9,14 +9,9 @@ void writeTime(std::stringstream& stream, int64_t time, int32_t leftPadValue /*=
   stream << std::fixed;
   stream << std::setprecision(1);
 
-  // if (time < 1000)
-  // {
-  //     stream << time << "us";
-  // }
-  // else
-  if (time < 1000000) {
-    stream << (float(time) / 1000) << "ms";
+  if (time < 1000) {
+    stream << time << "ms";
   } else {
-    stream << (float(time) / 1000000) << "s";
+    stream << (float(time) * 0.001f) << "s";
   }
 }

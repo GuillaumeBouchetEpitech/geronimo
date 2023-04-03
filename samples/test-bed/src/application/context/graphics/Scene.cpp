@@ -3,6 +3,8 @@
 
 #include "renderers/hud/helpers/renderTextBackground.hpp"
 #include "renderers/hud/helpers/writeTime.hpp"
+#include "renderers/hud/widgets/renderPerformanceProfilerMetrics.hpp"
+
 #include "renderers/scene/helpers/renderPhysicBody.hpp"
 #include "renderers/scene/helpers/renderPhysicVehicle.hpp"
 
@@ -34,7 +36,7 @@ void Scene::renderAll() {
   Scene::_clear();
 
   auto& context = Context::get();
-  auto& performanceProfiler = context.logic.metrics.performanceProfiler;
+  auto& performanceProfiler = context.logic.performanceProfiler;
 
   {
     performanceProfiler.start("render scene");
@@ -70,8 +72,7 @@ void Scene::_renderScene() {
 
   const auto& matricesData = camInstance.getMatricesData();
 
-  graphic.scene.stackRenderers.wireFrames.setMatricesData(matricesData);
-  graphic.scene.stackRenderers.triangles.setMatricesData(matricesData);
+  graphic.scene.stackRenderers.setMatricesData(matricesData);
   graphic.scene.geometriesStackRenderer.setMatricesData(matricesData);
 
   {
@@ -99,6 +100,7 @@ void Scene::_renderScene() {
       instance.orientation = glm::quat(1, 0, 0, 0);
       instance.scale = glm::vec3(1.0f, 1.0f, 1.0f);
       instance.color = glm::vec4(0.6f, 1.0f, 0.6f, 1.0f);
+      instance.light = 0.5f;
 
       graphic.scene.geometriesStackRenderer.pushAlias(100, instance);
     }
@@ -121,9 +123,10 @@ void Scene::_renderScene() {
 
   {
 
-    auto& wireFrames = graphic.scene.stackRenderers.wireFrames;
+    auto& stackRenderers = graphic.scene.stackRenderers;
 
     {
+      auto& wireFrames = stackRenderers.getWireFramesStack();
 
       wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(1000, 0, 0), glm::vec3(1, 0, 0));
       wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 1000, 0), glm::vec3(0, 1, 0));
@@ -166,6 +169,7 @@ void Scene::_renderScene() {
             instance.orientation = glm::quat(1, 0, 0, 0);
             instance.scale = glm::vec3(radius);
             instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+            instance.light = 0.0f;
 
             Context::get().graphic.scene.geometriesStackRenderer.pushAlias(1112, instance);
           }
@@ -173,12 +177,18 @@ void Scene::_renderScene() {
           // wireFrames.pushCross(lightPos, glm::vec3(1,1,1), 1.0f);
         }
 
+      stackRenderers.flush();
+
       if (context.logic.debugMode) {
-        context.physic.world->render();
+
+        graphic.scene.stackRenderers.safeMode([&context]() {
+
+          context.physic.world->render();
+        });
+
       }
     }
 
-    wireFrames.flush();
   }
 
   gero::graphics::ShaderProgram::unbind();
@@ -195,12 +205,11 @@ void Scene::_renderHud() {
 
   const auto& matricesData = camInstance.getMatricesData();
 
-  graphic.hud.stackRenderers.wireFrames.setMatricesData(matricesData);
-  graphic.hud.stackRenderers.triangles.setMatricesData(matricesData);
+  graphic.hud.stackRenderers.setMatricesData(matricesData);
   graphic.hud.textRenderer.setMatricesData(matricesData);
 
   context.graphic.scene.deferred.setAmbiantLightCoef(0.2f);
-  context.graphic.scene.deferred.setSunLightDirection(glm::vec3(-1.0f, -1.0f, -1.0f));
+  context.graphic.scene.deferred.setSunLightDirection(glm::vec3(-1.0f, -1.0f, -2.0f));
   context.graphic.scene.deferred.renderHudQuad(matricesData.composed);
 
   GlContext::clears(Buffers::depth);
@@ -235,9 +244,9 @@ void Scene::_renderHud() {
 
       {
 
-        // auto& timeDataMap = context.logic.metrics.performanceProfiler.getTimeDataMap();
+        // auto& timeDataMap = context.logic.performanceProfiler.getTimeDataMap();
 
-        const auto& performanceProfiler = context.logic.metrics.performanceProfiler;
+        const auto& performanceProfiler = context.logic.performanceProfiler;
         const auto& allDataKeys = performanceProfiler.getAllDataKeys();
         for (const auto& keyName : allDataKeys) {
           if (const auto timeDataRef = performanceProfiler.tryGetTimeData(keyName)) {
@@ -252,7 +261,7 @@ void Scene::_renderHud() {
             writeTime(sstr, latestDuration, 0);
             sstr << std::endl;
 
-            if (averageDuration > 0) {
+            if (averageDuration > 0 && averageDuration < 999) {
               sstr << "~";
               writeTime(sstr, averageDuration, 0);
               sstr << std::endl;
@@ -269,12 +278,12 @@ void Scene::_renderHud() {
           const int32_t latestFpsValue = int32_t(1000.0f / float(latestDuration));
 
           sstr << "FPS (update):" << std::endl;
-          sstr << latestFpsValue << "/60" << std::endl;
+          sstr << latestFpsValue << "fps" << std::endl;
 
           if (averageDuration > 0) {
             const int32_t averageFpsValue = int32_t(1000.0f / float(averageDuration));
-            if (averageFpsValue > 0) {
-              sstr << "~" << averageFpsValue << "/60" << std::endl;
+            if (averageFpsValue > 0 && averageFpsValue < 999) {
+              sstr << "~" << averageFpsValue << "fps" << std::endl;
             }
           }
           sstr << std::endl;
@@ -288,12 +297,12 @@ void Scene::_renderHud() {
           const int32_t latestFpsValue = int32_t(1000.0f / float(latestDuration));
 
           sstr << "FPS (render):" << std::endl;
-          sstr << latestFpsValue << "/60" << std::endl;
+          sstr << latestFpsValue << "fps" << std::endl;
 
           if (averageDuration > 0) {
             const int32_t averageFpsValue = int32_t(1000.0f / float(averageDuration));
-            if (averageFpsValue > 0) {
-              sstr << "~" << averageFpsValue << "/60" << std::endl;
+            if (averageFpsValue > 0 && averageFpsValue < 999) {
+              sstr << "~" << averageFpsValue << "fps" << std::endl;
             }
           }
           sstr << std::endl;
@@ -323,21 +332,35 @@ void Scene::_renderHud() {
   }
 
   {
+    auto& stackRenderers = graphic.hud.stackRenderers;
 
-    auto& wireFrames = graphic.hud.stackRenderers.wireFrames;
+    {
+      auto& wireFrames = stackRenderers.getWireFramesStack();
+      wireFrames.pushRectangle(glm::vec2(100, 20), glm::vec2(50, 20), glm::vec3(1, 1, 1));
+    }
 
-    wireFrames.pushRectangle(glm::vec2(100, 20), glm::vec2(50, 20), glm::vec3(1, 1, 1));
+    {
+      auto& triangles = stackRenderers.getTrianglesStack();
+      triangles.pushCircle(glm::vec2(200, 30), 10.0f, glm::vec4(1, 1, 1, 0.5));
+    }
 
-    wireFrames.flush();
+    stackRenderers.flush();
   }
 
   {
+    const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
 
-    auto& triangles = graphic.hud.stackRenderers.triangles;
+    const glm::vec2 k_size = glm::vec2(150,50);
+    const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 10, vSize.y - k_size.y - 10, 0);
 
-    triangles.pushCircle(glm::vec2(200, 30), 10.0f, glm::vec4(1, 1, 1, 0.5));
+    widgets::renderPerformanceProfilerMetrics(
+      k_pos,
+      k_size,
+      "complete frame"
+    );
 
-    triangles.flush();
+    graphic.hud.stackRenderers.flush();
+    graphic.hud.textRenderer.render();
   }
 
   gero::graphics::ShaderProgram::unbind();

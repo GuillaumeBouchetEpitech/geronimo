@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include "graphics/renderers/common/TrianglesStackRenderer.hpp"
-#include "graphics/renderers/common/WireFramesStackRenderer.hpp"
+#include "graphics/renderers/common/StackRenderers.hpp"
 
 #include "graphics/renderers/scene/GeometriesStackRenderer.hpp"
 
@@ -93,24 +92,19 @@ public:
       gero::graphics::Camera hud;
     } camera;
 
-    struct StackRenderers {
-      wireFramesStackRenderer wireFrames;
-      TrianglesStackRenderer triangles;
-    };
-
     struct Hud {
       StackRenderers stackRenderers;
+
       TextRenderer textRenderer;
 
     } hud;
 
     struct Scene {
       StackRenderers stackRenderers;
+
       GeometriesStackRenderer geometriesStackRenderer;
 
       Deferred deferred;
-
-      glm::vec3 lightPos = {0, 0, 0};
 
     } scene;
 
@@ -129,9 +123,8 @@ public:
   } audio;
 
   struct Logic {
-    struct Metrics {
-      gero::metrics::PerformanceProfiler performanceProfiler;
-    } metrics;
+
+    gero::metrics::PerformanceProfiler performanceProfiler;
 
     struct Controllers {
       FreeFlyCameraController freeFly;

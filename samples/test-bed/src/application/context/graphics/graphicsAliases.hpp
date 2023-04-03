@@ -3,14 +3,14 @@
 
 #include <cstdint>
 
-enum class ShaderAliases : int32_t {
+enum class ShadersAliases : int32_t {
   stackRendererHud = 0,
   stackRendererScene,
   geometriesStackRenderer,
   textRenderer,
 };
 
-enum class GeometryIds : int32_t {
+enum class GeometriesAliases : int32_t {
   stackRendererWireFramesHud = 0,
   stackRendererTrianglesHud,
   stackRendererWireFramesScene,

@@ -24,7 +24,7 @@ constexpr bool k_canResize = false;
 } // namespace
 
 Application::Application(const Definition& def)
-  : SDLWindowWrapper("Test Bed", def.width, def.height, 60, OpenGlEsVersion::v3, k_canResize) {
+  : SDLWindowWrapper("Test Bed", def.width, def.height, 120, OpenGlEsVersion::v3, k_canResize) {
 
   KeyboardManager::create();
   MouseManager::create();

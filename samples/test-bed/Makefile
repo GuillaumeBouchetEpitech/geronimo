@@ -115,8 +115,10 @@ SRC+= \
 		$(DIR_SRC)/application/context/graphics/deferred/internals/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/common/*.cpp \
+		$(DIR_SRC)/application/context/graphics/renderers/common/internals/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/hud/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/hud/helpers/*.cpp \
+		$(DIR_SRC)/application/context/graphics/renderers/hud/widgets/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/scene/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/scene/helpers/*.cpp \
 		$(DIR_SRC)/application/context/logic/*.cpp \

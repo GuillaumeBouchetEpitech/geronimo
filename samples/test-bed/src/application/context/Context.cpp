@@ -29,25 +29,26 @@ void Context::initialize(uint32_t width, uint32_t height) {
 
   initializeGraphicResources();
 
-  graphic.scene.stackRenderers.wireFrames.initialize(ShaderAliases::stackRendererScene,
-                                                     GeometryIds::stackRendererWireFramesScene);
-  graphic.scene.stackRenderers.triangles.initialize(ShaderAliases::stackRendererScene,
-                                                    GeometryIds::stackRendererTrianglesScene);
+  graphic.scene.stackRenderers.initialize(
+    ShadersAliases::stackRendererScene,
+    GeometriesAliases::stackRendererTrianglesScene,
+    GeometriesAliases::stackRendererWireFramesScene);
 
-  { graphic.scene.geometriesStackRenderer.initialize(); }
+  graphic.scene.geometriesStackRenderer.initialize();
 
   graphic.scene.deferred.initialize({width, height});
 
-  graphic.hud.stackRenderers.wireFrames.initialize(ShaderAliases::stackRendererHud,
-                                                   GeometryIds::stackRendererWireFramesHud);
-  graphic.hud.stackRenderers.triangles.initialize(ShaderAliases::stackRendererHud,
-                                                  GeometryIds::stackRendererTrianglesHud);
+
+  graphic.hud.stackRenderers.initialize(
+    ShadersAliases::stackRendererHud,
+    GeometriesAliases::stackRendererTrianglesHud,
+    GeometriesAliases::stackRendererWireFramesHud);
+
   graphic.hud.textRenderer.initialize();
 
-  this->physic.world = new gero::physics::PhysicWorld();
-
-  this->physic.world->setDebuggerPushLine([this](const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
-    graphic.scene.stackRenderers.wireFrames.pushLine(posA, posB, color);
+  physic.world = new gero::physics::PhysicWorld();
+  physic.world->setDebuggerPushLine([this](const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
+    graphic.scene.stackRenderers.getWireFramesStack().pushLine(posA, posB, color);
   });
 
   {

@@ -2,7 +2,7 @@
 #include "TextRenderer.hpp"
 
 #include "application/context/Context.hpp"
-#include "application/context/graphics/graphicAliases.hpp"
+#include "application/context/graphics/graphicsAliases.hpp"
 
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/asValue.hpp"
@@ -50,7 +50,7 @@ void TextRenderer::initialize() {
 
   auto& resourceManager = Context::get().graphic.resourceManager;
 
-  _graphic.shader = resourceManager.getShader(gero::asValue(ShaderAliases::textRenderer));
+  _graphic.shader = resourceManager.getShader(gero::asValue(ShadersAliases::textRenderer));
 
   _graphic.texture = resourceManager.getTexture(0);
 
@@ -84,7 +84,7 @@ void TextRenderer::initialize() {
     for (std::size_t index : indices)
       letterVertices.push_back(vertices.at(index));
 
-    auto geoDef = resourceManager.getGeometryDefinition(gero::asValue(GeometryIds::textRenderer));
+    auto geoDef = resourceManager.getGeometryDefinition(gero::asValue(GeometriesAliases::textRenderer));
     _graphic.geometry.initialize(*_graphic.shader, geoDef);
     _graphic.geometry.updateBuffer(0, letterVertices);
     _graphic.geometry.setPrimitiveCount(uint32_t(letterVertices.size()));

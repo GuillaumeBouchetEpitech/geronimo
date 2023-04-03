@@ -21,6 +21,7 @@ void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
     instance.orientation = inOrientation;
     instance.scale = glm::vec3(radius);
     instance.color = glm::vec4(1.0f, 0.6f, 0.6f, 1.0f);
+    instance.light = 1.0f;
 
     geometriesStackRenderer.pushAlias(1111, instance);
 
@@ -34,6 +35,7 @@ void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
     instance.orientation = inOrientation;
     instance.scale = size;
     instance.color = glm::vec4(0.6f, 0.6f, 1.0f, 1.0f);
+    instance.light = 0.5f;
 
     geometriesStackRenderer.pushAlias(2222, instance);
 
@@ -51,6 +53,7 @@ void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
       instance.orientation = inOrientation;
       instance.scale = glm::vec3(radius);
       instance.color = glm::vec4(1.0f, 1.0f, 0.6f, 1.0f);
+      instance.light = 0.5f;
 
       instance.position += rotMat3 * glm::vec3(0, 0, height * +0.5f);
       geometriesStackRenderer.pushAlias(1111, instance);
@@ -64,6 +67,7 @@ void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
       instance.position = inPosition, instance.orientation = inOrientation;
       instance.scale = glm::vec3(radius, radius, height);
       instance.color = glm::vec4(1.0f, 0.6f, 1.0f, 1.0f);
+      instance.light = 0.5f;
 
       geometriesStackRenderer.pushAlias(4444, instance);
     }

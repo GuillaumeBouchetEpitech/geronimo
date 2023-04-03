@@ -1,7 +1,7 @@
 
 #include "Context.hpp"
 
-#include "application/context/graphics/graphicAliases.hpp"
+#include "application/context/graphics/graphicsAliases.hpp"
 
 #include "geronimo/graphics/GeometryBuilder.hpp"
 #include "geronimo/graphics/GlContext.hpp"
@@ -26,7 +26,7 @@ void initializeHudStructures(gero::graphics::ResourceManager& rManager) {
       .addUniform("u_composedMatrix");
 
     auto shader =
-      rManager.createShader(gero::asValue(ShaderAliases::stackRendererHud), shaderProgramBuilder.getDefinition());
+      rManager.createShader(gero::asValue(ShadersAliases::stackRendererHud), shaderProgramBuilder.getDefinition());
 
     geometryBuilder.reset()
       .setShader(*shader)
@@ -36,12 +36,12 @@ void initializeHudStructures(gero::graphics::ResourceManager& rManager) {
       .addVboAttribute("a_color", gero::graphics::Geometry::AttrType::Vec4f);
 
     rManager.createGeometryDefinition(
-      gero::asValue(GeometryIds::stackRendererWireFramesHud), geometryBuilder.getDefinition(), true);
+      gero::asValue(GeometriesAliases::stackRendererWireFramesHud), geometryBuilder.getDefinition(), true);
 
     geometryBuilder.setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles);
 
     rManager.createGeometryDefinition(
-      gero::asValue(GeometryIds::stackRendererTrianglesHud), geometryBuilder.getDefinition(), true);
+      gero::asValue(GeometriesAliases::stackRendererTrianglesHud), geometryBuilder.getDefinition(), true);
   }
 
   {
@@ -58,7 +58,7 @@ void initializeHudStructures(gero::graphics::ResourceManager& rManager) {
       .addUniform("u_texture");
 
     auto shader =
-      rManager.createShader(gero::asValue(ShaderAliases::textRenderer), shaderProgramBuilder.getDefinition());
+      rManager.createShader(gero::asValue(ShadersAliases::textRenderer), shaderProgramBuilder.getDefinition());
 
     geometryBuilder.reset()
       .setShader(*shader)
@@ -73,7 +73,7 @@ void initializeHudStructures(gero::graphics::ResourceManager& rManager) {
       .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
       .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Float);
 
-    rManager.createGeometryDefinition(gero::asValue(GeometryIds::textRenderer), geometryBuilder.getDefinition(), true);
+    rManager.createGeometryDefinition(gero::asValue(GeometriesAliases::textRenderer), geometryBuilder.getDefinition(), true);
   }
 }
 
@@ -96,13 +96,14 @@ void initializeSceneStructures(gero::graphics::ResourceManager& rManager) {
       .addAttribute("a_offsetOrientation")
       .addAttribute("a_offsetScale")
       .addAttribute("a_offsetColor")
+      .addAttribute("a_offsetLight")
 
       .addUniform("u_composedMatrix")
       // .addUniform("u_ambiantCoef")
       // .addUniform("u_lightPos")
       ;
 
-    auto shader = rManager.createShader(gero::asValue(ShaderAliases::geometriesStackRenderer),
+    auto shader = rManager.createShader(gero::asValue(ShadersAliases::geometriesStackRenderer),
                                         shaderProgramBuilder.getDefinition());
 
     geometryBuilder.reset()
@@ -116,10 +117,12 @@ void initializeSceneStructures(gero::graphics::ResourceManager& rManager) {
       .addVboAttribute("a_offsetPosition", gero::graphics::Geometry::AttrType::Vec3f)
       .addVboAttribute("a_offsetOrientation", gero::graphics::Geometry::AttrType::Vec4f)
       .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f);
+      .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
+      .addVboAttribute("a_offsetLight", gero::graphics::Geometry::AttrType::Float)
+      ;
 
     rManager.createGeometryDefinition(
-      gero::asValue(GeometryIds::geometriesStackRenderer), geometryBuilder.getDefinition(), true);
+      gero::asValue(GeometriesAliases::geometriesStackRenderer), geometryBuilder.getDefinition(), true);
   }
 
   {
@@ -131,7 +134,7 @@ void initializeSceneStructures(gero::graphics::ResourceManager& rManager) {
       .addUniform("u_composedMatrix");
 
     auto shader =
-      rManager.createShader(gero::asValue(ShaderAliases::stackRendererScene), shaderProgramBuilder.getDefinition());
+      rManager.createShader(gero::asValue(ShadersAliases::stackRendererScene), shaderProgramBuilder.getDefinition());
 
     geometryBuilder.reset()
       .setShader(*shader)
@@ -141,12 +144,12 @@ void initializeSceneStructures(gero::graphics::ResourceManager& rManager) {
       .addVboAttribute("a_color", gero::graphics::Geometry::AttrType::Vec4f);
 
     rManager.createGeometryDefinition(
-      gero::asValue(GeometryIds::stackRendererWireFramesScene), geometryBuilder.getDefinition(), true);
+      gero::asValue(GeometriesAliases::stackRendererWireFramesScene), geometryBuilder.getDefinition(), true);
 
     geometryBuilder.setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles);
 
     rManager.createGeometryDefinition(
-      gero::asValue(GeometryIds::stackRendererTrianglesScene), geometryBuilder.getDefinition(), true);
+      gero::asValue(GeometriesAliases::stackRendererTrianglesScene), geometryBuilder.getDefinition(), true);
   }
 }
 

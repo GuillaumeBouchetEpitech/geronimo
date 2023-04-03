@@ -19,9 +19,10 @@ class AbstractPhysicVehicle : public gero::weak_ref_data_pool_base_class {
 public:
   AbstractPhysicVehicle() = default;
   virtual ~AbstractPhysicVehicle() = default;
-  AbstractPhysicVehicle(AbstractPhysicVehicle& other) = delete;
+  AbstractPhysicVehicle(const AbstractPhysicVehicle& other) = delete;
+  AbstractPhysicVehicle(AbstractPhysicVehicle&& other) = default;
   AbstractPhysicVehicle& operator=(const AbstractPhysicVehicle& other) = delete;
-  AbstractPhysicVehicle& operator=(const AbstractPhysicVehicle&& other) = delete;
+  AbstractPhysicVehicle& operator=(AbstractPhysicVehicle&& other) = default;
 
 public:
   virtual void applyEngineForce(int32_t index, float force) = 0;
@@ -57,10 +58,10 @@ public:
   PhysicVehicle(btDiscreteDynamicsWorld& dynamicsWorld, const PhysicVehicleDef& def);
   virtual ~PhysicVehicle();
 
-  PhysicVehicle(PhysicVehicle& other) = delete;
-  PhysicVehicle(PhysicVehicle&& other);
+  PhysicVehicle(const PhysicVehicle& other) = delete;
+  PhysicVehicle(PhysicVehicle&& other) = default;
   PhysicVehicle& operator=(const PhysicVehicle& other) = delete;
-  PhysicVehicle& operator=(PhysicVehicle&& other);
+  PhysicVehicle& operator=(PhysicVehicle&& other) = default;
 
 public:
   virtual void applyEngineForce(int32_t index, float force) override;

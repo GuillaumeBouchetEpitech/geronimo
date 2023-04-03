@@ -2,7 +2,6 @@
 
 precision lowp float;
 
-uniform sampler2D u_colorTexture;
 uniform sampler2D u_positionTexture;
 uniform sampler2D u_normalTexture;
 uniform sampler2D u_diffuseCoefTexture;
@@ -45,21 +44,18 @@ void main(void)
 {
   vec2 uv = vec2(gl_FragCoord.x / u_resolution.x, gl_FragCoord.y / u_resolution.y);
 
-  vec4 tmpColor = texture(u_colorTexture, uv);
-  vec3 tmpPosition = texture(u_positionTexture, uv).xyz;
   vec4 tmpNormal = texture(u_normalTexture, uv);
   float tmpDiffuseCoef = texture(u_diffuseCoefTexture, uv).x;
 
   if (
     tmpDiffuseCoef == 0.0 ||
-    tmpNormal.w == 0.0 ||
-    tmpColor.a == 0.0
+    tmpNormal.w < 0.75 ||
+    gl_FragCoord.z == 1.0
   ) {
     discard;
-    // gl_FragDepth = 0.0;
   }
-  else
-  {
-    gl_FragDepth = applyLighting(tmpPosition, tmpNormal.xyz * 2.0 - 1.0);
-  }
+
+  vec3 tmpPosition = texture(u_positionTexture, uv).xyz;
+
+  gl_FragDepth = applyLighting(tmpPosition, tmpNormal.xyz * 2.0 - 1.0);
 }

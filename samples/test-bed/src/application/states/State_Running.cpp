@@ -87,19 +87,19 @@ void State_Running::update(uint32_t delta) {
 
   auto& context = Context::get();
 
-  auto& performanceProfiler = context.logic.metrics.performanceProfiler;
-  performanceProfiler.stop("update frame");
-  performanceProfiler.start("update frame");
+  auto& performanceProfiler = context.logic.performanceProfiler;
+  performanceProfiler.stop("complete frame");
+  performanceProfiler.start("complete frame");
 
   performanceProfiler.start("update");
-
-  context.logic.time += elapsedTime;
 
   auto& mouse = MouseManager::get();
 
   if (mouse.isLocked()) {
 
     context.logic.controllers.freeFly.update(elapsedTime);
+
+    context.logic.time += elapsedTime;
 
     context.audio.soundManager->setListener(
       context.graphic.camera.scene.getEye(), context.graphic.camera.scene.getForwardAxis(), glm::vec3(0, 0, 1));
@@ -110,45 +110,20 @@ void State_Running::update(uint32_t delta) {
     constexpr uint32_t k_maxSubSteps = 3;
     constexpr float k_fixedStep = 1.0f / 60.0f;
     context.physic.world->step(elapsedTime, k_maxSubSteps, k_fixedStep);
-
-    context.graphic.scene.lightPos = context.graphic.camera.scene.getEye();
   }
 
-  context.logic.metrics.performanceProfiler.stop("update");
+  performanceProfiler.stop("update");
 }
 
 void State_Running::render(const SDL_Window&) {
 
   auto& context = Context::get();
 
-  auto& performanceProfiler = context.logic.metrics.performanceProfiler;
+  auto& performanceProfiler = context.logic.performanceProfiler;
   performanceProfiler.stop("render frame");
   performanceProfiler.start("render frame");
 
   performanceProfiler.start("render");
-
-  // {
-
-  //   auto& controller = context.logic.controllers.fps;
-  //   auto currTarget = controller.getTarget();
-  //   if (currTarget) {
-  //     const glm::vec3& targetPos = currTarget->getPosition();
-
-  //     auto& camera = context.graphic.camera.scene;
-
-  //     camera.lookAt(
-  //       targetPos, targetPos + currTarget->getForwardAxis(),
-  //       glm::vec3(0, 0, 1));
-  //   }
-
-  //   {
-  //     // const auto& camera = context.graphic.camera.scene;
-
-  //     // context.graphic.scene.lightPos =
-  //     //   camera.getEye() + camera.getForwardAxis() * 3.0f;
-  //     // // context.graphic.scene.lightPos = camera.getEye();
-  //   }
-  // }
 
   Scene::updateMatrices();
 

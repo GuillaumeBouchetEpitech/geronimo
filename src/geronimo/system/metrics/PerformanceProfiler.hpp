@@ -25,6 +25,8 @@ public:
     gero::dynamic_heap_array<int32_t, int32_t> _historicData;
     int32_t _historicIndex = 0;
     int32_t _averageDuration = 0;
+    int32_t _maxDuration = 0;
+    int32_t _minDuration = 0;
 
   private:
     void _onStart();
@@ -42,6 +44,11 @@ public:
   public:
     int32_t getLatestDuration() const;
     int32_t getAverageDuration() const;
+    int32_t getMaxDuration() const;
+    int32_t getMinDuration() const;
+    int32_t getDurationByIndex(std::size_t index) const;
+    std::size_t getTotalDurations() const;
+
   };
 
   using TimeDataMap = std::unordered_map<std::string, TimeData>;
@@ -70,6 +77,8 @@ public:
 
 public:
   const std::vector<std::string>& getAllDataKeys() const;
+
+  std::size_t getHistoricSize() const;
 
 private:
   TimeData& _getOrCreate(const std::string& name);

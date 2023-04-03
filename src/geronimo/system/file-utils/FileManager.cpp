@@ -27,20 +27,20 @@ DataBuffer::DataBuffer(const std::int8_t* str) : DataBuffer(str, strlen(reinterp
 DataBuffer::DataBuffer(const std::string& str)
   : DataBuffer(reinterpret_cast<const std::uint8_t*>(str.c_str()), str.size()) {}
 
-DataBuffer::DataBuffer(DataBuffer&& other) // allow move
-{
-  std::swap(_size, other._size);
-  std::swap(_data, other._data);
-}
+// DataBuffer::DataBuffer(DataBuffer&& other) // allow move
+// {
+//   std::swap(_size, other._size);
+//   std::swap(_data, other._data);
+// }
 
-DataBuffer& DataBuffer::operator=(DataBuffer&& other) // allow move
-{
-  if (&other == this)
-    return *this;
-  std::swap(_size, other._size);
-  std::swap(_data, other._data);
-  return *this;
-}
+// DataBuffer& DataBuffer::operator=(DataBuffer&& other) // allow move
+// {
+//   if (&other == this)
+//     return *this;
+//   std::swap(_size, other._size);
+//   std::swap(_data, other._data);
+//   return *this;
+// }
 
 const uint8_t* DataBuffer::getUCharData() const { return _data.get(); }
 const char* DataBuffer::getCharData() const { return reinterpret_cast<char*>(_data.get()); }

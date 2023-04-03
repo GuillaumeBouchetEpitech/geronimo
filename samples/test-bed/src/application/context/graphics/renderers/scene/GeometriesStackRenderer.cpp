@@ -2,12 +2,12 @@
 #include "GeometriesStackRenderer.hpp"
 
 #include "application/context/Context.hpp"
-#include "application/context/graphics/graphicAliases.hpp"
+#include "application/context/graphics/graphicsAliases.hpp"
 
 void GeometriesStackRenderer::initialize() {
   auto& resourceManager = Context::get().graphic.resourceManager;
 
-  _shader = resourceManager.getShader(gero::asValue(ShaderAliases::geometriesStackRenderer));
+  _shader = resourceManager.getShader(gero::asValue(ShadersAliases::geometriesStackRenderer));
 }
 
 void GeometriesStackRenderer::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) {
@@ -19,7 +19,7 @@ void GeometriesStackRenderer::createAlias(int32_t alias, const gero::graphics::M
 
   auto newAlias = std::make_shared<AliasedGeometry>();
 
-  auto geoDef = resourceManager.getGeometryDefinition(gero::asValue(GeometryIds::geometriesStackRenderer));
+  auto geoDef = resourceManager.getGeometryDefinition(gero::asValue(GeometriesAliases::geometriesStackRenderer));
   newAlias->geometry.initialize(*_shader, geoDef);
   newAlias->geometry.updateBuffer(0, vertices, false);
   newAlias->geometry.setPrimitiveStart(0);
@@ -59,9 +59,6 @@ void GeometriesStackRenderer::renderAll() {
   _shader->bind();
   _shader->setUniform("u_composedMatrix", _matricesData.composed);
   // _shader->setUniform("u_ambiantCoef", 0.2f);
-
-  // const glm::vec3& lightPos = Context::get().graphic.scene.lightPos;
-  // _shader->setUniform("u_lightPos", lightPos.x, lightPos.y, lightPos.z);
 
   for (const auto& pair : _aliasedGeometriesMap) {
     auto& vertices = pair.second->instanceVertices;

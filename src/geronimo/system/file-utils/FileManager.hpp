@@ -32,8 +32,8 @@ public:
   DataBuffer& operator=(const DataBuffer& other) = delete; // no copy
 
 public:
-  DataBuffer(DataBuffer&& other);            // allow move
-  DataBuffer& operator=(DataBuffer&& other); // allow move
+  DataBuffer(DataBuffer&& other) = default;            // allow move
+  DataBuffer& operator=(DataBuffer&& other) = default; // allow move
 
 public:
   const uint8_t* getUCharData() const;

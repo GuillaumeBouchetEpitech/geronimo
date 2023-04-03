@@ -49,11 +49,29 @@ void PerformanceProfiler::TimeData::_pushNewValue(int32_t inDuration) {
   } else {
     _historicData.push_back(_latestDuration);
   }
+
+  _maxDuration = 0;
+  for (int32_t value : _historicData)
+    _maxDuration = std::max(_maxDuration, value);
+
+  _minDuration = _maxDuration;
+  for (int32_t value : _historicData)
+    _minDuration = std::min(_minDuration, value);
 }
 
 int32_t PerformanceProfiler::TimeData::getLatestDuration() const { return _latestDuration; }
 
 int32_t PerformanceProfiler::TimeData::getAverageDuration() const { return _averageDuration; }
+
+int32_t PerformanceProfiler::TimeData::getMaxDuration() const { return _maxDuration; }
+
+int32_t PerformanceProfiler::TimeData::getMinDuration() const { return _minDuration; }
+
+int32_t PerformanceProfiler::TimeData::getDurationByIndex(std::size_t index) const {
+  return _historicData.at(std::size_t((_historicIndex + int32_t(index)) % int32_t(_historicData.size())));
+}
+
+std::size_t PerformanceProfiler::TimeData::getTotalDurations() const { return _historicData.size(); }
 
 //
 //
@@ -85,6 +103,8 @@ const PerformanceProfiler::MaybeTimeDataRef PerformanceProfiler::tryGetTimeData(
 }
 
 const std::vector<std::string>& PerformanceProfiler::getAllDataKeys() const { return _allDataKeys; }
+
+std::size_t PerformanceProfiler::getHistoricSize() const { return _preAllocatedHistoricSize; }
 
 PerformanceProfiler::TimeData& PerformanceProfiler::_getOrCreate(const std::string& name) {
   auto it = _allTimes.find(name);

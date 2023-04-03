@@ -1,17 +1,18 @@
 
 #pragma once
 
-#include "internals/LightStackRenderer.hpp"
-#include "internals/ResultQuadRenderer.hpp"
 #include "internals/ScreenRecorder.hpp"
+#include "internals/ResultQuadRenderer.hpp"
+#include "internals/LightStackRenderer.hpp"
 
-#include "geronimo/graphics/FrameBuffer.hpp"
 #include "geronimo/graphics/Texture.hpp"
+#include "geronimo/graphics/FrameBuffer.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <cstdint>
 
-class Deferred {
+class Deferred
+{
 public:
   Deferred() = default;
   ~Deferred() = default;
@@ -20,6 +21,7 @@ public:
   void initialize(const glm::ivec2& inFrameSize);
 
 public:
+
   void resize(const glm::ivec2& inFrameSize);
 
   void setEyePosition(const glm::vec3& inEyePos);
@@ -35,11 +37,13 @@ public:
   void renderHudQuad(const glm::mat4& composedMatrix);
 
 private:
+
   ScreenRecorder _screenRecorder;
   ResultQuadRenderer _resultQuadRenderer;
   LightStackRenderer _lightStackRenderer;
 
   glm::vec3 _eyePos;
-  glm::vec3 _sunLightDirection = {-1.0f, -1.0f, -1.0f};
+  glm::vec3 _sunLightDirection = { -1.0f, -1.0f, -2.0f };
   float _ambiantLightCoef = 0.1f;
+
 };

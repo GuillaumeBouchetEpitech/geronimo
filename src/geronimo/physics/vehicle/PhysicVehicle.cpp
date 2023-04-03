@@ -103,24 +103,24 @@ PhysicVehicle::~PhysicVehicle() {
   delete _bullet.vehicleRayCaster;
 }
 
-PhysicVehicle::PhysicVehicle(PhysicVehicle&& other) {
-  if (&other == this)
-    return;
+// PhysicVehicle::PhysicVehicle(PhysicVehicle&& other) {
+//   if (&other == this)
+//     return;
 
-  std::swap(_bullet.vehicleRayCaster, other._bullet.vehicleRayCaster);
-  std::swap(_bullet.vehicle, other._bullet.vehicle);
-  std::swap(_body, other._body);
-}
+//   std::swap(_bullet.vehicleRayCaster, other._bullet.vehicleRayCaster);
+//   std::swap(_bullet.vehicle, other._bullet.vehicle);
+//   std::swap(_body, other._body);
+// }
 
-PhysicVehicle& PhysicVehicle::operator=(PhysicVehicle&& other) {
-  if (&other == this)
-    return *this;
+// PhysicVehicle& PhysicVehicle::operator=(PhysicVehicle&& other) {
+//   if (&other == this)
+//     return *this;
 
-  std::swap(_bullet.vehicleRayCaster, other._bullet.vehicleRayCaster);
-  std::swap(_bullet.vehicle, other._bullet.vehicle);
-  std::swap(_body, other._body);
-  return *this;
-}
+//   std::swap(_bullet.vehicleRayCaster, other._bullet.vehicleRayCaster);
+//   std::swap(_bullet.vehicle, other._bullet.vehicle);
+//   std::swap(_body, other._body);
+//   return *this;
+// }
 
 //
 //

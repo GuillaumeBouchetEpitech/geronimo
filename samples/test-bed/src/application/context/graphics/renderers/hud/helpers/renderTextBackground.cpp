@@ -6,11 +6,16 @@
 namespace helpers {
 
 void renderTextBackground(
-  float textDepth, const glm::vec4& colorA, const glm::vec4& colorB, float extraSizeA, float extraSizeB) {
+  float textDepth,
+  const glm::vec4& colorA,
+  const glm::vec4& colorB,
+  float extraSizeA,
+  float extraSizeB)
+{
   auto& context = Context::get();
   auto& hud = context.graphic.hud;
   auto& textRenderer = hud.textRenderer;
-  auto& triangles = hud.stackRenderers.triangles;
+  auto& triangles = hud.stackRenderers.getTrianglesStack();
 
   const auto& outRectangles = textRenderer.getLatestTextRectangles();
 

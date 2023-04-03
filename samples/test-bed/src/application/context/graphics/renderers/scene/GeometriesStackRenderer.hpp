@@ -20,6 +20,7 @@ public:
     glm::quat orientation;
     glm::vec3 scale;
     glm::vec4 color;
+    float light;
   };
   using InstanceVertices = std::vector<GeometryInstance>;
 
