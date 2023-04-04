@@ -5,8 +5,9 @@
 
 #include "geronimo/system/asValue.hpp"
 
-void StackRenderers::initialize(ShadersAliases shaderId, GeometriesAliases trianglesGeomId, GeometriesAliases wireFramesGeomId)
-{
+void StackRenderers::initialize(ShadersAliases shaderId,
+                                GeometriesAliases trianglesGeomId,
+                                GeometriesAliases wireFramesGeomId) {
   auto& resourceManager = Context::get().graphic.resourceManager;
 
   _shader = resourceManager.getShader(gero::asValue(shaderId));
@@ -15,13 +16,11 @@ void StackRenderers::initialize(ShadersAliases shaderId, GeometriesAliases trian
   _wireFramesStackRenderer.initialize(*_shader, wireFramesGeomId);
 }
 
-void StackRenderers::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData)
-{
+void StackRenderers::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) {
   _matricesData = matricesData;
 }
 
-void StackRenderers::flush()
-{
+void StackRenderers::flush() {
   if (!_trianglesStackRenderer.canRender() && !_wireFramesStackRenderer.canRender())
     return;
 
@@ -35,8 +34,7 @@ void StackRenderers::flush()
   _wireFramesStackRenderer.flush();
 }
 
-void StackRenderers::safeMode(const std::function<void()>& callback)
-{
+void StackRenderers::safeMode(const std::function<void()>& callback) {
   if (!callback)
     return;
 
@@ -58,13 +56,6 @@ void StackRenderers::safeMode(const std::function<void()>& callback)
   _wireFramesStackRenderer.flush();
 }
 
-ITrianglesStackRenderer& StackRenderers::getTrianglesStack()
-{
-  return _trianglesStackRenderer;
-}
+ITrianglesStackRenderer& StackRenderers::getTrianglesStack() { return _trianglesStackRenderer; }
 
-IWireFramesStackRenderer& StackRenderers::getWireFramesStack()
-{
-  return _wireFramesStackRenderer;
-}
-
+IWireFramesStackRenderer& StackRenderers::getWireFramesStack() { return _wireFramesStackRenderer; }

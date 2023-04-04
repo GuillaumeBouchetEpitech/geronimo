@@ -7,10 +7,8 @@
 
 namespace widgets {
 
-  void renderPerformanceProfilerMetrics(
-    const glm::vec3& inPos,
-    const glm::vec2& inSize,
-    const std::string& inMetricsName
-  );
+void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
+                                      const glm::vec2& inSize,
+                                      const std::string& inMetricsName);
 
 };

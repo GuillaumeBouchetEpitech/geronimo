@@ -181,14 +181,9 @@ void Scene::_renderScene() {
 
       if (context.logic.debugMode) {
 
-        graphic.scene.stackRenderers.safeMode([&context]() {
-
-          context.physic.world->render();
-        });
-
+        graphic.scene.stackRenderers.safeMode([&context]() { context.physic.world->render(); });
       }
     }
-
   }
 
   gero::graphics::ShaderProgram::unbind();
@@ -350,14 +345,10 @@ void Scene::_renderHud() {
   {
     const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
 
-    const glm::vec2 k_size = glm::vec2(150,50);
+    const glm::vec2 k_size = glm::vec2(150, 50);
     const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 10, vSize.y - k_size.y - 10, 0);
 
-    widgets::renderPerformanceProfilerMetrics(
-      k_pos,
-      k_size,
-      "complete frame"
-    );
+    widgets::renderPerformanceProfilerMetrics(k_pos, k_size, "complete frame");
 
     graphic.hud.stackRenderers.flush();
     graphic.hud.textRenderer.render();

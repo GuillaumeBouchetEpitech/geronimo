@@ -4,8 +4,8 @@
 #include "application/context/Context.hpp"
 #include "application/context/graphics/renderers/hud/helpers/renderTextBackground.hpp"
 
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 namespace {
 
@@ -18,12 +18,9 @@ constexpr float k_textScale = 14.0f;
 
 namespace widgets {
 
-void
-renderPerformanceProfilerMetrics(
-  const glm::vec3& inPos,
-  const glm::vec2& inSize,
-  const std::string& inMetricsName
-) {
+void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
+                                      const glm::vec2& inSize,
+                                      const std::string& inMetricsName) {
 
   auto& context = Context::get();
 
@@ -33,8 +30,6 @@ renderPerformanceProfilerMetrics(
   if (it == timeDataMap.end())
     return;
   const auto& profileData = it->second;
-
-
 
   auto& graphic = context.graphic;
   auto& stackRenderers = graphic.hud.stackRenderers;
@@ -74,10 +69,9 @@ renderPerformanceProfilerMetrics(
       for (float currDivider = k_divider; currDivider < verticalSize; currDivider += k_divider) {
         const float ratio = currDivider / verticalSize;
 
-        stackRenderers.getWireFramesStack().pushLine(
-          borderPos + glm::vec3(0, borderSize.y * ratio, 0.0f),
-          borderPos + glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
-          whiteColor * 0.5f);
+        stackRenderers.getWireFramesStack().pushLine(borderPos + glm::vec3(0, borderSize.y * ratio, 0.0f),
+                                                     borderPos + glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
+                                                     whiteColor * 0.5f);
       }
     }
 
@@ -100,17 +94,15 @@ renderPerformanceProfilerMetrics(
       const float currHeight = borderSize.y * currDelta / verticalSize;
       const glm::vec3 currCoord = borderPos + glm::vec3(float(ii) * widthStep, currHeight, 0.0f);
 
-      stackRenderers.getWireFramesStack().pushLine(
-        prevCoord,
-        currCoord,
-        prevDelta < k_slowdownDelta ? whiteColor : redColor,
-        currDelta < k_slowdownDelta ? whiteColor : redColor);
+      stackRenderers.getWireFramesStack().pushLine(prevCoord,
+                                                   currCoord,
+                                                   prevDelta < k_slowdownDelta ? whiteColor : redColor,
+                                                   currDelta < k_slowdownDelta ? whiteColor : redColor);
 
       prevDelta = currDelta;
       prevHeight = currHeight;
       prevCoord = currCoord;
     }
-
   }
 
   {
@@ -142,14 +134,8 @@ renderPerformanceProfilerMetrics(
     textRenderer.pushText(inPos, str);
 
     helpers::renderTextBackground(
-      inPos.z,
-      glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-      glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-      3.0f,
-      6.0f
-    );
-
+      inPos.z, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.3f, 0.3f, 0.3f, 1.0f), 3.0f, 6.0f);
   }
 }
 
-}
+} // namespace widgets

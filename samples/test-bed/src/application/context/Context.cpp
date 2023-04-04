@@ -29,20 +29,17 @@ void Context::initialize(uint32_t width, uint32_t height) {
 
   initializeGraphicResources();
 
-  graphic.scene.stackRenderers.initialize(
-    ShadersAliases::stackRendererScene,
-    GeometriesAliases::stackRendererTrianglesScene,
-    GeometriesAliases::stackRendererWireFramesScene);
+  graphic.scene.stackRenderers.initialize(ShadersAliases::stackRendererScene,
+                                          GeometriesAliases::stackRendererTrianglesScene,
+                                          GeometriesAliases::stackRendererWireFramesScene);
 
   graphic.scene.geometriesStackRenderer.initialize();
 
   graphic.scene.deferred.initialize({width, height});
 
-
-  graphic.hud.stackRenderers.initialize(
-    ShadersAliases::stackRendererHud,
-    GeometriesAliases::stackRendererTrianglesHud,
-    GeometriesAliases::stackRendererWireFramesHud);
+  graphic.hud.stackRenderers.initialize(ShadersAliases::stackRendererHud,
+                                        GeometriesAliases::stackRendererTrianglesHud,
+                                        GeometriesAliases::stackRendererWireFramesHud);
 
   graphic.hud.textRenderer.initialize();
 

@@ -6,9 +6,7 @@
 #include "geronimo/system/asValue.hpp"
 #include "geronimo/system/math/constants.hpp"
 
-void
-WireFramesStackRenderer::initialize(
-  gero::graphics::ShaderProgram& shader, GeometriesAliases geometryId) {
+void WireFramesStackRenderer::initialize(gero::graphics::ShaderProgram& shader, GeometriesAliases geometryId) {
 
   auto& resourceManager = Context::get().graphic.resourceManager;
 
@@ -23,18 +21,14 @@ WireFramesStackRenderer::initialize(
 
 //
 
-void
-WireFramesStackRenderer::pushLine(
-  const glm::vec3& posA, const glm::vec3& posB, const glm::vec4& colorA,
-  const glm::vec4& colorB) {
-  if (_vertices.size() + 2 >= _vertices.capacity())
-  {
-    if (_safeMode)
-    {
+void WireFramesStackRenderer::pushLine(const glm::vec3& posA,
+                                       const glm::vec3& posB,
+                                       const glm::vec4& colorA,
+                                       const glm::vec4& colorB) {
+  if (_vertices.size() + 2 >= _vertices.capacity()) {
+    if (_safeMode) {
       flush();
-    }
-    else
-    {
+    } else {
       // D_THROW(std::runtime_error, "out of memory");
       return;
     }
@@ -44,48 +38,41 @@ WireFramesStackRenderer::pushLine(
   _vertices.emplace_back(posB, colorB);
 }
 
-void
-WireFramesStackRenderer::pushLine(
-  const glm::vec3& posA, const glm::vec3& posB, const glm::vec4& color) {
+void WireFramesStackRenderer::pushLine(const glm::vec3& posA, const glm::vec3& posB, const glm::vec4& color) {
 
   pushLine(posA, posB, color, color);
 }
 
-void
-WireFramesStackRenderer::pushLine(
-  const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& colorA,
-  const glm::vec3& colorB) {
+void WireFramesStackRenderer::pushLine(const glm::vec3& posA,
+                                       const glm::vec3& posB,
+                                       const glm::vec3& colorA,
+                                       const glm::vec3& colorB) {
   pushLine(posA, posB, glm::vec4(colorA, 1.0f), glm::vec4(colorB, 1.0f));
 }
 
-void
-WireFramesStackRenderer::pushLine(
-  const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
+void WireFramesStackRenderer::pushLine(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
   pushLine(posA, posB, glm::vec4(color, 1.0f));
 }
 
 //
 
-void
-WireFramesStackRenderer::pushCross(
-  const glm::vec3& pos, const glm::vec3& color, float halfExtent) {
+void WireFramesStackRenderer::pushCross(const glm::vec3& pos, const glm::vec3& color, float halfExtent) {
   if (halfExtent <= 0)
     return;
 
   std::array<std::array<glm::vec3, 2>, 3> vertices{
     {{{{pos.x - halfExtent, pos.y, pos.z}, {pos.x + halfExtent, pos.y, pos.z}}},
      {{{pos.x, pos.y - halfExtent, pos.z}, {pos.x, pos.y + halfExtent, pos.z}}},
-     {{{pos.x, pos.y, pos.z - halfExtent},
-       {pos.x, pos.y, pos.z + halfExtent}}}}};
+     {{{pos.x, pos.y, pos.z - halfExtent}, {pos.x, pos.y, pos.z + halfExtent}}}}};
 
   for (const auto& elem : vertices)
     pushLine(elem.at(0), elem.at(1), color);
 }
 
-void
-WireFramesStackRenderer::pushRectangle(
-  const glm::vec2& pos, const glm::vec2& size, const glm::vec3& color,
-  float depth /*= 0.0f*/) {
+void WireFramesStackRenderer::pushRectangle(const glm::vec2& pos,
+                                            const glm::vec2& size,
+                                            const glm::vec3& color,
+                                            float depth /*= 0.0f*/) {
   const glm::vec2 farPos = pos + size;
 
   std::array<glm::vec3, 4> vertices = {{
@@ -101,8 +88,7 @@ WireFramesStackRenderer::pushRectangle(
   WireFramesStackRenderer::pushLine(vertices.at(3), vertices.at(0), color);
 }
 
-void
-WireFramesStackRenderer::flush() {
+void WireFramesStackRenderer::flush() {
   if (!canRender())
     return;
 
@@ -113,18 +99,8 @@ WireFramesStackRenderer::flush() {
   _vertices.clear();
 }
 
-bool WireFramesStackRenderer::canRender() const
-{
-  return !_vertices.empty();
-}
+bool WireFramesStackRenderer::canRender() const { return !_vertices.empty(); }
 
-void WireFramesStackRenderer::startSafeMode()
-{
-  _safeMode = true;
-}
+void WireFramesStackRenderer::startSafeMode() { _safeMode = true; }
 
-void WireFramesStackRenderer::stopSafeMode()
-{
-  _safeMode = false;
-}
-
+void WireFramesStackRenderer::stopSafeMode() { _safeMode = false; }

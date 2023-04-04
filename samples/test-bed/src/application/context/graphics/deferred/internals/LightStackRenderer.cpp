@@ -1,12 +1,10 @@
 
 #include "LightStackRenderer.hpp"
 
-
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
 
 #include "geronimo/graphics/make-geometries/MakeGeometries.hpp"
-
 
 using namespace gero::graphics;
 using TexQuality = gero::graphics::Texture::Quality;
@@ -15,14 +13,9 @@ using DepthFormat = gero::graphics::Texture::DepthFormat;
 using DepthType = gero::graphics::Texture::DepthType;
 using namespace gero::graphics::GlContext;
 
-
-
-
-void PostProcessData::initialize(
-  const glm::ivec2& inFrameSize,
-  gero::graphics::ShaderProgram::Definition inShaderDef,
-  gero::graphics::GeometryBuilder& geometryBuilder
-) {
+void PostProcessData::initialize(const glm::ivec2& inFrameSize,
+                                 gero::graphics::ShaderProgram::Definition inShaderDef,
+                                 gero::graphics::GeometryBuilder& geometryBuilder) {
 
   resize(inFrameSize);
 
@@ -33,9 +26,7 @@ void PostProcessData::initialize(
   geometry.initialize(*shader, geometryBuilder.getDefinition());
 }
 
-
-void PostProcessData::resize(const glm::ivec2& inFrameSize)
-{
+void PostProcessData::resize(const glm::ivec2& inFrameSize) {
 
   // depthTexture.allocateDepth(inFrameSize, DepthFormat::depth32, DepthType::float32);
   depthTexture.allocateDepth(inFrameSize, DepthFormat::depth16, DepthType::unsignedShort);
@@ -44,30 +35,19 @@ void PostProcessData::resize(const glm::ivec2& inFrameSize)
   gero::graphics::FrameBuffer::Definition def;
   def.depthTexture = &depthTexture;
   frameBuffer.initialize(def);
-
 }
 
+LightStackRenderer::LightStackRenderer() {}
 
+LightStackRenderer::~LightStackRenderer() {}
 
-
-LightStackRenderer::LightStackRenderer()
-{}
-
-LightStackRenderer::~LightStackRenderer()
-{}
-
-
-
-void LightStackRenderer::initialize(const glm::ivec2& inFrameSize)
-{
+void LightStackRenderer::initialize(const glm::ivec2& inFrameSize) {
 
   _frameSize = inFrameSize;
 
-
   gero::graphics::GeometryBuilder geometryBuilder;
 
-  geometryBuilder
-    .reset()
+  geometryBuilder.reset()
     .setPrimitiveType(Geometry::PrimitiveType::triangles)
     .addVbo()
     .addVboAttribute("a_vertex_position", Geometry::AttrType::Vec3f)
@@ -75,20 +55,17 @@ void LightStackRenderer::initialize(const glm::ivec2& inFrameSize)
     .addVbo()
     .setVboAsInstanced()
     .addVboAttribute("a_offset_lightPosition", Geometry::AttrType::Vec3f)
-    .addVboAttribute("a_offset_lightRadius", Geometry::AttrType::Float)
-    ;
+    .addVboAttribute("a_offset_lightRadius", Geometry::AttrType::Float);
 
   //
   //
   //
-
 
   const std::string k_rootPath = "assets/graphics/shaders/deferred/lightStackRenderer/";
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
 
-  shaderProgramBuilder
-    .reset()
+  shaderProgramBuilder.reset()
     .setVertexFilename(k_rootPath + "lightStackRenderer.glsl.vert")
     .setFragmentFilename(k_rootPath + "lightStackRenderer-diffuse.glsl.frag")
     .addAttribute("a_vertex_position")
@@ -98,17 +75,11 @@ void LightStackRenderer::initialize(const glm::ivec2& inFrameSize)
     .addUniform("u_positionTexture")
     .addUniform("u_normalTexture")
     // .addUniform("u_depthTexture")
-    .addUniform("u_resolution")
-    ;
+    .addUniform("u_resolution");
 
-  _diffuse.initialize(
-    _frameSize,
-    shaderProgramBuilder.getDefinition(),
-    geometryBuilder
-  );
+  _diffuse.initialize(_frameSize, shaderProgramBuilder.getDefinition(), geometryBuilder);
 
-  shaderProgramBuilder
-    .reset()
+  shaderProgramBuilder.reset()
     .setVertexFilename(k_rootPath + "lightStackRenderer.glsl.vert")
     .setFragmentFilename(k_rootPath + "lightStackRenderer-specular.glsl.frag")
     .addAttribute("a_vertex_position")
@@ -120,14 +91,9 @@ void LightStackRenderer::initialize(const glm::ivec2& inFrameSize)
     .addUniform("u_normalTexture")
     .addUniform("u_diffuseCoefTexture")
     .addUniform("u_resolution")
-    .addUniform("u_viewPos")
-    ;
+    .addUniform("u_viewPos");
 
-  _specular.initialize(
-    _frameSize,
-    shaderProgramBuilder.getDefinition(),
-    geometryBuilder
-  );
+  _specular.initialize(_frameSize, shaderProgramBuilder.getDefinition(), geometryBuilder);
 
   // const vertices = generateSphereVertices(2, 1);
 
@@ -140,16 +106,10 @@ void LightStackRenderer::initialize(const glm::ivec2& inFrameSize)
   _specular.geometry.updateBuffer(0, vertices, false);
   _specular.geometry.setPrimitiveCount(uint32_t(vertices.size()));
 
-
-
-
   _vertices.reserve(1024);
-
 }
 
-
-void LightStackRenderer::resize(const glm::ivec2& inFrameSize)
-{
+void LightStackRenderer::resize(const glm::ivec2& inFrameSize) {
   if (_frameSize == inFrameSize)
     return;
 
@@ -162,29 +122,14 @@ void LightStackRenderer::resize(const glm::ivec2& inFrameSize)
   _specular.resize(_frameSize);
 }
 
-void LightStackRenderer::pushSpotLight(const glm::vec3& inPosition, float inRadius)
-{
-  _vertices.push_back({ inPosition, inRadius });
+void LightStackRenderer::pushSpotLight(const glm::vec3& inPosition, float inRadius) {
+  _vertices.push_back({inPosition, inRadius});
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-void LightStackRenderer::flush(
-  const glm::vec3& eyePos,
-  const glm::mat4& composedMatrix,
-  const gero::graphics::Texture& positionTexture,
-  const gero::graphics::Texture& normalTexture
-) {
+void LightStackRenderer::flush(const glm::vec3& eyePos,
+                               const glm::mat4& composedMatrix,
+                               const gero::graphics::Texture& positionTexture,
+                               const gero::graphics::Texture& normalTexture) {
 
   _diffuse.frameBuffer.bind();
 
@@ -196,23 +141,13 @@ void LightStackRenderer::flush(
 
   GlContext::clears(GlContext::Buffers::depth);
 
-  _flushDiffuse(
-    composedMatrix,
-    positionTexture,
-    normalTexture
-  );
+  _flushDiffuse(composedMatrix, positionTexture, normalTexture);
 
   _specular.frameBuffer.bind();
 
   GlContext::clears(GlContext::Buffers::depth);
 
-  _flushSpecular(
-    eyePos,
-    composedMatrix,
-    positionTexture,
-    normalTexture,
-    _diffuse.depthTexture
-  );
+  _flushSpecular(eyePos, composedMatrix, positionTexture, normalTexture, _diffuse.depthTexture);
 
   FrameBuffer::unbind();
 
@@ -227,29 +162,25 @@ void LightStackRenderer::flush(
   reset();
 }
 
-void LightStackRenderer::_flushDiffuse(
-  const glm::mat4& composedMatrix,
-  const gero::graphics::Texture& positionTexture,
-  const gero::graphics::Texture& normalTexture
-) {
+void LightStackRenderer::_flushDiffuse(const glm::mat4& composedMatrix,
+                                       const gero::graphics::Texture& positionTexture,
+                                       const gero::graphics::Texture& normalTexture) {
 
   _diffuse.shader->bind();
   _diffuse.shader->setUniform("u_composedMatrix", composedMatrix);
   _diffuse.shader->setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
 
-  struct TextureData
-  {
+  struct TextureData {
     std::string_view name;
     const gero::graphics::Texture& texture;
   };
 
   const std::array<TextureData, 2> allTextures = {{
-    { "u_positionTexture", positionTexture },
-    { "u_normalTexture", normalTexture },
+    {"u_positionTexture", positionTexture},
+    {"u_normalTexture", normalTexture},
   }};
 
-  for (std::size_t index = 0; index < allTextures.size(); ++index)
-  {
+  for (std::size_t index = 0; index < allTextures.size(); ++index) {
     const TextureData& currData = allTextures.at(index);
     GlContext::Texture::active(uint32_t(index));
     auto location = _diffuse.shader->getUniform(currData.name.data());
@@ -262,33 +193,29 @@ void LightStackRenderer::_flushDiffuse(
   _diffuse.geometry.render();
 }
 
-void LightStackRenderer::_flushSpecular(
-  const glm::vec3& eyePos,
-  const glm::mat4& composedMatrix,
-  const gero::graphics::Texture& positionTexture,
-  const gero::graphics::Texture& normalTexture,
-  const gero::graphics::Texture& diffuseCoefTexture
-) {
+void LightStackRenderer::_flushSpecular(const glm::vec3& eyePos,
+                                        const glm::mat4& composedMatrix,
+                                        const gero::graphics::Texture& positionTexture,
+                                        const gero::graphics::Texture& normalTexture,
+                                        const gero::graphics::Texture& diffuseCoefTexture) {
 
   _specular.shader->bind();
   _specular.shader->setUniform("u_composedMatrix", composedMatrix);
   _specular.shader->setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
   _specular.shader->setUniform("u_viewPos", eyePos.x, eyePos.y, eyePos.z);
 
-  struct TextureData
-  {
+  struct TextureData {
     std::string_view name;
     const gero::graphics::Texture& texture;
   };
 
   const std::array<TextureData, 3> allTextures = {{
-    { "u_positionTexture", positionTexture },
-    { "u_normalTexture", normalTexture },
-    { "u_diffuseCoefTexture", diffuseCoefTexture },
+    {"u_positionTexture", positionTexture},
+    {"u_normalTexture", normalTexture},
+    {"u_diffuseCoefTexture", diffuseCoefTexture},
   }};
 
-  for (std::size_t index = 0; index < allTextures.size(); ++index)
-  {
+  for (std::size_t index = 0; index < allTextures.size(); ++index) {
     GlContext::Texture::active(uint32_t(index));
     auto location = _specular.shader->getUniform(allTextures.at(index).name.data());
     _specular.shader->setUniform(location, int32_t(index));
@@ -300,31 +227,8 @@ void LightStackRenderer::_flushSpecular(
   _specular.geometry.render();
 }
 
-void LightStackRenderer::reset()
-{
-  _vertices.clear();
-}
+void LightStackRenderer::reset() { _vertices.clear(); }
 
-const gero::graphics::Texture& LightStackRenderer::getDiffuseCoefTexture()
-{
-  return _diffuse.depthTexture;
-}
+const gero::graphics::Texture& LightStackRenderer::getDiffuseCoefTexture() { return _diffuse.depthTexture; }
 
-const gero::graphics::Texture& LightStackRenderer::getSpecularCoefTexture()
-{
-  return _specular.depthTexture;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const gero::graphics::Texture& LightStackRenderer::getSpecularCoefTexture() { return _specular.depthTexture; }

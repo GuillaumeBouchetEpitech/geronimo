@@ -10,15 +10,11 @@ using DepthFormat = gero::graphics::Texture::DepthFormat;
 using DepthType = gero::graphics::Texture::DepthType;
 using namespace gero::graphics::GlContext;
 
-
-
-void ScreenRecorder::resize(const glm::ivec2& inFrameSize)
-{
+void ScreenRecorder::resize(const glm::ivec2& inFrameSize) {
   if (_frameSize == inFrameSize)
     return;
 
   _frameSize = inFrameSize;
-
 
   _colorTexture.allocateBlank(_frameSize, TexQuality::pixelated, TexPattern::clamped);
   _positionTexture.allocateFloatBlank(_frameSize, TexQuality::pixelated, TexPattern::clamped);
@@ -33,11 +29,9 @@ void ScreenRecorder::resize(const glm::ivec2& inFrameSize)
   def.colorTextures.push_back({2, &_normalTexture});
   def.depthTexture = &_depthTexture;
   _frameBufferGeometries.initialize(def);
-
 }
 
-void ScreenRecorder::startRecording()
-{
+void ScreenRecorder::startRecording() {
   _frameBufferGeometries.bind();
 
   GlContext::clearColor(0.5f, 0.5f, 0.9f, 1.0f);
@@ -45,27 +39,12 @@ void ScreenRecorder::startRecording()
   GlContext::clears(Buffers::color, Buffers::depth);
 }
 
-void ScreenRecorder::stopRecording()
-{
-  FrameBuffer::unbind();
-}
+void ScreenRecorder::stopRecording() { FrameBuffer::unbind(); }
 
-const gero::graphics::Texture& ScreenRecorder::getColorTexture() const
-{
-  return _colorTexture;
-}
+const gero::graphics::Texture& ScreenRecorder::getColorTexture() const { return _colorTexture; }
 
-const gero::graphics::Texture& ScreenRecorder::getPositionTexture() const
-{
-  return _positionTexture;
-}
+const gero::graphics::Texture& ScreenRecorder::getPositionTexture() const { return _positionTexture; }
 
-const gero::graphics::Texture& ScreenRecorder::getNormalTexture() const
-{
-  return _normalTexture;
-}
+const gero::graphics::Texture& ScreenRecorder::getNormalTexture() const { return _normalTexture; }
 
-const gero::graphics::Texture& ScreenRecorder::getDepthTexture() const
-{
-  return _depthTexture;
-}
+const gero::graphics::Texture& ScreenRecorder::getDepthTexture() const { return _depthTexture; }

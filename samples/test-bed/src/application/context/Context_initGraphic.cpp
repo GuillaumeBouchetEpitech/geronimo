@@ -73,7 +73,8 @@ void initializeHudStructures(gero::graphics::ResourceManager& rManager) {
       .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
       .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Float);
 
-    rManager.createGeometryDefinition(gero::asValue(GeometriesAliases::textRenderer), geometryBuilder.getDefinition(), true);
+    rManager.createGeometryDefinition(
+      gero::asValue(GeometriesAliases::textRenderer), geometryBuilder.getDefinition(), true);
   }
 }
 
@@ -118,8 +119,7 @@ void initializeSceneStructures(gero::graphics::ResourceManager& rManager) {
       .addVboAttribute("a_offsetOrientation", gero::graphics::Geometry::AttrType::Vec4f)
       .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Vec3f)
       .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
-      .addVboAttribute("a_offsetLight", gero::graphics::Geometry::AttrType::Float)
-      ;
+      .addVboAttribute("a_offsetLight", gero::graphics::Geometry::AttrType::Float);
 
     rManager.createGeometryDefinition(
       gero::asValue(GeometriesAliases::geometriesStackRenderer), geometryBuilder.getDefinition(), true);

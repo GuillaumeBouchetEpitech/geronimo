@@ -8,8 +8,7 @@
 
 #include <functional>
 
-class StackRenderers
-{
+class StackRenderers {
 public:
   StackRenderers() = default;
   ~StackRenderers() = default;
@@ -29,12 +28,10 @@ public:
   IWireFramesStackRenderer& getWireFramesStack();
 
 private:
-
   std::shared_ptr<gero::graphics::ShaderProgram> _shader;
 
   gero::graphics::Camera::MatricesData _matricesData;
 
   TrianglesStackRenderer _trianglesStackRenderer;
   WireFramesStackRenderer _wireFramesStackRenderer;
-
 };
