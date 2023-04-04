@@ -16,15 +16,17 @@
 
 namespace {
 
-#if defined D_NATIVE_PTHREAD_BUILD
+#if defined D_NATIVE_BUILD
 constexpr bool k_canResize = true;
+constexpr uint32_t k_frameRate = 120;
 #else
 constexpr bool k_canResize = false;
+constexpr uint32_t k_frameRate = 0;
 #endif
 } // namespace
 
 Application::Application(const Definition& def)
-  : SDLWindowWrapper("Test Bed", def.width, def.height, 120, OpenGlEsVersion::v3, k_canResize) {
+  : SDLWindowWrapper("Test Bed", def.width, def.height, k_frameRate, OpenGlEsVersion::v3, k_canResize) {
 
   KeyboardManager::create();
   MouseManager::create();
