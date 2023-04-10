@@ -5,12 +5,6 @@
 
 #include "graphics/renderers/scene/GeometriesStackRenderer.hpp"
 
-// #include "graphics/deferred/Deferred.hpp"
-// #include "graphics/clusteredDeferred/ClusteredDeferred.hpp"
-// #include "_test/clusteredDeferred/ClusteredDeferred.hpp"
-
-#include "graphics/renderers/hud/TextRenderer.hpp"
-
 #include "logic/HeightField.hpp"
 #include "logic/controllers/FreeFlyCameraController.hpp"
 
@@ -28,6 +22,7 @@
 #include "geronimo/system/metrics/PerformanceProfiler.hpp"
 
 #include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
+#include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
 
 #include "application/states/StateManager.hpp"
 

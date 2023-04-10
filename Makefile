@@ -101,6 +101,7 @@ SRC_GERONIMO_GRAPHICS+=	\
 		$(DIR_SRC)/geronimo/graphics/wrappers/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/internals/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/advanced-concept/textRenderer/*.cpp \
 		)
 
 SRC_GERONIMO_PHYSICS+=	\

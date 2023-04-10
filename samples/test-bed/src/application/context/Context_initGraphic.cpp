@@ -43,39 +43,6 @@ void initializeHudStructures(gero::graphics::ResourceManager& rManager) {
     rManager.createGeometryDefinition(
       gero::asValue(GeometriesAliases::stackRendererTrianglesHud), geometryBuilder.getDefinition(), true);
   }
-
-  {
-    shaderProgramBuilder.reset()
-      .setVertexFilename(basePath + "textRenderer.glsl.vert")
-      .setFragmentFilename(basePath + "textRenderer.glsl.frag")
-      .addAttribute("a_position")
-      .addAttribute("a_texCoord")
-      .addAttribute("a_offsetPosition")
-      .addAttribute("a_offsetTexCoord")
-      .addAttribute("a_offsetColor")
-      .addAttribute("a_offsetScale")
-      .addUniform("u_composedMatrix")
-      .addUniform("u_texture");
-
-    auto shader =
-      rManager.createShader(gero::asValue(ShadersAliases::textRenderer), shaderProgramBuilder.getDefinition());
-
-    geometryBuilder.reset()
-      .setShader(*shader)
-      .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles)
-      .addVbo()
-      .addVboAttribute("a_position", gero::graphics::Geometry::AttrType::Vec2f)
-      .addVboAttribute("a_texCoord", gero::graphics::Geometry::AttrType::Vec2f)
-      .addVbo()
-      .setVboAsInstanced()
-      .addVboAttribute("a_offsetPosition", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVboAttribute("a_offsetTexCoord", gero::graphics::Geometry::AttrType::Vec2f)
-      .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
-      .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Float);
-
-    rManager.createGeometryDefinition(
-      gero::asValue(GeometriesAliases::textRenderer), geometryBuilder.getDefinition(), true);
-  }
 }
 
 void initializeSceneStructures(gero::graphics::ResourceManager& rManager) {
@@ -180,13 +147,4 @@ void Context::initializeGraphicResources() {
   initializeHudStructures(rManager);
   initializeSceneStructures(rManager);
 
-  {
-
-    const std::string basePath = "./assets/graphics/textures/";
-
-    rManager.createTexture(gero::asValue(TextureIds::asciiFont),
-                           basePath + "ascii_font.png",
-                           gero::graphics::Texture::Quality::pixelated,
-                           gero::graphics::Texture::Pattern::clamped);
-  }
 }

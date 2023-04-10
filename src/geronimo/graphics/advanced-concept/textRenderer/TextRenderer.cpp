@@ -1,11 +1,12 @@
 
 #include "TextRenderer.hpp"
 
-#include "application/context/Context.hpp"
-#include "application/context/graphics/graphicsAliases.hpp"
-
+#include "geronimo/graphics/ShaderProgramBuilder.hpp"
+#include "geronimo/graphics/GeometryBuilder.hpp"
+#include "geronimo/graphics/Image.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/asValue.hpp"
+#include "geronimo/system/parser-utils/string_view_regexp.hpp"
 
 namespace {
 
@@ -15,44 +16,35 @@ const glm::vec2 k_letterScale = {k_letterAspectRatio, 1.0f};
 
 } // namespace
 
-namespace string_view_regexp {
-
-using match = std::match_results<std::string_view::const_iterator>;
-using sub_match = std::sub_match<std::string_view::const_iterator>;
-
-inline std::string_view get_string_view(const sub_match& m) {
-  return std::string_view(m.first, std::size_t(m.length()));
-}
-
-inline bool regex_match(std::string_view sv,
-                        match& m,
-                        const std::regex& e,
-                        std::regex_constants::match_flag_type flags = std::regex_constants::match_default) {
-  return std::regex_match(sv.begin(), sv.end(), m, e, flags);
-}
-
-inline bool regex_match(std::string_view sv,
-                        const std::regex& e,
-                        std::regex_constants::match_flag_type flags = std::regex_constants::match_default) {
-  return std::regex_match(sv.begin(), sv.end(), e, flags);
-}
-
-inline bool regex_search(std::string_view sv, match& m, std::regex& r) {
-  return std::regex_search(sv.begin(), sv.end(), m, r);
-}
-
-} // namespace string_view_regexp
-
-void TextRenderer::initialize() {
+void TextRenderer::initialize(const std::string& inRootPath) {
 
   _logic.allLinesWidth.reserve(64);
   _logic.latestMessageRectangles.reserve(64);
 
-  auto& resourceManager = Context::get().graphic.resourceManager;
+  std::string currSrcFolder = __FILE__;
+  currSrcFolder = currSrcFolder.substr(0, currSrcFolder.rfind("src/") + 4);
+  const std::string k_rootPath = inRootPath + "/geronimo/graphics/advanced-concept/textRenderer/assets/";
 
-  _graphic.shader = resourceManager.getShader(gero::asValue(ShadersAliases::textRenderer));
+  gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
+  shaderProgramBuilder.reset()
+    .setVertexFilename(k_rootPath + "shaders/textRenderer.glsl.vert")
+    .setFragmentFilename(k_rootPath + "shaders/textRenderer.glsl.frag")
+    .addAttribute("a_position")
+    .addAttribute("a_texCoord")
+    .addAttribute("a_offsetPosition")
+    .addAttribute("a_offsetTexCoord")
+    .addAttribute("a_offsetColor")
+    .addAttribute("a_offsetScale")
+    .addUniform("u_composedMatrix")
+    .addUniform("u_texture");
 
-  _graphic.texture = resourceManager.getTexture(0);
+  _graphic.shader = std::make_shared<gero::graphics::ShaderProgram>(shaderProgramBuilder.getDefinition());
+
+  gero::graphics::Image tmpImg;
+  tmpImg.loadFromFile(k_rootPath + "textures/ascii_font.png");
+
+  _graphic.texture = std::make_shared<gero::graphics::Texture>();
+  _graphic.texture->setFromImage(tmpImg, gero::graphics::Texture::Quality::pixelated, gero::graphics::Texture::Pattern::clamped);
 
   const glm::vec2 textureSize = glm::vec2(_graphic.texture->getSize());
 
@@ -84,8 +76,22 @@ void TextRenderer::initialize() {
     for (std::size_t index : indices)
       letterVertices.push_back(vertices.at(index));
 
-    auto geoDef = resourceManager.getGeometryDefinition(gero::asValue(GeometriesAliases::textRenderer));
-    _graphic.geometry.initialize(*_graphic.shader, geoDef);
+    gero::graphics::GeometryBuilder geometryBuilder;
+    geometryBuilder.reset()
+      .setShader(*_graphic.shader)
+      .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles)
+      .addVbo()
+      .addVboAttribute("a_position", gero::graphics::Geometry::AttrType::Vec2f)
+      .addVboAttribute("a_texCoord", gero::graphics::Geometry::AttrType::Vec2f)
+      .addVbo()
+      .setVboAsInstanced()
+      .addVboAttribute("a_offsetPosition", gero::graphics::Geometry::AttrType::Vec3f)
+      .addVboAttribute("a_offsetTexCoord", gero::graphics::Geometry::AttrType::Vec2f)
+      .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
+      .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Float)
+      ;
+
+    _graphic.geometry.initialize(*_graphic.shader, geometryBuilder.getDefinition());
     _graphic.geometry.updateBuffer(0, letterVertices);
     _graphic.geometry.setPrimitiveCount(uint32_t(letterVertices.size()));
   }
@@ -214,8 +220,8 @@ void TextRenderer::_pushText(const glm::vec2& inPosition,
 
         std::string_view subStr = &inMessage.at(index);
 
-        string_view_regexp::match match;
-        if (string_view_regexp::regex_search(subStr.data(), match, _logic.stateRegexp)) {
+        gero::parserUtils::string_view_regexp::match match;
+        if (gero::parserUtils::string_view_regexp::regex_search(subStr.data(), match, _logic.stateRegexp)) {
           index += std::size_t(match.length(0));
           continue;
         }
@@ -260,11 +266,11 @@ void TextRenderer::_pushText(const glm::vec2& inPosition,
 
       std::string_view subStr = &inMessage.at(index);
 
-      string_view_regexp::match match;
-      if (string_view_regexp::regex_search(subStr.data(), match, _logic.stateRegexp)) {
+      gero::parserUtils::string_view_regexp::match match;
+      if (gero::parserUtils::string_view_regexp::regex_search(subStr.data(), match, _logic.stateRegexp)) {
 
-        const string_view_regexp::sub_match sub_match = match[1];
-        const std::string_view value = string_view_regexp::get_string_view(sub_match);
+        const gero::parserUtils::string_view_regexp::sub_match sub_match = match[1];
+        const std::string_view value = gero::parserUtils::string_view_regexp::get_string_view(sub_match);
 
         const int32_t intVal = std::atoi(value.data());
 
