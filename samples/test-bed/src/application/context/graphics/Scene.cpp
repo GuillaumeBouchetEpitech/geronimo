@@ -48,7 +48,7 @@ void Scene::renderAll() {
     context.graphic.scene.deferred.stopRecording();
 
     context.graphic.scene.deferred.setEyePosition(context.graphic.camera.scene.getEye());
-    context.graphic.scene.deferred.applySpotLights(context.graphic.camera.scene.getMatricesData().composed);
+    context.graphic.scene.deferred.applySpotLights(context.graphic.camera.scene);
 
     performanceProfiler.stop("render scene");
   }
@@ -149,6 +149,8 @@ void Scene::_renderScene() {
         return 0.0f;
       };
 
+      auto& frustumCulling = context.graphic.camera.scene.getFrustumCulling();
+
       for (int xx = -2; xx <= 1; ++xx)
         for (int yy = -2; yy <= 2; ++yy) {
 
@@ -157,9 +159,14 @@ void Scene::_renderScene() {
 
           glm::vec3 lightPos = {xx * 10, yy * 10, 7};
           lightPos += dir * 10.0f;
-          lightPos.z = getGroundPos(lightPos) + 7;
+          lightPos.z = getGroundPos(lightPos) + 2;
 
-          context.graphic.scene.deferred.pushSpotLight(lightPos, 15);
+
+          if (!frustumCulling.sphereInFrustum(lightPos, 5))
+            continue;
+
+
+          context.graphic.scene.deferred.pushSpotLight(lightPos, 5);
 
           {
             const float radius = 0.5f;
@@ -175,6 +182,10 @@ void Scene::_renderScene() {
           }
 
           // wireFrames.pushCross(lightPos, glm::vec3(1,1,1), 1.0f);
+
+          // xx = 100; // TODO: debug
+          // yy = 100; // TODO: debug
+          // break; // TODO: debug
         }
 
       stackRenderers.flush();
@@ -203,9 +214,10 @@ void Scene::_renderHud() {
   graphic.hud.stackRenderers.setMatricesData(matricesData);
   graphic.hud.textRenderer.setMatricesData(matricesData);
 
-  context.graphic.scene.deferred.setAmbiantLightCoef(0.2f);
+  context.graphic.scene.deferred.setAmbiantLightCoef(0.1f);
   context.graphic.scene.deferred.setSunLightDirection(glm::vec3(-1.0f, -1.0f, -2.0f));
-  context.graphic.scene.deferred.renderHudQuad(matricesData.composed);
+  // context.graphic.scene.deferred.renderHudQuad(matricesData.composed);
+  context.graphic.scene.deferred.renderHudQuad(camera.scene, camera.hud);
 
   GlContext::clears(Buffers::depth);
 

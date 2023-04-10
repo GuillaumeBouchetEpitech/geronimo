@@ -5,7 +5,9 @@
 
 #include "graphics/renderers/scene/GeometriesStackRenderer.hpp"
 
-#include "graphics/deferred/Deferred.hpp"
+// #include "graphics/deferred/Deferred.hpp"
+// #include "graphics/clusteredDeferred/ClusteredDeferred.hpp"
+// #include "_test/clusteredDeferred/ClusteredDeferred.hpp"
 
 #include "graphics/renderers/hud/TextRenderer.hpp"
 
@@ -24,6 +26,8 @@
 #include "geronimo/physics/PhysicWorld.hpp"
 #include "geronimo/system/NonCopyable.hpp"
 #include "geronimo/system/metrics/PerformanceProfiler.hpp"
+
+#include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
 
 #include "application/states/StateManager.hpp"
 
@@ -104,7 +108,8 @@ public:
 
       GeometriesStackRenderer geometriesStackRenderer;
 
-      Deferred deferred;
+      // Deferred deferred;
+      ClusteredDeferred deferred;
 
     } scene;
 

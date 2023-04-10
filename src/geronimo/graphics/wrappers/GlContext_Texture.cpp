@@ -34,7 +34,11 @@ void active(uint32_t index) { glCheck(glActiveTexture(GL_TEXTURE0 + index)); }
 
 void bind(uint32_t textureId) { glCheck(glBindTexture(GL_TEXTURE_2D, textureId)); }
 
-void uploadPixels(uint32_t width, uint32_t height, const void* pixels) {
+//
+//
+//
+
+void allocateRgbaUBytesPixels(uint32_t width, uint32_t height, const void* pixels) {
   GLint level = 0;
   GLint border = 0;
   GLenum format = GL_RGBA;
@@ -44,17 +48,20 @@ void uploadPixels(uint32_t width, uint32_t height, const void* pixels) {
     glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
 }
 
-void uploadUIntPixels(uint32_t width, uint32_t height, const void* pixels) {
+void updateRgbaUBytesPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels) {
   GLint level = 0;
-  GLint border = 0;
+  // GLint border = 0;
   GLenum format = GL_RGBA;
-  GLint internalFormat = GL_RGBA8UI;
+  // GLint internalFormat = GL_RGBA;
   GLenum type = GL_UNSIGNED_BYTE;
-  glCheck(
-    glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
+  glCheck(glTexSubImage2D(GL_TEXTURE_2D, level, GLint(origin.x), GLint(origin.y), GLsizei(size.x), GLsizei(size.y), format, type, pixels));
 }
 
-void uploadFloatPixels(uint32_t width, uint32_t height, const void* pixels) {
+//
+//
+//
+
+void allocateRgbaFloatPixels(uint32_t width, uint32_t height, const void* pixels) {
   GLint level = 0;
   GLint border = 0;
   GLenum format = GL_RGBA;
@@ -64,7 +71,20 @@ void uploadFloatPixels(uint32_t width, uint32_t height, const void* pixels) {
     glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
 }
 
-void uploadSingleFloatPixels(uint32_t width, uint32_t height, const void* pixels) {
+void updateRgbaFloatPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels) {
+  GLint level = 0;
+  // GLint border = 0;
+  GLenum format = GL_RGBA;
+  // GLint internalFormat = GL_RGBA32F;
+  GLenum type = GL_FLOAT;
+  glCheck(glTexSubImage2D(GL_TEXTURE_2D, level, GLint(origin.x), GLint(origin.y), GLsizei(size.x), GLsizei(size.y), format, type, pixels));
+}
+
+//
+//
+//
+
+void allocateSingleFloatPixels(uint32_t width, uint32_t height, const void* pixels) {
   GLint level = 0;
   GLint border = 0;
   GLenum format = GL_RED;
@@ -73,6 +93,65 @@ void uploadSingleFloatPixels(uint32_t width, uint32_t height, const void* pixels
   glCheck(
     glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
 }
+
+void updateSingleFloatPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels) {
+  GLint level = 0;
+  // GLint border = 0;
+  GLenum format = GL_RED;
+  // GLint internalFormat = GL_R32F;
+  GLenum type = GL_FLOAT;
+  glCheck(glTexSubImage2D(GL_TEXTURE_2D, level, GLint(origin.x), GLint(origin.y), GLsizei(size.x), GLsizei(size.y), format, type, pixels));
+}
+
+//
+//
+//
+
+void allocateSingleShortPixels(uint32_t width, uint32_t height, const void* pixels) {
+  GLint level = 0;
+  GLint border = 0;
+  GLenum format = GL_RED_INTEGER;
+  GLint internalFormat = GL_R16I;
+  GLenum type = GL_SHORT;
+  glCheck(
+    glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
+}
+
+void updateSingleShortPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels) {
+  GLint level = 0;
+  // GLint border = 0;
+  GLenum format = GL_RED_INTEGER;
+  // GLint internalFormat = GL_R16I;
+  GLenum type = GL_SHORT;
+  glCheck(glTexSubImage2D(GL_TEXTURE_2D, level, GLint(origin.x), GLint(origin.y), GLsizei(size.x), GLsizei(size.y), format, type, pixels));
+}
+
+//
+//
+//
+
+void allocateSingleInt32Pixels(uint32_t width, uint32_t height, const void* pixels) {
+  GLint level = 0;
+  GLint border = 0;
+  GLenum format = GL_RED_INTEGER;
+  GLint internalFormat = GL_R16I;
+  GLenum type = GL_INT;
+  glCheck(
+    glTexImage2D(GL_TEXTURE_2D, level, internalFormat, GLsizei(width), GLsizei(height), border, format, type, pixels));
+}
+
+void updateSingleInt32Pixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels) {
+  GLint level = 0;
+  // GLint border = 0;
+  GLenum format = GL_RED_INTEGER;
+  // GLint internalFormat = GL_R16I;
+  GLenum type = GL_INT;
+  glCheck(glTexSubImage2D(GL_TEXTURE_2D, level, GLint(origin.x), GLint(origin.y), GLsizei(size.x), GLsizei(size.y), format, type, pixels));
+}
+
+//
+//
+//
 
 namespace {
 int32_t getRawDepthFormat(DepthFormat depthFormat) {

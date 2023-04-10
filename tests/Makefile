@@ -32,6 +32,7 @@ SRC+= \
 SRC+= \
 	$(wildcard \
 		$(DIR_SRC)/graphic/frustum_culling/*.cpp \
+		$(DIR_SRC)/graphic/perspective_clustering/*.cpp \
 	)
 
 SRC+= \

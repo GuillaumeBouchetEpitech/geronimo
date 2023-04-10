@@ -80,7 +80,7 @@ void RenderBuffer::ensureCompatibleDepth() {
   FrameBuffer tmpFrameBuffer;
   const glm::uvec2 tmpSize = {10, 10};
 
-  tmpColorTexture.allocateBlank(tmpSize);
+  tmpColorTexture.allocateBlankRgbaUBytes(tmpSize);
 
   for (auto& currConfig : allConfig) {
     tmpRenderBuffer.allocateDepth(tmpSize, currConfig.format);

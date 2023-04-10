@@ -35,7 +35,15 @@ void Context::initialize(uint32_t width, uint32_t height) {
 
   graphic.scene.geometriesStackRenderer.initialize();
 
-  graphic.scene.deferred.initialize({width, height});
+  {
+    gero::graphics::PerspectiveClustering::Def clusterDef;
+    clusterDef.clusterSliceX = 15U;
+    clusterDef.clusterSliceY = 15U;
+    clusterDef.clusterSliceZ = 15U;
+    clusterDef.maxLightsPerCluster = 10U;
+
+    graphic.scene.deferred.initialize("../../src", clusterDef, {width, height});
+  }
 
   graphic.hud.stackRenderers.initialize(ShadersAliases::stackRendererHud,
                                         GeometriesAliases::stackRendererTrianglesHud,

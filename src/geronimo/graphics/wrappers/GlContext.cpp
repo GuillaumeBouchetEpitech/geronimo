@@ -9,6 +9,10 @@
 
 #include <memory>
 
+namespace {
+  int32_t s_maxTextureSize = -1;
+}
+
 namespace gero {
 namespace graphics {
 
@@ -237,9 +241,9 @@ void clearDepth(float value) { glCheck(glClearDepthf(value)); }
 // }
 
 int32_t getMaxTextureSize() {
-  int32_t maxTextureSize = 0;
-  glCheck(glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize));
-  return maxTextureSize;
+  if (s_maxTextureSize < 0)
+    glCheck(glGetIntegerv(GL_MAX_TEXTURE_SIZE, &s_maxTextureSize));
+  return s_maxTextureSize;
 }
 
 } // namespace GlContext

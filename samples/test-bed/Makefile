@@ -111,8 +111,6 @@ SRC+= \
 		$(DIR_SRC)/application/*.cpp \
 		$(DIR_SRC)/application/context/*.cpp \
 		$(DIR_SRC)/application/context/graphics/*.cpp \
-		$(DIR_SRC)/application/context/graphics/deferred/*.cpp \
-		$(DIR_SRC)/application/context/graphics/deferred/internals/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/common/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/common/internals/*.cpp \
@@ -126,6 +124,7 @@ SRC+= \
 		$(DIR_SRC)/application/context/logic/inputManagers/*.cpp \
 		$(DIR_SRC)/application/states/*.cpp \
 	)
+
 
 #
 
@@ -193,6 +192,11 @@ LDFLAGS+= -s USE_WEBGL2=1
 LDFLAGS+= -s FULL_ES3=1
 LDFLAGS+=	-s WASM=1
 LDFLAGS+=	--preload-file ./assets/
+
+
+LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
+
+
 LDFLAGS+=	-s TOTAL_MEMORY=128Mb
 LDFLAGS+= -s EXPORTED_RUNTIME_METHODS=cwrap
 

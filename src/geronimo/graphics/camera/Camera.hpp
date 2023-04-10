@@ -38,6 +38,11 @@ public:
     float far;
   };
 
+  union ProjectionData {
+    Perspective perspective;
+    Orthographic orthographic;
+  };
+
 public:
   Camera() = default;
   ~Camera() = default;
@@ -63,6 +68,7 @@ public:
   void setPerspective(float fovy, float near, float far);
   void setOrthographic(float left, float right, float bottom, float top, float near, float far);
   ProjectionType getProjectionType() const;
+  const ProjectionData& getProjectionData() const;
 
 public:
   const MatricesData& getMatricesData() const;
@@ -81,11 +87,7 @@ private:
   MatricesData _matricesData;
 
   ProjectionType _projectionType;
-
-  union ProjectionData {
-    Perspective perspective;
-    Orthographic orthographic;
-  } _projectionData;
+  ProjectionData _projectionData;
 
   FrustumCulling _frustumCulling;
 };

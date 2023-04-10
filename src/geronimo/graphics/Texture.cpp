@@ -21,14 +21,18 @@ void Texture::setFromImage(const Image& image,
                            Quality quality /*= Quality::pixelated*/,
                            Pattern pattern /*= Pattern::clamped*/,
                            uint32_t packingInBytes /*= 4*/) {
-  allocateBlank(image.getSize(), quality, pattern, image.getPixels(), packingInBytes);
+  allocateBlankRgbaUBytes(image.getSize(), quality, pattern, image.getPixels(), packingInBytes);
 }
 
-void Texture::allocateBlank(const glm::uvec2& size,
-                            Quality quality /*= Quality::pixelated*/,
-                            Pattern pattern /*= Pattern::clamped*/,
-                            const void* pixels /*= nullptr*/,
-                            uint32_t packingInBytes /*= 4*/) {
+//
+//
+//
+
+void Texture::allocateBlankRgbaUBytes(const glm::uvec2& size,
+                                      Quality quality /*= Quality::pixelated*/,
+                                      Pattern pattern /*= Pattern::clamped*/,
+                                      const void* pixels /*= nullptr*/,
+                                      uint32_t packingInBytes /*= 4*/) {
   if (size.x == 0 || size.y == 0)
     D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
 
@@ -45,7 +49,7 @@ void Texture::allocateBlank(const glm::uvec2& size,
 
   GlContext::Texture::setPixelUnpackAlignment(packingInBytes);
 
-  GlContext::Texture::uploadPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
+  GlContext::Texture::allocateRgbaUBytesPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
 
   GlContext::Texture::setTextureAsRepeat(pattern == Pattern::repeat);
 
@@ -58,10 +62,26 @@ void Texture::allocateBlank(const glm::uvec2& size,
   GlContext::Texture::bind(0);
 }
 
-void Texture::allocateFloatBlank(const glm::uvec2& size,
-                                 Quality quality /*= Quality::pixelated*/,
-                                 Pattern pattern /*= Pattern::clamped*/,
-                                 const void* pixels /*= nullptr*/) {
+void Texture::updateRgbaUBytes(const glm::uvec2& origin,
+                               const glm::uvec2& size,
+                               const void* pixels /*= nullptr*/)
+{
+  if (_textureId == 0)
+    D_THROW(std::runtime_error, "not allocated");
+
+  GlContext::Texture::bind(_textureId);
+  GlContext::Texture::updateRgbaUBytesPixels(origin, size, pixels);
+  GlContext::Texture::bind(0);
+}
+
+//
+//
+//
+
+void Texture::allocateBlankRgbaFloat(const glm::uvec2& size,
+                                     Quality quality /*= Quality::pixelated*/,
+                                     Pattern pattern /*= Pattern::clamped*/,
+                                     const void* pixels /*= nullptr*/) {
   if (size.x == 0 || size.y == 0)
     D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
 
@@ -76,7 +96,7 @@ void Texture::allocateFloatBlank(const glm::uvec2& size,
 
   GlContext::Texture::bind(_textureId);
 
-  GlContext::Texture::uploadFloatPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
+  GlContext::Texture::allocateRgbaFloatPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
 
   GlContext::Texture::setTextureAsRepeat(pattern == Pattern::repeat);
 
@@ -89,7 +109,23 @@ void Texture::allocateFloatBlank(const glm::uvec2& size,
   GlContext::Texture::bind(0);
 }
 
-void Texture::allocateSingleFloat(const glm::uvec2& size, const void* pixels /*= nullptr*/) {
+void Texture::updateRgbaFloat(const glm::uvec2& origin,
+                              const glm::uvec2& size,
+                              const void* pixels /*= nullptr*/)
+{
+  if (_textureId == 0)
+    D_THROW(std::runtime_error, "not allocated");
+
+  GlContext::Texture::bind(_textureId);
+  GlContext::Texture::updateRgbaFloatPixels(origin, size, pixels);
+  GlContext::Texture::bind(0);
+}
+
+//
+//
+//
+
+void Texture::allocateBlankSingleFloat(const glm::uvec2& size, const void* pixels /*= nullptr*/) {
   if (size.x == 0 || size.y == 0)
     D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
 
@@ -104,10 +140,107 @@ void Texture::allocateSingleFloat(const glm::uvec2& size, const void* pixels /*=
 
   GlContext::Texture::bind(_textureId);
 
-  GlContext::Texture::uploadSingleFloatPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
+  GlContext::Texture::setTextureAsPixelated();
+  GlContext::Texture::setTextureAsRepeat(false);
+
+  GlContext::Texture::allocateSingleFloatPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
 
   GlContext::Texture::bind(0);
 }
+
+void Texture::updateSingleFloat(const glm::uvec2& origin,
+                                const glm::uvec2& size,
+                                const void* pixels /*= nullptr*/)
+{
+  if (_textureId == 0)
+    D_THROW(std::runtime_error, "not allocated");
+
+  GlContext::Texture::bind(_textureId);
+  GlContext::Texture::updateSingleFloatPixels(origin, size, pixels);
+  GlContext::Texture::bind(0);
+}
+
+//
+//
+//
+
+void Texture::allocateBlankSingleShort(const glm::uvec2& size, const void* pixels /*= nullptr*/) {
+  if (size.x == 0 || size.y == 0)
+    D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
+
+  // TODO: check max texture size
+  // if (_size.x < 1 || _size.y < 1)
+  //   D_THROW(std::runtime_error, "image allocated with incorrect size");
+
+  _size = size;
+
+  if (_textureId == 0)
+    _textureId = GlContext::Texture::generateOne();
+
+  GlContext::Texture::bind(_textureId);
+
+  GlContext::Texture::setTextureAsPixelated();
+  GlContext::Texture::setTextureAsRepeat(false);
+
+  GlContext::Texture::allocateSingleShortPixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
+
+  GlContext::Texture::bind(0);
+}
+
+void Texture::updateSingleShort(const glm::uvec2& origin,
+                                 const glm::uvec2& size,
+                                 const void* pixels /*= nullptr*/)
+{
+  if (_textureId == 0)
+    D_THROW(std::runtime_error, "not allocated");
+
+  GlContext::Texture::bind(_textureId);
+  GlContext::Texture::updateSingleShortPixels(origin, size, pixels);
+  GlContext::Texture::bind(0);
+}
+
+//
+//
+//
+
+void Texture::allocateBlankSingleInt32(const glm::uvec2& size, const void* pixels /*= nullptr*/) {
+  if (size.x == 0 || size.y == 0)
+    D_THROW(std::runtime_error, "texture allocated with incorrect size, size.x: " << size.x << ", size.y: " << size.y);
+
+  // TODO: check max texture size
+  // if (_size.x < 1 || _size.y < 1)
+  //   D_THROW(std::runtime_error, "image allocated with incorrect size");
+
+  _size = size;
+
+  if (_textureId == 0)
+    _textureId = GlContext::Texture::generateOne();
+
+  GlContext::Texture::bind(_textureId);
+
+  GlContext::Texture::setTextureAsPixelated();
+  GlContext::Texture::setTextureAsRepeat(false);
+
+  GlContext::Texture::allocateSingleInt32Pixels(uint32_t(_size.x), uint32_t(_size.y), pixels);
+
+  GlContext::Texture::bind(0);
+}
+
+void Texture::updateSingleInt32(const glm::uvec2& origin,
+                                 const glm::uvec2& size,
+                                 const void* pixels /*= nullptr*/)
+{
+  if (_textureId == 0)
+    D_THROW(std::runtime_error, "not allocated");
+
+  GlContext::Texture::bind(_textureId);
+  GlContext::Texture::updateSingleInt32Pixels(origin, size, pixels);
+  GlContext::Texture::bind(0);
+}
+
+//
+//
+//
 
 namespace {
 GlContext::Texture::DepthFormat getRawDepthFormat(Texture::DepthFormat depthFormat) {
@@ -183,7 +316,7 @@ void Texture::ensureCompatibleDepth() {
   FrameBuffer tmpFrameBuffer;
   const glm::uvec2 tmpSize = {10, 10};
 
-  tmpColorTexture.allocateBlank(tmpSize);
+  tmpColorTexture.allocateBlankRgbaUBytes(tmpSize);
 
   for (auto& currConfig : allConfig) {
     tmpDepthTexture.allocateDepth(tmpSize, currConfig.format, currConfig.type);

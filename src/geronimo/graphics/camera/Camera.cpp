@@ -108,6 +108,8 @@ void Camera::setOrthographic(float left, float right, float bottom, float top, f
 
 Camera::ProjectionType Camera::getProjectionType() const { return _projectionType; }
 
+const Camera::ProjectionData& Camera::getProjectionData() const { return _projectionData; }
+
 //
 
 const Camera::MatricesData& Camera::getMatricesData() const { return _matricesData; }

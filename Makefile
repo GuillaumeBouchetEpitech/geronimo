@@ -99,6 +99,8 @@ SRC_GERONIMO_GRAPHICS+=	\
 		$(DIR_SRC)/geronimo/graphics/sdl/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/vertexBuffers/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/wrappers/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/internals/*.cpp \
 		)
 
 SRC_GERONIMO_PHYSICS+=	\

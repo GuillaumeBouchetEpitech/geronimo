@@ -127,10 +127,38 @@ uint32_t generateOne();
 void deleteOne(uint32_t textureId);
 void active(uint32_t index);
 void bind(uint32_t textureId);
-void uploadPixels(uint32_t width, uint32_t height, const void* pixels);
-void uploadUIntPixels(uint32_t width, uint32_t height, const void* pixels);
-void uploadFloatPixels(uint32_t width, uint32_t height, const void* pixels);
-void uploadSingleFloatPixels(uint32_t width, uint32_t height, const void* pixels);
+
+//
+//
+//
+
+void allocateRgbaUBytesPixels(uint32_t width, uint32_t height, const void* pixels);
+void updateRgbaUBytesPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels);
+
+//
+
+void allocateRgbaFloatPixels(uint32_t width, uint32_t height, const void* pixels);
+void updateRgbaFloatPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels);
+
+//
+
+void allocateSingleFloatPixels(uint32_t width, uint32_t height, const void* pixels);
+void updateSingleFloatPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels);
+
+//
+
+void allocateSingleShortPixels(uint32_t width, uint32_t height, const void* pixels);
+void updateSingleShortPixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels);
+
+//
+
+void allocateSingleInt32Pixels(uint32_t width, uint32_t height, const void* pixels);
+void updateSingleInt32Pixels(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels);
+
+//
+//
+//
+
 void setAsDepthTexture(uint32_t width, uint32_t height, DepthFormat depthFormat, DepthType depthType);
 void setTextureAsRepeat(bool repeat);
 void setTextureAsPixelated();
