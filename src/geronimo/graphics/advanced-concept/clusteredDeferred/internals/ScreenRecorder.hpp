@@ -7,6 +7,9 @@
 
 #include <cstdint>
 
+namespace gero {
+namespace graphics {
+
 class ScreenRecorder {
 public:
   ScreenRecorder() = default;
@@ -33,3 +36,6 @@ private:
   gero::graphics::Texture _depthTexture;
   gero::graphics::FrameBuffer _frameBufferGeometries;
 };
+
+}
+}

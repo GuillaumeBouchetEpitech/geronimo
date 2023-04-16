@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include "application/context/graphics/graphicsAliases.hpp"
-
 #include "geronimo/graphics/Geometry.hpp"
 #include "geronimo/graphics/ShaderProgram.hpp"
 #include "geronimo/graphics/camera/Camera.hpp"
@@ -10,6 +8,9 @@
 
 #include <memory>
 #include <vector>
+
+namespace gero {
+namespace graphics {
 
 class ITrianglesStackRenderer {
 
@@ -69,7 +70,7 @@ public:
   ~TrianglesStackRenderer() = default;
 
 public:
-  void initialize(gero::graphics::ShaderProgram& shader, GeometriesAliases geometryId);
+  void initialize(gero::graphics::ShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef);
 
 public:
   void pushTriangle(const glm::vec3& posA,
@@ -149,3 +150,6 @@ private:
 
   bool _safeMode = false;
 };
+
+}
+}

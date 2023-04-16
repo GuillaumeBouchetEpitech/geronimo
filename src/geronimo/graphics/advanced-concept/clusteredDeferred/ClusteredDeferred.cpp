@@ -1,6 +1,9 @@
 
 #include "ClusteredDeferred.hpp"
 
+namespace gero {
+namespace graphics {
+
 void ClusteredDeferred::initialize(const std::string& inRootPath, const gero::graphics::PerspectiveClustering::Def& inClusterDef, const glm::ivec2& inFrameSize) {
 
   _clusterDef = inClusterDef;
@@ -56,4 +59,7 @@ void ClusteredDeferred::renderHudQuad(const gero::graphics::Camera& inSceneCamer
                              _lightManager.getZStride(),
                              _ambiantLightCoef);
 
+}
+
+}
 }

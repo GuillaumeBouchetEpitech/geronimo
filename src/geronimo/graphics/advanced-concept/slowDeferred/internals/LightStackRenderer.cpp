@@ -6,6 +6,9 @@
 
 #include "geronimo/graphics/make-geometries/MakeGeometries.hpp"
 
+namespace gero {
+namespace graphics {
+
 using namespace gero::graphics;
 using TexQuality = gero::graphics::Texture::Quality;
 using TexPattern = gero::graphics::Texture::Pattern;
@@ -232,3 +235,6 @@ void LightStackRenderer::reset() { _vertices.clear(); }
 const gero::graphics::Texture& LightStackRenderer::getDiffuseCoefTexture() { return _diffuse.depthTexture; }
 
 const gero::graphics::Texture& LightStackRenderer::getSpecularCoefTexture() { return _specular.depthTexture; }
+
+}
+}

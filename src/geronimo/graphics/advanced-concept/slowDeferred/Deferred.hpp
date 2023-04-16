@@ -11,6 +11,9 @@
 
 #include <cstdint>
 
+namespace gero {
+namespace graphics {
+
 class Deferred {
 public:
   Deferred() = default;
@@ -43,3 +46,6 @@ private:
   glm::vec3 _sunLightDirection = {-1.0f, -1.0f, -2.0f};
   float _ambiantLightCoef = 0.1f;
 };
+
+}
+}

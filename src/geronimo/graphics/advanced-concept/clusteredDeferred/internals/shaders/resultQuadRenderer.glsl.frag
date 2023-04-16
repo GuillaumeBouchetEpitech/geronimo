@@ -88,9 +88,21 @@ void main(void)
     int clusterY_index = int( floor(v_uv.y * u_screenHeight / yStride) );
     int clusterZ_index = int( floor( (fpos.z - u_camNear) / zStride ) );
 
-    int clusterId = clusterZ_index * u_numXSlices * u_numYSlices + clusterY_index * u_numXSlices + clusterX_index;
 
-    int clusterNumLights = int(texelFetch(u_clusterDataTexture, ivec2(clusterId, 0), 0).x);
+
+    // int clusterId = clusterZ_index * u_numXSlices * u_numYSlices * (u_maxLightsPerCluster + 1) + clusterY_index * u_numXSlices + clusterX_index;
+
+
+
+    int clusterIdX = clusterY_index * u_numXSlices + clusterX_index;
+    int clusterIdY = clusterZ_index * (1 + u_maxLightsPerCluster);
+    // int clusterId = clusterZ_index * u_numXSlices * u_numYSlices * (u_maxLightsPerCluster + 1) + clusterY_index * u_numXSlices + clusterX_index;
+
+
+
+    // int clusterNumLights = int(texelFetch(u_clusterDataTexture, ivec2(clusterId, 0), 0).x);
+    int clusterNumLights = int(texelFetch(u_clusterDataTexture, ivec2(clusterIdX, clusterIdY), 0).x);
+
 
 
     float bestDiffuseCoef = u_ambiantCoef;
@@ -99,7 +111,8 @@ void main(void)
     int maxIterations = min(clusterNumLights, u_maxLightsPerCluster);
     for (int ii = 0; ii < maxIterations; ++ii)
     {
-      int lightIndex = int(texelFetch(u_clusterDataTexture, ivec2(clusterId, 1 + ii), 0).x);
+      // int lightIndex = int(texelFetch(u_clusterDataTexture, ivec2(clusterId, (1 + ii) * u_numXSlices * u_numYSlices), 0).x);
+      int lightIndex = int(texelFetch(u_clusterDataTexture, ivec2(clusterIdX, clusterIdY + 1 + ii), 0).x);
 
       vec4 rawLightData = texelFetch(u_lightsDataTexture, ivec2(lightIndex, 0), 0);
       vec3 lightPos = rawLightData.xyz;
@@ -109,8 +122,8 @@ void main(void)
       float lightDistance = length(lightDiff);
 
 
-      if (lightDistance > lightRadius)
-        continue;
+      // if (lightDistance > lightRadius)
+      //   continue;
 
 
       vec3 lightDir = lightDiff / lightDistance;
@@ -120,7 +133,7 @@ void main(void)
       // if (lightDistance > lightRadius)
       //   lightIntensity = 0.0;
       // float lightIntensity = 1.0 - (lightRadius * 1.1) / lightDistance; // [1..0]
-      float lightIntensity = (1.0 - lightDistance / lightRadius) * 4.0; // [1..0]
+      float lightIntensity = (1.0 - lightDistance / lightRadius) * 2.0; // [1..0]
 
 
       float lambertTerm = max(dot(-lightDir, rawNormal), 0.0);
@@ -151,7 +164,7 @@ void main(void)
     if (specularEnabled && sunDiffuseCoef > 0.0)
       sunSpecularCoef = applySunLight_specular(rawNormal, tmpWorldPosition);
 
-    float finalDiffuseCoef = min(max(sunDiffuseCoef, bestDiffuseCoef), 1.0);
+    float finalDiffuseCoef = min(max(sunDiffuseCoef, bestDiffuseCoef), 5.0);
     float finalSpecularCoef = max(sunSpecularCoef, bestSpecularCoef * 8.0);
 
 

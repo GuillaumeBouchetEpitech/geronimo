@@ -8,13 +8,18 @@
 
 #include <functional>
 
+namespace gero {
+namespace graphics {
+
 class StackRenderers {
 public:
   StackRenderers() = default;
-  ~StackRenderers() = default;
+  virtual ~StackRenderers() = default;
 
 public:
-  void initialize(ShadersAliases shaderId, GeometriesAliases trianglesGeomId, GeometriesAliases wireFramesGeomId);
+  void initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader, const gero::graphics::Geometry::Definition& geoDef);
+  void initialize(const gero::graphics::ShaderProgram::Definition& inShaderDef, const gero::graphics::Geometry::Definition& geoDef);
+  void initialize(const std::string& inRootPath);
 
 public:
   void setMatricesData(const gero::graphics::Camera::MatricesData& matricesData);
@@ -35,3 +40,6 @@ private:
   TrianglesStackRenderer _trianglesStackRenderer;
   WireFramesStackRenderer _wireFramesStackRenderer;
 };
+
+}
+}

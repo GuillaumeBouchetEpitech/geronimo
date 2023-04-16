@@ -13,6 +13,9 @@
 #include <cstdint>
 #include <memory>
 
+namespace gero {
+namespace graphics {
+
 class ResultQuadRenderer {
 
 public:
@@ -44,3 +47,6 @@ private:
   std::shared_ptr<gero::graphics::ShaderProgram> _quadShader;
   gero::graphics::Geometry _quadGeometry;
 };
+
+}
+}

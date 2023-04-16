@@ -1,9 +1,9 @@
 
 #include "Scene.hpp"
 
-#include "renderers/hud/helpers/renderTextBackground.hpp"
-#include "renderers/hud/helpers/writeTime.hpp"
-#include "renderers/hud/widgets/renderPerformanceProfilerMetrics.hpp"
+// #include "renderers/hud/helpers/renderTextBackground.hpp"
+// #include "renderers/hud/helpers/writeTime.hpp"
+// #include "renderers/hud/widgets/renderPerformanceProfilerMetrics.hpp"
 
 #include "renderers/scene/helpers/renderPhysicBody.hpp"
 #include "renderers/scene/helpers/renderPhysicVehicle.hpp"
@@ -12,6 +12,9 @@
 
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgram.hpp"
+#include "geronimo/graphics/advanced-concept/widgets/renderPerformanceProfilerMetrics.hpp"
+#include "geronimo/graphics/advanced-concept/widgets/helpers/writeTime.hpp"
+#include "geronimo/graphics/advanced-concept/widgets/helpers/renderTextBackground.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/math/angles.hpp"
@@ -86,7 +89,7 @@ void Scene::_renderScene() {
       for (std::size_t ii = 0; ii < physicBodyManager.size(); ++ii) {
         auto body = physicBodyManager.getBody(uint32_t(ii));
 
-        helpers::renderPhysicBody(body->getShapeDefinition(), body->getPosition(), body->getOrientation());
+        renderPhysicBody(body->getShapeDefinition(), body->getPosition(), body->getOrientation());
       }
     }
 
@@ -114,7 +117,7 @@ void Scene::_renderScene() {
       for (std::size_t ii = 0; ii < vehicleManager.vehicleSize(); ++ii) {
         auto vehicle = vehicleManager.getVehicle(uint32_t(ii));
 
-        helpers::renderPhysicVehicle(*vehicle);
+        renderPhysicVehicle(*vehicle);
       }
     }
 
@@ -265,12 +268,12 @@ void Scene::_renderHud() {
             sstr << keyName << ":";
             sstr << std::endl;
 
-            writeTime(sstr, latestDuration, 0);
+            gero::graphics::helpers::writeTime(sstr, latestDuration, 0);
             sstr << std::endl;
 
             if (averageDuration > 0 && averageDuration < 999) {
               sstr << "~";
-              writeTime(sstr, averageDuration, 0);
+              gero::graphics::helpers::writeTime(sstr, averageDuration, 0);
               sstr << std::endl;
             }
             sstr << std::endl;
@@ -331,8 +334,8 @@ void Scene::_renderHud() {
 
       graphic.hud.textRenderer.pushText(glm::vec2(k_scale * 0.5f, float(vSize.y) - k_scale * 1.5f), str);
 
-      helpers::renderTextBackground(
-        k_textDepth, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.3f, 0.3f, 0.3f, 1.0f), 3.0f, 6.0f);
+      gero::graphics::helpers::renderTextBackground(
+        k_textDepth, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.3f, 0.3f, 0.3f, 1.0f), 3.0f, 6.0f, graphic.hud.stackRenderers, graphic.hud.textRenderer);
     }
 
     graphic.hud.textRenderer.render();
@@ -354,13 +357,16 @@ void Scene::_renderHud() {
     stackRenderers.flush();
   }
 
-  {
+  const auto& performanceProfiler = context.logic.performanceProfiler;
+  if (auto timeDataRef = performanceProfiler.tryGetTimeData("complete frame")) {
+    const auto& timeData = timeDataRef->get();
+
     const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
 
     const glm::vec2 k_size = glm::vec2(150, 50);
     const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 10, vSize.y - k_size.y - 10, 0);
 
-    widgets::renderPerformanceProfilerMetrics(k_pos, k_size, "complete frame");
+    gero::graphics::widgets::renderPerformanceProfilerMetrics(k_pos, k_size, timeData, graphic.hud.stackRenderers, graphic.hud.textRenderer);
 
     graphic.hud.stackRenderers.flush();
     graphic.hud.textRenderer.render();

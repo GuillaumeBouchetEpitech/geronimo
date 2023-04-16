@@ -5,6 +5,9 @@
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
 
+namespace gero {
+namespace graphics {
+
 using namespace gero::graphics;
 using namespace gero::graphics::GlContext;
 
@@ -164,4 +167,7 @@ void ResultQuadRenderer::render(const glm::vec3& sunLightDirection,
   _quadGeometry.render();
 
   GlContext::Texture::active(0);
+}
+
+}
 }

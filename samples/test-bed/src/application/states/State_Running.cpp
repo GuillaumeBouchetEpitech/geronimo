@@ -137,6 +137,8 @@ void State_Running::resize(uint32_t width, uint32_t height) {
   auto& graphic = context.graphic;
 
   graphic.camera.viewportSize = {width, height};
+  graphic.camera.scene.setSize(width, height);
+  graphic.camera.hud.setSize(width, height);
 }
 
 void State_Running::visibility(bool visible) {

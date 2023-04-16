@@ -29,9 +29,11 @@ void Context::initialize(uint32_t width, uint32_t height) {
 
   initializeGraphicResources();
 
-  graphic.scene.stackRenderers.initialize(ShadersAliases::stackRendererScene,
-                                          GeometriesAliases::stackRendererTrianglesScene,
-                                          GeometriesAliases::stackRendererWireFramesScene);
+  // graphic.scene.stackRenderers.initialize(ShadersAliases::stackRendererScene,
+  //                                         GeometriesAliases::stackRendererTrianglesScene,
+  //                                         GeometriesAliases::stackRendererWireFramesScene);
+
+  graphic.scene.stackRenderers.initialize();
 
   graphic.scene.geometriesStackRenderer.initialize();
 
@@ -45,9 +47,11 @@ void Context::initialize(uint32_t width, uint32_t height) {
     graphic.scene.deferred.initialize("../../src", clusterDef, {width, height});
   }
 
-  graphic.hud.stackRenderers.initialize(ShadersAliases::stackRendererHud,
-                                        GeometriesAliases::stackRendererTrianglesHud,
-                                        GeometriesAliases::stackRendererWireFramesHud);
+  // graphic.hud.stackRenderers.initialize(ShadersAliases::stackRendererHud,
+  //                                       GeometriesAliases::stackRendererTrianglesHud,
+  //                                       GeometriesAliases::stackRendererWireFramesHud);
+
+  graphic.hud.stackRenderers.initialize("../../src");
 
   graphic.hud.textRenderer.initialize("../../src");
 

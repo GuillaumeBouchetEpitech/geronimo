@@ -3,6 +3,11 @@
 #include <sstream>
 #include <string>
 
+
+namespace gero {
+namespace graphics {
+
+namespace helpers {
 void writeTime(std::stringstream& stream, int64_t time, int32_t leftPadValue /*= 5*/) {
 
   stream << std::setw(std::max(0, leftPadValue));
@@ -14,4 +19,9 @@ void writeTime(std::stringstream& stream, int64_t time, int32_t leftPadValue /*=
   } else {
     stream << (float(time) * 0.001f) << "s";
   }
+}
+
+}
+
+}
 }

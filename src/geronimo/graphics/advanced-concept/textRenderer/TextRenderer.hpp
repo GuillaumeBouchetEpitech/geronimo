@@ -15,7 +15,9 @@
 #include <unordered_map>
 #include <vector>
 
-class Shader;
+
+namespace gero {
+namespace graphics {
 
 struct TextRenderer {
 
@@ -122,3 +124,6 @@ public:
   TextRenderer& clear();
   TextRenderer& render();
 };
+
+}
+}

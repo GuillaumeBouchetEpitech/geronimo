@@ -1,18 +1,19 @@
 
 #include "renderTextBackground.hpp"
 
-#include "application/context/Context.hpp"
+namespace gero {
+namespace graphics {
 
 namespace helpers {
 
 void renderTextBackground(
-  float textDepth, const glm::vec4& colorA, const glm::vec4& colorB, float extraSizeA, float extraSizeB) {
-  auto& context = Context::get();
-  auto& hud = context.graphic.hud;
-  auto& textRenderer = hud.textRenderer;
-  auto& triangles = hud.stackRenderers.getTrianglesStack();
+  float textDepth, const glm::vec4& colorA, const glm::vec4& colorB, float extraSizeA, float extraSizeB,
+  gero::graphics::StackRenderers& inStackRenderers,
+  gero::graphics::TextRenderer& inTextRenderer) {
 
-  const auto& outRectangles = textRenderer.getLatestTextRectangles();
+  auto& triangles = inStackRenderers.getTrianglesStack();
+
+  const auto& outRectangles = inTextRenderer.getLatestTextRectangles();
 
   {
     // const glm::vec4 bgColor = glm::vec4(0.0f, 0.0f, 0.0f, _alpha * 0.75f);
@@ -34,3 +35,6 @@ void renderTextBackground(
 }
 
 } // namespace helpers
+
+}
+}

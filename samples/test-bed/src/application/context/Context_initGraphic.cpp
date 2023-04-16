@@ -1,126 +1,11 @@
 
 #include "Context.hpp"
 
-#include "application/context/graphics/graphicsAliases.hpp"
-
 #include "geronimo/graphics/GeometryBuilder.hpp"
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/Image.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
 #include "geronimo/system/TraceLogger.hpp"
-
-namespace {
-
-void initializeHudStructures(gero::graphics::ResourceManager& rManager) {
-  const std::string basePath = "./assets/graphics/shaders/hud/";
-
-  gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
-  gero::graphics::GeometryBuilder geometryBuilder;
-
-  {
-    shaderProgramBuilder.reset()
-      .setVertexFilename(basePath + "stackRenderer.glsl.vert")
-      .setFragmentFilename(basePath + "stackRenderer.glsl.frag")
-      .addAttribute("a_position")
-      .addAttribute("a_color")
-      .addUniform("u_composedMatrix");
-
-    auto shader =
-      rManager.createShader(gero::asValue(ShadersAliases::stackRendererHud), shaderProgramBuilder.getDefinition());
-
-    geometryBuilder.reset()
-      .setShader(*shader)
-      .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::lines)
-      .addVbo()
-      .addVboAttribute("a_position", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVboAttribute("a_color", gero::graphics::Geometry::AttrType::Vec4f);
-
-    rManager.createGeometryDefinition(
-      gero::asValue(GeometriesAliases::stackRendererWireFramesHud), geometryBuilder.getDefinition(), true);
-
-    geometryBuilder.setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles);
-
-    rManager.createGeometryDefinition(
-      gero::asValue(GeometriesAliases::stackRendererTrianglesHud), geometryBuilder.getDefinition(), true);
-  }
-}
-
-void initializeSceneStructures(gero::graphics::ResourceManager& rManager) {
-  const std::string basePath = "./assets/graphics/shaders/scene/";
-
-  gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
-  gero::graphics::GeometryBuilder geometryBuilder;
-
-  {
-
-    shaderProgramBuilder.reset()
-      .setVertexFilename(basePath + "geometriesStackRenderer.glsl.vert")
-      .setFragmentFilename(basePath + "geometriesStackRenderer.glsl.frag")
-
-      .addAttribute("a_vertexPosition")
-      .addAttribute("a_vertexNormal")
-
-      .addAttribute("a_offsetPosition")
-      .addAttribute("a_offsetOrientation")
-      .addAttribute("a_offsetScale")
-      .addAttribute("a_offsetColor")
-      .addAttribute("a_offsetLight")
-
-      .addUniform("u_composedMatrix")
-      // .addUniform("u_ambiantCoef")
-      // .addUniform("u_lightPos")
-      ;
-
-    auto shader = rManager.createShader(gero::asValue(ShadersAliases::geometriesStackRenderer),
-                                        shaderProgramBuilder.getDefinition());
-
-    geometryBuilder.reset()
-      .setShader(*shader)
-      .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles)
-      .addVbo()
-      .addVboAttribute("a_vertexPosition", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVboAttribute("a_vertexNormal", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVbo()
-      .setVboAsInstanced()
-      .addVboAttribute("a_offsetPosition", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVboAttribute("a_offsetOrientation", gero::graphics::Geometry::AttrType::Vec4f)
-      .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
-      .addVboAttribute("a_offsetLight", gero::graphics::Geometry::AttrType::Float);
-
-    rManager.createGeometryDefinition(
-      gero::asValue(GeometriesAliases::geometriesStackRenderer), geometryBuilder.getDefinition(), true);
-  }
-
-  {
-    shaderProgramBuilder.reset()
-      .setVertexFilename(basePath + "stackRenderer.glsl.vert")
-      .setFragmentFilename(basePath + "stackRenderer.glsl.frag")
-      .addAttribute("a_position")
-      .addAttribute("a_color")
-      .addUniform("u_composedMatrix");
-
-    auto shader =
-      rManager.createShader(gero::asValue(ShadersAliases::stackRendererScene), shaderProgramBuilder.getDefinition());
-
-    geometryBuilder.reset()
-      .setShader(*shader)
-      .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::lines)
-      .addVbo()
-      .addVboAttribute("a_position", gero::graphics::Geometry::AttrType::Vec3f)
-      .addVboAttribute("a_color", gero::graphics::Geometry::AttrType::Vec4f);
-
-    rManager.createGeometryDefinition(
-      gero::asValue(GeometriesAliases::stackRendererWireFramesScene), geometryBuilder.getDefinition(), true);
-
-    geometryBuilder.setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles);
-
-    rManager.createGeometryDefinition(
-      gero::asValue(GeometriesAliases::stackRendererTrianglesScene), geometryBuilder.getDefinition(), true);
-  }
-}
-
-} // namespace
 
 void Context::initializeGraphicResources() {
 
@@ -130,21 +15,15 @@ void Context::initializeGraphicResources() {
     const auto& vSize = graphic.camera.viewportSize;
 
     graphic.camera.scene.setPerspective(70.0f, 1.0f, 150.0f);
+    graphic.camera.scene.setSize(vSize.x, vSize.y);
 
     graphic.camera.hud.setOrthographic(0.0f, float(vSize.x), 0.0f, float(vSize.y), -10.0f, +10.0f);
+    graphic.camera.hud.setSize(vSize.x, vSize.y);
 
     const glm::vec3 eye = {0.0f, 0.0f, 1.0f};
     const glm::vec3 center = {0.0f, 0.0f, 0.0f};
     const glm::vec3 upAxis = {0.0f, 1.0f, 0.0f};
     graphic.camera.hud.lookAt(eye, center, upAxis);
   }
-
-  // gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
-  // gero::graphics::GeometryBuilder geometryBuilder;
-
-  auto& rManager = graphic.resourceManager;
-
-  initializeHudStructures(rManager);
-  initializeSceneStructures(rManager);
 
 }

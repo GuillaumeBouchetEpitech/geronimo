@@ -12,6 +12,10 @@
 #include <memory>
 #include <vector>
 
+
+namespace gero {
+namespace graphics {
+
 struct PostProcessData {
 
   gero::graphics::Texture depthTexture;
@@ -75,3 +79,6 @@ private:
 
   std::vector<Instance> _vertices;
 };
+
+}
+}

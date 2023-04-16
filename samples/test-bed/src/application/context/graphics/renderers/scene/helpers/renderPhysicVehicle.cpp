@@ -7,7 +7,6 @@
 
 #include "geronimo/system/math/constants.hpp"
 
-namespace helpers {
 
 void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) {
 
@@ -17,7 +16,7 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
   {
     const auto body = inVehicle.getPhysicBody();
 
-    helpers::renderPhysicBody(body->getShapeDefinition(), body->getPosition(), body->getOrientation());
+    renderPhysicBody(body->getShapeDefinition(), body->getPosition(), body->getOrientation());
   }
 
   {
@@ -81,5 +80,3 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
     }
   }
 }
-
-} // namespace helpers

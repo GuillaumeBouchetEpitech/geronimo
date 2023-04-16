@@ -26,6 +26,7 @@ public:
 
 private:
   std::shared_ptr<gero::graphics::ShaderProgram> _shader = nullptr;
+  gero::graphics::Geometry::Definition _geomDef;
   gero::graphics::Camera::MatricesData _matricesData;
 
 private:

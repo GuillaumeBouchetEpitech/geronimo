@@ -8,6 +8,10 @@
 #include "geronimo/system/asValue.hpp"
 #include "geronimo/system/parser-utils/string_view_regexp.hpp"
 
+
+namespace gero {
+namespace graphics {
+
 namespace {
 
 const glm::vec2 k_letterSize = {16, 16};
@@ -396,4 +400,7 @@ TextRenderer& TextRenderer::render() {
   _graphic.vertices.clear();
 
   return *this;
+}
+
+}
 }

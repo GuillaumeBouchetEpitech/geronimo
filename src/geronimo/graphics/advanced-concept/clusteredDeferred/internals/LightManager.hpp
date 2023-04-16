@@ -10,6 +10,9 @@
 #include <memory>
 #include <vector>
 
+namespace gero {
+namespace graphics {
+
 class LightManager {
 public:
   LightManager() = default;
@@ -41,3 +44,6 @@ private:
   gero::graphics::DataTexture _clusterDataTexture;
   gero::graphics::DataTexture _spotLightsTexture;
 };
+
+}
+}

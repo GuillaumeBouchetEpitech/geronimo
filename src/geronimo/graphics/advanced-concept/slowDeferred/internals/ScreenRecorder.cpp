@@ -3,6 +3,10 @@
 
 #include "geronimo/graphics/GlContext.hpp"
 
+
+namespace gero {
+namespace graphics {
+
 using namespace gero::graphics;
 using TexQuality = gero::graphics::Texture::Quality;
 using TexPattern = gero::graphics::Texture::Pattern;
@@ -16,9 +20,9 @@ void ScreenRecorder::resize(const glm::ivec2& inFrameSize) {
 
   _frameSize = inFrameSize;
 
-  _colorTexture.allocateBlank(_frameSize, TexQuality::pixelated, TexPattern::clamped);
-  _positionTexture.allocateFloatBlank(_frameSize, TexQuality::pixelated, TexPattern::clamped);
-  _normalTexture.allocateBlank(_frameSize, TexQuality::pixelated, TexPattern::clamped);
+  _colorTexture.allocateBlankRgbaUBytes(_frameSize, TexQuality::pixelated, TexPattern::clamped);
+  _positionTexture.allocateBlankRgbaFloat(_frameSize, TexQuality::pixelated, TexPattern::clamped);
+  _normalTexture.allocateBlankRgbaUBytes(_frameSize, TexQuality::pixelated, TexPattern::clamped);
 
   _depthTexture.allocateDepth(_frameSize, DepthFormat::depth16, DepthType::unsignedShort);
   // _depthTexture.allocateCompatibleDepth(_frameSize);
@@ -48,3 +52,6 @@ const gero::graphics::Texture& ScreenRecorder::getPositionTexture() const { retu
 const gero::graphics::Texture& ScreenRecorder::getNormalTexture() const { return _normalTexture; }
 
 const gero::graphics::Texture& ScreenRecorder::getDepthTexture() const { return _depthTexture; }
+
+}
+}

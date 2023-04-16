@@ -99,8 +99,9 @@ Geometry& GeometryBuilder::build(Geometry& geometry) {
   return geometry;
 }
 
-Geometry::Definition GeometryBuilder::getDefinition() {
-  validate();
+Geometry::Definition GeometryBuilder::getDefinition(bool inDoValidate /*= true*/) {
+  if (inDoValidate)
+    validate();
   return _def;
 }
 

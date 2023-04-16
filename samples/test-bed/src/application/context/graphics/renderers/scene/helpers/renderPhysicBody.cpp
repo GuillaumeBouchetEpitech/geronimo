@@ -3,8 +3,6 @@
 
 #include "application/context/Context.hpp"
 
-namespace helpers {
-
 void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
                       const glm::vec3& inPosition,
                       const glm::quat& inOrientation) {
@@ -93,4 +91,3 @@ void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
   }
 }
 
-} // namespace helpers

@@ -34,7 +34,7 @@ public:
   GeometryBuilder& validate();
 
   Geometry& build(Geometry& geometry);
-  Geometry::Definition getDefinition();
+  Geometry::Definition getDefinition(bool inDoValidate = true);
 };
 
 } // namespace graphics

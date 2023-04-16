@@ -112,8 +112,6 @@ SRC+= \
 		$(DIR_SRC)/application/context/*.cpp \
 		$(DIR_SRC)/application/context/graphics/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/*.cpp \
-		$(DIR_SRC)/application/context/graphics/renderers/common/*.cpp \
-		$(DIR_SRC)/application/context/graphics/renderers/common/internals/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/hud/helpers/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/hud/widgets/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/scene/*.cpp \
@@ -124,8 +122,6 @@ SRC+= \
 		$(DIR_SRC)/application/states/*.cpp \
 	)
 
-
-# $(DIR_SRC)/application/context/graphics/renderers/hud/*.cpp \
 
 #
 
@@ -197,7 +193,7 @@ LDFLAGS+=	--preload-file ./assets/
 
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/textRenderer/assets
-
+LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/stackRenderers/shaders
 
 LDFLAGS+=	-s TOTAL_MEMORY=128Mb
 LDFLAGS+= -s EXPORTED_RUNTIME_METHODS=cwrap

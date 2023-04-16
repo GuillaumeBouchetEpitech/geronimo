@@ -1,14 +1,8 @@
 
 #include "Deferred.hpp"
 
-// #include "geronimo/graphics/GlContext.hpp"
-
-// using namespace gero::graphics;
-// using TexQuality = gero::graphics::Texture::Quality;
-// using TexPattern = gero::graphics::Texture::Pattern;
-// using DepthFormat = gero::graphics::Texture::DepthFormat;
-// using DepthType = gero::graphics::Texture::DepthType;
-// using namespace gero::graphics::GlContext;
+namespace gero {
+namespace graphics {
 
 void Deferred::initialize(const glm::ivec2& inFrameSize) {
   _sunLightDirection = glm::normalize(_sunLightDirection);
@@ -57,4 +51,7 @@ void Deferred::renderHudQuad(const glm::mat4& composedMatrix) {
                              _lightStackRenderer.getDiffuseCoefTexture(),
                              _lightStackRenderer.getSpecularCoefTexture(),
                              _ambiantLightCoef);
+}
+
+}
 }

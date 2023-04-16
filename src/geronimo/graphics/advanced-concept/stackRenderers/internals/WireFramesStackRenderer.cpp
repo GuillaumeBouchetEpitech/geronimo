@@ -1,16 +1,14 @@
 
 #include "WireFramesStackRenderer.hpp"
 
-#include "application/context/Context.hpp"
-
 #include "geronimo/system/asValue.hpp"
 #include "geronimo/system/math/constants.hpp"
 
-void WireFramesStackRenderer::initialize(gero::graphics::ShaderProgram& shader, GeometriesAliases geometryId) {
+namespace gero {
+namespace graphics {
 
-  auto& resourceManager = Context::get().graphic.resourceManager;
+void WireFramesStackRenderer::initialize(gero::graphics::ShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef) {
 
-  auto geoDef = resourceManager.getGeometryDefinition(gero::asValue(geometryId));
   _geometry.initialize(shader, geoDef);
   _geometry.setPrimitiveCount(0);
 
@@ -104,3 +102,6 @@ bool WireFramesStackRenderer::canRender() const { return !_vertices.empty(); }
 void WireFramesStackRenderer::startSafeMode() { _safeMode = true; }
 
 void WireFramesStackRenderer::stopSafeMode() { _safeMode = false; }
+
+}
+}

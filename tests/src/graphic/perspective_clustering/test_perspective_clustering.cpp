@@ -280,3 +280,40 @@ TEST(test_perspective_clustering, multiple_angles_contain_spot_light) {
   }
 
 }
+
+
+TEST(test_perspective_clustering, middle_contain_big_spot_light) {
+
+  gero::graphics::Camera camera;
+  camera.setPerspective(70.0, 1.0f, 100.0f);
+  camera.setSize(800, 600);
+  camera.lookAt(glm::vec3(0,0,0), glm::vec3(1,0,0), glm::vec3(0,0,1));
+  camera.computeMatrices();
+
+  std::vector<gero::graphics::PerspectiveClustering::SpotLight> allSpotLights;
+  allSpotLights.reserve(64);
+
+  gero::graphics::PerspectiveClustering::Def clusterDef;
+  clusterDef.clusterSliceX = 15U;
+  clusterDef.clusterSliceY = 15U;
+  clusterDef.clusterSliceZ = 15U;
+  clusterDef.maxLightsPerCluster = 30U;
+  gero::graphics::PerspectiveClustering cluster;
+  cluster.initialize(clusterDef);
+
+  //
+  //
+
+  {
+    allSpotLights.push_back({ glm::vec3(50, 0, 0), 20.0f });
+    cluster.computeCluster(camera, allSpotLights);
+
+    const int32_t total = isValid(cluster, {0,14}, {0,14}, {0,14});
+    const int32_t subTotal = isValid(cluster, {3,11}, {3,11}, {4,10});
+
+    ASSERT_EQ(total - subTotal, 0);
+    ASSERT_EQ(total, 567);
+    ASSERT_EQ(subTotal, 567);
+  }
+
+}

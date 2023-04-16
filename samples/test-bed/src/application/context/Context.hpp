@@ -1,9 +1,10 @@
 
 #pragma once
 
-#include "graphics/renderers/common/StackRenderers.hpp"
+// #include "graphics/renderers/common/StackRenderers.hpp"
 
 #include "graphics/renderers/scene/GeometriesStackRenderer.hpp"
+#include "graphics/renderers/scene/SceneStackRenderers.hpp"
 
 #include "logic/HeightField.hpp"
 #include "logic/controllers/FreeFlyCameraController.hpp"
@@ -23,6 +24,7 @@
 
 #include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
 #include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
+#include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
 
 #include "application/states/StateManager.hpp"
 
@@ -92,19 +94,19 @@ public:
     } camera;
 
     struct Hud {
-      StackRenderers stackRenderers;
+      gero::graphics::StackRenderers stackRenderers;
 
-      TextRenderer textRenderer;
+      gero::graphics::TextRenderer textRenderer;
 
     } hud;
 
     struct Scene {
-      StackRenderers stackRenderers;
+      SceneStackRenderers stackRenderers;
 
       GeometriesStackRenderer geometriesStackRenderer;
 
       // Deferred deferred;
-      ClusteredDeferred deferred;
+      gero::graphics::ClusteredDeferred deferred;
 
     } scene;
 

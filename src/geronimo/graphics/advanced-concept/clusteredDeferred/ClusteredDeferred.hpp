@@ -7,6 +7,9 @@
 
 #include "geronimo/helpers/GLMath.hpp"
 
+namespace gero {
+namespace graphics {
+
 class ClusteredDeferred {
 public:
   ClusteredDeferred() = default;
@@ -42,3 +45,6 @@ private:
   glm::vec3 _sunLightDirection;
   float _ambiantLightCoef = 0.1f;
 };
+
+}
+}
