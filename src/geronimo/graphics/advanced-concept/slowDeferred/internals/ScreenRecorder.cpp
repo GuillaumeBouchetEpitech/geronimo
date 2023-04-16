@@ -3,7 +3,6 @@
 
 #include "geronimo/graphics/GlContext.hpp"
 
-
 namespace gero {
 namespace graphics {
 
@@ -53,5 +52,5 @@ const gero::graphics::Texture& ScreenRecorder::getNormalTexture() const { return
 
 const gero::graphics::Texture& ScreenRecorder::getDepthTexture() const { return _depthTexture; }
 
-}
-}
+} // namespace graphics
+} // namespace gero

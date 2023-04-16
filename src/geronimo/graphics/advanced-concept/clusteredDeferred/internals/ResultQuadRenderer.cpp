@@ -22,7 +22,8 @@ void ResultQuadRenderer::initialize(const std::string& inRootPath, const glm::iv
 
   std::string currSrcFolder = __FILE__;
   currSrcFolder = currSrcFolder.substr(0, currSrcFolder.rfind("src/") + 4);
-  const std::string k_rootPath = inRootPath + "/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders/";
+  const std::string k_rootPath =
+    inRootPath + "/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders/";
 
   shaderProgramBuilder.reset()
     .setVertexFilename(k_rootPath + "resultQuadRenderer.glsl.vert")
@@ -169,5 +170,5 @@ void ResultQuadRenderer::render(const glm::vec3& sunLightDirection,
   GlContext::Texture::active(0);
 }
 
-}
-}
+} // namespace graphics
+} // namespace gero

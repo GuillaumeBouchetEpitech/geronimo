@@ -47,5 +47,5 @@ private:
   float _ambiantLightCoef = 0.1f;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

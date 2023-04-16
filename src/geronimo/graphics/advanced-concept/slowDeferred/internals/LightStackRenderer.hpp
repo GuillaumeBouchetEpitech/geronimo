@@ -12,7 +12,6 @@
 #include <memory>
 #include <vector>
 
-
 namespace gero {
 namespace graphics {
 
@@ -80,5 +79,5 @@ private:
   std::vector<Instance> _vertices;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

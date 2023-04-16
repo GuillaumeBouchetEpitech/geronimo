@@ -7,7 +7,8 @@
 namespace gero {
 namespace graphics {
 
-void WireFramesStackRenderer::initialize(gero::graphics::ShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef) {
+void WireFramesStackRenderer::initialize(gero::graphics::ShaderProgram& shader,
+                                         const gero::graphics::Geometry::Definition& geoDef) {
 
   _geometry.initialize(shader, geoDef);
   _geometry.setPrimitiveCount(0);
@@ -103,5 +104,5 @@ void WireFramesStackRenderer::startSafeMode() { _safeMode = true; }
 
 void WireFramesStackRenderer::stopSafeMode() { _safeMode = false; }
 
-}
-}
+} // namespace graphics
+} // namespace gero

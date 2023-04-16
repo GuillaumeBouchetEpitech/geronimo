@@ -236,5 +236,5 @@ const gero::graphics::Texture& LightStackRenderer::getDiffuseCoefTexture() { ret
 
 const gero::graphics::Texture& LightStackRenderer::getSpecularCoefTexture() { return _specular.depthTexture; }
 
-}
-}
+} // namespace graphics
+} // namespace gero

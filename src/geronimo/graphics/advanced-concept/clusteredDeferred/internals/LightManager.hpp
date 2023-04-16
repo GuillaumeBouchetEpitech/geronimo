@@ -45,5 +45,5 @@ private:
   gero::graphics::DataTexture _spotLightsTexture;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

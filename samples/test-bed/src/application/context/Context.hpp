@@ -105,7 +105,6 @@ public:
 
       GeometriesStackRenderer geometriesStackRenderer;
 
-      // Deferred deferred;
       gero::graphics::ClusteredDeferred deferred;
 
     } scene;

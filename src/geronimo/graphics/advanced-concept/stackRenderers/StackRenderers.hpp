@@ -17,8 +17,10 @@ public:
   virtual ~StackRenderers() = default;
 
 public:
-  void initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader, const gero::graphics::Geometry::Definition& geoDef);
-  void initialize(const gero::graphics::ShaderProgram::Definition& inShaderDef, const gero::graphics::Geometry::Definition& geoDef);
+  void initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader,
+                  const gero::graphics::Geometry::Definition& geoDef);
+  void initialize(const gero::graphics::ShaderProgram::Definition& inShaderDef,
+                  const gero::graphics::Geometry::Definition& geoDef);
   void initialize(const std::string& inRootPath);
 
 public:
@@ -41,5 +43,5 @@ private:
   WireFramesStackRenderer _wireFramesStackRenderer;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

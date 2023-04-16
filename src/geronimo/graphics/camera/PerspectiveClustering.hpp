@@ -8,7 +8,6 @@
 namespace gero {
 namespace graphics {
 
-
 class PerspectiveClustering {
 
 public:
@@ -20,7 +19,6 @@ public:
   };
 
 public:
-
   struct SpotLight {
     glm::vec3 position;
     float radius;
@@ -60,10 +58,7 @@ private:
   std::size_t _clusterStride = 0;
 
   float _zStride = 0.0f;
-
 };
 
-
-}
-}
-
+} // namespace graphics
+} // namespace gero

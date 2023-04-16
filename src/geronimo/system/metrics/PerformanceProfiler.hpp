@@ -48,7 +48,6 @@ public:
     int32_t getMinDuration() const;
     int32_t getDurationByIndex(std::size_t index) const;
     std::size_t getTotalDurations() const;
-
   };
 
   using TimeDataMap = std::unordered_map<std::string, TimeData>;

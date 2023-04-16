@@ -6,10 +6,13 @@ namespace graphics {
 
 namespace helpers {
 
-void renderTextBackground(
-  float textDepth, const glm::vec4& colorA, const glm::vec4& colorB, float extraSizeA, float extraSizeB,
-  gero::graphics::StackRenderers& inStackRenderers,
-  gero::graphics::TextRenderer& inTextRenderer) {
+void renderTextBackground(float textDepth,
+                          const glm::vec4& colorA,
+                          const glm::vec4& colorB,
+                          float extraSizeA,
+                          float extraSizeB,
+                          gero::graphics::StackRenderers& inStackRenderers,
+                          gero::graphics::TextRenderer& inTextRenderer) {
 
   auto& triangles = inStackRenderers.getTrianglesStack();
 
@@ -36,5 +39,5 @@ void renderTextBackground(
 
 } // namespace helpers
 
-}
-}
+} // namespace graphics
+} // namespace gero

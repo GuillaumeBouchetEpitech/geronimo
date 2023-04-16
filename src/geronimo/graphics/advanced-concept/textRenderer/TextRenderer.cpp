@@ -1,13 +1,12 @@
 
 #include "TextRenderer.hpp"
 
-#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 #include "geronimo/graphics/GeometryBuilder.hpp"
 #include "geronimo/graphics/Image.hpp"
+#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/asValue.hpp"
 #include "geronimo/system/parser-utils/string_view_regexp.hpp"
-
 
 namespace gero {
 namespace graphics {
@@ -48,7 +47,8 @@ void TextRenderer::initialize(const std::string& inRootPath) {
   tmpImg.loadFromFile(k_rootPath + "textures/ascii_font.png");
 
   _graphic.texture = std::make_shared<gero::graphics::Texture>();
-  _graphic.texture->setFromImage(tmpImg, gero::graphics::Texture::Quality::pixelated, gero::graphics::Texture::Pattern::clamped);
+  _graphic.texture->setFromImage(
+    tmpImg, gero::graphics::Texture::Quality::pixelated, gero::graphics::Texture::Pattern::clamped);
 
   const glm::vec2 textureSize = glm::vec2(_graphic.texture->getSize());
 
@@ -92,8 +92,7 @@ void TextRenderer::initialize(const std::string& inRootPath) {
       .addVboAttribute("a_offsetPosition", gero::graphics::Geometry::AttrType::Vec3f)
       .addVboAttribute("a_offsetTexCoord", gero::graphics::Geometry::AttrType::Vec2f)
       .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
-      .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Float)
-      ;
+      .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Float);
 
     _graphic.geometry.initialize(*_graphic.shader, geometryBuilder.getDefinition());
     _graphic.geometry.updateBuffer(0, letterVertices);
@@ -402,5 +401,5 @@ TextRenderer& TextRenderer::render() {
   return *this;
 }
 
-}
-}
+} // namespace graphics
+} // namespace gero

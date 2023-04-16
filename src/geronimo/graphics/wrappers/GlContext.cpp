@@ -10,7 +10,7 @@
 #include <memory>
 
 namespace {
-  int32_t s_maxTextureSize = -1;
+int32_t s_maxTextureSize = -1;
 }
 
 namespace gero {

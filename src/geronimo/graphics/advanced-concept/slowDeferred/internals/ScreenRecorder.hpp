@@ -7,7 +7,6 @@
 
 #include <cstdint>
 
-
 namespace gero {
 namespace graphics {
 
@@ -38,5 +37,5 @@ private:
   gero::graphics::FrameBuffer _frameBufferGeometries;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

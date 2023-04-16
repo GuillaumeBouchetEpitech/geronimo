@@ -62,10 +62,7 @@ void Texture::allocateBlankRgbaUBytes(const glm::uvec2& size,
   GlContext::Texture::bind(0);
 }
 
-void Texture::updateRgbaUBytes(const glm::uvec2& origin,
-                               const glm::uvec2& size,
-                               const void* pixels /*= nullptr*/)
-{
+void Texture::updateRgbaUBytes(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels /*= nullptr*/) {
   if (_textureId == 0)
     D_THROW(std::runtime_error, "not allocated");
 
@@ -109,10 +106,7 @@ void Texture::allocateBlankRgbaFloat(const glm::uvec2& size,
   GlContext::Texture::bind(0);
 }
 
-void Texture::updateRgbaFloat(const glm::uvec2& origin,
-                              const glm::uvec2& size,
-                              const void* pixels /*= nullptr*/)
-{
+void Texture::updateRgbaFloat(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels /*= nullptr*/) {
   if (_textureId == 0)
     D_THROW(std::runtime_error, "not allocated");
 
@@ -148,10 +142,7 @@ void Texture::allocateBlankSingleFloat(const glm::uvec2& size, const void* pixel
   GlContext::Texture::bind(0);
 }
 
-void Texture::updateSingleFloat(const glm::uvec2& origin,
-                                const glm::uvec2& size,
-                                const void* pixels /*= nullptr*/)
-{
+void Texture::updateSingleFloat(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels /*= nullptr*/) {
   if (_textureId == 0)
     D_THROW(std::runtime_error, "not allocated");
 
@@ -187,10 +178,7 @@ void Texture::allocateBlankSingleShort(const glm::uvec2& size, const void* pixel
   GlContext::Texture::bind(0);
 }
 
-void Texture::updateSingleShort(const glm::uvec2& origin,
-                                 const glm::uvec2& size,
-                                 const void* pixels /*= nullptr*/)
-{
+void Texture::updateSingleShort(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels /*= nullptr*/) {
   if (_textureId == 0)
     D_THROW(std::runtime_error, "not allocated");
 
@@ -226,10 +214,7 @@ void Texture::allocateBlankSingleInt32(const glm::uvec2& size, const void* pixel
   GlContext::Texture::bind(0);
 }
 
-void Texture::updateSingleInt32(const glm::uvec2& origin,
-                                 const glm::uvec2& size,
-                                 const void* pixels /*= nullptr*/)
-{
+void Texture::updateSingleInt32(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels /*= nullptr*/) {
   if (_textureId == 0)
     D_THROW(std::runtime_error, "not allocated");
 

@@ -10,7 +10,6 @@
 #include <cstdint>
 #include <memory>
 
-
 namespace gero {
 namespace graphics {
 
@@ -44,5 +43,5 @@ private:
   gero::graphics::Geometry _quadGeometry;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

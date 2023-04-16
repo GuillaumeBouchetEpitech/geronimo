@@ -78,5 +78,5 @@ private:
   bool _safeMode = false;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

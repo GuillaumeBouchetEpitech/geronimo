@@ -70,9 +70,7 @@ public:
                                const void* pixels = nullptr,
                                uint32_t packingInBytes = 4);
 
-  void updateRgbaUBytes(const glm::uvec2& origin,
-                        const glm::uvec2& size,
-                        const void* pixels = nullptr);
+  void updateRgbaUBytes(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels = nullptr);
 
 public:
   void allocateBlankRgbaFloat(const glm::uvec2& size,
@@ -80,30 +78,22 @@ public:
                               Pattern pattern = Pattern::clamped,
                               const void* pixels = nullptr);
 
-  void updateRgbaFloat(const glm::uvec2& origin,
-                       const glm::uvec2& size,
-                       const void* pixels = nullptr);
+  void updateRgbaFloat(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels = nullptr);
 
 public:
   void allocateBlankSingleFloat(const glm::uvec2& size, const void* pixels = nullptr);
 
-  void updateSingleFloat(const glm::uvec2& origin,
-                         const glm::uvec2& size,
-                         const void* pixels = nullptr);
+  void updateSingleFloat(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels = nullptr);
 
 public:
   void allocateBlankSingleShort(const glm::uvec2& size, const void* pixels = nullptr);
 
-  void updateSingleShort(const glm::uvec2& origin,
-                          const glm::uvec2& size,
-                          const void* pixels = nullptr);
+  void updateSingleShort(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels = nullptr);
 
 public:
   void allocateBlankSingleInt32(const glm::uvec2& size, const void* pixels = nullptr);
 
-  void updateSingleInt32(const glm::uvec2& origin,
-                          const glm::uvec2& size,
-                          const void* pixels = nullptr);
+  void updateSingleInt32(const glm::uvec2& origin, const glm::uvec2& size, const void* pixels = nullptr);
 
 public:
   void allocateDepth(const glm::uvec2& size, DepthFormat depthFormat, DepthType depthType);

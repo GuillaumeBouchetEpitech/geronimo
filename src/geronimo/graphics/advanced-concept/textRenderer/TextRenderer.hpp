@@ -15,7 +15,6 @@
 #include <unordered_map>
 #include <vector>
 
-
 namespace gero {
 namespace graphics {
 
@@ -125,5 +124,5 @@ public:
   TextRenderer& render();
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

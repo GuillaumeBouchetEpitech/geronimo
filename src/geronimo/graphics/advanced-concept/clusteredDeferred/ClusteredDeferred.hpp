@@ -16,7 +16,9 @@ public:
   ~ClusteredDeferred() = default;
 
 public:
-  void initialize(const std::string& inRootPath, const gero::graphics::PerspectiveClustering::Def& inClusterDef, const glm::ivec2& inFrameSize);
+  void initialize(const std::string& inRootPath,
+                  const gero::graphics::PerspectiveClustering::Def& inClusterDef,
+                  const glm::ivec2& inFrameSize);
 
 public:
   void resize(const glm::ivec2& inFrameSize);
@@ -34,7 +36,6 @@ public:
   void renderHudQuad(const gero::graphics::Camera& inSceneCamera, const gero::graphics::Camera& inHudCamera);
 
 private:
-
   gero::graphics::PerspectiveClustering::Def _clusterDef;
 
   ScreenRecorder _screenRecorder;
@@ -46,5 +47,5 @@ private:
   float _ambiantLightCoef = 0.1f;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

@@ -53,5 +53,5 @@ void Deferred::renderHudQuad(const glm::mat4& composedMatrix) {
                              _ambiantLightCoef);
 }
 
-}
-}
+} // namespace graphics
+} // namespace gero

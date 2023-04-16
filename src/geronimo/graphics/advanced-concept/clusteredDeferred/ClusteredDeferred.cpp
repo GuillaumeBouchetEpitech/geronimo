@@ -4,7 +4,9 @@
 namespace gero {
 namespace graphics {
 
-void ClusteredDeferred::initialize(const std::string& inRootPath, const gero::graphics::PerspectiveClustering::Def& inClusterDef, const glm::ivec2& inFrameSize) {
+void ClusteredDeferred::initialize(const std::string& inRootPath,
+                                   const gero::graphics::PerspectiveClustering::Def& inClusterDef,
+                                   const glm::ivec2& inFrameSize) {
 
   _clusterDef = inClusterDef;
 
@@ -38,13 +40,13 @@ void ClusteredDeferred::pushSpotLight(const glm::vec3& inPosition, float inRadiu
   _lightManager.pushSpotLight(inPosition, inRadius);
 }
 
-void ClusteredDeferred::applySpotLights(const gero::graphics::Camera& inSceneCamera)
-{
+void ClusteredDeferred::applySpotLights(const gero::graphics::Camera& inSceneCamera) {
   _lightManager.computeDataTextures(inSceneCamera);
   _lightManager.reset();
 }
 
-void ClusteredDeferred::renderHudQuad(const gero::graphics::Camera& inSceneCamera, const gero::graphics::Camera& inHudCamera) {
+void ClusteredDeferred::renderHudQuad(const gero::graphics::Camera& inSceneCamera,
+                                      const gero::graphics::Camera& inHudCamera) {
 
   _resultQuadRenderer.render(_sunLightDirection,
                              inSceneCamera,
@@ -58,8 +60,7 @@ void ClusteredDeferred::renderHudQuad(const gero::graphics::Camera& inSceneCamer
                              _lightManager.getLightsDataTexture(),
                              _lightManager.getZStride(),
                              _ambiantLightCoef);
-
 }
 
-}
-}
+} // namespace graphics
+} // namespace gero

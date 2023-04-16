@@ -1,16 +1,16 @@
 
 #include "StackRenderers.hpp"
 
-#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 #include "geronimo/graphics/GeometryBuilder.hpp"
+#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 
 #include "geronimo/system/asValue.hpp"
 
 namespace gero {
 namespace graphics {
 
-void StackRenderers::initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader, const gero::graphics::Geometry::Definition& inGeoDef)
-{
+void StackRenderers::initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader,
+                                const gero::graphics::Geometry::Definition& inGeoDef) {
   _shader = inShader;
 
   //
@@ -26,7 +26,8 @@ void StackRenderers::initialize(std::shared_ptr<gero::graphics::ShaderProgram> i
   _trianglesStackRenderer.initialize(*_shader, tmpGeoDef);
 }
 
-void StackRenderers::initialize(const gero::graphics::ShaderProgram::Definition& inShaderDef, const gero::graphics::Geometry::Definition& inGeoDef) {
+void StackRenderers::initialize(const gero::graphics::ShaderProgram::Definition& inShaderDef,
+                                const gero::graphics::Geometry::Definition& inGeoDef) {
 
   auto newShader = std::make_shared<gero::graphics::ShaderProgram>(inShaderDef);
 
@@ -45,11 +46,11 @@ void StackRenderers::initialize(const std::string& inRootPath) {
     .setFragmentFilename(k_rootPath + "stackRenderer.glsl.frag")
     .addAttribute("a_position")
     .addAttribute("a_color")
-    .addUniform("u_composedMatrix")
-    ;
+    .addUniform("u_composedMatrix");
 
   gero::graphics::GeometryBuilder geometryBuilder;
-  geometryBuilder.reset()
+  geometryBuilder
+    .reset()
     // .setShader(*_shader)
     // .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::lines)
     .addVbo()
@@ -103,5 +104,5 @@ ITrianglesStackRenderer& StackRenderers::getTrianglesStack() { return _triangles
 
 IWireFramesStackRenderer& StackRenderers::getWireFramesStack() { return _wireFramesStackRenderer; }
 
-}
-}
+} // namespace graphics
+} // namespace gero

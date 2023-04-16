@@ -31,7 +31,7 @@ SDLWindowWrapper::SDLWindowWrapper(const char* name,
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
   // SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-  // SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   // SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
 
   const int32_t posX = SDL_WINDOWPOS_UNDEFINED;

@@ -5,11 +5,11 @@
 #include "geronimo/system/math/angles.hpp"
 #include "geronimo/system/math/constants.hpp"
 
-
 namespace gero {
 namespace graphics {
 
-void TrianglesStackRenderer::initialize(gero::graphics::ShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef) {
+void TrianglesStackRenderer::initialize(gero::graphics::ShaderProgram& shader,
+                                        const gero::graphics::Geometry::Definition& geoDef) {
 
   _geometry.initialize(shader, geoDef);
   _geometry.setPrimitiveCount(0);
@@ -232,5 +232,5 @@ void TrianglesStackRenderer::startSafeMode() { _safeMode = true; }
 
 void TrianglesStackRenderer::stopSafeMode() { _safeMode = false; }
 
-}
-}
+} // namespace graphics
+} // namespace gero

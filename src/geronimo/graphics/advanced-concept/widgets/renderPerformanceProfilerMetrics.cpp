@@ -62,8 +62,9 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
         const float ratio = currDivider / verticalSize;
 
         inStackRenderers.getWireFramesStack().pushLine(borderPos + glm::vec3(0, borderSize.y * ratio, 0.0f),
-                                                     borderPos + glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
-                                                     whiteColor * 0.5f);
+                                                       borderPos +
+                                                         glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
+                                                       whiteColor * 0.5f);
       }
     }
 
@@ -87,9 +88,9 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
       const glm::vec3 currCoord = borderPos + glm::vec3(float(ii) * widthStep, currHeight, 0.0f);
 
       inStackRenderers.getWireFramesStack().pushLine(prevCoord,
-                                                   currCoord,
-                                                   prevDelta < k_slowdownDelta ? whiteColor : redColor,
-                                                   currDelta < k_slowdownDelta ? whiteColor : redColor);
+                                                     currCoord,
+                                                     prevDelta < k_slowdownDelta ? whiteColor : redColor,
+                                                     currDelta < k_slowdownDelta ? whiteColor : redColor);
 
       prevDelta = currDelta;
       prevHeight = currHeight;
@@ -123,12 +124,17 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
 
     inTextRenderer.pushText(inPos, str);
 
-    helpers::renderTextBackground(
-      inPos.z, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.3f, 0.3f, 0.3f, 1.0f), 3.0f, 6.0f, inStackRenderers, inTextRenderer);
+    helpers::renderTextBackground(inPos.z,
+                                  glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                  glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                  3.0f,
+                                  6.0f,
+                                  inStackRenderers,
+                                  inTextRenderer);
   }
 }
 
 } // namespace widgets
 
-}
-}
+} // namespace graphics
+} // namespace gero

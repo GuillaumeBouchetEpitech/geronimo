@@ -37,5 +37,5 @@ private:
   gero::graphics::FrameBuffer _frameBufferGeometries;
 };
 
-}
-}
+} // namespace graphics
+} // namespace gero

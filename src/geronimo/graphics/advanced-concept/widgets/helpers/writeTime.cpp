@@ -3,7 +3,6 @@
 #include <sstream>
 #include <string>
 
-
 namespace gero {
 namespace graphics {
 
@@ -21,7 +20,7 @@ void writeTime(std::stringstream& stream, int64_t time, int32_t leftPadValue /*=
   }
 }
 
-}
+} // namespace helpers
 
-}
-}
+} // namespace graphics
+} // namespace gero

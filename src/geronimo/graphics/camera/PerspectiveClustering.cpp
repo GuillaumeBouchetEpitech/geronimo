@@ -1,17 +1,14 @@
 
 #include "PerspectiveClustering.hpp"
 
-#include "geronimo/system/math/clamp.hpp"
-#include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
-
+#include "geronimo/system/TraceLogger.hpp"
+#include "geronimo/system/math/clamp.hpp"
 
 namespace gero {
 namespace graphics {
 
-
-void PerspectiveClustering::initialize(const Def& inDef)
-{
+void PerspectiveClustering::initialize(const Def& inDef) {
   if (inDef.clusterSliceX == 0)
     D_THROW(std::runtime_error, "cluster clusterSliceX cannot be 0");
   if (inDef.clusterSliceY == 0)
@@ -22,31 +19,27 @@ void PerspectiveClustering::initialize(const Def& inDef)
     D_THROW(std::runtime_error, "cluster maxLightsPerCluster cannot be 0");
 
   _def = inDef;
-  _prevDataBuffer.resize(_def.clusterSliceX * _def.clusterSliceY * _def.clusterSliceZ * (1U + _def.maxLightsPerCluster));
-  _currDataBuffer.resize(_def.clusterSliceX * _def.clusterSliceY * _def.clusterSliceZ * (1U + _def.maxLightsPerCluster));
+  _prevDataBuffer.resize(_def.clusterSliceX * _def.clusterSliceY * _def.clusterSliceZ *
+                         (1U + _def.maxLightsPerCluster));
+  _currDataBuffer.resize(_def.clusterSliceX * _def.clusterSliceY * _def.clusterSliceZ *
+                         (1U + _def.maxLightsPerCluster));
 
   _clusterStride = std::size_t(_def.clusterSliceX * _def.clusterSliceY * _def.clusterSliceZ);
 }
 
-void PerspectiveClustering::resetClustersCount()
-{
+void PerspectiveClustering::resetClustersCount() {
   if (_currDataBuffer.empty())
     D_THROW(std::runtime_error, "cluster not initialized");
 
   for (int32_t zz = 0; zz < int32_t(_def.clusterSliceZ); ++zz)
-  for (int32_t yy = 0; yy < int32_t(_def.clusterSliceY); ++yy)
-  for (int32_t xx = 0; xx < int32_t(_def.clusterSliceX); ++xx)
-  {
-    // reset cluster light size
-    _currDataBuffer.at(getClusterId(xx, yy, zz)) = 0.0f;
-  }
-
+    for (int32_t yy = 0; yy < int32_t(_def.clusterSliceY); ++yy)
+      for (int32_t xx = 0; xx < int32_t(_def.clusterSliceX); ++xx) {
+        // reset cluster light size
+        _currDataBuffer.at(getClusterId(xx, yy, zz)) = 0.0f;
+      }
 }
 
-void PerspectiveClustering::computeCluster(
-  const Camera& inCamera,
-  const std::vector<SpotLight>& inLights
-) {
+void PerspectiveClustering::computeCluster(const Camera& inCamera, const std::vector<SpotLight>& inLights) {
   if (_currDataBuffer.empty())
     D_THROW(std::runtime_error, "cluster not initialized");
 
@@ -77,8 +70,7 @@ void PerspectiveClustering::computeCluster(
 
   // D_MYLOG("inLights.size() " << inLights.size());
 
-  for (std::size_t lightIndex = 0; lightIndex < inLights.size(); ++lightIndex)
-  {
+  for (std::size_t lightIndex = 0; lightIndex < inLights.size(); ++lightIndex) {
     const SpotLight& currLight = inLights[lightIndex];
 
     // World to View
@@ -112,24 +104,18 @@ void PerspectiveClustering::computeCluster(
     // D_MYLOG("zStartIndex " << zStartIndex << "    zEndIndex " << zEndIndex);
 
     // Culling
-    if (
-      (zStartIndex < 0 && zEndIndex < 0) ||
-      (zStartIndex >= int32_t(_def.clusterSliceZ) && zEndIndex >= int32_t(_def.clusterSliceZ))
-    ) {
+    if ((zStartIndex < 0 && zEndIndex < 0) ||
+        (zStartIndex >= int32_t(_def.clusterSliceZ) && zEndIndex >= int32_t(_def.clusterSliceZ))) {
       continue; // light wont fall into any cluster
     }
 
-    if (
-      (yStartIndex < 0 && yEndIndex < 0) ||
-      (yStartIndex >= int32_t(_def.clusterSliceY) && yEndIndex >= int32_t(_def.clusterSliceY))
-    ) {
+    if ((yStartIndex < 0 && yEndIndex < 0) ||
+        (yStartIndex >= int32_t(_def.clusterSliceY) && yEndIndex >= int32_t(_def.clusterSliceY))) {
       continue; // light wont fall into any cluster
     }
 
-    if (
-      (xStartIndex < 0 && xEndIndex < 0) ||
-      (xStartIndex >= int32_t(_def.clusterSliceX) && xEndIndex >= int32_t(_def.clusterSliceX))
-    ) {
+    if ((xStartIndex < 0 && xEndIndex < 0) ||
+        (xStartIndex >= int32_t(_def.clusterSliceX) && xEndIndex >= int32_t(_def.clusterSliceX))) {
       continue; // light wont fall into any cluster
     }
 
@@ -149,84 +135,49 @@ void PerspectiveClustering::computeCluster(
     //   << "     --> " << currLight.position << " -> " << currLight.radius);
 
     for (int32_t zz = zStartIndex; zz <= zEndIndex; ++zz)
-    for (int32_t yy = yStartIndex; yy <= yEndIndex; ++yy)
-    for (int32_t xx = xStartIndex; xx <= xEndIndex; ++xx)
-    {
+      for (int32_t yy = yStartIndex; yy <= yEndIndex; ++yy)
+        for (int32_t xx = xStartIndex; xx <= xEndIndex; ++xx) {
 
+          const std::size_t clusterId = getClusterId(xx, yy, zz);
 
-      const std::size_t clusterId = getClusterId(xx, yy, zz);
+          // Update the light count for every cluster
+          const int32_t clusterLightCount = int32_t(_currDataBuffer.at(clusterId));
 
-      // Update the light count for every cluster
-      const int32_t clusterLightCount = int32_t(_currDataBuffer.at(clusterId));
+          if ((clusterLightCount + 1) <= int32_t(_def.maxLightsPerCluster)) {
 
-      if ((clusterLightCount + 1) <= int32_t(_def.maxLightsPerCluster))
-      {
+            // D_MYLOG("   -- clusterId " << clusterId << "    clusterLightCount " << clusterLightCount);
+            // D_MYLOG("           _currDataBuffer.at(clusterId) " << _currDataBuffer.at(clusterId));
 
-        // D_MYLOG("   -- clusterId " << clusterId << "    clusterLightCount " << clusterLightCount);
-        // D_MYLOG("           _currDataBuffer.at(clusterId) " << _currDataBuffer.at(clusterId));
+            // Update the light index for the particular cluster in the light buffer
+            // _currDataBuffer.at(clusterId + std::size_t(clusterLightCount + 1) * _clusterStride) = float(lightIndex);
+            _currDataBuffer.at(clusterId + std::size_t(clusterLightCount + 1) *
+                                             std::size_t(_def.clusterSliceX * _def.clusterSliceY)) = float(lightIndex);
 
-
-
-        // Update the light index for the particular cluster in the light buffer
-        // _currDataBuffer.at(clusterId + std::size_t(clusterLightCount + 1) * _clusterStride) = float(lightIndex);
-        _currDataBuffer.at(clusterId + std::size_t(clusterLightCount + 1) * std::size_t(_def.clusterSliceX * _def.clusterSliceY)) = float(lightIndex);
-
-        // Update the light count for every cluster
-        _currDataBuffer.at(clusterId) = float(clusterLightCount + 1);
-
-
-
-      }
-
-
-    }
-
-
-
+            // Update the light count for every cluster
+            _currDataBuffer.at(clusterId) = float(clusterLightCount + 1);
+          }
+        }
   }
-
-
-
 }
 
+const std::vector<float>& PerspectiveClustering::getPreviousDataBuffer() const { return _prevDataBuffer; }
 
+const std::vector<float>& PerspectiveClustering::getDataBuffer() const { return _currDataBuffer; }
 
-
-const std::vector<float>& PerspectiveClustering::getPreviousDataBuffer() const
-{
-  return _prevDataBuffer;
-}
-
-const std::vector<float>& PerspectiveClustering::getDataBuffer() const
-{
-  return _currDataBuffer;
-}
-
-int32_t PerspectiveClustering::getClusterSize(int32_t inX, int32_t inY, int32_t inZ) const
-{
+int32_t PerspectiveClustering::getClusterSize(int32_t inX, int32_t inY, int32_t inZ) const {
   if (_currDataBuffer.empty())
     D_THROW(std::runtime_error, "cluster not initialized");
 
   return int32_t(_currDataBuffer.at(getClusterId(inX, inY, inZ)));
 }
 
-float PerspectiveClustering::getZStride() const
-{
-  return _zStride;
-}
+float PerspectiveClustering::getZStride() const { return _zStride; }
 
-std::size_t PerspectiveClustering::getClusterStride() const
-{
-  return _clusterStride;
-}
+std::size_t PerspectiveClustering::getClusterStride() const { return _clusterStride; }
 
-const PerspectiveClustering::Def& PerspectiveClustering::getDefinition() const
-{
-  return _def;
-}
+const PerspectiveClustering::Def& PerspectiveClustering::getDefinition() const { return _def; }
 
-std::size_t PerspectiveClustering::getClusterId(int32_t inX, int32_t inY, int32_t inZ) const
-{
+std::size_t PerspectiveClustering::getClusterId(int32_t inX, int32_t inY, int32_t inZ) const {
 
   // TODO: I WAS HERE
   // TODO: I WAS HERE
@@ -236,10 +187,8 @@ std::size_t PerspectiveClustering::getClusterId(int32_t inX, int32_t inY, int32_
   // -> total light isolated
   // -> light data isolated per (chunk of?) Z chunks
 
-
-
-  // return std::size_t((inZ * int32_t(_def.clusterSliceX * _def.clusterSliceY) + inY * int32_t(_def.clusterSliceX) + inX));
-
+  // return std::size_t((inZ * int32_t(_def.clusterSliceX * _def.clusterSliceY) + inY * int32_t(_def.clusterSliceX) +
+  // inX));
 
   if (inX < 0 || inX >= int32_t(_def.clusterSliceX))
     D_THROW(std::runtime_error, "cluster X out of range, X: " << inX << " / " << _def.clusterSliceX);
@@ -248,18 +197,13 @@ std::size_t PerspectiveClustering::getClusterId(int32_t inX, int32_t inY, int32_
   if (inZ < 0 || inZ >= int32_t(_def.clusterSliceZ))
     D_THROW(std::runtime_error, "cluster Z out of range, Z: " << inZ << " / " << _def.clusterSliceZ);
 
-
   const int32_t zLayer = inZ * int32_t(_def.clusterSliceX * _def.clusterSliceY * (1U + _def.maxLightsPerCluster));
 
   return std::size_t(zLayer + inY * int32_t(_def.clusterSliceX) + inX);
-
-
-
 }
 
 // std::size_t PerspectiveClustering::getValueIndex(int32_t inX, int32_t inY, int32_t inZ, int32_t inVal) const
 // {
-
 
 //   if (inX < 0 || inX >= int32_t(_def.clusterSliceX))
 //     D_THROW(std::runtime_error, "cluster X out of range, X: " << inX << " / " << _def.clusterSliceX);
@@ -270,17 +214,13 @@ std::size_t PerspectiveClustering::getClusterId(int32_t inX, int32_t inY, int32_
 //   if (inVal < 0 || inVal >= int32_t(1U + _def.maxLightsPerCluster))
 //     D_THROW(std::runtime_error, "cluster Z out of range, Z: " << inZ << " / " << _def.clusterSliceZ);
 
-
 //   const int32_t horizontalStride = int32_t(_def.clusterSliceX * _def.clusterSliceY);
 //   const int32_t zBoxStride = horizontalStride * int32_t(1U + _def.maxLightsPerCluster);
 //   const int32_t zLayer = inZ * int32_t(zBoxStride);
 
 //   return std::size_t(zLayer + (inY * int32_t(_def.clusterSliceX) + inX) + inVal * horizontalStride);
 
-
 // }
 
-
-}
-}
-
+} // namespace graphics
+} // namespace gero
