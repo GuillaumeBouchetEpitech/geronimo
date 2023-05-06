@@ -8,22 +8,6 @@ DIR_ROOT=$PWD
 #
 #
 
-echo ""
-echo "#################################################"
-echo "#                                               #"
-echo "# IF THIS SCRIPT FAIL -> TRY THOSE TWO COMMANDS #"
-echo "# -> 'chmod u+x ./sh_everything.sh'              #"
-echo "# -> './sh_everything.sh'                       #"
-echo "#                                               #"
-echo "#################################################"
-echo ""
-
-#
-#
-#
-#
-#
-
 func_ensure_pkg() {
 
   PKG_NAME=$1
@@ -50,26 +34,117 @@ func_ensure_pkg libsdl2-dev
 #
 #
 
+DIR_THIRDPARTIES=$PWD/thirdparties
+DIR_DEPENDENCIES=$DIR_THIRDPARTIES/dependencies
+
+mkdir -p $DIR_DEPENDENCIES
+
+#
+#
+#
+#
+#
+
+echo ""
+echo "###"
+echo "###"
+echo "### ensuring the cpp to wasm compiler (emsdk) is installed"
+echo "###"
+echo "###"
+echo ""
+
+EMSDK_VERSION=3.1.26
+
 if [ -z "${EMSDK}" ]; then
+
+  echo " -> not installed"
+  echo "   -> installing"
+
   echo "the env var 'EMSDK' is missing, the web-wasm builds will be skipped"
   echo " => check the readme if you want to install emscripten"
   echo " => it emscripten is laready installed, you may just need to run '. ./emsdk_env.sh' in this terminal"
-  WEB_WASM_AVAILABLE=no
+
+
+  sh sh_install_one_git_thirdparty.sh \
+    $DIR_DEPENDENCIES \
+    "EMSDK" \
+    "emsdk" \
+    "emscripten-core/emsdk" \
+    $EMSDK_VERSION \
+    "not-interactive"
+
+  cd $DIR_DEPENDENCIES/emsdk
+
 else
-  echo "the env var 'EMSDK' was found, the web-wasm builds will be included"
-  WEB_WASM_AVAILABLE=yes
+
+  echo " -> already installed"
+
+  cd $EMSDK
 fi
 
+echo " -> ensuring the correct version is installed"
+
+./emsdk install $EMSDK_VERSION
+
+echo " -> activating the correct version"
+
+./emsdk activate --embedded $EMSDK_VERSION
+
+. ./emsdk_env.sh
+
+# em++ --clear-cache
+
+cd $DIR_ROOT
+
+echo " -> success"
+
 #
 #
 #
 #
 #
 
-echo "ensuring the thirdparties are installed"
+echo ""
+echo "###"
+echo "###"
+echo "### ensuring the thirdparties are installed"
+echo "###"
+echo "###"
+echo ""
 
-chmod u+x ./sh_install_thirdparties.sh
-./sh_install_thirdparties.sh not-interactive
+sh sh_install_one_git_thirdparty.sh \
+  $DIR_DEPENDENCIES \
+  "BULLET_PHYSICS" \
+  "bullet3" \
+  "bulletphysics/bullet3" \
+  "2.87" \
+  "not-interactive"
+
+sh sh_install_one_git_thirdparty.sh \
+  $DIR_DEPENDENCIES \
+  "GLM" \
+  "glm" \
+  "g-truc/glm" \
+  "0.9.9.2" \
+  "not-interactive"
+
+sh sh_install_one_git_thirdparty.sh \
+  $DIR_DEPENDENCIES \
+  "TINY_OBJ_LOADER" \
+  "tinyobjloader" \
+  "syoyo/tinyobjloader" \
+  "v1.0.6" \
+  "not-interactive"
+
+sh sh_install_one_git_thirdparty.sh \
+  $DIR_DEPENDENCIES \
+  "STB" \
+  "stb" \
+  "nothings/stb" \
+  "master" \
+  "not-interactive"
+
+tree -L 1 $DIR_DEPENDENCIES
 
 #
 #
@@ -77,15 +152,29 @@ chmod u+x ./sh_install_thirdparties.sh
 #
 #
 
-echo "building thirdparties libraries"
-echo "  native version"
+echo ""
+echo "###"
+echo "###"
+echo "### building thirdparties libraries"
+echo "###"
+echo "###"
+echo ""
+
+echo "#"
+echo "# native version"
+echo "#"
+
 cd ./thirdparties
 
 make build_mode="release" build_platform="native" all -j4
 
 case $WEB_WASM_AVAILABLE in
 yes)
-  echo "  web-wasm version"
+
+  echo "#"
+  echo "# web-wasm version"
+  echo "#"
+
   make build_mode="release" build_platform="web-wasm" all -j4
   ;;
 esac
@@ -98,13 +187,27 @@ cd $DIR_ROOT
 #
 #
 
-echo "building main libraries"
-echo "  native version"
+echo ""
+echo "###"
+echo "###"
+echo "### building main libraries"
+echo "###"
+echo "###"
+echo ""
+
+echo "#"
+echo "# native version"
+echo "#"
+
 make build_mode="release" build_platform="native" all -j4
 
 case $WEB_WASM_AVAILABLE in
 yes)
-  echo "  web-wasm version"
+
+  echo "#"
+  echo "# web-wasm version"
+  echo "#"
+
   make build_mode="release" build_platform="web-wasm" all -j4
   ;;
 esac
