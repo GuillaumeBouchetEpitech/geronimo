@@ -5,6 +5,7 @@
 
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/file-utils/getFileContent.hpp"
+#include "geronimo/system/file-utils/FileLoadFileCallback.hpp"
 #include "geronimo/system/math/clamp.hpp"
 
 #include <algorithm>
@@ -65,18 +66,18 @@ void OpenALSoundManager::setEnabled(bool enabled) {
 bool OpenALSoundManager::isEnabled() const { return _enabled; }
 
 void OpenALSoundManager::loadOggFromFile(uint32_t alias, const std::string& filename) {
-  loadOggFromFile(alias, filename, fileUtils::getDefaulCallback());
+  loadOggFromFile(alias, filename, gero::fileUtils::getDefaulCallback());
 }
 
 void OpenALSoundManager::loadOggFromFile(uint32_t alias,
                                          const std::string& filename,
-                                         fileUtils::FileManager& fileManager) {
-  loadOggFromFile(alias, filename, fileUtils::getFileManagerCallback(fileManager));
+                                         gero::fileUtils::FileManager& fileManager) {
+  loadOggFromFile(alias, filename, gero::fileUtils::getFileManagerCallback(fileManager));
 }
 
 void OpenALSoundManager::loadOggFromFile(uint32_t alias,
                                          const std::string& filename,
-                                         fileUtils::LoadCallback loadFileCallback) {
+                                         gero::fileUtils::LoadCallback loadFileCallback) {
   std::string content;
   loadFileCallback(filename, content);
 

@@ -1,5 +1,5 @@
 
-#include "geronimo/graphics/camera/PerspectiveClustering.hpp"
+#include "geronimo/graphics/advanced-concept/clusteredDeferred/internals/PerspectiveClustering.hpp"
 
 #include "geronimo/system/TraceLogger.hpp"
 

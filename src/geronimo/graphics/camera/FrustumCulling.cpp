@@ -89,10 +89,11 @@ bool FrustumCulling::cubeInFrustum(const glm::vec3& inCenter, const glm::vec3& i
 void FrustumCulling::_setPlane(FrustumSide inSide, const glm::vec4& inValue) {
   const float magnitude = glm::length(glm::vec3(inValue));
 
-  if (magnitude == 0.0f)
+  if (magnitude == 0.0f) {
     _planes[asValue(inSide)] = inValue;
-  else
+  } else {
     _planes[asValue(inSide)] = inValue / magnitude;
+  }
 }
 
 } // namespace graphics

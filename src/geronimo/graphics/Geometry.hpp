@@ -66,6 +66,7 @@ public:
 
       int32_t stride = -1;
       bool instanced = false;
+      bool dynamic = false;
 
       std::vector<Attr> attrs;
 
@@ -95,14 +96,38 @@ public:
   void initialize(ShaderProgram& shader, const Definition& def);
 
 public:
-  void updateBuffer(uint32_t index, const void* data, uint32_t dataSize, bool dynamic = false) const;
+  void allocateBuffer(uint32_t index, uint32_t dataSize, const void* data = nullptr);
+  void updateBuffer(uint32_t index, const void* data, uint32_t dataSize);
+  void updateOrAllocateBuffer(uint32_t index, uint32_t dataSize, const void* data = nullptr);
   void render() const;
 
 public:
   template <typename VertexType>
-  void updateBuffer(uint32_t index, const std::vector<VertexType>& data, bool dynamic = false) const {
-    updateBuffer(
-      index, static_cast<const void*>(data.data()), uint32_t(data.size()) * uint32_t(sizeof(VertexType)), dynamic);
+  void allocateBuffer(uint32_t index, const std::vector<VertexType>& data)
+  {
+    uint32_t dataSize = uint32_t(data.size()) * uint32_t(sizeof(VertexType));
+    allocateBuffer(index, dataSize, static_cast<const void*>(data.data()));
+  }
+
+  template <typename VertexType>
+  void preAllocateBufferFromCapacity(uint32_t index, const std::vector<VertexType>& data)
+  {
+    uint32_t dataSize = uint32_t(data.capacity()) * uint32_t(sizeof(VertexType));
+    allocateBuffer(index, dataSize, nullptr);
+  }
+
+  template <typename VertexType>
+  void updateBuffer(uint32_t index, const std::vector<VertexType>& data)
+  {
+    uint32_t dataSize = uint32_t(data.size()) * uint32_t(sizeof(VertexType));
+    updateBuffer(index, static_cast<const void*>(data.data()), dataSize);
+  }
+
+  template <typename VertexType>
+  void updateOrAllocateBuffer(uint32_t index, const std::vector<VertexType>& data)
+  {
+    uint32_t dataSize = uint32_t(data.size()) * uint32_t(sizeof(VertexType));
+    updateOrAllocateBuffer(index, dataSize, static_cast<const void*>(data.data()));
   }
 
   void setPrimitiveStart(uint32_t start);

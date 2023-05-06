@@ -42,4 +42,6 @@ make build_mode="debug" build_platform="native" all -j3
 # valgrind --leak-check=full ./bin/exec --gtest_filter=system_basic_double_linked_list*
 
 # valgrind --leak-check=full ./bin/exec --gtest_filter=test_perspective_clustering*
-./bin/exec --gtest_filter=test_perspective_clustering*
+# ./bin/exec --gtest_filter=test_perspective_clustering*
+
+./bin/exec --gtest_filter=audio_general_test*

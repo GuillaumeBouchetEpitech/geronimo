@@ -55,7 +55,9 @@ void StackRenderers::initialize(const std::string& inRootPath) {
     // .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::lines)
     .addVbo()
     .addVboAttribute("a_position", gero::graphics::Geometry::AttrType::Vec3f)
-    .addVboAttribute("a_color", gero::graphics::Geometry::AttrType::Vec4f);
+    .addVboAttribute("a_color", gero::graphics::Geometry::AttrType::Vec4f)
+    .setVboAsDynamic()
+    ;
 
   StackRenderers::initialize(shaderProgramBuilder.getDefinition(), geometryBuilder.getDefinition(false));
 }

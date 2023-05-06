@@ -118,90 +118,90 @@ void Geometry::initialize(ShaderProgram& shader, const Definition& def) {
     for (const auto& attr : attrs) {
       uint32_t rowSize = 1;
 
-      GlContext::VertexBufferObject::AttribType nextType = GlContext::VertexBufferObject::AttribType::Float;
+      GlContext::VBO::AttribType nextType = GlContext::VBO::AttribType::Float;
 
       switch (attr.type) {
 
         //
 
       case AttrType::Int8:
-        nextType = GlContext::VertexBufferObject::AttribType::Int8;
+        nextType = GlContext::VBO::AttribType::Int8;
         rowSize = 1;
         break;
       case AttrType::UInt8:
-        nextType = GlContext::VertexBufferObject::AttribType::UInt8;
+        nextType = GlContext::VBO::AttribType::UInt8;
         rowSize = 1;
         break;
 
       case AttrType::Int16:
-        nextType = GlContext::VertexBufferObject::AttribType::Int16;
+        nextType = GlContext::VBO::AttribType::Int16;
         rowSize = 2;
         break;
       case AttrType::UInt16:
-        nextType = GlContext::VertexBufferObject::AttribType::UInt16;
+        nextType = GlContext::VBO::AttribType::UInt16;
         rowSize = 2;
         break;
 
       case AttrType::Int32:
-        nextType = GlContext::VertexBufferObject::AttribType::Int32;
+        nextType = GlContext::VBO::AttribType::Int32;
         rowSize = 4;
         break;
       case AttrType::UInt32:
-        nextType = GlContext::VertexBufferObject::AttribType::UInt32;
+        nextType = GlContext::VBO::AttribType::UInt32;
         rowSize = 4;
         break;
 
         //
 
       case AttrType::Float:
-        nextType = GlContext::VertexBufferObject::AttribType::Float;
+        nextType = GlContext::VBO::AttribType::Float;
         rowSize = 1;
         break;
       case AttrType::Vec2f:
-        nextType = GlContext::VertexBufferObject::AttribType::Float;
+        nextType = GlContext::VBO::AttribType::Float;
         rowSize = 2;
         break;
       case AttrType::Vec3f:
-        nextType = GlContext::VertexBufferObject::AttribType::Float;
+        nextType = GlContext::VBO::AttribType::Float;
         rowSize = 3;
         break;
       case AttrType::Vec4f:
-        nextType = GlContext::VertexBufferObject::AttribType::Float;
+        nextType = GlContext::VBO::AttribType::Float;
         rowSize = 4;
         break;
       case AttrType::Mat3f:
-        nextType = GlContext::VertexBufferObject::AttribType::Float;
+        nextType = GlContext::VBO::AttribType::Float;
         rowSize = 3;
         break;
       case AttrType::Mat4f:
-        nextType = GlContext::VertexBufferObject::AttribType::Float;
+        nextType = GlContext::VBO::AttribType::Float;
         rowSize = 4;
         break;
 
         //
 
         // case AttrType::Double:
-        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   nextType = GlContext::VBO::AttribType::Double;
         //   rowSize = 1 * 2;
         //   break;
         // case AttrType::Vec2d:
-        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   nextType = GlContext::VBO::AttribType::Double;
         //   rowSize = 2 * 2;
         //   break;
         // case AttrType::Vec3d:
-        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   nextType = GlContext::VBO::AttribType::Double;
         //   rowSize = 3 * 2;
         //   break;
         // case AttrType::Vec4d:
-        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   nextType = GlContext::VBO::AttribType::Double;
         //   rowSize = 4 * 2;
         //   break;
         // case AttrType::Mat3d:
-        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   nextType = GlContext::VBO::AttribType::Double;
         //   rowSize = 3 * 2;
         //   break;
         // case AttrType::Mat4d:
-        //   nextType = GlContext::VertexBufferObject::AttribType::Double;
+        //   nextType = GlContext::VBO::AttribType::Double;
         //   rowSize = 4 * 2;
         //   break;
 
@@ -232,11 +232,11 @@ void Geometry::initialize(ShaderProgram& shader, const Definition& def) {
           const uint32_t attrId = uint32_t(attrLocation) + kk;
           const uint32_t rowIndex = (liveAttrIndex + kk * rowSize) * uint32_t(sizeof(float));
 
-          GlContext::VertexBufferObject::enableAttribArray(attrId);
-          GlContext::VertexBufferObject::setAttribPointer(attrId, rowSize, vboStride, rowIndex, nextType);
+          GlContext::VBO::enableAttribArray(attrId);
+          GlContext::VBO::setAttribPointer(attrId, rowSize, vboStride, rowIndex, nextType);
 
           if (vbo.instanced) {
-            GlContext::VertexBufferObject::enableAttribDivisor(attrId);
+            GlContext::VBO::enableAttribDivisor(attrId);
 
             if (!_isInstanced)
               _isInstanced = true;
@@ -251,15 +251,32 @@ void Geometry::initialize(ShaderProgram& shader, const Definition& def) {
   _vao.unbind();
 }
 
-void Geometry::updateBuffer(uint32_t index, const void* data, uint32_t dataSize, bool dynamic /*= false*/) const {
+void Geometry::allocateBuffer(uint32_t index, uint32_t dataSize, const void* data /*= nullptr*/)
+{
   if (!_vao.isAllocated() || !_vbo.isAllocated())
     D_THROW(std::runtime_error, "vao/vbo not allocated");
 
-  _vbo.bind(index);
+  const auto& vboDef = _def.vbos.at(index);
 
-  GlContext::VertexBufferObject::uploadBuffer(data, dataSize, dynamic);
+  _vbo.allocateBuffer(index, dataSize, vboDef.dynamic, data);
+}
 
-  VertexBufferObject::unbind();
+void Geometry::updateBuffer(uint32_t index, const void* data, uint32_t dataSize)
+{
+  if (!_vao.isAllocated() || !_vbo.isAllocated())
+    D_THROW(std::runtime_error, "vao/vbo not allocated");
+
+  _vbo.updateBuffer(index, dataSize, data);
+}
+
+void Geometry::updateOrAllocateBuffer(uint32_t index, uint32_t dataSize, const void* data /*= nullptr*/)
+{
+  if (!_vao.isAllocated() || !_vbo.isAllocated())
+    D_THROW(std::runtime_error, "vao/vbo not allocated");
+
+  const auto& vboDef = _def.vbos.at(index);
+
+  _vbo.updateOrAllocateBuffer(index, dataSize, vboDef.dynamic, data);
 }
 
 void Geometry::render() const {
@@ -271,16 +288,16 @@ void Geometry::render() const {
 
   _vao.bind();
 
-  GlContext::VertexBufferObject::Primitives primitive = GlContext::VertexBufferObject::Primitives::lines;
+  GlContext::VBO::Primitives primitive = GlContext::VBO::Primitives::lines;
   if (_primitiveType == PrimitiveType::triangles)
-    primitive = GlContext::VertexBufferObject::Primitives::triangles;
+    primitive = GlContext::VBO::Primitives::triangles;
   else if (_primitiveType == PrimitiveType::line_strip)
-    primitive = GlContext::VertexBufferObject::Primitives::line_strip;
+    primitive = GlContext::VBO::Primitives::line_strip;
 
   if (_isInstanced)
-    GlContext::VertexBufferObject::drawInstancedArrays(primitive, _primitiveStart, _primitiveCount, _instanceCount);
+    GlContext::VBO::drawInstancedArrays(primitive, _primitiveStart, _primitiveCount, _instanceCount);
   else
-    GlContext::VertexBufferObject::drawArrays(primitive, _primitiveStart, _primitiveCount);
+    GlContext::VBO::drawArrays(primitive, _primitiveStart, _primitiveCount);
 
   _vao.unbind();
 }

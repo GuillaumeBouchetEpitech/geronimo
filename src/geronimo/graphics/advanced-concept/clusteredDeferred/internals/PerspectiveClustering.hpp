@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Camera.hpp"
+#include "geronimo/graphics/camera/Camera.hpp"
 
 #include <vector>
 

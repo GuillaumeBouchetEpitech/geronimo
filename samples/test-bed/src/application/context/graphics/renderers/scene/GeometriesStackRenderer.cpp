@@ -40,6 +40,7 @@ void GeometriesStackRenderer::initialize() {
     .addVboAttribute("a_vertexNormal", gero::graphics::Geometry::AttrType::Vec3f)
     .addVbo()
     .setVboAsInstanced()
+    .setVboAsDynamic()
     .addVboAttribute("a_offsetPosition", gero::graphics::Geometry::AttrType::Vec3f)
     .addVboAttribute("a_offsetOrientation", gero::graphics::Geometry::AttrType::Vec4f)
     .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Vec3f)
@@ -59,12 +60,13 @@ void GeometriesStackRenderer::createAlias(int32_t alias, const gero::graphics::M
 
   auto newAlias = std::make_shared<AliasedGeometry>();
 
+  newAlias->instanceVertices.reserve(256); // pre-allocate
+
   newAlias->geometry.initialize(*_shader, _geomDef);
-  newAlias->geometry.updateBuffer(0, vertices, false);
+  newAlias->geometry.allocateBuffer(0, vertices);
+  newAlias->geometry.preAllocateBufferFromCapacity(1, newAlias->instanceVertices);
   newAlias->geometry.setPrimitiveStart(0);
   newAlias->geometry.setPrimitiveCount(uint32_t(vertices.size()));
-
-  newAlias->instanceVertices.reserve(256); // pre-allocate
 
   _aliasedGeometriesMap[alias] = newAlias;
 }
@@ -106,7 +108,7 @@ void GeometriesStackRenderer::renderAll() {
 
     auto& geometry = pair.second->geometry;
 
-    geometry.updateBuffer(1, vertices, true);
+    geometry.updateOrAllocateBuffer(1, vertices);
     geometry.setInstancedCount(uint32_t(vertices.size()));
     geometry.render();
 

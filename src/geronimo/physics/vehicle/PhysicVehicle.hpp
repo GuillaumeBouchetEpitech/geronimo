@@ -59,24 +59,24 @@ public:
   virtual ~PhysicVehicle();
 
   PhysicVehicle(const PhysicVehicle& other) = delete;
-  PhysicVehicle(PhysicVehicle&& other) = default;
+  PhysicVehicle(PhysicVehicle&& other);
   PhysicVehicle& operator=(const PhysicVehicle& other) = delete;
-  PhysicVehicle& operator=(PhysicVehicle&& other) = default;
+  PhysicVehicle& operator=(PhysicVehicle&& other);
 
 public:
-  virtual void applyEngineForce(int32_t index, float force) override;
-  virtual void applyBrake(int32_t index, float force) override;
-  virtual void setSteeringValue(int32_t index, float steering) override;
-  virtual void reset() override;
+  void applyEngineForce(int32_t index, float force) override;
+  void applyBrake(int32_t index, float force) override;
+  void setSteeringValue(int32_t index, float steering) override;
+  void reset() override;
 
 public:
-  virtual int32_t getNumWheels() const override;
-  virtual const glm::mat4& getWheelTransform(int32_t index, glm::mat4& mat4x4) const override;
-  virtual glm::vec3 getWheelPosition(int32_t index) const override;
-  virtual glm::quat getWheelOrientation(int32_t index) const override;
-  virtual float getCurrentSpeedKmHour() const override;
-  virtual BodyWeakRef getPhysicBody() override;
-  virtual const BodyWeakRef getPhysicBody() const override;
+  int32_t getNumWheels() const override;
+  const glm::mat4& getWheelTransform(int32_t index, glm::mat4& mat4x4) const override;
+  glm::vec3 getWheelPosition(int32_t index) const override;
+  glm::quat getWheelOrientation(int32_t index) const override;
+  float getCurrentSpeedKmHour() const override;
+  BodyWeakRef getPhysicBody() override;
+  const BodyWeakRef getPhysicBody() const override;
 };
 
 using VehiclesPool = safe_weak_ref_data_pool<PhysicVehicle, AbstractPhysicVehicle, 256, false>;

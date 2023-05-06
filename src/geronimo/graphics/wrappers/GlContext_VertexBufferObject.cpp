@@ -15,7 +15,7 @@ namespace graphics {
 
 namespace GlContext {
 
-namespace VertexBufferObject {
+namespace VBO {
 
 void generateMany(uint32_t total, uint32_t* buffers) { glCheck(glGenBuffers(GLsizei(total), buffers)); }
 
@@ -62,10 +62,14 @@ void setAttribPointer(uint32_t attrId, uint32_t rowSize, uint32_t stride, uint32
 
 void enableAttribDivisor(uint32_t attrId) { glCheck(glVertexAttribDivisor(attrId, 1)); }
 
-void uploadBuffer(const void* data, uint32_t dataSize, bool dynamic) {
+void allocateBuffer(uint32_t dataSize, bool dynamic, const void* data) {
   const GLenum usage = (dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 
   glCheck(glBufferData(GL_ARRAY_BUFFER, GLsizeiptr(dataSize), data, GLenum(usage)));
+}
+
+void uploadBuffer(const void* data, uint32_t dataSize) {
+  glCheck(glBufferSubData(GL_ARRAY_BUFFER, 0, GLsizeiptr(dataSize), data));
 }
 
 void drawArrays(Primitives primitive, uint32_t primitiveStart, uint32_t primitiveCount) {

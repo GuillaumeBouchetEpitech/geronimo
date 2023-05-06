@@ -2,8 +2,8 @@
 #include "ResultQuadRenderer.hpp"
 
 #include "geronimo/graphics/GeometryBuilder.hpp"
-#include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
+#include "geronimo/graphics/GlContext.hpp"
 
 namespace gero {
 namespace graphics {
@@ -98,6 +98,7 @@ void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
   for (uint32_t index : indices)
     buffer.push_back(vertices[index]);
 
+  _quadGeometry.allocateBuffer(0, buffer);
   _quadGeometry.updateBuffer(0, buffer);
   _quadGeometry.setPrimitiveCount(uint32_t(buffer.size()));
 }

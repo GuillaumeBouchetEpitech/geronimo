@@ -1,9 +1,10 @@
 
 #pragma once
 
+#include "PerspectiveClustering.hpp"
+
 #include "geronimo/graphics/DataTexture.hpp"
 #include "geronimo/graphics/camera/Camera.hpp"
-#include "geronimo/graphics/camera/PerspectiveClustering.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <cstdint>

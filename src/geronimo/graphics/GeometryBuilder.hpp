@@ -24,8 +24,8 @@ public:
   GeometryBuilder& setPrimitiveType(Geometry::PrimitiveType primitiveType);
   GeometryBuilder& addVbo();
   GeometryBuilder& setVboAsInstanced();
-  GeometryBuilder&
-  addVboAttribute(const std::string& name, Geometry::AttrType type, int32_t index, bool isIgnored = false);
+  GeometryBuilder& setVboAsDynamic();
+  GeometryBuilder& addVboAttribute(const std::string& name, Geometry::AttrType type, int32_t index, bool isIgnored = false);
   GeometryBuilder& addVboAttribute(const std::string& name, Geometry::AttrType type);
   GeometryBuilder& addIgnoredVboAttribute(const std::string& name, Geometry::AttrType type);
   GeometryBuilder& addIgnoredVboAttribute(const std::string& name, Geometry::AttrType type, int32_t index);

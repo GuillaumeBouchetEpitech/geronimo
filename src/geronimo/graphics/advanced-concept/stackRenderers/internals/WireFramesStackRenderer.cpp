@@ -16,6 +16,7 @@ void WireFramesStackRenderer::initialize(gero::graphics::ShaderProgram& shader,
   constexpr std::size_t preAllocatedSize = 1024 * 32; // 32Ko * 28(<- 7 * float4)
   // constexpr std::size_t preAllocatedSize = 1024 * 1024 * 4; // 4Mo
   _vertices.reserve(preAllocatedSize);
+  _geometry.preAllocateBufferFromCapacity(0, _vertices);
 }
 
 //
@@ -91,7 +92,7 @@ void WireFramesStackRenderer::flush() {
   if (!canRender())
     return;
 
-  _geometry.updateBuffer(0, _vertices, true);
+  _geometry.updateBuffer(0, _vertices);
   _geometry.setPrimitiveCount(uint32_t(_vertices.size()));
   _geometry.render();
 

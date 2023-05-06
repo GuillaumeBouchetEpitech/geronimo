@@ -32,7 +32,7 @@ void downloadPixels(uint32_t posX, uint32_t posY, uint32_t width, uint32_t heigh
 
 } // namespace FrameBuffers
 
-namespace VertexBufferObject {
+namespace VBO {
 
 enum class Primitives {
   lines,
@@ -58,7 +58,8 @@ enum class AttribType {
 void enableAttribArray(uint32_t attrId);
 void setAttribPointer(uint32_t attrId, uint32_t rowSize, uint32_t stride, uint32_t rowIndex, AttribType type);
 void enableAttribDivisor(uint32_t attrId);
-void uploadBuffer(const void* data, uint32_t dataSize, bool dynamic);
+void allocateBuffer(uint32_t dataSize, bool dynamic, const void* data);
+void uploadBuffer(const void* data, uint32_t dataSize);
 void drawArrays(Primitives primitive, uint32_t primitiveStart, uint32_t primitiveCount);
 void drawInstancedArrays(Primitives primitive,
                          uint32_t primitiveStart,
@@ -169,7 +170,7 @@ void setPixelUnpackAlignment(uint32_t inValueInBytes);
 
 } // namespace Texture
 
-namespace VertexArrayObject {
+namespace VAO {
 
 void generateMany(uint32_t total, uint32_t* buffers);
 void deleteMany(uint32_t total, const uint32_t* buffers);

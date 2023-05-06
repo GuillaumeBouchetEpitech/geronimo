@@ -95,13 +95,14 @@ void TextRenderer::initialize(const std::string& inRootPath) {
       .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Float);
 
     _graphic.geometry.initialize(*_graphic.shader, geometryBuilder.getDefinition());
-    _graphic.geometry.updateBuffer(0, letterVertices);
+    _graphic.geometry.allocateBuffer(0, letterVertices);
     _graphic.geometry.setPrimitiveCount(uint32_t(letterVertices.size()));
   }
 
   constexpr std::size_t preAllocatedSize = 1024;
 
   _graphic.vertices.reserve(preAllocatedSize * 8); // <= pre-allocate
+  _graphic.geometry.preAllocateBufferFromCapacity(1, _graphic.vertices);
 
   _logic.charactersTexCoordMap = {
     {' ', {0 * texCoord.x, 0 * texCoord.y}},   {'!', {1 * texCoord.x, 0 * texCoord.y}},
@@ -391,7 +392,7 @@ TextRenderer& TextRenderer::render() {
 
   _graphic.texture->bind();
 
-  _graphic.geometry.updateBuffer(1, _graphic.vertices);
+  _graphic.geometry.updateOrAllocateBuffer(1, _graphic.vertices);
   _graphic.geometry.setInstancedCount(uint32_t(_graphic.vertices.size()));
 
   _graphic.geometry.render();

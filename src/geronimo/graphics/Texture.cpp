@@ -321,6 +321,28 @@ void Texture::ensureCompatibleDepth() {
     D_THROW(std::runtime_error, "depth texture are unavailable");
 }
 
+//
+//
+//
+
+void Texture::setQuality(Quality quality)
+{
+  if (quality == Quality::pixelated) {
+    GlContext::Texture::setTextureAsPixelated();
+  } else {
+    GlContext::Texture::setTextureAsSmoothed(quality == Quality::smoothedAndMipMapped);
+  }
+}
+
+void Texture::setPattern(Pattern pattern)
+{
+  GlContext::Texture::setTextureAsRepeat(pattern == Pattern::repeat);
+}
+
+//
+//
+//
+
 void Texture::dispose() {
   if (!isValid())
     return;

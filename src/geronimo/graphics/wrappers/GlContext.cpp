@@ -62,7 +62,7 @@ void setSize(uint32_t width, uint32_t height, DepthFormat depthFormat) {
 //
 //
 
-namespace VertexArrayObject {
+namespace VAO {
 
 void generateMany(uint32_t total, uint32_t* buffers) { glCheck(glGenVertexArrays(GLsizei(total), buffers)); }
 

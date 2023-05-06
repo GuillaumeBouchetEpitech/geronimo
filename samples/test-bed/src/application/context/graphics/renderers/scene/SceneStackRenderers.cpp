@@ -22,6 +22,7 @@ void SceneStackRenderers::initialize() {
     // .setShader(*_shader)
     // .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::lines)
     .addVbo()
+    .setVboAsDynamic()
     .addVboAttribute("a_position", gero::graphics::Geometry::AttrType::Vec3f)
     .addVboAttribute("a_color", gero::graphics::Geometry::AttrType::Vec4f);
 

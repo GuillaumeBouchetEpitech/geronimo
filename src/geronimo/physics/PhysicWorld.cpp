@@ -91,8 +91,10 @@ PhysicWorld::PhysicWorld()
 
 PhysicWorld::~PhysicWorld() {
   btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
-  if (currentDebugDrawer)
+  if (currentDebugDrawer) {
     delete currentDebugDrawer;
+    _bullet.dynamicsWorld->setDebugDrawer(nullptr);
+  }
 
   _physicBodyManager.clear();
   _physicVehicleManager.clear();

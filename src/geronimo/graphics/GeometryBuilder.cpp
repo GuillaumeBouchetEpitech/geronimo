@@ -45,6 +45,17 @@ GeometryBuilder& GeometryBuilder::setVboAsInstanced() {
   return *this;
 }
 
+GeometryBuilder& GeometryBuilder::setVboAsDynamic()
+{
+  if (_def.vbos.empty())
+    D_THROW(std::runtime_error, "cannot add attrs without a vbo defined");
+
+  _def.vbos.back().dynamic = true;
+
+  return *this;
+
+}
+
 GeometryBuilder& GeometryBuilder::addVboAttribute(const std::string& name,
                                                   Geometry::AttrType type,
                                                   int32_t index,

@@ -101,6 +101,10 @@ public:
   static void ensureCompatibleDepth();
 
 public:
+  void setQuality(Quality quality);
+  void setPattern(Pattern pattern);
+
+public:
   void dispose();
 
 public:

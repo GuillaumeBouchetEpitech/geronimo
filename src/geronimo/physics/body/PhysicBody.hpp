@@ -125,59 +125,59 @@ public:
   PhysicBody& operator=(PhysicBody&& other);
 
 public:
-  virtual bool isDynamic() const override;
+  bool isDynamic() const override;
 
-  virtual glm::vec3 getPosition() const override;
-  virtual glm::quat getOrientation() const override;
-  virtual glm::mat4& getTransform(glm::mat4& mat4x4) const override;
+  glm::vec3 getPosition() const override;
+  glm::quat getOrientation() const override;
+  glm::mat4& getTransform(glm::mat4& mat4x4) const override;
 
-  virtual void setPosition(const glm::vec3& pos) override;
-  virtual void setRotation(const glm::vec4& rot) override;
-  virtual void setTransform(const glm::mat4& mat4x4) override;
+  void setPosition(const glm::vec3& pos) override;
+  void setRotation(const glm::vec4& rot) override;
+  void setTransform(const glm::mat4& mat4x4) override;
 
-  virtual glm::vec3 getEulerXYZ() const override;
-  virtual void setEulerXYZ(float x, float y, float z) override;
-  virtual void setEulerXYZ(const glm::vec3& euler) override;
+  glm::vec3 getEulerXYZ() const override;
+  void setEulerXYZ(float x, float y, float z) override;
+  void setEulerXYZ(const glm::vec3& euler) override;
 
-  virtual void setAngularFactor(float x, float y, float z) override;
-  virtual void setAngularFactor(const glm::vec3& factor) override;
+  void setAngularFactor(float x, float y, float z) override;
+  void setAngularFactor(const glm::vec3& factor) override;
 
-  virtual void clearForces() override;
+  void clearForces() override;
 
-  virtual glm::vec3 getLinearVelocity() const override;
-  virtual glm::vec3 getAngularVelocity() const override;
-  virtual void setLinearVelocity(float x, float y, float z) override;
-  virtual void setLinearVelocity(const glm::vec3& vel) override;
-  virtual void setAngularVelocity(float x, float y, float z) override;
-  virtual void setAngularVelocity(const glm::vec3& vel) override;
+  glm::vec3 getLinearVelocity() const override;
+  glm::vec3 getAngularVelocity() const override;
+  void setLinearVelocity(float x, float y, float z) override;
+  void setLinearVelocity(const glm::vec3& vel) override;
+  void setAngularVelocity(float x, float y, float z) override;
+  void setAngularVelocity(const glm::vec3& vel) override;
 
-  virtual void setGravity(float x, float y, float z) override;
-  virtual void setGravity(const glm::vec3& grav) override;
-  virtual glm::vec3 getGravity() const override;
+  void setGravity(float x, float y, float z) override;
+  void setGravity(const glm::vec3& grav) override;
+  glm::vec3 getGravity() const override;
 
-  virtual void setFriction(float friction) override;
-  virtual float getFriction() const override;
+  void setFriction(float friction) override;
+  float getFriction() const override;
 
-  virtual void setUserValue(int32_t userValue) override;
-  virtual int32_t getUserValue() const override;
+  void setUserValue(int32_t userValue) override;
+  int32_t getUserValue() const override;
 
-  virtual void setUserData(void* userData) override;
-  virtual const void* getUserData() const override;
-  virtual void* getUserData() override;
+  void setUserData(void* userData) override;
+  const void* getUserData() const override;
+  void* getUserData() override;
 
-  virtual void applyCentralImpulse(const glm::vec3& acc) override;
-  virtual void applyImpulse(const glm::vec3& force, const glm::vec3& rel_pos) override;
-  virtual void applyCentralForce(const glm::vec3& force) override;
-  virtual void applyForce(const glm::vec3& force, const glm::vec3& rel_pos) override;
-  virtual void disableSleep() override;
-  virtual void forceActivate() override;
+  void applyCentralImpulse(const glm::vec3& acc) override;
+  void applyImpulse(const glm::vec3& force, const glm::vec3& rel_pos) override;
+  void applyCentralForce(const glm::vec3& force) override;
+  void applyForce(const glm::vec3& force, const glm::vec3& rel_pos) override;
+  void disableSleep() override;
+  void forceActivate() override;
 
-  virtual void disableContactResponse() override;
-  virtual void enableContactResponse() override;
+  void disableContactResponse() override;
+  void enableContactResponse() override;
 
-  virtual void dumpData() override;
+  void dumpData() override;
 
-  virtual const PhysicShapeDef& getShapeDefinition() const override;
+  const PhysicShapeDef& getShapeDefinition() const override;
 
   // const std::vector<ContactPoint>& getContacts() const;
   // void setContactCallback(const std::function<void()>& callback);
