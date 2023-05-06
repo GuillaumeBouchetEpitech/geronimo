@@ -168,16 +168,11 @@ cd ./thirdparties
 
 make build_mode="release" build_platform="native" all -j4
 
-case $WEB_WASM_AVAILABLE in
-yes)
+echo "#"
+echo "# web-wasm version"
+echo "#"
 
-  echo "#"
-  echo "# web-wasm version"
-  echo "#"
-
-  make build_mode="release" build_platform="web-wasm" all -j4
-  ;;
-esac
+make build_mode="release" build_platform="web-wasm" all -j4
 
 cd $DIR_ROOT
 
@@ -201,15 +196,8 @@ echo "#"
 
 make build_mode="release" build_platform="native" all -j4
 
-case $WEB_WASM_AVAILABLE in
-yes)
+echo "#"
+echo "# web-wasm version"
+echo "#"
 
-  echo "#"
-  echo "# web-wasm version"
-  echo "#"
-
-  make build_mode="release" build_platform="web-wasm" all -j4
-  ;;
-esac
-
-cd $DIR_ROOT
+make build_mode="release" build_platform="web-wasm" all -j4
