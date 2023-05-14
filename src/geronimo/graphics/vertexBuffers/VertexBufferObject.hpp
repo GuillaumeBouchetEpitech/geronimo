@@ -9,8 +9,7 @@ namespace graphics {
 
 class VertexBufferObject {
 private:
-  struct BufferData
-  {
+  struct BufferData {
     uint32_t allocatedSize = 0;
   };
 

@@ -2,8 +2,8 @@
 #include "ResultQuadRenderer.hpp"
 
 #include "geronimo/graphics/GeometryBuilder.hpp"
-#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 #include "geronimo/graphics/GlContext.hpp"
+#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 
 namespace gero {
 namespace graphics {

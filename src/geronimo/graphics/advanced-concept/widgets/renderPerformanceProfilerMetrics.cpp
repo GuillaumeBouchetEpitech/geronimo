@@ -59,8 +59,7 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
   //
   //
 
-  if (inTimeData.getTotalDurations() > 0)
-  {
+  if (inTimeData.getTotalDurations() > 0) {
 
     { // dividers
 
@@ -69,10 +68,9 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
         for (float currDivider = k_divider; currDivider < verticalSize; currDivider += k_divider) {
           const float ratio = currDivider / verticalSize;
 
-          wireFramesStack.pushLine(
-            borderPos + glm::vec3(0, borderSize.y * ratio, 0.0f),
-            borderPos + glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
-            whiteColor * 0.5f);
+          wireFramesStack.pushLine(borderPos + glm::vec3(0, borderSize.y * ratio, 0.0f),
+                                   borderPos + glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
+                                   whiteColor * 0.5f);
         }
       }
 
@@ -109,7 +107,6 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
       }
 
     } // curve
-
   }
 
   { // text

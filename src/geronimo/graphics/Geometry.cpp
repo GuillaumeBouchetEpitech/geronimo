@@ -251,8 +251,7 @@ void Geometry::initialize(ShaderProgram& shader, const Definition& def) {
   _vao.unbind();
 }
 
-void Geometry::allocateBuffer(uint32_t index, uint32_t dataSize, const void* data /*= nullptr*/)
-{
+void Geometry::allocateBuffer(uint32_t index, uint32_t dataSize, const void* data /*= nullptr*/) {
   if (!_vao.isAllocated() || !_vbo.isAllocated())
     D_THROW(std::runtime_error, "vao/vbo not allocated");
 
@@ -261,16 +260,14 @@ void Geometry::allocateBuffer(uint32_t index, uint32_t dataSize, const void* dat
   _vbo.allocateBuffer(index, dataSize, vboDef.dynamic, data);
 }
 
-void Geometry::updateBuffer(uint32_t index, const void* data, uint32_t dataSize)
-{
+void Geometry::updateBuffer(uint32_t index, const void* data, uint32_t dataSize) {
   if (!_vao.isAllocated() || !_vbo.isAllocated())
     D_THROW(std::runtime_error, "vao/vbo not allocated");
 
   _vbo.updateBuffer(index, dataSize, data);
 }
 
-void Geometry::updateOrAllocateBuffer(uint32_t index, uint32_t dataSize, const void* data /*= nullptr*/)
-{
+void Geometry::updateOrAllocateBuffer(uint32_t index, uint32_t dataSize, const void* data /*= nullptr*/) {
   if (!_vao.isAllocated() || !_vbo.isAllocated())
     D_THROW(std::runtime_error, "vao/vbo not allocated");
 

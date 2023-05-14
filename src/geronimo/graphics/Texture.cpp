@@ -325,8 +325,7 @@ void Texture::ensureCompatibleDepth() {
 //
 //
 
-void Texture::setQuality(Quality quality)
-{
+void Texture::setQuality(Quality quality) {
   if (quality == Quality::pixelated) {
     GlContext::Texture::setTextureAsPixelated();
   } else {
@@ -334,10 +333,7 @@ void Texture::setQuality(Quality quality)
   }
 }
 
-void Texture::setPattern(Pattern pattern)
-{
-  GlContext::Texture::setTextureAsRepeat(pattern == Pattern::repeat);
-}
+void Texture::setPattern(Pattern pattern) { GlContext::Texture::setTextureAsRepeat(pattern == Pattern::repeat); }
 
 //
 //

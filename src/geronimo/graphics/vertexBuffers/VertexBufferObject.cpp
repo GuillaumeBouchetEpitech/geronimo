@@ -49,8 +49,10 @@ void VertexBufferObject::bind(uint32_t index /* = 0 */) const {
   GlContext::VBO::bind(_ids[index]);
 }
 
-void VertexBufferObject::allocateBuffer(uint32_t index, uint32_t dataSize, bool dynamic, const void* data /*= nullptr*/)
-{
+void VertexBufferObject::allocateBuffer(uint32_t index,
+                                        uint32_t dataSize,
+                                        bool dynamic,
+                                        const void* data /*= nullptr*/) {
   // uint32_t allocatedSize = _buffersData.at(index).allocatedSize;
   // if (dataSize < allocatedSize)
   //   return;
@@ -64,13 +66,11 @@ void VertexBufferObject::allocateBuffer(uint32_t index, uint32_t dataSize, bool 
   unbind();
 }
 
-void VertexBufferObject::updateBuffer(uint32_t index, uint32_t dataSize, const void* data)
-{
+void VertexBufferObject::updateBuffer(uint32_t index, uint32_t dataSize, const void* data) {
   bind(index);
 
   uint32_t allocatedSize = _buffersData.at(index).allocatedSize;
-  if (dataSize > allocatedSize)
-  {
+  if (dataSize > allocatedSize) {
     D_THROW(std::out_of_range, "update buffer size out of range, input=" << dataSize << ", max=" << allocatedSize);
   }
 
@@ -79,20 +79,19 @@ void VertexBufferObject::updateBuffer(uint32_t index, uint32_t dataSize, const v
   unbind();
 }
 
-void VertexBufferObject::updateOrAllocateBuffer(uint32_t index, uint32_t dataSize, bool dynamic, const void* data /*= nullptr*/)
-{
+void VertexBufferObject::updateOrAllocateBuffer(uint32_t index,
+                                                uint32_t dataSize,
+                                                bool dynamic,
+                                                const void* data /*= nullptr*/) {
   bind(index);
 
   uint32_t allocatedSize = _buffersData.at(index).allocatedSize;
 
-  if (dataSize > allocatedSize)
-  {
+  if (dataSize > allocatedSize) {
     _buffersData.at(index).allocatedSize = dataSize;
 
     GlContext::VBO::allocateBuffer(dataSize, dynamic, data);
-  }
-  else
-  {
+  } else {
     GlContext::VBO::uploadBuffer(data, dataSize);
   }
 

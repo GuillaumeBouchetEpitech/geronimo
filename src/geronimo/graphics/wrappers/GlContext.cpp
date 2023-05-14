@@ -70,7 +70,7 @@ void deleteMany(uint32_t total, const uint32_t* buffers) { glCheck(glDeleteVerte
 
 void bind(uint32_t vaoId) { glCheck(glBindVertexArray(vaoId)); }
 
-} // namespace VertexArrayObject
+} // namespace VAO
 
 //
 //

@@ -66,7 +66,7 @@ void drawInstancedArrays(Primitives primitive,
                          uint32_t primitiveCount,
                          uint32_t instanceCount);
 
-} // namespace VertexBufferObject
+} // namespace VBO
 
 namespace RenderBuffer {
 
@@ -175,7 +175,7 @@ namespace VAO {
 void generateMany(uint32_t total, uint32_t* buffers);
 void deleteMany(uint32_t total, const uint32_t* buffers);
 void bind(uint32_t vaoId);
-} // namespace VertexArrayObject
+} // namespace VAO
 
 std::string getVersion();
 void setViewport(int32_t x, int32_t y, uint32_t width, uint32_t height);

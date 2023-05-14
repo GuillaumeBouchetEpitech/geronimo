@@ -114,7 +114,7 @@ void drawInstancedArrays(Primitives primitive,
     GLenum(rawPrimitive), GLint(primitiveStart), GLsizei(primitiveCount), GLsizei(instanceCount)));
 }
 
-} // namespace VertexBufferObject
+} // namespace VBO
 
 } // namespace GlContext
 

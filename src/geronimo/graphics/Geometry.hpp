@@ -102,30 +102,23 @@ public:
   void render() const;
 
 public:
-  template <typename VertexType>
-  void allocateBuffer(uint32_t index, const std::vector<VertexType>& data)
-  {
+  template <typename VertexType> void allocateBuffer(uint32_t index, const std::vector<VertexType>& data) {
     uint32_t dataSize = uint32_t(data.size()) * uint32_t(sizeof(VertexType));
     allocateBuffer(index, dataSize, static_cast<const void*>(data.data()));
   }
 
   template <typename VertexType>
-  void preAllocateBufferFromCapacity(uint32_t index, const std::vector<VertexType>& data)
-  {
+  void preAllocateBufferFromCapacity(uint32_t index, const std::vector<VertexType>& data) {
     uint32_t dataSize = uint32_t(data.capacity()) * uint32_t(sizeof(VertexType));
     allocateBuffer(index, dataSize, nullptr);
   }
 
-  template <typename VertexType>
-  void updateBuffer(uint32_t index, const std::vector<VertexType>& data)
-  {
+  template <typename VertexType> void updateBuffer(uint32_t index, const std::vector<VertexType>& data) {
     uint32_t dataSize = uint32_t(data.size()) * uint32_t(sizeof(VertexType));
     updateBuffer(index, static_cast<const void*>(data.data()), dataSize);
   }
 
-  template <typename VertexType>
-  void updateOrAllocateBuffer(uint32_t index, const std::vector<VertexType>& data)
-  {
+  template <typename VertexType> void updateOrAllocateBuffer(uint32_t index, const std::vector<VertexType>& data) {
     uint32_t dataSize = uint32_t(data.size()) * uint32_t(sizeof(VertexType));
     updateOrAllocateBuffer(index, dataSize, static_cast<const void*>(data.data()));
   }

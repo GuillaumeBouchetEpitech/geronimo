@@ -4,8 +4,8 @@
 #include "decoders/ogg.hpp"
 
 #include "geronimo/system/ErrorHandler.hpp"
-#include "geronimo/system/file-utils/getFileContent.hpp"
 #include "geronimo/system/file-utils/FileLoadFileCallback.hpp"
+#include "geronimo/system/file-utils/getFileContent.hpp"
 #include "geronimo/system/math/clamp.hpp"
 
 #include <algorithm>
