@@ -3,6 +3,8 @@
 
 #include "./helpers/renderTextBackground.hpp"
 
+#include "geronimo/system/math/clamp.hpp"
+
 #include <iomanip>
 #include <sstream>
 
@@ -36,6 +38,9 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
 
   const float verticalSize = (std::ceil(float(maxDuration) / k_divider)) * k_divider;
 
+  auto& trianglesStack = inStackRenderers.getTrianglesStack();
+  auto& wireFramesStack = inStackRenderers.getWireFramesStack();
+
   { // background
 
     glm::vec4 bgColor = glm::vec4(0.0f, 0.25f, 0.0f, 1.0f);
@@ -46,59 +51,68 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
 
     const glm::vec3 center = borderPos + glm::vec3(borderSize * 0.5f, 0);
 
-    inStackRenderers.getTrianglesStack().pushQuad(center, borderSize, bgColor, inPos.z - 0.03f);
-    inStackRenderers.getWireFramesStack().pushRectangle(borderPos, borderSize, whiteColor, inPos.z - 0.02f);
+    trianglesStack.pushQuad(center, borderSize, bgColor, inPos.z - 0.03f);
+    wireFramesStack.pushRectangle(borderPos, borderSize, whiteColor, inPos.z - 0.02f);
 
   } // background
 
   //
   //
 
-  { // dividers
-
-    if (maxDuration < k_slowdownDelta * 2) {
-
-      for (float currDivider = k_divider; currDivider < verticalSize; currDivider += k_divider) {
-        const float ratio = currDivider / verticalSize;
-
-        inStackRenderers.getWireFramesStack().pushLine(borderPos + glm::vec3(0, borderSize.y * ratio, 0.0f),
-                                                       borderPos +
-                                                         glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
-                                                       whiteColor * 0.5f);
-      }
-    }
-
-  } // dividers
-
-  //
-  //
-
+  if (inTimeData.getTotalDurations() > 0)
   {
 
-    const float widthStep = borderSize.x / float(inTimeData.getTotalDurations());
+    { // dividers
 
-    float prevDelta = float(inTimeData.getDurationByIndex(0));
-    float prevHeight = borderSize.y * prevDelta / verticalSize;
-    glm::vec3 prevCoord = borderPos + glm::vec3(0.0f, prevHeight, 0.0f);
+      if (maxDuration < k_slowdownDelta * 2) {
 
-    for (uint32_t ii = 1; ii < inTimeData.getTotalDurations(); ++ii) {
+        for (float currDivider = k_divider; currDivider < verticalSize; currDivider += k_divider) {
+          const float ratio = currDivider / verticalSize;
 
-      const float currDelta = float(inTimeData.getDurationByIndex(ii));
-      const float currHeight = borderSize.y * currDelta / verticalSize;
-      const glm::vec3 currCoord = borderPos + glm::vec3(float(ii) * widthStep, currHeight, 0.0f);
+          wireFramesStack.pushLine(
+            borderPos + glm::vec3(0, borderSize.y * ratio, 0.0f),
+            borderPos + glm::vec3(borderSize.x, borderSize.y * ratio, -0.01f),
+            whiteColor * 0.5f);
+        }
+      }
 
-      inStackRenderers.getWireFramesStack().pushLine(prevCoord,
-                                                     currCoord,
-                                                     prevDelta < k_slowdownDelta ? whiteColor : redColor,
-                                                     currDelta < k_slowdownDelta ? whiteColor : redColor);
+    } // dividers
 
-      prevDelta = currDelta;
-      prevHeight = currHeight;
-      prevCoord = currCoord;
-    }
+    //
+    //
+
+    { // curve
+
+      const float widthStep = borderSize.x / float(inTimeData.getTotalDurations());
+
+      float prevDelta = float(inTimeData.getDurationByIndex(0));
+      const float prevX = 0.0f;
+      const float prevY = borderSize.y * gero::math::clamp(prevDelta / verticalSize, 0.0f, 1.0f);
+      // const float prevY = borderSize.y * prevDelta / verticalSize;
+      glm::vec3 prevCoord = borderPos + glm::vec3(prevX, prevY, 0.0f);
+      glm::vec3 prevColor = (prevDelta < k_slowdownDelta ? whiteColor : redColor);
+
+      for (uint32_t ii = 1; ii < inTimeData.getTotalDurations(); ++ii) {
+
+        const float currDelta = float(inTimeData.getDurationByIndex(ii));
+        const float currX = float(ii) * widthStep;
+        const float currY = borderSize.y * gero::math::clamp(currDelta / verticalSize, 0.0f, 1.0f);
+        // const float currY = borderSize.y * currDelta / verticalSize;
+        const glm::vec3 currCoord = borderPos + glm::vec3(currX, currY, 0.0f);
+        const glm::vec3 currColor = (currDelta < k_slowdownDelta ? whiteColor : redColor);
+
+        wireFramesStack.pushLine(prevCoord, currCoord, prevColor, currColor);
+
+        prevDelta = currDelta;
+        prevCoord = currCoord;
+        prevColor = currColor;
+      }
+
+    } // curve
+
   }
 
-  {
+  { // text
 
     const float averageDuration = float(inTimeData.getAverageDuration());
     const float minFDuration = float(inTimeData.getMinDuration());
@@ -131,7 +145,7 @@ void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
                                   6.0f,
                                   inStackRenderers,
                                   inTextRenderer);
-  }
+  } // text
 }
 
 } // namespace widgets

@@ -3,6 +3,8 @@
 
 // #include "graphics/renderers/common/StackRenderers.hpp"
 
+#include "application/states/StateManager.hpp"
+
 #include "graphics/renderers/scene/GeometriesStackRenderer.hpp"
 #include "graphics/renderers/scene/SceneStackRenderers.hpp"
 
@@ -25,8 +27,6 @@
 #include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
 #include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
 #include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
-
-#include "application/states/StateManager.hpp"
 
 #include <array>
 #include <cstdint>

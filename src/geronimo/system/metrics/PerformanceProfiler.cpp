@@ -40,8 +40,8 @@ void PerformanceProfiler::TimeData::_pushNewValue(int32_t inDuration) {
   _latestDuration = inDuration;
 
   if (_historicData.size() == _historicData.capacity()) {
-    _historicIndex = (_historicIndex + 1) % int32_t(_historicData.size());
     _historicData.at(std::size_t(_historicIndex)) = int32_t(_latestDuration);
+    _historicIndex = (_historicIndex + 1) % int32_t(_historicData.size());
 
     for (int32_t value : _historicData)
       _averageDuration += value;
