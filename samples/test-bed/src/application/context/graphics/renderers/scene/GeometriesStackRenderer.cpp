@@ -48,8 +48,6 @@ void GeometriesStackRenderer::initialize() {
     .addVboAttribute("a_offsetLight", gero::graphics::Geometry::AttrType::Float);
 
   _geomDef = geometryBuilder.getDefinition();
-
-
 }
 
 void GeometriesStackRenderer::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) {

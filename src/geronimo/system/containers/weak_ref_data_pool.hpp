@@ -535,16 +535,45 @@ public:
     }
   }
 
+  void filter(std::function<bool(value_type&, int)> callback) {
+    for (std::size_t index = 0; index < _itemsPool.size();) {
+      auto& item = _itemsPool.at(index);
+
+      if (item._is_active == false) {
+        ++index;
+        continue;
+      }
+
+      if (callback(item, index) == false) {
+        release(int32_t(index));
+      } else {
+        ++index;
+      }
+    }
+  }
+
   void for_each(std::function<void(value_type&)> callback) {
     for (auto& item : _itemsPool)
       if (item._is_active == true)
         callback(item);
   }
 
+  void for_each(std::function<void(value_type&, int)> callback) {
+    for (auto& item : _itemsPool)
+      if (item._is_active == true)
+        callback(item, item._index);
+  }
+
   void for_each(std::function<void(const value_type&)> callback) const {
     for (const auto& item : _itemsPool)
       if (item._is_active == true)
         callback(item);
+  }
+
+  void for_each(std::function<void(const value_type&, int)> callback) const {
+    for (const auto& item : _itemsPool)
+      if (item._is_active == true)
+        callback(item, item._index);
   }
 
   weak_ref find_if(std::function<bool(const value_type&)> callback) const {

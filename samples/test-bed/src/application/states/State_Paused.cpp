@@ -43,7 +43,6 @@ void State_Paused::resize(uint32_t width, uint32_t height) {
   graphic.camera.viewportSize = {width, height};
   graphic.camera.scene.setSize(width, height);
   graphic.camera.hud.setSize(width, height);
-
 }
 
 void State_Paused::visibility(bool visible) {

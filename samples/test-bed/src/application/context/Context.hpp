@@ -25,8 +25,8 @@
 #include "geronimo/system/metrics/PerformanceProfiler.hpp"
 
 #include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
-#include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
 #include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
+#include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
 
 #include <array>
 #include <cstdint>

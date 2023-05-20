@@ -90,4 +90,3 @@ void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
     break;
   }
 }
-

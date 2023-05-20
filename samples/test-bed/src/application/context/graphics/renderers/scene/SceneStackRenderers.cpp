@@ -1,8 +1,8 @@
 
 #include "SceneStackRenderers.hpp"
 
-#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 #include "geronimo/graphics/GeometryBuilder.hpp"
+#include "geronimo/graphics/ShaderProgramBuilder.hpp"
 
 void SceneStackRenderers::initialize() {
 
@@ -14,11 +14,11 @@ void SceneStackRenderers::initialize() {
     .setFragmentFilename(basePath + "stackRenderer.glsl.frag")
     .addAttribute("a_position")
     .addAttribute("a_color")
-    .addUniform("u_composedMatrix")
-    ;
+    .addUniform("u_composedMatrix");
 
   gero::graphics::GeometryBuilder geometryBuilder;
-  geometryBuilder.reset()
+  geometryBuilder
+    .reset()
     // .setShader(*_shader)
     // .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::lines)
     .addVbo()

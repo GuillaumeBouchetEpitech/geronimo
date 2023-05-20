@@ -12,9 +12,9 @@
 
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgram.hpp"
-#include "geronimo/graphics/advanced-concept/widgets/renderPerformanceProfilerMetrics.hpp"
-#include "geronimo/graphics/advanced-concept/widgets/helpers/writeTime.hpp"
 #include "geronimo/graphics/advanced-concept/widgets/helpers/renderTextBackground.hpp"
+#include "geronimo/graphics/advanced-concept/widgets/helpers/writeTime.hpp"
+#include "geronimo/graphics/advanced-concept/widgets/renderPerformanceProfilerMetrics.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/math/angles.hpp"
@@ -164,10 +164,8 @@ void Scene::_renderScene() {
           lightPos += dir * 10.0f;
           lightPos.z = getGroundPos(lightPos) + 2;
 
-
           if (!frustumCulling.sphereInFrustum(lightPos, 5))
             continue;
-
 
           context.graphic.scene.deferred.pushSpotLight(lightPos, 5);
 
@@ -334,8 +332,13 @@ void Scene::_renderHud() {
 
       graphic.hud.textRenderer.pushText(glm::vec2(k_scale * 0.5f, float(vSize.y) - k_scale * 1.5f), str);
 
-      gero::graphics::helpers::renderTextBackground(
-        k_textDepth, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.3f, 0.3f, 0.3f, 1.0f), 3.0f, 6.0f, graphic.hud.stackRenderers, graphic.hud.textRenderer);
+      gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                    glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                    glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                    3.0f,
+                                                    6.0f,
+                                                    graphic.hud.stackRenderers,
+                                                    graphic.hud.textRenderer);
     }
 
     graphic.hud.textRenderer.render();
@@ -366,7 +369,8 @@ void Scene::_renderHud() {
     const glm::vec2 k_size = glm::vec2(150, 50);
     const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 10, vSize.y - k_size.y - 10, 0);
 
-    gero::graphics::widgets::renderPerformanceProfilerMetrics(k_pos, k_size, timeData, graphic.hud.stackRenderers, graphic.hud.textRenderer);
+    gero::graphics::widgets::renderPerformanceProfilerMetrics(
+      k_pos, k_size, timeData, graphic.hud.stackRenderers, graphic.hud.textRenderer);
 
     graphic.hud.stackRenderers.flush();
     graphic.hud.textRenderer.render();

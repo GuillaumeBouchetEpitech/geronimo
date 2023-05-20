@@ -7,7 +7,6 @@
 
 #include "geronimo/system/math/constants.hpp"
 
-
 void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) {
 
   auto& context = Context::get();
@@ -27,8 +26,6 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
     glm::vec3 lightPos1 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 3);
     glm::vec3 lightPos2 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 4);
     glm::vec3 lightPos3 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 5);
-
-
 
     if (frustumCulling.sphereInFrustum(lightPos3, 5))
       Context::get().graphic.scene.deferred.pushSpotLight(lightPos3, 10);

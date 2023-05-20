@@ -25,5 +25,4 @@ void Context::initializeGraphicResources() {
     const glm::vec3 upAxis = {0.0f, 1.0f, 0.0f};
     graphic.camera.hud.lookAt(eye, center, upAxis);
   }
-
 }
