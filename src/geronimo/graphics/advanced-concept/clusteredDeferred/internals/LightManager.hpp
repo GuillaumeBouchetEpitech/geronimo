@@ -25,7 +25,7 @@ public:
 public:
   void pushSpotLight(const glm::vec3& inPosition, float inRadius);
 
-  void computeDataTextures(const gero::graphics::Camera& inSceneCamera);
+  void computeDataTextures(const gero::graphics::ICamera& inSceneCamera);
 
 public:
   void reset();

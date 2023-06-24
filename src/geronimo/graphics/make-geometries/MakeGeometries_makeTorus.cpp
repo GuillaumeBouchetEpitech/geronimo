@@ -4,6 +4,7 @@
 
 #include "geronimo/system/containers/static_heap_grid_array.hpp"
 #include "geronimo/system/math/constants.hpp"
+#include "geronimo/system/math/compute-normal.hpp"
 
 namespace gero {
 namespace graphics {
@@ -202,7 +203,7 @@ void makePartialTorus(Vertices& vertices,
         const glm::vec3 posB = getForward(ringVertices(0, 1), tubeRadius);
         const glm::vec3 posC = getForward(ringVertices(0, 2), tubeRadius);
 
-        const glm::vec3 normal = glm::cross(posA - posB, posA - posC);
+        const glm::vec3 normal = gero::math::computeNormal(posA, posB, posC);
 
         vertices.push_back({posA, normal});
         vertices.push_back({posB, normal});
@@ -215,7 +216,7 @@ void makePartialTorus(Vertices& vertices,
         const glm::vec3 posB = getForward(*(it + 1), tubeRadius);
         const glm::vec3 posC = getForward(*(it + 2), tubeRadius);
 
-        const glm::vec3 normal = -glm::cross(posA - posB, posA - posC);
+        const glm::vec3 normal = -gero::math::computeNormal(posA, posB, posC);
 
         vertices.push_back({posA, normal});
         vertices.push_back({posC, normal});
@@ -228,7 +229,7 @@ void makePartialTorus(Vertices& vertices,
         const glm::vec3 posC = getForward(ringVertices(0, 2), tubeRadius);
         const glm::vec3 posD = getForward(ringVertices(0, 3), tubeRadius);
 
-        const glm::vec3 normal = glm::cross(posA - posB, posA - posC);
+        const glm::vec3 normal = gero::math::computeNormal(posA, posB, posC);
 
         vertices.push_back({posA, normal});
         vertices.push_back({posB, normal});
@@ -246,7 +247,7 @@ void makePartialTorus(Vertices& vertices,
         const glm::vec3 posC = getForward(*(it + 2), tubeRadius);
         const glm::vec3 posD = getForward(*(it + 3), tubeRadius);
 
-        const glm::vec3 normal = -glm::cross(posA - posB, posA - posC);
+        const glm::vec3 normal = -gero::math::computeNormal(posA, posB, posC);
 
         vertices.push_back({posA, normal});
         vertices.push_back({posC, normal});
@@ -267,7 +268,8 @@ void makePartialTorus(Vertices& vertices,
         if (closedStart) {
           const glm::vec3 posF1 = getForward(ringVertices(0, index1), tubeRadius);
           const glm::vec3 posF2 = getForward(ringVertices(0, index2), tubeRadius);
-          const glm::vec3 normalF = glm::cross(centerF - posF1, centerF - posF2);
+
+          const glm::vec3 normalF = gero::math::computeNormal(centerF, posF1, posF2);
 
           vertices.push_back({centerF, normalF});
           vertices.push_back({posF1, normalF});
@@ -278,7 +280,7 @@ void makePartialTorus(Vertices& vertices,
           auto it = ringVertices.beginColumns(uint32_t(ringVertices.height()) - 1);
           const glm::vec3 posB1 = getForward(*(it + index1), tubeRadius);
           const glm::vec3 posB2 = getForward(*(it + index2), tubeRadius);
-          const glm::vec3 normalB = -glm::cross(centerB - posB1, centerB - posB2);
+          const glm::vec3 normalB = -gero::math::computeNormal(centerB, posB1, posB2);
 
           vertices.push_back({centerB, normalB});
           vertices.push_back({posB2, normalB});

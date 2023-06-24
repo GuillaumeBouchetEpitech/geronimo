@@ -4,6 +4,7 @@
 
 #include "geronimo/system/containers/static_heap_grid_array.hpp"
 #include "geronimo/system/math/constants.hpp"
+#include "geronimo/system/math/compute-normal.hpp"
 
 namespace gero {
 namespace graphics {
@@ -13,7 +14,13 @@ namespace MakeGeometries {
 void executeTransform(const glm::mat4& transform, Vertices& vertices) {
   for (Vertex& vertex : vertices) {
     vertex.position = transform * glm::vec4(vertex.position, 1.0f);
-    vertex.normal = glm::normalize(glm::vec3(transform * glm::vec4(vertex.normal, 0.0f)));
+    vertex.normal = glm::vec3(transform * glm::vec4(vertex.normal, 0.0f));
+
+    // safe normalize
+    const float magnitude = glm::length(vertex.normal);
+    if (magnitude > 0.0f) {
+      vertex.normal /= magnitude;
+    }
   }
 }
 
@@ -23,7 +30,7 @@ void convertToPerFacesNormals(Vertices& vertices) {
     const glm::vec3& posB = vertices[index + 1].position;
     const glm::vec3& posC = vertices[index + 2].position;
 
-    const glm::vec3 normal = glm::cross(posA - posB, posA - posC);
+    glm::vec3 normal = gero::math::computeNormal(posA, posB, posC);
 
     vertices[index + 0].normal = normal;
     vertices[index + 1].normal = normal;

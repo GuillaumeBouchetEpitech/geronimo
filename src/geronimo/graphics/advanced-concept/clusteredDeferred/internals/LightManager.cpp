@@ -43,7 +43,7 @@ void LightManager::pushSpotLight(const glm::vec3& inPosition, float inRadius) {
     _allSpotLights.push_back({inPosition, inRadius});
 }
 
-void LightManager::computeDataTextures(const gero::graphics::Camera& inSceneCamera) {
+void LightManager::computeDataTextures(const gero::graphics::ICamera& inSceneCamera) {
 
   if (_allSpotLights.empty())
     return;

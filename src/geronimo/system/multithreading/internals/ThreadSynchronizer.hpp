@@ -10,7 +10,7 @@ namespace gero {
 namespace threading {
 
 // this class handle all locking and conditional variable interactions
-class ThreadSynchroniser : public NonCopyable {
+class ThreadSynchronizer : public NonCopyable {
 private:
   std::mutex _mutex;
   std::condition_variable _condVar;
@@ -20,20 +20,20 @@ public:
   // this class act like a scoped lock but notify before unlocking
   class ScopedLockedNotifier {
     // friendship since we need access to the _mutex
-    friend ThreadSynchroniser;
+    friend ThreadSynchronizer;
 
   private:
-    ThreadSynchroniser& _synchroniser;
+    ThreadSynchronizer& _synchronizer;
 
   private:
-    ScopedLockedNotifier(ThreadSynchroniser& synchroniser);
+    ScopedLockedNotifier(ThreadSynchronizer& synchronizer);
 
   public:
     ~ScopedLockedNotifier();
   };
 
 public:
-  ThreadSynchroniser() = default;
+  ThreadSynchronizer() = default;
 
 public:
   bool waitUntilNotified(std::unique_lock<std::mutex>& lock, float seconds = 0.0f);

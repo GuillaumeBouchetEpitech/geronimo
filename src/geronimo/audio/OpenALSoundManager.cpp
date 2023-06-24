@@ -46,7 +46,7 @@ OpenALSoundManager::OpenALSoundManager() {
       OpenAlContext::setSourceVelocity(currSource, 0.0f, 0.0f, 0.0f);
       OpenAlContext::setSourceLooping(currSource, false);
 
-      _sources.push_back(currSource);
+      _sources.push_back({currSource});
     }
 
   } // sources
@@ -135,26 +135,68 @@ void OpenALSoundManager::playSound(uint32_t alias, const glm::vec3& pos, float v
 
   const uint32_t currBuffer = it->second;
 
-  const uint32_t currSource = _sources[_currentSource];
+  SoundSource& currSource = _sources[_currentSource];
 
   _currentSource = (_currentSource + 1) % _sources.size();
 
-  OpenAlContext::SourceStates state = OpenAlContext::getSourceState(_currentSource);
+  OpenAlContext::SourceStates state = OpenAlContext::getSourceState(currSource.id);
   if (state != OpenAlContext::SourceStates::stopped) {
-    OpenAlContext::stopSource(currSource);
+    OpenAlContext::stopSource(currSource.id);
   }
 
-  OpenAlContext::setSourcePitch(currSource, math::clamp(pitch, 0.0f, 100.0f));
-  OpenAlContext::setSourcePosition(currSource, pos.x, pos.y, pos.z);
-  OpenAlContext::setSourceVolume(currSource, math::clamp(volume, 0.0f, 1.0f));
-  // OpenAlContext::setSourceMinVolume(currSource, float volume);
-  // OpenAlContext::setSourceMaxVolume(currSource, float volume);
-  // OpenAlContext::setSourceDirection(currSource, float x, float y, float z);
-  // OpenAlContext::setSourceVelocity(currSource, float x, float y, float z);
-  OpenAlContext::setSourceLooping(currSource, false);
+  // currSource.position = pos;
+  currSource.playing = true;
+  currSource.absolute = false;
 
-  OpenAlContext::setSourceBuffer(currSource, currBuffer);
-  OpenAlContext::playSource(currSource);
+  OpenAlContext::setSourcePitch(currSource.id, math::clamp(pitch, 0.0f, 100.0f));
+  OpenAlContext::setSourcePosition(currSource.id, pos.x, pos.y, pos.z);
+  OpenAlContext::setSourceVolume(currSource.id, math::clamp(volume, 0.0f, 1.0f));
+  // OpenAlContext::setSourceMinVolume(currSource.id, float volume);
+  // OpenAlContext::setSourceMaxVolume(currSource.id, float volume);
+  // OpenAlContext::setSourceDirection(currSource.id, float x, float y, float z);
+  // OpenAlContext::setSourceVelocity(currSource.id, float x, float y, float z);
+  OpenAlContext::setSourceLooping(currSource.id, false);
+
+  OpenAlContext::setSourceBuffer(currSource.id, currBuffer);
+  OpenAlContext::playSource(currSource.id);
+}
+
+void OpenALSoundManager::playAbsoluteSound(uint32_t alias, float volume, float pitch) {
+  if (!_enabled)
+    return;
+
+  auto it = _bufferSoundsMap.find(alias);
+  if (it == _bufferSoundsMap.end())
+    D_THROW(std::runtime_error, "Buffer sound not found, alias: " << alias);
+
+  // D_MYLOG("playing \"" << filename << "\"");
+
+  const uint32_t currBuffer = it->second;
+
+  SoundSource& currSource = _sources[_currentSource];
+
+  _currentSource = (_currentSource + 1) % _sources.size();
+
+  OpenAlContext::SourceStates state = OpenAlContext::getSourceState(currSource.id);
+  if (state != OpenAlContext::SourceStates::stopped) {
+    OpenAlContext::stopSource(currSource.id);
+  }
+
+  // currSource.position = pos;
+  currSource.playing = true;
+  currSource.absolute = true;
+
+  OpenAlContext::setSourcePitch(currSource.id, math::clamp(pitch, 0.0f, 100.0f));
+  OpenAlContext::setSourcePosition(currSource.id, _listenerPos.x, _listenerPos.y, _listenerPos.z);
+  OpenAlContext::setSourceVolume(currSource.id, math::clamp(volume, 0.0f, 1.0f));
+  // OpenAlContext::setSourceMinVolume(currSource.id, float volume);
+  // OpenAlContext::setSourceMaxVolume(currSource.id, float volume);
+  // OpenAlContext::setSourceDirection(currSource.id, float x, float y, float z);
+  // OpenAlContext::setSourceVelocity(currSource.id, float x, float y, float z);
+  OpenAlContext::setSourceLooping(currSource.id, false);
+
+  OpenAlContext::setSourceBuffer(currSource.id, currBuffer);
+  OpenAlContext::playSource(currSource.id);
 }
 
 //
@@ -164,8 +206,22 @@ void OpenALSoundManager::playSound(uint32_t alias, const glm::vec3& pos, float v
 void OpenALSoundManager::setVolume(float level) { OpenAlContext::setListenerVolume(math::clamp(level, 0.0f, 1.0f)); }
 
 void OpenALSoundManager::setListener(const glm::vec3& pos, const glm::vec3& front, const glm::vec3& up) {
+
+  _listenerPos = pos;
+
   OpenAlContext::setListenerPosition(pos.x, pos.y, pos.z);
   OpenAlContext::setListenerOrientation(front, up);
+
+  for (SoundSource& currSource : _sources) {
+    if (currSource.absolute && currSource.playing) {
+      OpenAlContext::SourceStates state = OpenAlContext::getSourceState(currSource.id);
+      if (state != OpenAlContext::SourceStates::playing) {
+        currSource.playing = false;
+      } else {
+        OpenAlContext::setSourcePosition(currSource.id, pos.x, pos.y, pos.z);
+      }
+    }
+  }
 }
 
 } // namespace audio

@@ -6,8 +6,8 @@
 #include "body/PhysicBodyManager.hpp"
 #include "vehicle/PhysicVehicleManager.hpp"
 
-#include "queries/QueryShape.hpp"
-#include "queries/Raycaster.hpp"
+#include "queries/query-shape/QueryShape.hpp"
+#include "queries/raycaster/Raycaster.hpp"
 
 #include <cstdint>
 #include <functional>

@@ -39,7 +39,7 @@ void PerspectiveClustering::resetClustersCount() {
       }
 }
 
-void PerspectiveClustering::computeCluster(const Camera& inCamera, const std::vector<SpotLight>& inLights) {
+void PerspectiveClustering::computeCluster(const ICamera& inCamera, const std::vector<SpotLight>& inLights) {
   if (_currDataBuffer.empty())
     D_THROW(std::runtime_error, "cluster not initialized");
 

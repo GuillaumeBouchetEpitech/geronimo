@@ -61,7 +61,7 @@ void StackRenderers::initialize(const std::string& inRootPath) {
   StackRenderers::initialize(shaderProgramBuilder.getDefinition(), geometryBuilder.getDefinition(false));
 }
 
-void StackRenderers::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) {
+void StackRenderers::setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) {
   _matricesData = matricesData;
 }
 

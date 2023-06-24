@@ -113,7 +113,9 @@ SRC_GERONIMO_PHYSICS+=	\
 		$(DIR_SRC)/geronimo/physics/*.cpp \
 		$(DIR_SRC)/geronimo/physics/body/*.cpp \
 		$(DIR_SRC)/geronimo/physics/helpers/*.cpp \
-		$(DIR_SRC)/geronimo/physics/queries/*.cpp \
+		$(DIR_SRC)/geronimo/physics/queries/query-shape/*.cpp \
+		$(DIR_SRC)/geronimo/physics/queries/raycaster/*.cpp \
+		$(DIR_SRC)/geronimo/physics/queries/raycaster/internals/*.cpp \
 		$(DIR_SRC)/geronimo/physics/shape/*.cpp \
 		$(DIR_SRC)/geronimo/physics/vehicle/*.cpp \
 		)

@@ -164,7 +164,7 @@ void TextRenderer::initialize(const std::string& inRootPath) {
   _logic.stateRegexp = std::regex(R"(\$\{(\d+)\})");
 }
 
-TextRenderer& TextRenderer::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) {
+TextRenderer& TextRenderer::setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) {
   _graphic.matricesData = matricesData;
   return *this;
 }

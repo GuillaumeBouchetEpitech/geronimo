@@ -1,7 +1,9 @@
 
 #pragma once
 
-#include "geronimo/helpers/GLMath.hpp"
+#include "string-utils/stream-formatter.hpp"
+
+// #include "geronimo/helpers/GLMath.hpp"
 
 #include <cstring> // <= strrchr()
 #include <sstream> // <= std::stringstream
@@ -22,42 +24,19 @@ public:
 
 private:
   std::mutex _mutex;
-  std::stringstream _sstr;
+
+  StreamFormatter _formatter;
 
 public:
   TraceLogger() = default;
 
 public:
-  void dump();
-  void dumpErr();
-  std::string getData() const;
+  StreamFormatter& getStream();
 
 public:
-  template <typename T> TraceLogger& operator<<(T data) {
-    _sstr << data;
-    return *this;
-  }
+  void dump();
+  void dumpErr();
 };
-
-template <> TraceLogger& TraceLogger::operator<<<bool>(bool data);
-
-template <> TraceLogger& TraceLogger::operator<<<float>(float data);
-
-template <> TraceLogger& TraceLogger::operator<<<double>(double data);
-
-template <> TraceLogger& TraceLogger::operator<<<glm::ivec2>(glm::ivec2 data);
-template <> TraceLogger& TraceLogger::operator<<<glm::ivec3>(glm::ivec3 data);
-template <> TraceLogger& TraceLogger::operator<<<glm::ivec4>(glm::ivec4 data);
-
-template <> TraceLogger& TraceLogger::operator<<<glm::uvec2>(glm::uvec2 data);
-template <> TraceLogger& TraceLogger::operator<<<glm::uvec3>(glm::uvec3 data);
-template <> TraceLogger& TraceLogger::operator<<<glm::uvec4>(glm::uvec4 data);
-
-template <> TraceLogger& TraceLogger::operator<<<glm::vec2>(glm::vec2 data);
-template <> TraceLogger& TraceLogger::operator<<<glm::vec3>(glm::vec3 data);
-template <> TraceLogger& TraceLogger::operator<<<glm::vec4>(glm::vec4 data);
-
-template <> TraceLogger& TraceLogger::operator<<<glm::quat>(glm::quat data);
 
 } // namespace gero
 
@@ -73,7 +52,7 @@ template <> TraceLogger& TraceLogger::operator<<<glm::quat>(glm::quat data);
 #define D_MYLOG(streamMsg)                                                                                             \
   {                                                                                                                    \
     gero::TraceLogger logger;                                                                                          \
-    logger << "MYLOG " << D_MYLOG_PREFIX << streamMsg;                                                                 \
+    logger.getStream() << "MYLOG " << D_MYLOG_PREFIX << streamMsg;                                                     \
     logger.dump();                                                                                                     \
   }
 
@@ -81,6 +60,6 @@ template <> TraceLogger& TraceLogger::operator<<<glm::quat>(glm::quat data);
 #define D_MYERR(streamMsg)                                                                                             \
   {                                                                                                                    \
     gero::TraceLogger logger;                                                                                          \
-    logger << "MYERR " << D_MYLOG_PREFIX << streamMsg;                                                                 \
+    logger.getStream() << "MYERR " << D_MYLOG_PREFIX << streamMsg;                                                     \
     logger.dumpErr();                                                                                                  \
   }

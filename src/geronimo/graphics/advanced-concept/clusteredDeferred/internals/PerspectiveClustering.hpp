@@ -33,7 +33,7 @@ public:
 
 public:
   void resetClustersCount();
-  void computeCluster(const Camera& inCamera, const std::vector<SpotLight>& inLights);
+  void computeCluster(const ICamera& inCamera, const std::vector<SpotLight>& inLights);
 
 public:
   const std::vector<float>& getPreviousDataBuffer() const;

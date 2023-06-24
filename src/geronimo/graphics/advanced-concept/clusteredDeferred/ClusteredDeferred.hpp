@@ -31,9 +31,9 @@ public:
   void stopRecording();
 
   void pushSpotLight(const glm::vec3& inPos, float inRadius);
-  void applySpotLights(const gero::graphics::Camera& inSceneCamera);
+  void applySpotLights(const gero::graphics::ICamera& inSceneCamera);
 
-  void renderHudQuad(const gero::graphics::Camera& inSceneCamera, const gero::graphics::Camera& inHudCamera);
+  void renderHudQuad(const gero::graphics::ICamera& inSceneCamera, const gero::graphics::ICamera& inHudCamera);
 
 private:
   gero::graphics::PerspectiveClustering::Def _clusterDef;

@@ -19,9 +19,18 @@ class OpenALSoundManager {
 private:
   bool _enabled = true;
 
+  glm::vec3 _listenerPos = {0, 0, 0};
+
   OpenAlContext::Context _context;
 
-  std::vector<uint32_t> _sources;
+  struct SoundSource {
+    uint32_t id;
+    // glm::vec3 position;
+    bool playing = false;
+    bool absolute = false;
+  };
+
+  std::vector<SoundSource> _sources;
   uint32_t _currentSource = 0;
 
   std::unordered_map<uint32_t, uint32_t> _bufferSoundsMap;
@@ -42,6 +51,7 @@ public:
 
 public:
   void playSound(uint32_t alias, const glm::vec3& pos, float volume, float pitch);
+  void playAbsoluteSound(uint32_t alias, float volume, float pitch);
 
 public:
   void setVolume(float level);

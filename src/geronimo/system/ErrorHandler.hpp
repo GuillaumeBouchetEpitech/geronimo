@@ -7,7 +7,7 @@
 #define D_THROW(exceptionType, exceptionMsg)                                                                           \
   {                                                                                                                    \
     gero::TraceLogger logger;                                                                                          \
-    logger << D_MYLOG_PREFIX << "[EXCEPTION] type: " #exceptionType << ", msg: " << exceptionMsg;                      \
+    logger.getStream() << D_MYLOG_PREFIX << "[EXCEPTION] type: " #exceptionType << ", msg: " << exceptionMsg;          \
     logger.dump();                                                                                                     \
-    throw exceptionType(logger.getData());                                                                             \
+    throw exceptionType(logger.getStream().getData());                                                                 \
   }

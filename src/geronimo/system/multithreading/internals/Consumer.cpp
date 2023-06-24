@@ -12,7 +12,7 @@ Consumer::Consumer(IProducer& inProducer, bool inAvoidBlocking)
   : _producer(inProducer), _avoidBlocking(inAvoidBlocking) {
 
   if (_avoidBlocking == false) {
-    auto setupLock = _setupSynchroniser.makeScopedLock();
+    auto setupLock = _setupSynchronizer.makeScopedLock();
 
     _isRunning = false; // the consumer's thread will set it to true
 
@@ -23,7 +23,7 @@ Consumer::Consumer(IProducer& inProducer, bool inAvoidBlocking)
     // here we wait for the thread to be running
 
     // wait -> release the lock for other thread(s)
-    _setupSynchroniser.waitUntilNotified(setupLock);
+    _setupSynchronizer.waitUntilNotified(setupLock);
   } else {
     _isRunning = false; // the consumer's thread will set it to true
 
@@ -45,7 +45,7 @@ Consumer::~Consumer() { quit(); }
 //
 
 void Consumer::execute(const WorkCallback& inWorkCallback) {
-  auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
+  auto lockNotifier = _taskSynchronizer.makeScopedLockNotifier();
 
   // this part is locked and will notify at the end of the scope
 
@@ -57,7 +57,7 @@ void Consumer::quit() {
     return;
 
   {
-    auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
+    auto lockNotifier = _taskSynchronizer.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
@@ -73,17 +73,17 @@ void Consumer::quit() {
 
 bool Consumer::isRunning() const { return _isRunning; }
 
-bool Consumer::isAvailable() const { return !_taskSynchroniser.isNotified(); }
+bool Consumer::isAvailable() const { return !_taskSynchronizer.isNotified(); }
 
 //
 //
 
 void Consumer::_threadedMethod() {
 
-  auto taskLock = _taskSynchroniser.makeScopedLock();
+  auto taskLock = _taskSynchronizer.makeScopedLock();
 
   if (_avoidBlocking == false) {
-    auto setupLockNotifier = _setupSynchroniser.makeScopedLockNotifier();
+    auto setupLockNotifier = _setupSynchronizer.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
@@ -96,7 +96,7 @@ void Consumer::_threadedMethod() {
 
   while (_isRunning) {
     // wait -> release the lock for other thread(s)
-    _taskSynchroniser.waitUntilNotified(taskLock);
+    _taskSynchronizer.waitUntilNotified(taskLock);
 
     // this part is locked
 

@@ -2,7 +2,7 @@
 #pragma once
 
 #include "IProducer.hpp"
-#include "ThreadSynchroniser.hpp"
+#include "ThreadSynchronizer.hpp"
 
 #include "geronimo/system/NonCopyable.hpp"
 
@@ -18,8 +18,8 @@ private:
   IProducer& _producer;
 
   std::thread _thread;
-  ThreadSynchroniser _setupSynchroniser;
-  ThreadSynchroniser _taskSynchroniser;
+  ThreadSynchronizer _setupSynchronizer;
+  ThreadSynchronizer _taskSynchronizer;
 
   bool _isRunning = false;
   bool _avoidBlocking = false;

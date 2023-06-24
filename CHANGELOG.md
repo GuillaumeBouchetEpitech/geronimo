@@ -1,7 +1,27 @@
 
 # Changelog
 
-## [?.?.?] - ???-??-??
+## [0.0.11] - 2023-06-24
+### Changed
+- feat: absolute position audio
+- feat: copyable images instances
+- feat: camera interface
+- fix: physic queries (ray/sphere cast)
+- fix: math lerp and glm
+- chore: some typos
+- feat: stream formatter class (what the trace logger use)
+- feat: clock class
+
+## [0.0.10] - 2023-05-20
+### Changed
+fix: script file permissions
+chore: clang-format
+fix: profiler widget
+chore: better build system
+chore: better build system
+
+
+## [0.0.9] - 2023-05-6
 ### Changed
 - feat: new sample -> test-bed
 - chore: clang format

@@ -25,6 +25,12 @@ public:
   Image() = default;
   ~Image();
 
+  Image(const Image& other);
+  Image& operator=(const Image& other);
+
+private:
+  void _doCopy(const Image& other);
+
 public:
   void loadFromFile(const std::string& filename, bool supportNonPowerOfTwo = true);
   void loadFromFile(const fileUtils::LoadCallback& loadFileCallback,
@@ -47,6 +53,7 @@ public:
 public:
   const glm::uvec2& getSize() const;
   const uint8_t* getPixels() const;
+  uint8_t& getPixel(uint32_t inX, uint32_t inY, uint32_t inComponent);
   bool isValid() const;
 };
 

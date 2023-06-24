@@ -4,10 +4,9 @@
 #include "geronimo/graphics/Geometry.hpp"
 #include "geronimo/graphics/ShaderProgram.hpp"
 #include "geronimo/graphics/Texture.hpp"
-
 #include "geronimo/graphics/camera/Camera.hpp"
-
 #include "geronimo/helpers/GLMath.hpp"
+#include "geronimo/system/NonCopyable.hpp"
 
 #include <memory>
 #include <regex>
@@ -18,7 +17,7 @@
 namespace gero {
 namespace graphics {
 
-struct TextRenderer {
+struct TextRenderer : public gero::NonCopyable {
 
 public:
   enum class TextAlign {
@@ -56,7 +55,7 @@ private:
     std::shared_ptr<gero::graphics::ShaderProgram> shader;
     std::shared_ptr<gero::graphics::Texture> texture;
     gero::graphics::Geometry geometry;
-    gero::graphics::Camera::MatricesData matricesData;
+    gero::graphics::ICamera::MatricesData matricesData;
   } _graphic;
 
   struct Logic {
@@ -74,14 +73,10 @@ private:
   } _logic;
 
 public:
-  TextRenderer() = default;
-  ~TextRenderer() = default;
-
-public:
   void initialize(const std::string& inRootPath);
 
 public:
-  TextRenderer& setMatricesData(const gero::graphics::Camera::MatricesData& matricesData);
+  TextRenderer& setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData);
 
 public:
   TextRenderer& setMainColor(const glm::vec4& inColor);

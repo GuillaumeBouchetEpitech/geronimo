@@ -41,6 +41,7 @@ public:
     struct ResultImpact {
       glm::vec3 impactPoint;
       glm::vec3 impactNormal;
+      float hitFraction;
       AbstractPhysicBody* body = nullptr;
     };
 
@@ -81,14 +82,20 @@ public:
       if (inParams.type == RaycastParams::Type::closest) {
         outResultArray.allImpactsData[0] = inResult;
         outResultArray.allImpactsTotal = 1;
+        return true;
       } else {
         if (outResultArray.allImpactsTotal >= outResultArray.allImpactsData.size())
           return false;
 
         // check duplicates
         for (std::size_t ii = 0; ii < outResultArray.allImpactsTotal; ++ii)
-          if (outResultArray.allImpactsData[ii].body == inResult.body)
+          if (outResultArray.allImpactsData[ii].body == inResult.body) {
+            if (outResultArray.allImpactsData[ii].hitFraction > inResult.hitFraction) {
+              // replace if new one is closer
+              outResultArray.allImpactsData[ii] = inResult;
+            }
             return true;
+          }
 
         outResultArray.allImpactsData[outResultArray.allImpactsTotal] = inResult;
         outResultArray.allImpactsTotal += 1;
@@ -98,6 +105,18 @@ public:
     };
 
     _raycast(inParams, callback);
+
+    // if (
+    //   inParams.type == RaycastParams::Type::closest && inParams.radius > 0.0f
+    // ) {
+    //   D_MYLOG("inParams.from " << inParams.from);
+    //   D_MYLOG("inParams.to   " << inParams.to);
+    //   if (outResultArray.allImpactsTotal > 0) {
+    //     D_MYLOG(" => allImpactsData[0].impactPoint " << outResultArray.allImpactsData[0].impactPoint);
+    //     D_MYLOG(" => allImpactsData[0].impactNormal " << outResultArray.allImpactsData[0].impactNormal);
+    //     D_MYLOG(" => allImpactsData[0].body " << outResultArray.allImpactsData[0].body);
+    //   }
+    // }
 
     outResultArray.hasHit = outResultArray.allImpactsTotal > 0;
 

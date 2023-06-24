@@ -5,6 +5,8 @@
 
 #include "geronimo/helpers/internals/STBImage.hpp"
 
+#include <cstring>
+
 #include <filesystem> // C++17
 namespace fs = std::filesystem;
 
@@ -14,6 +16,37 @@ namespace gero {
 namespace graphics {
 
 Image::~Image() { dispose(); }
+
+Image::Image(const Image& other) {
+  if (&other == this)
+    return;
+
+  _doCopy(other);
+
+  return;
+}
+
+Image& Image::operator=(const Image& other) {
+  if (&other == this)
+    return *this;
+
+  _doCopy(other);
+
+  return *this;
+}
+
+void Image::_doCopy(const Image& other) {
+  _size = other._size;
+  _rawPixels = nullptr;
+  _stbPixels = nullptr;
+
+  if (!other.isValid())
+    return;
+
+  const uint32_t bufferSize = _size.x * _size.y * 4;
+  _rawPixels = new uint8_t[bufferSize];
+  std::memcpy(_rawPixels, other._rawPixels, bufferSize);
+}
 
 //
 
@@ -112,6 +145,10 @@ void Image::flipY() {
 
 const glm::uvec2& Image::getSize() const { return _size; }
 const uint8_t* Image::getPixels() const { return _rawPixels; }
+
+uint8_t& Image::getPixel(uint32_t inX, uint32_t inY, uint32_t inComponent) {
+  return _rawPixels[(inY * _size.x + inX) * 4 + inComponent];
+}
 
 bool Image::isValid() const { return _size.x > 0 && _size.y > 0 && _rawPixels != nullptr; }
 

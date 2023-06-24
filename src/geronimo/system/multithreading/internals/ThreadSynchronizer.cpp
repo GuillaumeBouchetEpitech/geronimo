@@ -1,5 +1,5 @@
 
-#include "ThreadSynchroniser.hpp"
+#include "ThreadSynchronizer.hpp"
 
 #include <chrono>
 #include <cstdint>
@@ -11,24 +11,24 @@ namespace threading {
 //
 // ScopedLockedNotifier
 
-ThreadSynchroniser::ScopedLockedNotifier::ScopedLockedNotifier(ThreadSynchroniser& synchroniser)
-  : _synchroniser(synchroniser) {
-  _synchroniser._mutex.lock(); // scoped lock part
+ThreadSynchronizer::ScopedLockedNotifier::ScopedLockedNotifier(ThreadSynchronizer& synchronizer)
+  : _synchronizer(synchronizer) {
+  _synchronizer._mutex.lock(); // scoped lock part
 }
 
-ThreadSynchroniser::ScopedLockedNotifier::~ScopedLockedNotifier() {
+ThreadSynchronizer::ScopedLockedNotifier::~ScopedLockedNotifier() {
   // added value compared to a simple scoped lock
   // -> we notify before unlocking the mutex
-  _synchroniser.notify();
+  _synchronizer.notify();
 
-  _synchroniser._mutex.unlock(); // scoped lock part
+  _synchronizer._mutex.unlock(); // scoped lock part
 }
 
 // ScopedLockedNotifier
 //
 //
 
-bool ThreadSynchroniser::waitUntilNotified(std::unique_lock<std::mutex>& lock, float seconds /*= 0.0f*/) {
+bool ThreadSynchronizer::waitUntilNotified(std::unique_lock<std::mutex>& lock, float seconds /*= 0.0f*/) {
   _isNotified = false;
 
   // no need to wait for a timeout
@@ -51,18 +51,18 @@ bool ThreadSynchroniser::waitUntilNotified(std::unique_lock<std::mutex>& lock, f
   return true; // we did not time out
 }
 
-void ThreadSynchroniser::notify() {
+void ThreadSynchronizer::notify() {
   _isNotified = true;
   _condVar.notify_one();
 }
 
-std::unique_lock<std::mutex> ThreadSynchroniser::makeScopedLock() { return std::unique_lock<std::mutex>(_mutex); }
+std::unique_lock<std::mutex> ThreadSynchronizer::makeScopedLock() { return std::unique_lock<std::mutex>(_mutex); }
 
-ThreadSynchroniser::ScopedLockedNotifier ThreadSynchroniser::makeScopedLockNotifier() {
+ThreadSynchronizer::ScopedLockedNotifier ThreadSynchronizer::makeScopedLockNotifier() {
   return ScopedLockedNotifier(*this);
 }
 
-bool ThreadSynchroniser::isNotified() const { return _isNotified; }
+bool ThreadSynchronizer::isNotified() const { return _isNotified; }
 
 } // namespace threading
 } // namespace gero

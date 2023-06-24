@@ -5,6 +5,7 @@
 #include "geronimo/graphics/ShaderProgram.hpp"
 #include "geronimo/graphics/camera/Camera.hpp"
 #include "geronimo/helpers/GLMath.hpp"
+#include "geronimo/system/NonCopyable.hpp"
 
 #include <memory>
 #include <vector>
@@ -30,10 +31,7 @@ public:
   pushRectangle(const glm::vec2& pos, const glm::vec2& size, const glm::vec3& color, float depth = 0.0f) = 0;
 };
 
-class WireFramesStackRenderer : public IWireFramesStackRenderer {
-public:
-  WireFramesStackRenderer() = default;
-  ~WireFramesStackRenderer() = default;
+class WireFramesStackRenderer : public IWireFramesStackRenderer, public gero::NonCopyable {
 
 public:
   void initialize(gero::graphics::ShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef);

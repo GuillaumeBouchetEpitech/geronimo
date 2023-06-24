@@ -487,6 +487,7 @@ public:
     _release(currData);
   }
 
+private:
   void _release(internal_data& curr_item) {
 
     int32_t index = curr_item._index;

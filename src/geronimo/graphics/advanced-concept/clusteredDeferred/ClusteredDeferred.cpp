@@ -40,13 +40,13 @@ void ClusteredDeferred::pushSpotLight(const glm::vec3& inPosition, float inRadiu
   _lightManager.pushSpotLight(inPosition, inRadius);
 }
 
-void ClusteredDeferred::applySpotLights(const gero::graphics::Camera& inSceneCamera) {
+void ClusteredDeferred::applySpotLights(const gero::graphics::ICamera& inSceneCamera) {
   _lightManager.computeDataTextures(inSceneCamera);
   _lightManager.reset();
 }
 
-void ClusteredDeferred::renderHudQuad(const gero::graphics::Camera& inSceneCamera,
-                                      const gero::graphics::Camera& inHudCamera) {
+void ClusteredDeferred::renderHudQuad(const gero::graphics::ICamera& inSceneCamera,
+                                      const gero::graphics::ICamera& inHudCamera) {
 
   _resultQuadRenderer.render(_sunLightDirection,
                              inSceneCamera,

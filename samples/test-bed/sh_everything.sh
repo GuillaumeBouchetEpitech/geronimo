@@ -8,22 +8,6 @@ DIR_ROOT=$PWD
 #
 #
 
-echo ""
-echo "#################################################"
-echo "#                                               #"
-echo "# IF THIS SCRIPT FAIL -> TRY THOSE TWO COMMANDS #"
-echo "# -> 'chmod +x ./sh_everything.sh'              #"
-echo "# -> './sh_everything.sh'                       #"
-echo "#                                               #"
-echo "#################################################"
-echo ""
-
-#
-#
-#
-#
-#
-
 func_ensure_pkg() {
 
   PKG_NAME=$1
@@ -52,15 +36,21 @@ func_ensure_pkg libopenal-dev
 #
 #
 
-if [ -z "${EMSDK}" ]; then
-  echo "the env var 'EMSDK' is missing, the web-wasm builds will be skipped"
-  echo " => check the readme if you want to install emscripten"
-  echo " => it emscripten is laready installed, you may just need to run '. ./emsdk_env.sh' in this terminal"
-  WEB_WASM_AVAILABLE=no
-else
-  echo "the env var 'EMSDK' was found, the web-wasm builds will be included"
-  WEB_WASM_AVAILABLE=yes
-fi
+func_ensure_wasm_compiler() {
+
+  if [ -z "${EMSDK}" ]; then
+    echo "the env var 'EMSDK' is missing, the web-wasm builds will be skipped"
+    echo " => check the readme if you want to install emscripten"
+    echo " => it emscripten is laready installed, you may just need to run '. ./emsdk_env.sh' in this terminal"
+    WEB_WASM_AVAILABLE=no
+  else
+    echo "the env var 'EMSDK' was found, the web-wasm builds will be included"
+    WEB_WASM_AVAILABLE=yes
+  fi
+
+}
+
+func_ensure_wasm_compiler
 
 #
 #
@@ -75,16 +65,22 @@ fi
 #
 #
 
-echo "building projects applicaton"
-echo "  native version"
-make build_mode="release" build_platform="native" all -j6
+func_build_main_application() {
 
-case $WEB_WASM_AVAILABLE in
-yes)
-  echo "  web-wasm version"
-  make build_mode="release" build_platform="web-wasm" all -j6
-  ;;
-esac
+  echo "building projects applicaton"
+  echo "  native version"
+  make build_mode="release" build_platform="native" all -j1
+
+  case $WEB_WASM_AVAILABLE in
+  yes)
+    echo "  web-wasm version"
+    make build_mode="release" build_platform="web-wasm" all -j1
+    ;;
+  esac
+
+}
+
+func_build_main_application
 
 #
 #
@@ -92,13 +88,20 @@ esac
 #
 #
 
-case $WEB_WASM_AVAILABLE in
-yes)
-  echo "building web-wasm-loader"
-  cd ./web-wasm-loader
-  npm install
-  npm run build
-  cd $DIR_ROOT
-  ;;
-esac
+func_build_wasm_loader_webapp() {
+
+  case $WEB_WASM_AVAILABLE in
+  yes)
+    echo "building web-wasm-loader"
+    cd ./web-wasm-loader
+    npm install
+    npm run build
+    cd $DIR_ROOT
+    ;;
+  esac
+
+}
+
+func_build_wasm_loader_webapp
+
 

@@ -34,7 +34,7 @@ void Producer::initialize(uint32_t inTotalCores, bool inAvoidBlocking /*= false*
   // launch producer thread
 
   if (_avoidBlocking == false) {
-    auto setupLock = _setupSynchroniser.makeScopedLock();
+    auto setupLock = _setupSynchronizer.makeScopedLock();
 
     _isRunning = false; // the producer's thread will set it to true
 
@@ -43,7 +43,7 @@ void Producer::initialize(uint32_t inTotalCores, bool inAvoidBlocking /*= false*
     // here we wait for the thread to be running
 
     // wait -> release the lock for other thread(s)
-    _setupSynchroniser.waitUntilNotified(setupLock);
+    _setupSynchronizer.waitUntilNotified(setupLock);
   } else {
     _isRunning = false; // the producer's thread will set it to true
 
@@ -61,7 +61,7 @@ void Producer::push(const WorkCallback& inWorkCallback) {
   if (!_isRunning)
     D_THROW(std::runtime_error, "producer not running");
 
-  auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
+  auto lockNotifier = _taskSynchronizer.makeScopedLockNotifier();
 
   // this part is locked and will notify at the end of the scope
 
@@ -74,7 +74,7 @@ void Producer::quit() {
 
   // clear the planned task(s) and wake up the running thread
   {
-    auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
+    auto lockNotifier = _taskSynchronizer.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
@@ -85,7 +85,7 @@ void Producer::quit() {
 
   // clear the planned task(s) and wake up the running thread
   {
-    auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
+    auto lockNotifier = _taskSynchronizer.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
@@ -114,13 +114,13 @@ void Producer::waitUntilAllCompleted() {
   // make the (main) thread wait for all tasks to be completed
 
   if (_avoidBlocking == false) {
-    auto lock = _allTaskSynchroniser.makeScopedLock();
+    auto lock = _allTaskSynchronizer.makeScopedLock();
 
     // this part is locked
 
     while (!allCompleted()) {
       // wait -> release the lock for other thread(s)
-      _allTaskSynchroniser.waitUntilNotified(lock, 1.0f);
+      _allTaskSynchronizer.waitUntilNotified(lock, 1.0f);
     }
   } else {
     // avoid blocking on the main thread
@@ -136,7 +136,7 @@ bool Producer::allCompleted() const { return (_allPlannedTasks.empty() && _allRu
 //
 
 void Producer::_notifyWorkDone(Consumer* inConsumer) {
-  auto lockNotifier = _taskSynchroniser.makeScopedLockNotifier();
+  auto lockNotifier = _taskSynchronizer.makeScopedLockNotifier();
 
   // this part is locked and will notify at the end of the scope
 
@@ -158,17 +158,17 @@ void Producer::_notifyWorkDone(Consumer* inConsumer) {
 
   // wake up potentially waiting (main) thread
   if (_allPlannedTasks.empty() && _allRunningTasks.empty())
-    _allTaskSynchroniser.notify();
+    _allTaskSynchronizer.notify();
 }
 
 void Producer::_threadedMethod() {
 
-  auto taskLock = _taskSynchroniser.makeScopedLock();
+  auto taskLock = _taskSynchronizer.makeScopedLock();
 
   // this part is locked
 
   if (_avoidBlocking == false) {
-    auto setupLockNotifier = _setupSynchroniser.makeScopedLockNotifier();
+    auto setupLockNotifier = _setupSynchronizer.makeScopedLockNotifier();
 
     // this part is locked and will notify at the end of the scope
 
@@ -179,7 +179,7 @@ void Producer::_threadedMethod() {
 
   while (_isRunning) {
     // wait -> release the lock for other thread(s)
-    _taskSynchroniser.waitUntilNotified(taskLock);
+    _taskSynchronizer.waitUntilNotified(taskLock);
 
     // this part is locked
 

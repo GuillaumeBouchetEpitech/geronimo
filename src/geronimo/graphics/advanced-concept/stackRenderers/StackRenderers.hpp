@@ -5,17 +5,14 @@
 #include "internals/WireFramesStackRenderer.hpp"
 
 #include "geronimo/graphics/camera/Camera.hpp"
+#include "geronimo/system/NonCopyable.hpp"
 
 #include <functional>
 
 namespace gero {
 namespace graphics {
 
-class StackRenderers {
-public:
-  StackRenderers() = default;
-  virtual ~StackRenderers() = default;
-
+class StackRenderers : public gero::NonCopyable {
 public:
   void initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader,
                   const gero::graphics::Geometry::Definition& geoDef);
@@ -24,7 +21,7 @@ public:
   void initialize(const std::string& inRootPath);
 
 public:
-  void setMatricesData(const gero::graphics::Camera::MatricesData& matricesData);
+  void setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData);
 
 public:
   void flush();
@@ -37,7 +34,7 @@ public:
 private:
   std::shared_ptr<gero::graphics::ShaderProgram> _shader;
 
-  gero::graphics::Camera::MatricesData _matricesData;
+  gero::graphics::ICamera::MatricesData _matricesData;
 
   TrianglesStackRenderer _trianglesStackRenderer;
   WireFramesStackRenderer _wireFramesStackRenderer;

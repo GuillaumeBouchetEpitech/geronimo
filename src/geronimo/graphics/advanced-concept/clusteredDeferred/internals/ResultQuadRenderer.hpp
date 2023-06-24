@@ -30,8 +30,8 @@ public:
   void resize(const glm::ivec2& inFrameSize);
 
   void render(const glm::vec3& sunLightDirection,
-              const gero::graphics::Camera& inSceneCamera,
-              const gero::graphics::Camera& inHudCamera,
+              const gero::graphics::ICamera& inSceneCamera,
+              const gero::graphics::ICamera& inHudCamera,
               const gero::graphics::PerspectiveClustering::Def& clusterDef,
               const gero::graphics::Texture& colorTexture,
               const gero::graphics::Texture& positionTexture,

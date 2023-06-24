@@ -3,7 +3,7 @@
 
 #include "internals/Consumer.hpp"
 #include "internals/IProducer.hpp"
-#include "internals/ThreadSynchroniser.hpp"
+#include "internals/ThreadSynchronizer.hpp"
 
 #include <functional>
 #include <list>
@@ -26,9 +26,9 @@ private:
 
 private:
   std::thread _thread;
-  ThreadSynchroniser _setupSynchroniser;
-  ThreadSynchroniser _taskSynchroniser;
-  ThreadSynchroniser _allTaskSynchroniser;
+  ThreadSynchronizer _setupSynchronizer;
+  ThreadSynchronizer _taskSynchronizer;
+  ThreadSynchronizer _allTaskSynchronizer;
 
   bool _isRunning = false;
   bool _avoidBlocking = false;

@@ -5,6 +5,7 @@
 #include "geronimo/graphics/ShaderProgram.hpp"
 #include "geronimo/graphics/camera/Camera.hpp"
 #include "geronimo/helpers/GLMath.hpp"
+#include "geronimo/system/NonCopyable.hpp"
 
 #include <memory>
 #include <vector>
@@ -63,11 +64,7 @@ public:
   pushThickTriangle3dLine(const glm::vec3& posA, const glm::vec3& posB, float thickness, const glm::vec4& color) = 0;
 };
 
-struct TrianglesStackRenderer : public ITrianglesStackRenderer {
-
-public:
-  TrianglesStackRenderer() = default;
-  ~TrianglesStackRenderer() = default;
+struct TrianglesStackRenderer : public ITrianglesStackRenderer, public gero::NonCopyable {
 
 public:
   void initialize(gero::graphics::ShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef);

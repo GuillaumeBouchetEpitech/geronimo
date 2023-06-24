@@ -56,7 +56,7 @@ bool Camera::sceneToHudCoord(const glm::vec3& scenePos, glm::vec3& hudPos) const
   return sceneToScreen(scenePos, _matricesData.view, _matricesData.projection, hudOrigin, _viewportSize, hudPos);
 }
 
-void Camera::hudToSceneCoord(const glm::vec2& hudPos, glm::vec3& from, glm::vec3& to) {
+void Camera::hudToSceneCoord(const glm::vec2& hudPos, glm::vec3& from, glm::vec3& to) const {
   glm::vec2 actualPos = (glm::vec2(hudPos.x, hudPos.y) / _viewportSize) * 2.0f - 1.0f;
   // origin is top-left and +y mouse is down
   actualPos.y = -actualPos.y;
@@ -106,13 +106,13 @@ void Camera::setOrthographic(float left, float right, float bottom, float top, f
   _dirtyProjectionMatrices = true;
 }
 
-Camera::ProjectionType Camera::getProjectionType() const { return _projectionType; }
+ICamera::ProjectionType Camera::getProjectionType() const { return _projectionType; }
 
-const Camera::ProjectionData& Camera::getProjectionData() const { return _projectionData; }
+const ICamera::ProjectionData& Camera::getProjectionData() const { return _projectionData; }
 
 //
 
-const Camera::MatricesData& Camera::getMatricesData() const { return _matricesData; }
+const ICamera::MatricesData& Camera::getMatricesData() const { return _matricesData; }
 
 } // namespace graphics
 } // namespace gero
