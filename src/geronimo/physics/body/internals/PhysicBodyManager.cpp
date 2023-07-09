@@ -1,9 +1,9 @@
 
 #include "PhysicBodyManager.hpp"
 
+#include "geronimo/helpers/internals/BulletPhysics.hpp"
 #include "geronimo/physics/PhysicWorld.hpp"
 #include "geronimo/system/TraceLogger.hpp"
-#include "geronimo/helpers/internals/BulletPhysics.hpp"
 
 namespace gero {
 namespace physics {

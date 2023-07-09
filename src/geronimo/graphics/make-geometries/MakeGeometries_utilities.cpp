@@ -3,8 +3,8 @@
 #include "MakeGeometries.hpp"
 
 #include "geronimo/system/containers/static_heap_grid_array.hpp"
-#include "geronimo/system/math/constants.hpp"
 #include "geronimo/system/math/compute-normal.hpp"
+#include "geronimo/system/math/constants.hpp"
 
 namespace gero {
 namespace graphics {

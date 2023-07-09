@@ -9,4 +9,4 @@ namespace math {
 float safeNormalize(glm::vec3& inVec3);
 
 }
-}
+} // namespace gero

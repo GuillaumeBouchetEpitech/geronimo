@@ -41,7 +41,6 @@ public:
   virtual int get_value() const = 0;
   virtual const std::string& get_my_string() const = 0;
   virtual void set_my_string(const std::string& inVal) = 0;
-
 };
 
 struct TestStructure : public ITestStructure {
@@ -52,8 +51,6 @@ struct TestStructure : public ITestStructure {
   TestStructure& operator=(const TestStructure& other);
   TestStructure& operator=(TestStructure&& other);
 
-
-
   int value = -1;
 
   std::string my_string;
@@ -62,7 +59,6 @@ struct TestStructure : public ITestStructure {
   int get_value() const override;
   const std::string& get_my_string() const override;
   void set_my_string(const std::string& inVal) override;
-
 };
 
 //

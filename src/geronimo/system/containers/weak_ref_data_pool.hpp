@@ -12,38 +12,15 @@
 
 namespace gero {
 
+template <typename PublicBaseType> struct data_pool_weak_ref;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template<typename PublicBaseType>
-struct data_pool_weak_ref;
-
-
-
-
-struct interface_internal_data
-{
+struct interface_internal_data {
   virtual ~interface_internal_data() = default;
   virtual basic_double_linked_list& get_weak_ref_list() = 0;
   virtual bool is_active() = 0;
 };
 
-template <typename PublicBaseType>
-struct data_pool_weak_ref_interface_weak_ref_data_pool
-{
+template <typename PublicBaseType> struct data_pool_weak_ref_interface_weak_ref_data_pool {
 
   friend data_pool_weak_ref<PublicBaseType>;
 
@@ -59,13 +36,9 @@ protected:
   virtual bool _is_out_of_range(std::size_t inIndex) = 0;
 };
 
-
 // _itemsPool.is_out_of_range(index)
 // _itemsPool.at(std::size_t(index))._weak_ref_list
 // _itemsPool.at(std::size_t(index))._is_active
-
-
-
 
 // class interface_weak_ref_data_pool {
 // public:
@@ -74,11 +47,7 @@ protected:
 // public:
 // };
 
-
-
-
-template<typename PublicBaseType>
-struct data_pool_weak_ref {
+template <typename PublicBaseType> struct data_pool_weak_ref {
 
   using pool_type = data_pool_weak_ref_interface_weak_ref_data_pool<PublicBaseType>;
 
@@ -96,7 +65,7 @@ public:
 public:
   explicit data_pool_weak_ref() = default;
 
-// private: // TODO
+  // private: // TODO
   explicit data_pool_weak_ref(pool_type* inPool, int32_t inIndex) {
     // CTOR
 
@@ -190,8 +159,7 @@ private:
     if (&other == this)
       return;
 
-    if (is_active())
-    {
+    if (is_active()) {
       basic_double_linked_list& list = _pool->_get_itemsPool_data_by_index(std::size_t(_index)).get_weak_ref_list();
       basic_double_linked_list::remove_link_from_list(list, _link);
     }
@@ -201,8 +169,7 @@ private:
     basic_double_linked_list::reset_link(_link);
     _link.user_data = static_cast<void*>(this);
 
-    if (is_active())
-    {
+    if (is_active()) {
       basic_double_linked_list& list = _pool->_get_itemsPool_data_by_index(std::size_t(_index)).get_weak_ref_list();
       basic_double_linked_list::add_link_to_list(list, _link);
     }
@@ -228,9 +195,7 @@ private:
         basic_double_linked_list::swap_two_links_from_same_list(list, other._link, _link);
       }
 
-    }
-    else
-    if (currWasActive && !otherWasActive) {
+    } else if (currWasActive && !otherWasActive) {
       // remove current
       // add other
 
@@ -244,17 +209,17 @@ private:
 
       {
         other._link.user_data = static_cast<void*>(&other);
-        basic_double_linked_list& list = other._pool->_get_itemsPool_data_by_index(std::size_t(other._index)).get_weak_ref_list();
+        basic_double_linked_list& list =
+          other._pool->_get_itemsPool_data_by_index(std::size_t(other._index)).get_weak_ref_list();
         basic_double_linked_list::add_link_to_list(list, other._link);
       }
-    }
-    else
-    if (!currWasActive && otherWasActive) {
+    } else if (!currWasActive && otherWasActive) {
       // remove other
       // add current
 
       {
-        basic_double_linked_list& list = other._pool->_get_itemsPool_data_by_index(std::size_t(other._index)).get_weak_ref_list();
+        basic_double_linked_list& list =
+          other._pool->_get_itemsPool_data_by_index(std::size_t(other._index)).get_weak_ref_list();
         basic_double_linked_list::remove_link_from_list(list, other._link);
       }
 
@@ -267,7 +232,6 @@ private:
         basic_double_linked_list::add_link_to_list(list, _link);
       }
     }
-
   }
 
 public:
@@ -281,19 +245,19 @@ public:
 
 public:
   bool is_active() {
-    return (_index >= 0 && _pool &&
-            _pool->_get_itemsPool_data_by_index(std::size_t(_index)).is_active());
+    return (_index >= 0 && _pool && _pool->_get_itemsPool_data_by_index(std::size_t(_index)).is_active());
   }
   bool is_active() const {
-    return (_index >= 0 && _pool &&
-            _pool->_get_itemsPool_data_by_index(std::size_t(_index)).is_active());
+    return (_index >= 0 && _pool && _pool->_get_itemsPool_data_by_index(std::size_t(_index)).is_active());
   }
 
   int32_t index() { return _index; }
   int32_t index() const { return _index; }
 
   value_type* get() { return _index < 0 ? nullptr : &_pool->_get_itemsPool_public_data_by_index(std::size_t(_index)); }
-  const value_type* get() const { return _index < 0 ? nullptr : &_pool->_get_itemsPool_public_data_by_index(std::size_t(_index)); }
+  const value_type* get() const {
+    return _index < 0 ? nullptr : &_pool->_get_itemsPool_public_data_by_index(std::size_t(_index));
+  }
 
   value_type* operator->() { return get(); }
   const value_type* operator->() const { return get(); }
@@ -301,34 +265,6 @@ public:
   value_type& operator*() { return *get(); }
   const value_type& operator*() const { return *get(); }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * interface_weak_ref_data_pool
@@ -338,8 +274,7 @@ public:
  * - weak pointer to active data
  * - loop over active data
  */
-template <typename PublicBaseType>
-class interface_weak_ref_data_pool {
+template <typename PublicBaseType> class interface_weak_ref_data_pool {
 public:
   virtual ~interface_weak_ref_data_pool() = default;
 
@@ -367,7 +302,6 @@ public:
 public:
   virtual uint32_t get_ref_count(uint32_t index) const = 0;
   virtual uint32_t get_ref_count(const weak_ref& ref) const = 0;
-
 
 public:
   virtual int32_t get_index(const weak_ref& ref) const = 0;
@@ -399,19 +333,6 @@ public:
   virtual weak_ref find_if(std::function<bool(const weak_ref)> callback) const = 0;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * weak_ref_data_pool
  *
@@ -423,9 +344,9 @@ public:
 template <typename InternalBaseType,
           typename PublicBaseType = InternalBaseType,
           std::size_t initial_size = 256,
-          bool no_realloc = true
-          >
-class weak_ref_data_pool: public interface_weak_ref_data_pool<PublicBaseType>, public data_pool_weak_ref_interface_weak_ref_data_pool<PublicBaseType> {
+          bool no_realloc = true>
+class weak_ref_data_pool : public interface_weak_ref_data_pool<PublicBaseType>,
+                           public data_pool_weak_ref_interface_weak_ref_data_pool<PublicBaseType> {
 public:
   // struct weak_ref;
 
@@ -513,17 +434,9 @@ public:
     }
 
   public:
-      basic_double_linked_list& get_weak_ref_list() override
-      {
-        return _weak_ref_list;
-      }
-      bool is_active() override
-      {
-        return _is_active;
-      }
-
+    basic_double_linked_list& get_weak_ref_list() override { return _weak_ref_list; }
+    bool is_active() override { return _is_active; }
   };
-
 
 private:
   dynamic_heap_array<internal_data, internal_data, initial_size> _itemsPool;
@@ -533,22 +446,16 @@ private:
   // {
   //   return _itemsPool;
   // }
-  virtual interface_internal_data& _get_itemsPool_data_by_index(std::size_t inIndex) override
-  {
+  virtual interface_internal_data& _get_itemsPool_data_by_index(std::size_t inIndex) override {
     return _itemsPool.at(inIndex);
   }
-  virtual value_type& _get_itemsPool_public_data_by_index(std::size_t inIndex) override
-  {
+  virtual value_type& _get_itemsPool_public_data_by_index(std::size_t inIndex) override {
     return _itemsPool.at(inIndex);
   }
-  virtual const value_type& _get_itemsPool_public_data_by_index(std::size_t inIndex) const override
-  {
+  virtual const value_type& _get_itemsPool_public_data_by_index(std::size_t inIndex) const override {
     return _itemsPool.at(inIndex);
   }
-  virtual bool _is_out_of_range(std::size_t inIndex) override
-  {
-    return _itemsPool.is_out_of_range(inIndex);
-  }
+  virtual bool _is_out_of_range(std::size_t inIndex) override { return _itemsPool.is_out_of_range(inIndex); }
 
 public:
   weak_ref_data_pool() = default;
@@ -659,10 +566,14 @@ public:
   }
 
   weak_ref get(uint32_t index) override { return weak_ref(this, int32_t(index)); }
-  weak_ref get(uint32_t index) const override { return weak_ref(const_cast<weak_ref_data_pool*>(this), int32_t(index)); }
+  weak_ref get(uint32_t index) const override {
+    return weak_ref(const_cast<weak_ref_data_pool*>(this), int32_t(index));
+  }
 
   weak_ref get(const weak_ref& ref) override { return weak_ref(this, get_index(ref)); }
-  weak_ref get(const weak_ref& ref) const override { return weak_ref(const_cast<weak_ref_data_pool*>(this), get_index(ref)); }
+  weak_ref get(const weak_ref& ref) const override {
+    return weak_ref(const_cast<weak_ref_data_pool*>(this), get_index(ref));
+  }
 
   // weak_ref get(const value_type& target) { return weak_ref(this,
   // get_index(target)); } weak_ref get(const value_type& target) const {
@@ -701,8 +612,11 @@ public:
 public:
   bool is_active(const weak_ref& ref) override { return ref.is_active(); }
   // bool is_active(std::size_t index) const override { return is_active(&_itemsPool.at(index)); }
-  bool is_active(std::size_t index) const override { return reinterpret_cast<const internal_data*>(&_itemsPool.at(index))->_is_active; }
-  // bool is_active(const value_type& target) const override { return reinterpret_cast<const internal_data*>(&target)->_is_active; }
+  bool is_active(std::size_t index) const override {
+    return reinterpret_cast<const internal_data*>(&_itemsPool.at(index))->_is_active;
+  }
+  // bool is_active(const value_type& target) const override { return reinterpret_cast<const
+  // internal_data*>(&target)->_is_active; }
 
 public:
   void release(const weak_ref& ref) override {
@@ -879,19 +793,6 @@ public:
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 class weak_ref_data_pool_base_class {
 public:
   weak_ref_data_pool_base_class() = default;
@@ -911,21 +812,5 @@ template <typename InternalBaseType,
           typename std::enable_if<std::is_base_of_v<weak_ref_data_pool_base_class, InternalBaseType>, bool>::type =
             true>
 using safe_weak_ref_data_pool = weak_ref_data_pool<InternalBaseType, PublicBaseType, initial_size, no_realloc>;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 } // namespace gero

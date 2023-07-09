@@ -25,7 +25,7 @@ private:
 
   struct SoundSource {
     uint32_t id;
-    glm::vec3 position = {0,0,0};
+    glm::vec3 position = {0, 0, 0};
     bool playing = false;
     bool absolute = false;
     uint32_t priority = 0;
@@ -55,11 +55,29 @@ public:
   void loadOggFromMemory(uint32_t alias, const std::string& content);
 
 public:
-  void playSound(uint32_t inAlias, const glm::vec3& inPosition, float inVolume, float inPitch, uint32_t inPriority = 0, int32_t inUserAlias = 0, int32_t inMaxAlias = 1000);
-  void playAbsoluteSound(uint32_t inAlias, float inVolume, float inPitch, uint32_t inPriority = 0, int32_t inUserAlias = 0, int32_t inMaxAlias = 1000);
+  void playSound(uint32_t inAlias,
+                 const glm::vec3& inPosition,
+                 float inVolume,
+                 float inPitch,
+                 uint32_t inPriority = 0,
+                 int32_t inUserAlias = 0,
+                 int32_t inMaxAlias = 1000);
+  void playAbsoluteSound(uint32_t inAlias,
+                         float inVolume,
+                         float inPitch,
+                         uint32_t inPriority = 0,
+                         int32_t inUserAlias = 0,
+                         int32_t inMaxAlias = 1000);
 
 private:
-  void _playSound(uint32_t inAlias, const glm::vec3& inPosition, float inVolume, float inPitch, bool inAbsolute, uint32_t inPriority, int32_t inUserAlias, int32_t inMaxAlias);
+  void _playSound(uint32_t inAlias,
+                  const glm::vec3& inPosition,
+                  float inVolume,
+                  float inPitch,
+                  bool inAbsolute,
+                  uint32_t inPriority,
+                  int32_t inUserAlias,
+                  int32_t inMaxAlias);
 
 public:
   void setVolume(float level);

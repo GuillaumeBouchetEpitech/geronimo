@@ -24,16 +24,9 @@ TEST(trees_KdTree, must_find_correct_number_of_object) {
 
   for (std::size_t ii = 0; ii < allPoints.capacity(); ++ii) {
 
-    TmpUserData tmpData = { 100 + int32_t(ii) };
+    TmpUserData tmpData = {100 + int32_t(ii)};
 
-    allPoints.push_back({
-      {
-        1.0f + float(ii) * 0.5f,
-        1.0f + float(ii) * 0.6f,
-        1.0f + float(ii) * 0.7f
-      },
-      tmpData
-    });
+    allPoints.push_back({{1.0f + float(ii) * 0.5f, 1.0f + float(ii) * 0.6f, 1.0f + float(ii) * 0.7f}, tmpData});
   }
 
   myKDTree.build(allPoints);
@@ -43,13 +36,11 @@ TEST(trees_KdTree, must_find_correct_number_of_object) {
 
   int totalFound = 0;
 
-  for (const auto& toSearchPoint : allPoints)
-  {
+  for (const auto& toSearchPoint : allPoints) {
     found.clear();
     myKDTree.searchWithRadius(toSearchPoint.position, 20.0f, found);
 
-    for (const auto& currVal : found)
-    {
+    for (const auto& currVal : found) {
       ASSERT_EQ(allPoints.at(currVal.index).data.id, 100 + currVal.index);
     }
 
@@ -78,16 +69,9 @@ TEST(trees_KdTree, must_find_correct_object_in_range) {
 
   for (std::size_t ii = 0; ii < allPoints.capacity(); ++ii) {
 
-    TmpUserData tmpData = { 100 + int32_t(ii) };
+    TmpUserData tmpData = {100 + int32_t(ii)};
 
-    allPoints.push_back({
-      {
-        1.0f + float(ii) * 0.5f,
-        1.0f + float(ii) * 0.6f,
-        1.0f + float(ii) * 0.7f
-      },
-      tmpData
-    });
+    allPoints.push_back({{1.0f + float(ii) * 0.5f, 1.0f + float(ii) * 0.6f, 1.0f + float(ii) * 0.7f}, tmpData});
   }
 
   myKDTree.build(allPoints);
@@ -95,8 +79,7 @@ TEST(trees_KdTree, must_find_correct_object_in_range) {
   myKdTree::IndexedVec3Arr found;
   found.reserve(allPoints.size());
 
-  for (const auto& toSearchPoint : allPoints)
-  {
+  for (const auto& toSearchPoint : allPoints) {
     constexpr float k_radius = 20.0f;
 
     found.clear();
@@ -113,7 +96,6 @@ TEST(trees_KdTree, must_find_correct_object_in_range) {
       if (magnitude > k_radius) {
         throw std::runtime_error("outside the radius");
       }
-
     }
 
     //
@@ -157,13 +139,11 @@ TEST(trees_KdTree, must_find_correct_object_in_range) {
 //     });
 //   }
 
-
 //   gero::trees::KDTree myKDTree;
 //   myKDTree.build(allPoints);
 
 //   // tmpClock.stop();
 //   // const int32_t stepMilliSeconds1 = tmpClock.getDuration();
-
 
 //   int savedTotalFound = -1;
 //   gero::trees::KDTree::IndexedVec3Arr found;
@@ -266,8 +246,4 @@ TEST(trees_KdTree, must_find_correct_object_in_range) {
 
 //   }
 
-
-
 // }
-
-

@@ -1,8 +1,8 @@
 
 #include "PhysicVehicleManager.hpp"
 
-#include "geronimo/physics/PhysicWorld.hpp"
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
+#include "geronimo/physics/PhysicWorld.hpp"
 
 namespace gero {
 namespace physics {

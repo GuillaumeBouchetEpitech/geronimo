@@ -7,7 +7,6 @@
 namespace gero {
 namespace physics {
 
-
 class AbstractPhysicBodyManager {
 
 public:

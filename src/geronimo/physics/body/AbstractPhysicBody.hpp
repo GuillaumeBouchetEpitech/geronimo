@@ -77,7 +77,6 @@ public:
   virtual void dumpData() = 0;
 
   virtual const PhysicShapeDef& getShapeDefinition() const = 0;
-
 };
 
 using BodyWeakRef = data_pool_weak_ref<AbstractPhysicBody>;

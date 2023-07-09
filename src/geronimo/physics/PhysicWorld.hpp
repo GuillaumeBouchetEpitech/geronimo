@@ -11,10 +11,10 @@
 
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <set>
 #include <unordered_map>
 #include <vector>
-#include <memory>
 
 class btBroadphaseInterface;
 class btDefaultCollisionConfiguration;

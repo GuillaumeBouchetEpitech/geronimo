@@ -11,7 +11,7 @@ namespace physics {
 
 class PhysicWorld;
 
-class PhysicBodyManager: public AbstractPhysicBodyManager {
+class PhysicBodyManager : public AbstractPhysicBodyManager {
   friend PhysicWorld;
 
 private:

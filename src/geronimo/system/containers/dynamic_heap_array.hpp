@@ -5,8 +5,6 @@
 
 namespace gero {
 
-
-
 template <typename InternalType,
           typename PublicType = InternalType,
           std::size_t initial_size = 0,

@@ -451,9 +451,7 @@ public:
 //
 //
 
-template <typename PublicType>
-class interface_generic_array_container
-{
+template <typename PublicType> class interface_generic_array_container {
 
 public:
   using value_type = PublicType;
@@ -480,10 +478,9 @@ public:
   virtual const value_type& back() const = 0;
   virtual value_type& back() = 0;
 
-// public:
-//   virtual bool operator==(const generic_array_container& other) const = 0;
-//   virtual bool operator!=(const generic_array_container& other) const = 0;
-
+  // public:
+  //   virtual bool operator==(const generic_array_container& other) const = 0;
+  //   virtual bool operator!=(const generic_array_container& other) const = 0;
 };
 
 //
@@ -493,9 +490,7 @@ public:
 //
 
 template <typename InternalType, typename PublicType = InternalType>
-class generic_array_container
-  : public interface_generic_array_container<PublicType>
-{
+class generic_array_container : public interface_generic_array_container<PublicType> {
 
 public:
   using value_type = PublicType;

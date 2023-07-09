@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "../PhysicVehicleDef.hpp"
 #include "../AbstractPhysicVehicle.hpp"
+#include "../PhysicVehicleDef.hpp"
 
 #include "geronimo/physics/body/AbstractPhysicBody.hpp"
 

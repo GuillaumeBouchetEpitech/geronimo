@@ -144,8 +144,9 @@ void Image::flipY() {
 
 //
 
-void Image::exploreOriginSubRectangle(const glm::uvec2& inOrigin, const glm::uvec2& inSize, std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const
-{
+void Image::exploreOriginSubRectangle(const glm::uvec2& inOrigin,
+                                      const glm::uvec2& inSize,
+                                      std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const {
   if (!isValid())
     D_THROW(std::runtime_error, "image not initialized");
 
@@ -158,13 +159,14 @@ void Image::exploreOriginSubRectangle(const glm::uvec2& inOrigin, const glm::uve
   maxCoord.y = gero::math::clamp(int32_t(inOrigin.y + inSize.y), minCoord.y, maxCoord.y);
 
   for (int32_t yy = minCoord.y; yy <= maxCoord.y; ++yy)
-  for (int32_t xx = minCoord.x; xx <= maxCoord.x; ++xx)
-    if (!inCallback(glm::uvec2(xx, yy), getPixelValues(uint32_t(xx), uint32_t(yy))))
-      return;
+    for (int32_t xx = minCoord.x; xx <= maxCoord.x; ++xx)
+      if (!inCallback(glm::uvec2(xx, yy), getPixelValues(uint32_t(xx), uint32_t(yy))))
+        return;
 }
 
-void Image::exploreCenteredSubRectangle(const glm::uvec2& inOrigin, const glm::uvec2& inSize, std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const
-{
+void Image::exploreCenteredSubRectangle(const glm::uvec2& inOrigin,
+                                        const glm::uvec2& inSize,
+                                        std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const {
   exploreOriginSubRectangle(inOrigin - inSize / 2U, inSize, inCallback);
 }
 
@@ -185,15 +187,9 @@ uint8_t Image::getPixel(uint32_t inX, uint32_t inY, uint32_t inComponent) const 
   return _rawPixels[(inY * _size.x + inX) * 4 + inComponent];
 }
 
-glm::uvec4 Image::getPixelValues(uint32_t inX, uint32_t inY) const
-{
+glm::uvec4 Image::getPixelValues(uint32_t inX, uint32_t inY) const {
   uint32_t tmpIndex = (inY * _size.x + inX) * 4;
-  return {
-    _rawPixels[tmpIndex + 0],
-    _rawPixels[tmpIndex + 1],
-    _rawPixels[tmpIndex + 2],
-    _rawPixels[tmpIndex + 3]
-  };
+  return {_rawPixels[tmpIndex + 0], _rawPixels[tmpIndex + 1], _rawPixels[tmpIndex + 2], _rawPixels[tmpIndex + 3]};
 }
 
 bool Image::isValid() const { return _size.x > 0 && _size.y > 0 && _rawPixels != nullptr; }

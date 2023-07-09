@@ -26,18 +26,14 @@ TEST(physic_wrapper_perf, raycast_closest_static_object) {
   gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-
-
   // gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
   std::vector<gero::physics::Raycaster::RaycastParams::ResultArray<5>> allResultsRayStack;
   allResultsRayStack.resize(1024 * 10);
 
-
   gero::metrics::Clock tmpClock;
   tmpClock.start();
 
-  for (auto& currResult : allResultsRayStack)
-  {
+  for (auto& currResult : allResultsRayStack) {
     world.getRaycaster().raycast(paramsRay, currResult);
   }
 
@@ -54,8 +50,7 @@ TEST(physic_wrapper_perf, raycast_closest_static_object) {
   // std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
   // world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
 
-  for (auto& currResult : allResultsRayStack)
-  {
+  for (auto& currResult : allResultsRayStack) {
     ASSERT_EQ(currResult.hasHit, true);
     ASSERT_EQ(currResult.allImpactsTotal, 1);
     ASSERT_EQ(currResult.allImpactsData.size(), 5);

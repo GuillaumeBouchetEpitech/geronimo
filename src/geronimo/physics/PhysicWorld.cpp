@@ -1,8 +1,8 @@
 
 #include "PhysicWorld.hpp"
 
-#include "body/internals/PhysicBodyManager.hpp"
 #include "body/internals/PhysicBody.hpp"
+#include "body/internals/PhysicBodyManager.hpp"
 #include "vehicle/internals/PhysicVehicle.hpp"
 #include "vehicle/internals/PhysicVehicleManager.hpp"
 
@@ -63,13 +63,10 @@ public:
 
 // PhysicWorld* PhysicWorld::self = nullptr;
 
-PhysicWorld::PhysicWorld()
-  : _raycaster(*this)
-  , _queryShape(*this)
-{
+PhysicWorld::PhysicWorld() : _raycaster(*this), _queryShape(*this) {
 
- _physicBodyManager = std::make_unique<PhysicBodyManager>(*this);
- _physicVehicleManager = std::make_unique<PhysicVehicleManager>(*this);
+  _physicBodyManager = std::make_unique<PhysicBodyManager>(*this);
+  _physicVehicleManager = std::make_unique<PhysicVehicleManager>(*this);
 
   // PhysicWorld::self = this;
 
@@ -145,8 +142,7 @@ void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) 
 //
 //
 
-void PhysicWorld::setGravity(float inX, float inY, float inZ)
-{
+void PhysicWorld::setGravity(float inX, float inY, float inZ) {
   _gravity.x = inX;
   _gravity.y = inY;
   _gravity.z = inZ;
@@ -154,15 +150,9 @@ void PhysicWorld::setGravity(float inX, float inY, float inZ)
   _bullet.dynamicsWorld->setGravity(btVector3(_gravity.x, _gravity.y, _gravity.z));
 }
 
-void PhysicWorld::setGravity(const glm::vec3& inGravity)
-{
-  setGravity(inGravity.x, inGravity.y, inGravity.z);
-}
+void PhysicWorld::setGravity(const glm::vec3& inGravity) { setGravity(inGravity.x, inGravity.y, inGravity.z); }
 
-const glm::vec3& PhysicWorld::getGravity() const
-{
-  return _gravity;
-}
+const glm::vec3& PhysicWorld::getGravity() const { return _gravity; }
 
 //
 //

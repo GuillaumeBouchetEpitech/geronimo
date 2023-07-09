@@ -1106,16 +1106,10 @@ TEST(system_weak_ref_data_pool, can_make_weak_ref_that_invalidate_once_out_of_sc
   ASSERT_EQ(myPool.get_ref_count(2), 1);
 }
 
-
-
-
-template<typename T>
-struct LOL {
+template <typename T> struct LOL {
   int value;
   T data;
 };
-
-
 
 TEST(system_weak_ref_data_pool, can_have_weak_ref_in_templated_std_vector_copied_and_still_up_to_date) {
 
@@ -1142,9 +1136,9 @@ TEST(system_weak_ref_data_pool, can_have_weak_ref_in_templated_std_vector_copied
 
   std::vector<LOL<LocalRef>> myVector;
 
-  myVector.push_back({ 1, mainRef1 });
-  myVector.push_back({ 2, mainRef2 });
-  myVector.push_back({ 3, mainRef3 });
+  myVector.push_back({1, mainRef1});
+  myVector.push_back({2, mainRef2});
+  myVector.push_back({3, mainRef3});
 
   ASSERT_EQ(myPool.size(), 3);
   ASSERT_EQ(myPool.get_ref_count(0), 2);
@@ -1194,7 +1188,7 @@ TEST(system_weak_ref_data_pool, can_have_weak_ref_in_templated_std_vector_copied
   //
   //
 
-  myVector.push_back({ 4, lol1.data });
+  myVector.push_back({4, lol1.data});
 
   ASSERT_EQ(myPool.size(), 3);
   ASSERT_EQ(myPool.get_ref_count(0), 4);

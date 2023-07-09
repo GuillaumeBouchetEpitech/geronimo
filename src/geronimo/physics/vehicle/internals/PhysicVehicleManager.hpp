@@ -9,7 +9,7 @@ namespace physics {
 
 class PhysicWorld;
 
-class PhysicVehicleManager: public AbstractPhysicVehicleManager {
+class PhysicVehicleManager : public AbstractPhysicVehicleManager {
   friend PhysicWorld;
 
 private:

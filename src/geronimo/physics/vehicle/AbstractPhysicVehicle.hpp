@@ -3,8 +3,8 @@
 
 #include "geronimo/physics/body/AbstractPhysicBody.hpp"
 
-#include "geronimo/system/containers/weak_ref_data_pool.hpp"
 #include "geronimo/helpers/GLMath.hpp"
+#include "geronimo/system/containers/weak_ref_data_pool.hpp"
 
 namespace gero {
 namespace physics {

@@ -123,8 +123,7 @@ struct basic_double_linked_list {
   template <typename T>
   static void loop_list_links_and_reset(basic_double_linked_list& list, const std::function<void(T*)>& callback) {
 
-    if (is_empty_list(list))
-    {
+    if (is_empty_list(list)) {
       list.head_link = nullptr;
       list.size = 0;
       return;

@@ -4,20 +4,18 @@
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <memory>
-#include <vector>
-#include <array>
 #include <optional>
+#include <vector>
 
 namespace gero {
 
 namespace trees {
 
-template<typename T>
-class KDTree {
+template <typename T> class KDTree {
 public:
-
   //
   //
   //
@@ -27,8 +25,7 @@ public:
     T data;
   };
 
-  struct IndexedVec3
-  {
+  struct IndexedVec3 {
     glm::vec3 position;
     size_t index;
   };
@@ -39,7 +36,9 @@ public:
     std::shared_ptr<TreeNode> leftNode;
     std::shared_ptr<TreeNode> rightNode;
 
-    TreeNode(const IndexedVec3& inPi, const std::shared_ptr<TreeNode>& inLeftNode, const std::shared_ptr<TreeNode>& inRightNode);
+    TreeNode(const IndexedVec3& inPi,
+             const std::shared_ptr<TreeNode>& inLeftNode,
+             const std::shared_ptr<TreeNode>& inRightNode);
     ~TreeNode() = default;
   };
 
@@ -57,50 +56,27 @@ public:
   void build(const std::vector<UserData>& inVec3Data);
 
 public:
-  void searchWithRadius(
-    const glm::vec3 &inPt,
-    float inRadius,
-    IndexedVec3Arr& outResults);
+  void searchWithRadius(const glm::vec3& inPt, float inRadius, IndexedVec3Arr& outResults);
 
 private:
   std::shared_ptr<TreeNode> _root;
   IndexedVec3Arr _builderArray;
 
 private:
-  void _searchWithRadius(
-    const std::shared_ptr<TreeNode> inBranch,
-    const glm::vec3 &inPt,
-    float inRadius,
-    int32_t inCurrAxis,
-    IndexedVec3Arr& outResults);
+  void _searchWithRadius(const std::shared_ptr<TreeNode> inBranch,
+                         const glm::vec3& inPt,
+                         float inRadius,
+                         int32_t inCurrAxis,
+                         IndexedVec3Arr& outResults);
 
-  std::shared_ptr<TreeNode> _build(
-    const IndexedVec3ArrIt &inBeginIt,
-    const IndexedVec3ArrIt &inEndIt,
-    size_t inLength,
-    int32_t inCurrAxis);
-
+  std::shared_ptr<TreeNode>
+  _build(const IndexedVec3ArrIt& inBeginIt, const IndexedVec3ArrIt& inEndIt, size_t inLength, int32_t inCurrAxis);
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template<typename T>
-KDTree<T>::TreeNode::TreeNode(const IndexedVec3& inPi, const std::shared_ptr<TreeNode>& inLeftNode, const std::shared_ptr<TreeNode>& inRightNode)
-{
+template <typename T>
+KDTree<T>::TreeNode::TreeNode(const IndexedVec3& inPi,
+                              const std::shared_ptr<TreeNode>& inLeftNode,
+                              const std::shared_ptr<TreeNode>& inRightNode) {
   position = inPi.position;
   index = inPi.index;
   leftNode = inLeftNode;
@@ -111,14 +87,12 @@ KDTree<T>::TreeNode::TreeNode(const IndexedVec3& inPi, const std::shared_ptr<Tre
 //
 //
 
-template<typename T>
-void KDTree<T>::build(const std::vector<UserData>& inVec3Data)
-{
+template <typename T> void KDTree<T>::build(const std::vector<UserData>& inVec3Data) {
   // iterators
   _builderArray.clear();
   _builderArray.reserve(inVec3Data.size());
   for (size_t ii = 0; ii < inVec3Data.size(); ++ii)
-    _builderArray.push_back({ inVec3Data.at(ii).position, ii });
+    _builderArray.push_back({inVec3Data.at(ii).position, ii});
 
   const auto beginIt = _builderArray.begin();
   const auto endIt = _builderArray.end();
@@ -133,12 +107,8 @@ void KDTree<T>::build(const std::vector<UserData>& inVec3Data)
 //
 //
 
-template<typename T>
-void KDTree<T>::searchWithRadius(
-  const glm::vec3 &inPosition,
-  float inRadius,
-  IndexedVec3Arr& outResults
-) {
+template <typename T>
+void KDTree<T>::searchWithRadius(const glm::vec3& inPosition, float inRadius, IndexedVec3Arr& outResults) {
   outResults.reserve(_builderArray.size());
   constexpr int32_t startAxis = 0;
   _searchWithRadius(_root, inPosition, inRadius, startAxis, outResults);
@@ -148,14 +118,12 @@ void KDTree<T>::searchWithRadius(
 //
 //
 
-template<typename T>
-void KDTree<T>::_searchWithRadius(
-  const std::shared_ptr<TreeNode> inBranchPtr,
-  const glm::vec3 &inPosition,
-  float inRadius,
-  int32_t inCurrAxis,
-  IndexedVec3Arr& outResults
-) {
+template <typename T>
+void KDTree<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
+                                  const glm::vec3& inPosition,
+                                  float inRadius,
+                                  int32_t inCurrAxis,
+                                  IndexedVec3Arr& outResults) {
   if (!inBranchPtr) {
     return;
   }
@@ -168,7 +136,7 @@ void KDTree<T>::_searchWithRadius(
   const float squareAxisDiff = axisDiff * axisDiff;
 
   if (squareDistance <= squareRadius) {
-    outResults.push_back({ branch.position, branch.index });
+    outResults.push_back({branch.position, branch.index});
   }
 
   std::shared_ptr<TreeNode> section;
@@ -189,27 +157,23 @@ void KDTree<T>::_searchWithRadius(
   }
 }
 
-template<typename T>
-std::shared_ptr<typename KDTree<T>::TreeNode> KDTree<T>::_build(
-  const IndexedVec3ArrIt &inBeginIt,
-  const IndexedVec3ArrIt &inEndIt,
-  size_t inLength,
-  int32_t inCurrAxis
-) {
+template <typename T>
+std::shared_ptr<typename KDTree<T>::TreeNode> KDTree<T>::_build(const IndexedVec3ArrIt& inBeginIt,
+                                                                const IndexedVec3ArrIt& inEndIt,
+                                                                size_t inLength,
+                                                                int32_t inCurrAxis) {
   if (inBeginIt == inEndIt) {
-    return nullptr;  // empty tree
+    return nullptr; // empty tree
   }
 
   if (inLength > 1) {
     // sort along current axis
-    std::nth_element(
-      inBeginIt,
-      inBeginIt + std::distance(inBeginIt, inEndIt) / 2,
-      inEndIt,
-      [inCurrAxis](const KDTree::IndexedVec3& inA, const KDTree::IndexedVec3& inB)
-      {
-        return inA.position[inCurrAxis] < inB.position[inCurrAxis];
-      });
+    std::nth_element(inBeginIt,
+                     inBeginIt + std::distance(inBeginIt, inEndIt) / 2,
+                     inEndIt,
+                     [inCurrAxis](const KDTree::IndexedVec3& inA, const KDTree::IndexedVec3& inB) {
+                       return inA.position[inCurrAxis] < inB.position[inCurrAxis];
+                     });
   }
 
   const size_t leftLength = inLength / 2;
@@ -240,25 +204,7 @@ std::shared_ptr<typename KDTree<T>::TreeNode> KDTree<T>::_build(
   return std::make_shared<TreeNode>(*middleIt, nextLeftNode, nextRightNode);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-}
+} // namespace trees
+} // namespace gero
 
 // #include "KdTree.inl"
-

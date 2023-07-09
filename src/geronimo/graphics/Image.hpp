@@ -51,8 +51,12 @@ public:
   void flipY();
 
 public:
-  void exploreOriginSubRectangle(const glm::uvec2& inOrigin, const glm::uvec2& inSize, std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const;
-  void exploreCenteredSubRectangle(const glm::uvec2& inOrigin, const glm::uvec2& inSize, std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const;
+  void exploreOriginSubRectangle(const glm::uvec2& inOrigin,
+                                 const glm::uvec2& inSize,
+                                 std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const;
+  void exploreCenteredSubRectangle(const glm::uvec2& inOrigin,
+                                   const glm::uvec2& inSize,
+                                   std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const;
 
 public:
   const glm::uvec2& getSize() const;

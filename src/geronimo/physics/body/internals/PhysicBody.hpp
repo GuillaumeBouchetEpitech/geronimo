@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "../PhysicBodyDef.hpp"
 #include "../AbstractPhysicBody.hpp"
+#include "../PhysicBodyDef.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/physics/shape/PhysicShape.hpp"
