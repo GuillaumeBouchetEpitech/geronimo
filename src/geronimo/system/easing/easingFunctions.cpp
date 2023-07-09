@@ -6,6 +6,14 @@
 namespace gero {
 namespace easing {
 
+float easePinPong(float t) {
+  t *= 2.0f;
+  if (t < 1.0f)
+    return t;
+  t -= 1.0f;
+  return 1.0f - t;
+}
+
 float easeInSine(float t) { return std::sin(1.5707963f * t); }
 
 float easeOutSine(float t) { return 1.0f + std::sin(1.5707963f * (t - 1.0f)); }

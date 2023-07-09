@@ -119,76 +119,132 @@ void OpenALSoundManager::loadOggFromMemory(uint32_t alias, const std::string& co
 
   decoders::ogg::deallocate(&soundData);
 
-  _bufferSoundsMap[alias] = newBuffer;
+  _bufferSoundsMap[alias] = { newBuffer };
 }
 
-void OpenALSoundManager::playSound(uint32_t alias, const glm::vec3& pos, float volume, float pitch) {
+void OpenALSoundManager::playSound(uint32_t inAlias, const glm::vec3& inPosition, float inVolume, float inPitch, uint32_t inPriority /*= 0*/, int32_t inUserAlias /*= 0*/, int32_t inMaxAlias /*= 1000*/) {
+  _playSound(inAlias, inPosition, inVolume, inPitch, false, inPriority, inUserAlias, inMaxAlias);
+}
+
+void OpenALSoundManager::playAbsoluteSound(uint32_t inAlias, float inVolume, float inPitch, uint32_t inPriority /*= 0*/, int32_t inUserAlias /*= 0*/, int32_t inMaxAlias /*= 1000*/) {
+  _playSound(inAlias, glm::vec3(0,0,0), inVolume, inPitch, true, inPriority, inUserAlias, inMaxAlias);
+}
+
+void OpenALSoundManager::_playSound(uint32_t inAlias, const glm::vec3& inPosition, float inVolume, float inPitch, bool inAbsolute, uint32_t inPriority, int32_t inUserAlias, int32_t inMaxAlias)
+{
 
   if (!_enabled)
     return;
 
-  auto it = _bufferSoundsMap.find(alias);
+  auto it = _bufferSoundsMap.find(inAlias);
   if (it == _bufferSoundsMap.end())
-    D_THROW(std::runtime_error, "Buffer sound not found, alias: " << alias);
+    D_THROW(std::runtime_error, "Buffer sound not found, alias: " << inAlias);
 
   // D_MYLOG("playing \"" << filename << "\"");
 
-  const uint32_t currBuffer = it->second;
+  const uint32_t currBuffer = it->second.id;
 
-  SoundSource& currSource = _sources[_currentSource];
+  // synchronize data
+  for (SoundSource& tmpSource : _sources)
+  {
+    if (tmpSource.playing == false)
+      continue;
 
-  _currentSource = (_currentSource + 1) % _sources.size();
+    if (OpenAlContext::getSourceState(tmpSource.id) != OpenAlContext::SourceStates::playing)
+      tmpSource.playing = false;
+  }
+
+  int32_t totalUserAlias = 0;
+
+  for (SoundSource& tmpSource : _sources)
+    if (tmpSource.playing == true && tmpSource.userAlias == inUserAlias)
+      ++totalUserAlias;
+
+  const bool maxUsageReached = (totalUserAlias >= inMaxAlias);
+
+  SoundSource* bestSource = nullptr;
+
+  if (maxUsageReached == false)
+  {
+
+    float bestDistance = 999999999.0f;
+
+    for (SoundSource& tmpSource : _sources)
+    {
+      if (!tmpSource.playing)
+      {
+        bestSource = &tmpSource;
+        break;
+      }
+
+      if (tmpSource.absolute || inPriority < tmpSource.priority)
+        continue;
+
+      if (inAbsolute == false)
+      {
+        const float distance = glm::distance(tmpSource.position, _listenerPos);
+        if (distance > bestDistance)
+          continue;
+
+        bestDistance = distance;
+      }
+
+      bestSource = &tmpSource;
+      break;
+    }
+
+  }
+  else
+  {
+
+    float bestDistance = 0.0f;
+
+    // replace already playing sounds
+    for (SoundSource& tmpSource : _sources)
+    {
+      if (tmpSource.playing == false || tmpSource.userAlias != inUserAlias)
+        continue;
+
+      if (tmpSource.absolute || inPriority < tmpSource.priority)
+        continue;
+
+      if (inAbsolute == false)
+      {
+        const float distance = glm::distance(tmpSource.position, _listenerPos);
+        if (distance < bestDistance)
+          continue;
+
+        bestDistance = distance;
+      }
+
+      bestSource = &tmpSource;
+      break;
+    }
+
+  }
+
+  if (!bestSource)
+    return;
+
+
+  SoundSource& currSource = *bestSource;
+
+
+  // _currentSource = (_currentSource + 1) % _sources.size();
 
   OpenAlContext::SourceStates state = OpenAlContext::getSourceState(currSource.id);
   if (state != OpenAlContext::SourceStates::stopped) {
     OpenAlContext::stopSource(currSource.id);
   }
 
-  // currSource.position = pos;
+  currSource.position = inPosition;
   currSource.playing = true;
-  currSource.absolute = false;
+  currSource.absolute = inAbsolute;
+  currSource.priority = inPriority;
 
-  OpenAlContext::setSourcePitch(currSource.id, math::clamp(pitch, 0.0f, 100.0f));
-  OpenAlContext::setSourcePosition(currSource.id, pos.x, pos.y, pos.z);
-  OpenAlContext::setSourceVolume(currSource.id, math::clamp(volume, 0.0f, 1.0f));
-  // OpenAlContext::setSourceMinVolume(currSource.id, float volume);
-  // OpenAlContext::setSourceMaxVolume(currSource.id, float volume);
-  // OpenAlContext::setSourceDirection(currSource.id, float x, float y, float z);
-  // OpenAlContext::setSourceVelocity(currSource.id, float x, float y, float z);
-  OpenAlContext::setSourceLooping(currSource.id, false);
-
-  OpenAlContext::setSourceBuffer(currSource.id, currBuffer);
-  OpenAlContext::playSource(currSource.id);
-}
-
-void OpenALSoundManager::playAbsoluteSound(uint32_t alias, float volume, float pitch) {
-  if (!_enabled)
-    return;
-
-  auto it = _bufferSoundsMap.find(alias);
-  if (it == _bufferSoundsMap.end())
-    D_THROW(std::runtime_error, "Buffer sound not found, alias: " << alias);
-
-  // D_MYLOG("playing \"" << filename << "\"");
-
-  const uint32_t currBuffer = it->second;
-
-  SoundSource& currSource = _sources[_currentSource];
-
-  _currentSource = (_currentSource + 1) % _sources.size();
-
-  OpenAlContext::SourceStates state = OpenAlContext::getSourceState(currSource.id);
-  if (state != OpenAlContext::SourceStates::stopped) {
-    OpenAlContext::stopSource(currSource.id);
-  }
-
-  // currSource.position = pos;
-  currSource.playing = true;
-  currSource.absolute = true;
-
-  OpenAlContext::setSourcePitch(currSource.id, math::clamp(pitch, 0.0f, 100.0f));
-  OpenAlContext::setSourcePosition(currSource.id, _listenerPos.x, _listenerPos.y, _listenerPos.z);
-  OpenAlContext::setSourceVolume(currSource.id, math::clamp(volume, 0.0f, 1.0f));
+  OpenAlContext::setSourcePitch(currSource.id, math::clamp(inPitch, 0.0f, 100.0f));
+  OpenAlContext::setSourcePosition(currSource.id, inPosition.x, inPosition.y, inPosition.z);
+  OpenAlContext::setSourceVolume(currSource.id, math::clamp(inVolume, 0.0f, 1.0f));
   // OpenAlContext::setSourceMinVolume(currSource.id, float volume);
   // OpenAlContext::setSourceMaxVolume(currSource.id, float volume);
   // OpenAlContext::setSourceDirection(currSource.id, float x, float y, float z);

@@ -1,8 +1,10 @@
 
 #include "PhysicWorld.hpp"
 
-#include "body/PhysicBody.hpp"
-#include "vehicle/PhysicVehicle.hpp"
+#include "body/internals/PhysicBodyManager.hpp"
+#include "body/internals/PhysicBody.hpp"
+#include "vehicle/internals/PhysicVehicle.hpp"
+#include "vehicle/internals/PhysicVehicleManager.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
 #include "geronimo/system/TraceLogger.hpp"
@@ -62,7 +64,13 @@ public:
 // PhysicWorld* PhysicWorld::self = nullptr;
 
 PhysicWorld::PhysicWorld()
-  : _physicBodyManager(*this), _physicVehicleManager(*this), _raycaster(*this), _queryShape(*this) {
+  : _raycaster(*this)
+  , _queryShape(*this)
+{
+
+ _physicBodyManager = std::make_unique<PhysicBodyManager>(*this);
+ _physicVehicleManager = std::make_unique<PhysicVehicleManager>(*this);
+
   // PhysicWorld::self = this;
 
   _bullet.broadphase = new btDbvtBroadphase();
@@ -72,7 +80,8 @@ PhysicWorld::PhysicWorld()
   // _bullet.dynamicsWorld = new MyDynamicsWorld(
   _bullet.dynamicsWorld =
     new btDiscreteDynamicsWorld(_bullet.dispatcher, _bullet.broadphase, _bullet.solver, _bullet.collisionConfiguration);
-  _bullet.dynamicsWorld->setGravity(btVector3(0, 0, -10));
+
+  setGravity(0, 0, -10);
 
   // PhysicContactEventsHandler::initialize([](ContactEvent event,
   // PhysicContactData* contactData)
@@ -96,8 +105,8 @@ PhysicWorld::~PhysicWorld() {
     _bullet.dynamicsWorld->setDebugDrawer(nullptr);
   }
 
-  _physicBodyManager.clear();
-  _physicVehicleManager.clear();
+  _physicBodyManager->clear();
+  _physicVehicleManager->clear();
 
   delete _bullet.dynamicsWorld;
   delete _bullet.solver;
@@ -105,6 +114,12 @@ PhysicWorld::~PhysicWorld() {
   delete _bullet.broadphase;
   delete _bullet.dispatcher;
 }
+
+//
+//
+//
+//
+//
 
 void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) {
   // _debuggerPushLineCallback = callback;
@@ -124,11 +139,42 @@ void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) 
   _bullet.dynamicsWorld->setDebugDrawer(newDebugDrawer);
 }
 
+//
+//
+//
+//
+//
+
+void PhysicWorld::setGravity(float inX, float inY, float inZ)
+{
+  _gravity.x = inX;
+  _gravity.y = inY;
+  _gravity.z = inZ;
+
+  _bullet.dynamicsWorld->setGravity(btVector3(_gravity.x, _gravity.y, _gravity.z));
+}
+
+void PhysicWorld::setGravity(const glm::vec3& inGravity)
+{
+  setGravity(inGravity.x, inGravity.y, inGravity.z);
+}
+
+const glm::vec3& PhysicWorld::getGravity() const
+{
+  return _gravity;
+}
+
+//
+//
+//
+//
+//
+
 void PhysicWorld::step(float elapsedTime, uint32_t maxSubSteps, float fixedTimeStep) {
   _bullet.dynamicsWorld->stepSimulation(elapsedTime, int32_t(maxSubSteps), fixedTimeStep);
 }
 
-void PhysicWorld::render() { _bullet.dynamicsWorld->debugDrawWorld(); }
+void PhysicWorld::renderDebug() { _bullet.dynamicsWorld->debugDrawWorld(); }
 
 //
 //
@@ -136,9 +182,9 @@ void PhysicWorld::render() { _bullet.dynamicsWorld->debugDrawWorld(); }
 //
 //
 
-PhysicBodyManager& PhysicWorld::getPhysicBodyManager() { return _physicBodyManager; }
+AbstractPhysicBodyManager& PhysicWorld::getPhysicBodyManager() { return *_physicBodyManager; }
 
-const PhysicBodyManager& PhysicWorld::getPhysicBodyManager() const { return _physicBodyManager; }
+const AbstractPhysicBodyManager& PhysicWorld::getPhysicBodyManager() const { return *_physicBodyManager; }
 
 //
 //
@@ -146,9 +192,9 @@ const PhysicBodyManager& PhysicWorld::getPhysicBodyManager() const { return _phy
 //
 //
 
-PhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() { return _physicVehicleManager; }
+AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() { return *_physicVehicleManager; }
 
-const PhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const { return _physicVehicleManager; }
+const AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const { return *_physicVehicleManager; }
 
 //
 //

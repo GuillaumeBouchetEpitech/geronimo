@@ -2,7 +2,8 @@
 #pragma once
 
 #include "geronimo/helpers/GLMath.hpp"
-#include "geronimo/physics/body/PhysicBodyManager.hpp"
+// #include "geronimo/physics/body/PhysicBodyManager.hpp"
+#include "geronimo/physics/body/AbstractPhysicBody.hpp"
 #include "geronimo/physics/shape/PhysicShapeDef.hpp"
 
 #include <array>

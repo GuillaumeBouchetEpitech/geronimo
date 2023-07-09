@@ -5,11 +5,13 @@
 
 namespace gero {
 
-template <typename PublicType,
-          typename InternalType = PublicType,
+
+
+template <typename InternalType,
+          typename PublicType = InternalType,
           std::size_t initial_size = 0,
           typename Allocator = std::allocator<InternalType>>
-class dynamic_heap_array : public generic_array_container<PublicType, InternalType> {
+class dynamic_heap_array : public generic_array_container<InternalType, PublicType> {
 
   using value_type = PublicType;
   using internal_type = InternalType;

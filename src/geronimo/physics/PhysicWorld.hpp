@@ -3,8 +3,8 @@
 
 #include "geronimo/helpers/GLMath.hpp"
 
-#include "body/PhysicBodyManager.hpp"
-#include "vehicle/PhysicVehicleManager.hpp"
+#include "body/AbstractPhysicBodyManager.hpp"
+#include "vehicle/AbstractPhysicVehicleManager.hpp"
 
 #include "queries/query-shape/QueryShape.hpp"
 #include "queries/raycaster/Raycaster.hpp"
@@ -14,6 +14,7 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 class btBroadphaseInterface;
 class btDefaultCollisionConfiguration;
@@ -22,8 +23,8 @@ class btSequentialImpulseConstraintSolver;
 class btDiscreteDynamicsWorld;
 class btIDebugDraw;
 
-class PhysicBody;
-class PhysicVehicle;
+class PhysicBodyManager;
+class PhysicVehicleManager;
 
 // class PhysicHingeConstraint;
 // class PhysicFixedConstraint;
@@ -69,6 +70,8 @@ private:
   // };
   // std::unordered_map<void*, ContactPair> _contactMap;
 
+  glm::vec3 _gravity;
+
 public:
   PhysicWorld();
   ~PhysicWorld();
@@ -81,30 +84,35 @@ public:
   void setDebuggerPushLine(const debuggerPushLineCallback& callback);
 
 public:
+  void setGravity(float inX, float inY, float inZ);
+  void setGravity(const glm::vec3& inGravity);
+  const glm::vec3& getGravity() const;
+
+public:
   void step(float elapsedTime, uint32_t maxSubSteps, float fixedTimeStep);
-  void render();
+  void renderDebug();
 
   //
   //
   // bodies
 
 private:
-  PhysicBodyManager _physicBodyManager;
+  std::unique_ptr<AbstractPhysicBodyManager> _physicBodyManager;
 
 public:
-  PhysicBodyManager& getPhysicBodyManager();
-  const PhysicBodyManager& getPhysicBodyManager() const;
+  AbstractPhysicBodyManager& getPhysicBodyManager();
+  const AbstractPhysicBodyManager& getPhysicBodyManager() const;
 
   //
   //
   // vehicles
 
 private:
-  PhysicVehicleManager _physicVehicleManager;
+  std::unique_ptr<AbstractPhysicVehicleManager> _physicVehicleManager;
 
 public:
-  PhysicVehicleManager& getPhysicVehicleManager();
-  const PhysicVehicleManager& getPhysicVehicleManager() const;
+  AbstractPhysicVehicleManager& getPhysicVehicleManager();
+  const AbstractPhysicVehicleManager& getPhysicVehicleManager() const;
 
   //
   //

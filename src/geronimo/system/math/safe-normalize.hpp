@@ -6,7 +6,7 @@
 namespace gero {
 namespace math {
 
-void safeNormalize(glm::vec3& inVec3);
+float safeNormalize(glm::vec3& inVec3);
 
 }
 }

@@ -5,10 +5,10 @@ DIR_APPLICATION=		./bin
 DIR_LIB_GERONIMO=			..
 
 NAME_APPLICATION=			$(DIR_APPLICATION)/exec
-NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-system.a
-NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-graphics.a
-NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-physics.a
 NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-audio.a
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-physics.a
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-graphics.a
+NAME_GERONIMO+=				$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-system.a
 NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-dynamics.a
 NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-collision.a
 NAME_BULLET_PHYSICS+=	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-linearmath.a
@@ -27,6 +27,7 @@ SRC+= \
 		$(DIR_SRC)/system/compression/*.cpp \
 		$(DIR_SRC)/system/math/*.cpp \
 		$(DIR_SRC)/system/multithreading/*.cpp \
+		$(DIR_SRC)/system/trees/*.cpp \
 	)
 
 SRC+= \

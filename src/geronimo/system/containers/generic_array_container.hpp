@@ -451,7 +451,51 @@ public:
 //
 //
 
-template <typename InternalType, typename PublicType = InternalType> class generic_array_container {
+template <typename PublicType>
+class interface_generic_array_container
+{
+
+public:
+  using value_type = PublicType;
+
+public:
+  virtual ~interface_generic_array_container() = default;
+
+public:
+  virtual bool is_empty() const = 0;
+  virtual std::size_t size() const = 0;
+  virtual bool is_out_of_range(std::size_t index) const = 0;
+
+public:
+  // support out of range index (negative values included)
+  virtual const value_type& operator[](int index) const = 0;
+  virtual value_type& operator[](int index) = 0;
+
+  virtual const value_type& at(std::size_t index) const = 0;
+  virtual value_type& at(std::size_t index) = 0;
+
+  virtual const value_type& front() const = 0;
+  virtual value_type& front() = 0;
+
+  virtual const value_type& back() const = 0;
+  virtual value_type& back() = 0;
+
+// public:
+//   virtual bool operator==(const generic_array_container& other) const = 0;
+//   virtual bool operator!=(const generic_array_container& other) const = 0;
+
+};
+
+//
+//
+//
+//
+//
+
+template <typename InternalType, typename PublicType = InternalType>
+class generic_array_container
+  : public interface_generic_array_container<PublicType>
+{
 
 public:
   using value_type = PublicType;
@@ -536,9 +580,9 @@ public:
 #endif
 
 public:
-  bool is_empty() const { return _size == 0; }
-  std::size_t size() const { return _size; }
-  bool is_out_of_range(std::size_t index) const { return (index >= _size); }
+  bool is_empty() const override { return _size == 0; }
+  std::size_t size() const override { return _size; }
+  bool is_out_of_range(std::size_t index) const override { return (index >= _size); }
 
 #ifdef D_REF_TRACKER_ITERATORS
   std::size_t total_iterators() const { return _iterators_list.size + _const_iterators_list.size; }
@@ -546,34 +590,34 @@ public:
 
 public:
   // support out of range index (negative values included)
-  const value_type& operator[](int index) const { return _data[_get_index(index)]; }
-  value_type& operator[](int index) { return _data[_get_index(index)]; }
+  const value_type& operator[](int index) const override { return _data[_get_index(index)]; }
+  value_type& operator[](int index) override { return _data[_get_index(index)]; }
 
-  const value_type& at(std::size_t index) const {
+  const value_type& at(std::size_t index) const override {
     if (is_out_of_range(index))
-      D_THROW(std::runtime_error, "out of range, index: " << index);
+      D_THROW(std::runtime_error, "out of range, index: " << index << ", size: " << _size);
     return _data[index];
   }
-  value_type& at(std::size_t index) {
+  value_type& at(std::size_t index) override {
     if (is_out_of_range(index))
-      D_THROW(std::runtime_error, "out of range, index: " << index);
+      D_THROW(std::runtime_error, "out of range, index: " << index << ", size: " << _size);
     return _data[index];
   }
 
-  const value_type& front() const {
+  const value_type& front() const override {
     _ensure_not_empty();
     return _data[0];
   }
-  value_type& front() {
+  value_type& front() override {
     _ensure_not_empty();
     return _data[0];
   }
 
-  const value_type& back() const {
+  const value_type& back() const override {
     _ensure_not_empty();
     return _data[_size - 1];
   }
-  value_type& back() {
+  value_type& back() override {
     _ensure_not_empty();
     return _data[_size - 1];
   }

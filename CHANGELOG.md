@@ -1,6 +1,15 @@
 
 # Changelog
 
+## [0.0.12] - 2023-07-09
+### Changed
+- feat: audio alias grouping
+- fix: basic_double_linked_list memory corruption issue
+- fix: weak_ref_data_pool memory corruption issues
+- feat: redesign of physics body/vehicle managers
+- fix: math clamp and glm
+- feat: templated 3d KdTree class
+
 ## [0.0.11] - 2023-06-24
 ### Changed
 - feat: absolute position audio

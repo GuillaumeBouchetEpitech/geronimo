@@ -24,11 +24,13 @@ reset
 CURR_DIR=$PWD
 cd ../
 # make build_platform="native" all -j3
-make build_mode="debug" build_platform="native" all -j3
+# make build_mode="debug" build_platform="native" all -j3
+make build_mode="release" build_platform="native" all -j3
 cd $CURR_DIR
 
 # make build_mode="debug" build_platform="native" framework fclean
-make build_mode="debug" build_platform="native" all -j3
+# make build_mode="debug" build_platform="native" all -j3
+make build_mode="release" build_platform="native" all -j3
 
 # make build_mode="debug" build_platform="native" fclean_tests
 # make build_mode="debug" build_platform="native" build-tests -j6
@@ -45,5 +47,9 @@ make build_mode="debug" build_platform="native" all -j3
 # ./bin/exec --gtest_filter=test_perspective_clustering*
 
 # ./bin/exec --gtest_filter=audio_general_test*
-./bin/exec --gtest_filter=physic_wrapper*
+# ./bin/exec --gtest_filter=physic_wrapper*
+
+# ./bin/exec --gtest_filter=physic_wrapper_perf*
+./bin/exec
+
 

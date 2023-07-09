@@ -4,8 +4,7 @@
 #include "application/defines.hpp"
 
 #include "geronimo/graphics/make-geometries/MakeGeometries.hpp"
-#include "geronimo/physics/body/PhysicBody.hpp"
-#include "geronimo/physics/vehicle/PhysicVehicle.hpp"
+#include "geronimo/physics/body/PhysicBodyDef.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 

@@ -51,9 +51,15 @@ public:
   void flipY();
 
 public:
+  void exploreOriginSubRectangle(const glm::uvec2& inOrigin, const glm::uvec2& inSize, std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const;
+  void exploreCenteredSubRectangle(const glm::uvec2& inOrigin, const glm::uvec2& inSize, std::function<bool(const glm::uvec2&, glm::uvec4)> inCallback) const;
+
+public:
   const glm::uvec2& getSize() const;
   const uint8_t* getPixels() const;
   uint8_t& getPixel(uint32_t inX, uint32_t inY, uint32_t inComponent);
+  uint8_t getPixel(uint32_t inX, uint32_t inY, uint32_t inComponent) const;
+  glm::uvec4 getPixelValues(uint32_t inX, uint32_t inY) const;
   bool isValid() const;
 };
 

@@ -171,7 +171,12 @@ void PhysicBody::setPosition(const glm::vec3& pos) {
   transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
 }
 
-void PhysicBody::setRotation(const glm::vec4& rot) {
+void PhysicBody::setOrientation(const glm::vec4& rot) {
+  auto& transform = _bullet.body->getWorldTransform();
+  transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
+}
+
+void PhysicBody::setOrientation(const glm::quat& rot) {
   auto& transform = _bullet.body->getWorldTransform();
   transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
 }

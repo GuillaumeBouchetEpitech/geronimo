@@ -88,6 +88,7 @@ SRC_GERONIMO_SYSTEM+=	\
 		$(DIR_SRC)/geronimo/system/rng/*.cpp \
 		$(DIR_SRC)/geronimo/system/rng/proceduralGeneration/*.cpp \
 		$(DIR_SRC)/geronimo/system/string-utils/*.cpp \
+		$(DIR_SRC)/geronimo/system/trees/*.cpp \
 		)
 
 SRC_GERONIMO_GRAPHICS+=	\
@@ -112,12 +113,14 @@ SRC_GERONIMO_PHYSICS+=	\
 	$(wildcard \
 		$(DIR_SRC)/geronimo/physics/*.cpp \
 		$(DIR_SRC)/geronimo/physics/body/*.cpp \
+		$(DIR_SRC)/geronimo/physics/body/internals/*.cpp \
 		$(DIR_SRC)/geronimo/physics/helpers/*.cpp \
 		$(DIR_SRC)/geronimo/physics/queries/query-shape/*.cpp \
 		$(DIR_SRC)/geronimo/physics/queries/raycaster/*.cpp \
 		$(DIR_SRC)/geronimo/physics/queries/raycaster/internals/*.cpp \
 		$(DIR_SRC)/geronimo/physics/shape/*.cpp \
 		$(DIR_SRC)/geronimo/physics/vehicle/*.cpp \
+		$(DIR_SRC)/geronimo/physics/vehicle/internals/*.cpp \
 		)
 
 SRC_GERONIMO_AUDIO+=	\

@@ -124,15 +124,18 @@ struct basic_double_linked_list {
   static void loop_list_links_and_reset(basic_double_linked_list& list, const std::function<void(T*)>& callback) {
 
     if (is_empty_list(list))
+    {
+      list.head_link = nullptr;
+      list.size = 0;
       return;
+    }
 
     link* curr_link = list.head_link;
     while (curr_link) {
       link* to_reset_link = curr_link;
-
-      callback(static_cast<T*>(curr_link->user_data));
       curr_link = curr_link->next_link;
 
+      callback(static_cast<T*>(to_reset_link->user_data));
       reset_link(*to_reset_link);
     }
     list.head_link = nullptr;

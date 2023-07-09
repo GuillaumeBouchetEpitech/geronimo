@@ -187,7 +187,7 @@ for (int ii = 0; ii < 2; ++ii) {
 }
 
 body->setPosition({20, 0, 25});
-body->setRotation({glm::normalize(glm::vec3(1, -1, 0)), gero::math::hpi});
+body->setOrientation({glm::normalize(glm::vec3(1, -1, 0)), gero::math::hpi});
 body->setGravity(+10, 0, 0);
 }
 

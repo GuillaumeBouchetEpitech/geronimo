@@ -193,7 +193,7 @@ void Scene::_renderScene() {
 
       if (context.logic.debugMode) {
 
-        graphic.scene.stackRenderers.safeMode([&context]() { context.physic.world->render(); });
+        graphic.scene.stackRenderers.safeMode([&context]() { context.physic.world->renderDebug(); });
       }
     }
   }

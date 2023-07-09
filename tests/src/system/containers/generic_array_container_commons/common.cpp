@@ -74,4 +74,25 @@ TestStructure& TestStructure::operator=(TestStructure&& other) {
   return *this;
 }
 
+void TestStructure::set_value(int inVal)
+{
+  value = inVal;
+}
+
+int TestStructure::get_value() const
+{
+  return value;
+}
+
+const std::string& TestStructure::get_my_string() const
+{
+  return my_string;
+}
+
+void TestStructure::set_my_string(const std::string& inVal)
+{
+  my_string = inVal;
+}
+
+
 } // namespace common

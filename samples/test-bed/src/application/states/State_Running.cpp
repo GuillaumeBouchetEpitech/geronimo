@@ -11,7 +11,7 @@
 #include "application/defines.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
-#include "geronimo/physics/body/PhysicBody.hpp"
+// #include "geronimo/physics/body/PhysicBody.hpp"
 #include "geronimo/physics/queries/raycaster/Raycaster.hpp"
 #include "geronimo/system/math/constants.hpp"
 

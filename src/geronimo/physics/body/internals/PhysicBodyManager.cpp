@@ -1,9 +1,9 @@
 
 #include "PhysicBodyManager.hpp"
 
-#include "geronimo/helpers/internals/BulletPhysics.hpp"
 #include "geronimo/physics/PhysicWorld.hpp"
 #include "geronimo/system/TraceLogger.hpp"
+#include "geronimo/helpers/internals/BulletPhysics.hpp"
 
 namespace gero {
 namespace physics {
@@ -62,22 +62,6 @@ void PhysicBodyManager::removeBody(BodyWeakRef ref) {
 BodyWeakRef PhysicBodyManager::getBody(uint32_t index) { return _bodies.get(index); }
 
 const BodyWeakRef PhysicBodyManager::getBody(uint32_t index) const { return _bodies.get(index); }
-
-// BodyWeakRef PhysicBodyManager::getBody(const
-// AbstractPhysicBody& inBody)
-// {
-//   // return _bodies.get(inBody);
-//   return _bodies.find_if([&inBody](const AbstractPhysicBody& body){ return
-//   &body == &inBody; });
-// }
-
-// const BodyWeakRef PhysicBodyManager::getBody(const
-// AbstractPhysicBody& inBody) const
-// {
-//   // return _bodies.get(inBody);
-//   return _bodies.find_if([&inBody](const AbstractPhysicBody& body){ return
-//   &body == &inBody; });
-// }
 
 std::size_t PhysicBodyManager::size() const { return _bodies.size(); }
 
