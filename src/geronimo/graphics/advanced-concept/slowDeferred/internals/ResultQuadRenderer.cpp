@@ -5,19 +5,24 @@
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
 
-using namespace gero::graphics;
 using namespace gero::graphics::GlContext;
+
+namespace gero {
+namespace graphics {
+namespace slowDeferred {
 
 ResultQuadRenderer::ResultQuadRenderer() {}
 
 ResultQuadRenderer::~ResultQuadRenderer() {}
 
-void ResultQuadRenderer::initialize(const glm::ivec2& inFrameSize) {
+void ResultQuadRenderer::initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize) {
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   gero::graphics::GeometryBuilder geometryBuilder;
 
-  const std::string k_rootPath = "assets/graphics/shaders/deferred/resultQuadRenderer/";
+  // const std::string k_rootPath = "assets/graphics/shaders/deferred/resultQuadRenderer/";
+  const std::string k_rootPath =
+    inRootPath + "/geronimo/graphics/advanced-concept/slowDeferred/internals/shaders/resultQuadRenderer/";
 
   shaderProgramBuilder.reset()
     .setVertexFilename(k_rootPath + "resultQuadRenderer.glsl.vert")
@@ -77,7 +82,7 @@ void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
   for (uint32_t index : indices)
     buffer.push_back(vertices[index]);
 
-  _quadGeometry.updateBuffer(0, buffer);
+  _quadGeometry.updateOrAllocateBuffer(0, buffer);
   _quadGeometry.setPrimitiveCount(uint32_t(buffer.size()));
 }
 
@@ -123,4 +128,8 @@ void ResultQuadRenderer::render(const glm::vec3& eyePos,
   _quadGeometry.render();
 
   GlContext::Texture::active(0);
+}
+
+}
+}
 }

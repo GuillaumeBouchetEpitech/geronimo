@@ -4,8 +4,12 @@
 #include "AbstractPhysicBody.hpp"
 #include "PhysicBodyDef.hpp"
 
+#include <memory>
+
 namespace gero {
 namespace physics {
+
+class PhysicWorld;
 
 class AbstractPhysicBodyManager {
 
@@ -29,6 +33,10 @@ public:
   virtual bool empty() const = 0;
 
   virtual void dumpData() = 0;
+
+public:
+  static std::unique_ptr<AbstractPhysicBodyManager> create(PhysicWorld& inPhysicWorld);
+
 };
 
 } // namespace physics

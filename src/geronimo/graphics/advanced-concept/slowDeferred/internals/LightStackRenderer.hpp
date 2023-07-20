@@ -15,6 +15,8 @@
 namespace gero {
 namespace graphics {
 
+namespace slowDeferred {
+
 struct PostProcessData {
 
   gero::graphics::Texture depthTexture;
@@ -35,7 +37,7 @@ public:
   ~LightStackRenderer();
 
 public:
-  void initialize(const glm::ivec2& inFrameSize);
+  void initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize);
 
 public:
   void resize(const glm::ivec2& inFrameSize);
@@ -79,5 +81,6 @@ private:
   std::vector<Instance> _vertices;
 };
 
+}
 } // namespace graphics
 } // namespace gero

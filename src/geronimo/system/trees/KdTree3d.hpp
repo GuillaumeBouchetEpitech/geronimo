@@ -14,7 +14,7 @@ namespace gero {
 
 namespace trees {
 
-template <typename T> class KDTree {
+template <typename T> class KDTree3d {
 public:
   //
   //
@@ -50,7 +50,7 @@ public:
   //
 
 public:
-  KDTree() = default;
+  KDTree3d() = default;
 
 public:
   void build(const std::vector<UserData>& inVec3Data);
@@ -74,7 +74,7 @@ private:
 };
 
 template <typename T>
-KDTree<T>::TreeNode::TreeNode(const IndexedVec3& inPi,
+KDTree3d<T>::TreeNode::TreeNode(const IndexedVec3& inPi,
                               const std::shared_ptr<TreeNode>& inLeftNode,
                               const std::shared_ptr<TreeNode>& inRightNode) {
   position = inPi.position;
@@ -87,7 +87,7 @@ KDTree<T>::TreeNode::TreeNode(const IndexedVec3& inPi,
 //
 //
 
-template <typename T> void KDTree<T>::build(const std::vector<UserData>& inVec3Data) {
+template <typename T> void KDTree3d<T>::build(const std::vector<UserData>& inVec3Data) {
   // iterators
   _builderArray.clear();
   _builderArray.reserve(inVec3Data.size());
@@ -100,7 +100,7 @@ template <typename T> void KDTree<T>::build(const std::vector<UserData>& inVec3D
   const size_t length = _builderArray.size();
   constexpr size_t startAxis = 0;
 
-  _root = KDTree::_build(beginIt, endIt, length, startAxis);
+  _root = KDTree3d::_build(beginIt, endIt, length, startAxis);
 }
 
 //
@@ -108,7 +108,7 @@ template <typename T> void KDTree<T>::build(const std::vector<UserData>& inVec3D
 //
 
 template <typename T>
-void KDTree<T>::searchWithRadius(const glm::vec3& inPosition, float inRadius, IndexedVec3Arr& outResults) {
+void KDTree3d<T>::searchWithRadius(const glm::vec3& inPosition, float inRadius, IndexedVec3Arr& outResults) {
   outResults.reserve(_builderArray.size());
   constexpr int32_t startAxis = 0;
   _searchWithRadius(_root, inPosition, inRadius, startAxis, outResults);
@@ -119,7 +119,7 @@ void KDTree<T>::searchWithRadius(const glm::vec3& inPosition, float inRadius, In
 //
 
 template <typename T>
-void KDTree<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
+void KDTree3d<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
                                   const glm::vec3& inPosition,
                                   float inRadius,
                                   int32_t inCurrAxis,
@@ -158,7 +158,7 @@ void KDTree<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
 }
 
 template <typename T>
-std::shared_ptr<typename KDTree<T>::TreeNode> KDTree<T>::_build(const IndexedVec3ArrIt& inBeginIt,
+std::shared_ptr<typename KDTree3d<T>::TreeNode> KDTree3d<T>::_build(const IndexedVec3ArrIt& inBeginIt,
                                                                 const IndexedVec3ArrIt& inEndIt,
                                                                 size_t inLength,
                                                                 int32_t inCurrAxis) {
@@ -171,7 +171,7 @@ std::shared_ptr<typename KDTree<T>::TreeNode> KDTree<T>::_build(const IndexedVec
     std::nth_element(inBeginIt,
                      inBeginIt + std::distance(inBeginIt, inEndIt) / 2,
                      inEndIt,
-                     [inCurrAxis](const KDTree::IndexedVec3& inA, const KDTree::IndexedVec3& inB) {
+                     [inCurrAxis](const KDTree3d::IndexedVec3& inA, const KDTree3d::IndexedVec3& inB) {
                        return inA.position[inCurrAxis] < inB.position[inCurrAxis];
                      });
   }
@@ -207,4 +207,4 @@ std::shared_ptr<typename KDTree<T>::TreeNode> KDTree<T>::_build(const IndexedVec
 } // namespace trees
 } // namespace gero
 
-// #include "KdTree.inl"
+// #include "KdTree3d.inl"

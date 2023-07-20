@@ -102,6 +102,8 @@ SRC_GERONIMO_GRAPHICS+=	\
 		$(DIR_SRC)/geronimo/graphics/wrappers/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/internals/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/advanced-concept/slowDeferred/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/advanced-concept/slowDeferred/internals/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/textRenderer/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/stackRenderers/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/stackRenderers/internals/*.cpp \
@@ -121,7 +123,17 @@ SRC_GERONIMO_PHYSICS+=	\
 		$(DIR_SRC)/geronimo/physics/shape/*.cpp \
 		$(DIR_SRC)/geronimo/physics/vehicle/*.cpp \
 		$(DIR_SRC)/geronimo/physics/vehicle/internals/*.cpp \
+		$(DIR_SRC)/geronimo/physics/constraints/hinge/*.cpp \
+		$(DIR_SRC)/geronimo/physics/constraints/hinge/internals/*.cpp \
 		)
+
+# not ready (-_-)
+# $(DIR_SRC)/geronimo/physics/constraints/universal/*.cpp \
+# $(DIR_SRC)/geronimo/physics/constraints/universal/internals/*.cpp \
+# $(DIR_SRC)/geronimo/physics/constraints/six-dof/*.cpp \
+# $(DIR_SRC)/geronimo/physics/constraints/six-dof/internals/*.cpp \
+# $(DIR_SRC)/geronimo/physics/constraints/cone-twist/*.cpp \
+# $(DIR_SRC)/geronimo/physics/constraints/cone-twist/internals/*.cpp \
 
 SRC_GERONIMO_AUDIO+=	\
 	$(wildcard \

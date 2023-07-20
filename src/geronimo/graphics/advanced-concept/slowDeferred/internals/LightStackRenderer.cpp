@@ -9,6 +9,8 @@
 namespace gero {
 namespace graphics {
 
+namespace slowDeferred {
+
 using namespace gero::graphics;
 using TexQuality = gero::graphics::Texture::Quality;
 using TexPattern = gero::graphics::Texture::Pattern;
@@ -44,7 +46,7 @@ LightStackRenderer::LightStackRenderer() {}
 
 LightStackRenderer::~LightStackRenderer() {}
 
-void LightStackRenderer::initialize(const glm::ivec2& inFrameSize) {
+void LightStackRenderer::initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize) {
 
   _frameSize = inFrameSize;
 
@@ -57,6 +59,7 @@ void LightStackRenderer::initialize(const glm::ivec2& inFrameSize) {
     .addIgnoredVboAttribute("a_vertex_normal", Geometry::AttrType::Vec3f)
     .addVbo()
     .setVboAsInstanced()
+    .setVboAsDynamic()
     .addVboAttribute("a_offset_lightPosition", Geometry::AttrType::Vec3f)
     .addVboAttribute("a_offset_lightRadius", Geometry::AttrType::Float);
 
@@ -64,7 +67,9 @@ void LightStackRenderer::initialize(const glm::ivec2& inFrameSize) {
   //
   //
 
-  const std::string k_rootPath = "assets/graphics/shaders/deferred/lightStackRenderer/";
+  // const std::string k_rootPath = "assets/graphics/shaders/deferred/lightStackRenderer/";
+  const std::string k_rootPath =
+    inRootPath + "/geronimo/graphics/advanced-concept/slowDeferred/internals/shaders/lightStackRenderer/";
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
 
@@ -103,10 +108,10 @@ void LightStackRenderer::initialize(const glm::ivec2& inFrameSize) {
   gero::graphics::MakeGeometries::Vertices vertices;
   gero::graphics::MakeGeometries::makeSphere(vertices, 2, 1.0f);
 
-  _diffuse.geometry.updateBuffer(0, vertices, false);
+  _diffuse.geometry.updateOrAllocateBuffer(0, vertices);
   _diffuse.geometry.setPrimitiveCount(uint32_t(vertices.size()));
 
-  _specular.geometry.updateBuffer(0, vertices, false);
+  _specular.geometry.updateOrAllocateBuffer(0, vertices);
   _specular.geometry.setPrimitiveCount(uint32_t(vertices.size()));
 
   _vertices.reserve(1024);
@@ -191,7 +196,7 @@ void LightStackRenderer::_flushDiffuse(const glm::mat4& composedMatrix,
     currData.texture.bind();
   }
 
-  _diffuse.geometry.updateBuffer(1, _vertices, true);
+  _diffuse.geometry.updateOrAllocateBuffer(1, _vertices);
   _diffuse.geometry.setInstancedCount(uint32_t(_vertices.size()));
   _diffuse.geometry.render();
 }
@@ -225,7 +230,7 @@ void LightStackRenderer::_flushSpecular(const glm::vec3& eyePos,
     allTextures.at(index).texture.bind();
   }
 
-  _specular.geometry.updateBuffer(1, _vertices, true);
+  _specular.geometry.updateOrAllocateBuffer(1, _vertices);
   _specular.geometry.setInstancedCount(uint32_t(_vertices.size()));
   _specular.geometry.render();
 }
@@ -236,5 +241,6 @@ const gero::graphics::Texture& LightStackRenderer::getDiffuseCoefTexture() { ret
 
 const gero::graphics::Texture& LightStackRenderer::getSpecularCoefTexture() { return _specular.depthTexture; }
 
+}
 } // namespace graphics
 } // namespace gero

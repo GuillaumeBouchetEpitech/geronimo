@@ -13,6 +13,8 @@
 namespace gero {
 namespace graphics {
 
+namespace slowDeferred {
+
 class ResultQuadRenderer {
 
 public:
@@ -20,7 +22,7 @@ public:
   ~ResultQuadRenderer();
 
 public:
-  void initialize(const glm::ivec2& inFrameSize);
+  void initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize);
 
 public:
   void resize(const glm::ivec2& inFrameSize);
@@ -43,5 +45,6 @@ private:
   gero::graphics::Geometry _quadGeometry;
 };
 
+}
 } // namespace graphics
 } // namespace gero

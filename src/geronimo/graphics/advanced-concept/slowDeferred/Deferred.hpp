@@ -20,10 +20,10 @@ public:
   ~Deferred() = default;
 
 public:
-  void initialize(const glm::ivec2& inFrameSize);
+  void initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize, float inResolutionScaling = 1.0f);
 
 public:
-  void resize(const glm::ivec2& inFrameSize);
+  void resize(const glm::ivec2& inFrameSize, float inResolutionScaling = 1.0f);
 
   void setEyePosition(const glm::vec3& inEyePos);
   void setSunLightDirection(const glm::vec3& inSunLightDirection);
@@ -37,14 +37,18 @@ public:
 
   void renderHudQuad(const glm::mat4& composedMatrix);
 
+public:
+  float getResolutionScaling() const;
+
 private:
-  ScreenRecorder _screenRecorder;
-  ResultQuadRenderer _resultQuadRenderer;
-  LightStackRenderer _lightStackRenderer;
+  slowDeferred::ScreenRecorder _screenRecorder;
+  slowDeferred::LightStackRenderer _lightStackRenderer;
+  slowDeferred::ResultQuadRenderer _resultQuadRenderer;
 
   glm::vec3 _eyePos;
   glm::vec3 _sunLightDirection = {-1.0f, -1.0f, -2.0f};
   float _ambiantLightCoef = 0.1f;
+  float _resolutionScaling = 1.0f;
 };
 
 } // namespace graphics

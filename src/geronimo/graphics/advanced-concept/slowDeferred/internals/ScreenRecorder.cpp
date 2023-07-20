@@ -6,6 +6,9 @@
 namespace gero {
 namespace graphics {
 
+
+namespace slowDeferred {
+
 using namespace gero::graphics;
 using TexQuality = gero::graphics::Texture::Quality;
 using TexPattern = gero::graphics::Texture::Pattern;
@@ -51,6 +54,8 @@ const gero::graphics::Texture& ScreenRecorder::getPositionTexture() const { retu
 const gero::graphics::Texture& ScreenRecorder::getNormalTexture() const { return _normalTexture; }
 
 const gero::graphics::Texture& ScreenRecorder::getDepthTexture() const { return _depthTexture; }
+
+}
 
 } // namespace graphics
 } // namespace gero

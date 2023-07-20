@@ -7,6 +7,8 @@
 namespace gero {
 namespace physics {
 
+class PhysicWorld;
+
 class AbstractPhysicVehicleManager {
 
 public:
@@ -28,6 +30,10 @@ public:
   virtual std::size_t vehicleSize() const = 0;
   virtual uint32_t totalLiveVehicles() const = 0;
   virtual bool vehicleEmpty() const = 0;
+
+public:
+  static std::unique_ptr<AbstractPhysicVehicleManager> create(PhysicWorld& inPhysicWorld);
+
 };
 
 } // namespace physics

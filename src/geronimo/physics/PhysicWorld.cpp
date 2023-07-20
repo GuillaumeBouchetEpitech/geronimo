@@ -1,10 +1,11 @@
 
 #include "PhysicWorld.hpp"
 
-#include "body/internals/PhysicBody.hpp"
-#include "body/internals/PhysicBodyManager.hpp"
-#include "vehicle/internals/PhysicVehicle.hpp"
-#include "vehicle/internals/PhysicVehicleManager.hpp"
+
+// not ready (-_-)
+// #include "constraints/universal/internals/PhysicUniversalConstraintManager.hpp"
+// #include "constraints/six-dof/internals/PhysicSixDofConstraintManager.hpp"
+// #include "constraints/cone-twist/internals/PhysicConeTwistConstraintManager.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
 #include "geronimo/system/TraceLogger.hpp"
@@ -65,8 +66,14 @@ public:
 
 PhysicWorld::PhysicWorld() : _raycaster(*this), _queryShape(*this) {
 
-  _physicBodyManager = std::make_unique<PhysicBodyManager>(*this);
-  _physicVehicleManager = std::make_unique<PhysicVehicleManager>(*this);
+  _physicBodyManager = AbstractPhysicBodyManager::create(*this);
+  _physicVehicleManager = AbstractPhysicVehicleManager::create(*this);
+  _physicHingeConstraintManager = AbstractPhysicHingeConstraintManager::create(*this);
+
+  // not ready (-_-)
+  // _physicUniversalConstraintManager = std::make_unique<PhysicUniversalConstraintManager>(*this);
+  // _physicSixDofConstraintManager = std::make_unique<PhysicSixDofConstraintManager>(*this);
+  // _physicConeTwistConstraintManager = std::make_unique<PhysicConeTwistConstraintManager>(*this);
 
   // PhysicWorld::self = this;
 
@@ -102,8 +109,13 @@ PhysicWorld::~PhysicWorld() {
     _bullet.dynamicsWorld->setDebugDrawer(nullptr);
   }
 
-  _physicBodyManager->clear();
+  // not ready (-_-)
+  // _physicConeTwistConstraintManager->clear();
+  // _physicSixDofConstraintManager->clear();
+  // _physicUniversalConstraintManager->clear();
+  _physicHingeConstraintManager->clear();
   _physicVehicleManager->clear();
+  _physicBodyManager->clear();
 
   delete _bullet.dynamicsWorld;
   delete _bullet.solver;
@@ -185,6 +197,52 @@ const AbstractPhysicBodyManager& PhysicWorld::getPhysicBodyManager() const { ret
 AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() { return *_physicVehicleManager; }
 
 const AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const { return *_physicVehicleManager; }
+
+//
+//
+// constraints
+
+AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager()
+{
+  return *_physicHingeConstraintManager;
+}
+
+const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager() const
+{
+  return *_physicHingeConstraintManager;
+}
+
+// not ready (-_-)
+
+// AbstractPhysicUniversalConstraintManager& PhysicWorld::getPhysicUniversalConstraintManager()
+// {
+//   return *_physicUniversalConstraintManager;
+// }
+
+// const AbstractPhysicUniversalConstraintManager& PhysicWorld::getPhysicUniversalConstraintManager() const
+// {
+//   return *_physicUniversalConstraintManager;
+// }
+
+// AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager()
+// {
+//   return *_physicSixDofConstraintManager;
+// }
+
+// const AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() const
+// {
+//   return *_physicSixDofConstraintManager;
+// }
+
+// AbstractPhysicConeTwistConstraintManager& PhysicWorld::getPhysicConeTwistConstraintManager()
+// {
+//   return *_physicConeTwistConstraintManager;
+// }
+
+// const AbstractPhysicConeTwistConstraintManager& PhysicWorld::getPhysicConeTwistConstraintManager() const
+// {
+//   return *_physicConeTwistConstraintManager;
+// }
 
 //
 //

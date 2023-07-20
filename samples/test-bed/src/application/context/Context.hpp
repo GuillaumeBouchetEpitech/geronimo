@@ -80,6 +80,8 @@ public:
 private:
   void initializeGraphicResources();
 
+  void initializePhysicResources();
+
 #if 1
   void experimentalPhysicVehicle();
 #endif

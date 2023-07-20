@@ -9,13 +9,26 @@
 #include "geronimo/system/containers/weak_ref_data_pool.hpp"
 
 #include <cstdint>
-#include <functional>
-#include <memory>
+// #include <functional>
+// #include <memory>
+
+class btRigidBody;
 
 namespace gero {
 namespace physics {
 
+class PhysicHingeConstraint;
+class PhysicUniversalConstraint;
+class PhysicSixDofConstraint;
+class PhysicConeTwistConstraint;
+
 class AbstractPhysicBody : public gero::weak_ref_data_pool_base_class {
+
+  friend PhysicHingeConstraint;
+  friend PhysicUniversalConstraint;
+  friend PhysicSixDofConstraint;
+  friend PhysicConeTwistConstraint;
+
 public:
   AbstractPhysicBody() = default;
   virtual ~AbstractPhysicBody() = default;
@@ -77,6 +90,10 @@ public:
   virtual void dumpData() = 0;
 
   virtual const PhysicShapeDef& getShapeDefinition() const = 0;
+
+protected:
+  virtual btRigidBody* getRawRigidBody() const = 0;
+
 };
 
 using BodyWeakRef = data_pool_weak_ref<AbstractPhysicBody>;

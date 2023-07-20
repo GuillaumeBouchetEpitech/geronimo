@@ -22,11 +22,11 @@ constexpr float k_textScale = 14.0f;
 
 namespace widgets {
 
-void renderPerformanceProfilerMetrics(const glm::vec3& inPos,
-                                      const glm::vec2& inSize,
-                                      const gero::metrics::PerformanceProfiler::TimeData& inTimeData,
-                                      gero::graphics::StackRenderers& inStackRenderers,
-                                      gero::graphics::TextRenderer& inTextRenderer) {
+void renderHistoricalTimeData(const glm::vec3& inPos,
+                              const glm::vec2& inSize,
+                              const gero::metrics::HistoricalTimeData& inTimeData,
+                              gero::graphics::StackRenderers& inStackRenderers,
+                              gero::graphics::TextRenderer& inTextRenderer) {
 
   const glm::vec3 whiteColor = glm::vec3(1.0f, 1.0f, 1.0f) * 0.8f;
   const glm::vec3 redColor = glm::vec3(1.0f, 0.0f, 0.0f) * 0.8f;

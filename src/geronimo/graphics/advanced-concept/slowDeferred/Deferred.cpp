@@ -4,19 +4,24 @@
 namespace gero {
 namespace graphics {
 
-void Deferred::initialize(const glm::ivec2& inFrameSize) {
+void Deferred::initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize, float inResolutionScaling /*= 1.0f*/) {
   _sunLightDirection = glm::normalize(_sunLightDirection);
 
-  _resultQuadRenderer.initialize(inFrameSize);
-  _lightStackRenderer.initialize(inFrameSize);
+  _resultQuadRenderer.initialize(inRootPath, inFrameSize);
+  _lightStackRenderer.initialize(inRootPath, inFrameSize);
 
-  resize(inFrameSize);
+  resize(inFrameSize, inResolutionScaling);
 }
 
-void Deferred::resize(const glm::ivec2& inFrameSize) {
-  _screenRecorder.resize(inFrameSize);
+void Deferred::resize(const glm::ivec2& inFrameSize, float inResolutionScaling /*= 1.0f*/) {
+
+  _resolutionScaling = inResolutionScaling;
+
+  const glm::ivec2 downScaledFrame = glm::ivec2(glm::vec2(inFrameSize) * _resolutionScaling);
+
+  _screenRecorder.resize(downScaledFrame);
+  _lightStackRenderer.resize(downScaledFrame);
   _resultQuadRenderer.resize(inFrameSize);
-  _lightStackRenderer.resize(inFrameSize);
 }
 
 void Deferred::setEyePosition(const glm::vec3& inEyePos) { _eyePos = inEyePos; }
@@ -51,6 +56,10 @@ void Deferred::renderHudQuad(const glm::mat4& composedMatrix) {
                              _lightStackRenderer.getDiffuseCoefTexture(),
                              _lightStackRenderer.getSpecularCoefTexture(),
                              _ambiantLightCoef);
+}
+
+float Deferred::getResolutionScaling() const {
+  return _resolutionScaling;
 }
 
 } // namespace graphics

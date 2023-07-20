@@ -6,6 +6,13 @@
 #include "body/AbstractPhysicBodyManager.hpp"
 #include "vehicle/AbstractPhysicVehicleManager.hpp"
 
+#include "constraints/hinge/AbstractPhysicHingeConstraintManager.hpp"
+
+// not ready (-_-)
+// #include "constraints/universal/AbstractPhysicUniversalConstraintManager.hpp"
+// #include "constraints/six-dof/AbstractPhysicSixDofConstraintManager.hpp"
+// #include "constraints/cone-twist/AbstractPhysicConeTwistConstraintManager.hpp"
+
 #include "queries/query-shape/QueryShape.hpp"
 #include "queries/raycaster/Raycaster.hpp"
 
@@ -25,9 +32,10 @@ class btIDebugDraw;
 
 class PhysicBodyManager;
 class PhysicVehicleManager;
-
-// class PhysicHingeConstraint;
-// class PhysicFixedConstraint;
+class PhysicHingeConstraintManager;
+class PhysicUniversalConstraintManager;
+class PhysicSixDofConstraintManager;
+class PhysicConeTwistConstraintManager;
 
 class btCollisionShape;
 class btDefaultMotionState;
@@ -42,6 +50,10 @@ class PhysicWorld {
 
   friend PhysicBodyManager;
   friend PhysicVehicleManager;
+  friend PhysicHingeConstraintManager;
+  friend PhysicUniversalConstraintManager;
+  friend PhysicSixDofConstraintManager;
+  friend PhysicConeTwistConstraintManager;
   friend QueryShape;
   friend Raycaster;
 
@@ -117,6 +129,36 @@ public:
   //
   //
   // constraints
+
+private:
+  std::unique_ptr<AbstractPhysicHingeConstraintManager> _physicHingeConstraintManager;
+public:
+  AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager();
+  const AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager() const;
+
+// not ready (-_-)
+
+// private:
+//   std::unique_ptr<AbstractPhysicUniversalConstraintManager> _physicUniversalConstraintManager;
+// public:
+//   AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager();
+//   const AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager() const;
+
+// private:
+//   std::unique_ptr<AbstractPhysicSixDofConstraintManager> _physicSixDofConstraintManager;
+// public:
+//   AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager();
+//   const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const;
+
+// private:
+//   std::unique_ptr<AbstractPhysicConeTwistConstraintManager> _physicConeTwistConstraintManager;
+// public:
+//   AbstractPhysicConeTwistConstraintManager& getPhysicConeTwistConstraintManager();
+//   const AbstractPhysicConeTwistConstraintManager& getPhysicConeTwistConstraintManager() const;
+
+
+
+
 
   // private:
   //   std::vector<PhysicHingeConstraint*> _hinge_constraints;

@@ -1,6 +1,12 @@
 
 # Changelog
 
+## [0.0.13] - 2023-08-20
+### Changed
+- feat: better metrics handling (sub class nad rendering)
+- feat: experimental support of physic hinge constraint
+- feat: templated KdTree and spatial indexer (2d/3d)
+
 ## [0.0.12] - 2023-07-09
 ### Changed
 - feat: audio alias grouping

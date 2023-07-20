@@ -120,6 +120,10 @@ public:
 
   // const std::vector<ContactPoint>& getContacts() const;
   // void setContactCallback(const std::function<void()>& callback);
+
+protected:
+  btRigidBody* getRawRigidBody() const override;
+
 };
 
 using BodyContainer = safe_weak_ref_data_pool<PhysicBody, AbstractPhysicBody, 256, false>;

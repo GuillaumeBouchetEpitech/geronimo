@@ -369,7 +369,7 @@ void Scene::_renderHud() {
     const glm::vec2 k_size = glm::vec2(150, 50);
     const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 10, vSize.y - k_size.y - 10, 0);
 
-    gero::graphics::widgets::renderPerformanceProfilerMetrics(
+    gero::graphics::widgets::renderHistoricalTimeData(
       k_pos, k_size, timeData, graphic.hud.stackRenderers, graphic.hud.textRenderer);
 
     graphic.hud.stackRenderers.flush();
