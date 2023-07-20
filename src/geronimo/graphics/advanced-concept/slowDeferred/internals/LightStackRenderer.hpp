@@ -81,6 +81,6 @@ private:
   std::vector<Instance> _vertices;
 };
 
-}
+} // namespace slowDeferred
 } // namespace graphics
 } // namespace gero

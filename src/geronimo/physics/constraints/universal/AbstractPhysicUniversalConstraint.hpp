@@ -27,7 +27,6 @@ public:
   virtual float getAngle2() const = 0;
   virtual void setUpperLimit(float angle1Max, float angle2Max) = 0;
   virtual void setLowerLimit(float angle1Min, float angle2Min) = 0;
-
 };
 
 using UniversalConstraintWeakRef = data_pool_weak_ref<AbstractPhysicUniversalConstraint>;

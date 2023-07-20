@@ -7,9 +7,7 @@ namespace gero {
 
 namespace trees {
 
-template<typename T>
-class Spatial3dIndexer
-{
+template <typename T> class Spatial3dIndexer {
 public:
   using LocalKdTree = gero::trees::KDTree3d<T>;
   using TreeUserData = typename LocalKdTree::UserData;
@@ -20,8 +18,7 @@ public:
   ~Spatial3dIndexer() = default;
 
 public:
-  const ResultData& search(const glm::vec3& inPosition, float inRadius)
-  {
+  const ResultData& search(const glm::vec3& inPosition, float inRadius) {
     _searchResult.clear();
     if (_treeUserData.empty())
       return _searchResult;
@@ -33,31 +30,18 @@ public:
     return _searchResult;
   }
 
-  const ResultData& getResult() const
-  {
-    return _searchResult;
-  }
+  const ResultData& getResult() const { return _searchResult; }
 
 public:
-  void clear()
-  {
-    _treeUserData.clear();
-  }
-  void pre_allocate(std::size_t inSize)
-  {
+  void clear() { _treeUserData.clear(); }
+  void pre_allocate(std::size_t inSize) {
     _treeUserData.reserve(inSize);
     _searchResult.reserve(inSize);
     _rawSearchResult.reserve(inSize);
   }
-  void push(const glm::vec3& inPosition, T inUserData)
-  {
-    _treeUserData.push_back({ inPosition, inUserData });
-  }
+  void push(const glm::vec3& inPosition, T inUserData) { _treeUserData.push_back({inPosition, inUserData}); }
 
-  void sync()
-  {
-    _tree.build(_treeUserData);
-  }
+  void sync() { _tree.build(_treeUserData); }
 
 private:
   LocalKdTree _tree;
@@ -68,5 +52,5 @@ private:
   ResultData _searchResult;
 };
 
-}
-}
+} // namespace trees
+} // namespace gero

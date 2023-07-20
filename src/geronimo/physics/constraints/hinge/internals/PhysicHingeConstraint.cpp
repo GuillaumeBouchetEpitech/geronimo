@@ -23,14 +23,14 @@ PhysicHingeConstraint::PhysicHingeConstraint(const PhysicHingeConstraintDef& def
   const btVector3 axis = btVector3(def.axis.x, def.axis.y, def.axis.z);
   const bool useReferenceFrameA = true;
 
-  _bullet.constraint = new btHingeConstraint(
-    *(def.body_a->getRawRigidBody()),
-    *(def.body_b->getRawRigidBody()),
-    pivot_in_a, pivot_in_b,
-    // axisInA, axisInB,
-    axis, axis,
-    useReferenceFrameA
-  );
+  _bullet.constraint = new btHingeConstraint(*(def.body_a->getRawRigidBody()),
+                                             *(def.body_b->getRawRigidBody()),
+                                             pivot_in_a,
+                                             pivot_in_b,
+                                             // axisInA, axisInB,
+                                             axis,
+                                             axis,
+                                             useReferenceFrameA);
 
   _bullet.constraint->setDbgDrawSize(1.0f);
 
@@ -75,9 +75,7 @@ PhysicHingeConstraint::PhysicHingeConstraint(const PhysicHingeConstraintDef& def
   // }
 }
 
-PhysicHingeConstraint::~PhysicHingeConstraint() {
-  delete _bullet.constraint;
-}
+PhysicHingeConstraint::~PhysicHingeConstraint() { delete _bullet.constraint; }
 
 PhysicHingeConstraint::PhysicHingeConstraint(PhysicHingeConstraint&& other) {
   if (&other == this)
@@ -105,7 +103,8 @@ PhysicHingeConstraint& PhysicHingeConstraint::operator=(PhysicHingeConstraint&& 
 //
 //
 
-// void PhysicHingeConstraint::applyEngineForce(int32_t index, float force) { _bullet.vehicle->applyEngineForce(force, index); }
+// void PhysicHingeConstraint::applyEngineForce(int32_t index, float force) { _bullet.vehicle->applyEngineForce(force,
+// index); }
 
 // void PhysicHingeConstraint::applyBrake(int32_t index, float force) { _bullet.vehicle->setBrake(force, index); }
 
@@ -153,7 +152,8 @@ PhysicHingeConstraint& PhysicHingeConstraint::operator=(PhysicHingeConstraint&& 
 //   return glm::quat(rotation[3], rotation[0], rotation[1], rotation[2]);
 // }
 
-// float PhysicHingeConstraint::getCurrentSpeedKmHour() const { return float(_bullet.vehicle->getCurrentSpeedKmHour()); }
+// float PhysicHingeConstraint::getCurrentSpeedKmHour() const { return float(_bullet.vehicle->getCurrentSpeedKmHour());
+// }
 
 // BodyWeakRef PhysicHingeConstraint::getPhysicBody() { return _body; }
 // const BodyWeakRef PhysicHingeConstraint::getPhysicBody() const { return _body; }

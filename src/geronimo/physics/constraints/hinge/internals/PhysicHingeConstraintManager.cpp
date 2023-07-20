@@ -63,7 +63,9 @@ void PhysicHingeConstraintManager::remove(HingeConstraintWeakRef ref) {
 
 HingeConstraintWeakRef PhysicHingeConstraintManager::get(uint32_t index) { return _hingeConstraints.get(index); }
 
-const HingeConstraintWeakRef PhysicHingeConstraintManager::get(uint32_t index) const { return _hingeConstraints.get(index); }
+const HingeConstraintWeakRef PhysicHingeConstraintManager::get(uint32_t index) const {
+  return _hingeConstraints.get(index);
+}
 
 std::size_t PhysicHingeConstraintManager::size() const { return _hingeConstraints.size(); }
 

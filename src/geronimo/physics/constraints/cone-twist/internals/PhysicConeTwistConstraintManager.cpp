@@ -7,7 +7,8 @@
 namespace gero {
 namespace physics {
 
-PhysicConeTwistConstraintManager::PhysicConeTwistConstraintManager(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {
+PhysicConeTwistConstraintManager::PhysicConeTwistConstraintManager(PhysicWorld& physicWorld)
+  : _physicWorld(physicWorld) {
   _pool.pre_allocate(1024);
 }
 
@@ -23,7 +24,8 @@ PhysicConeTwistConstraintWeakRef PhysicConeTwistConstraintManager::create(const 
   return _pool.acquire(def);
 }
 
-PhysicConeTwistConstraintWeakRef PhysicConeTwistConstraintManager::createAndAdd(const PhysicConeTwistConstraintDef& def) {
+PhysicConeTwistConstraintWeakRef
+PhysicConeTwistConstraintManager::createAndAdd(const PhysicConeTwistConstraintDef& def) {
   auto ref = create(def);
   add(ref);
   return ref;
@@ -63,7 +65,9 @@ void PhysicConeTwistConstraintManager::remove(PhysicConeTwistConstraintWeakRef r
 
 PhysicConeTwistConstraintWeakRef PhysicConeTwistConstraintManager::get(uint32_t index) { return _pool.get(index); }
 
-const PhysicConeTwistConstraintWeakRef PhysicConeTwistConstraintManager::get(uint32_t index) const { return _pool.get(index); }
+const PhysicConeTwistConstraintWeakRef PhysicConeTwistConstraintManager::get(uint32_t index) const {
+  return _pool.get(index);
+}
 
 std::size_t PhysicConeTwistConstraintManager::size() const { return _pool.size(); }
 

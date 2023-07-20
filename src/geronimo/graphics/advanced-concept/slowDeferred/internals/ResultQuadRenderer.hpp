@@ -45,6 +45,6 @@ private:
   gero::graphics::Geometry _quadGeometry;
 };
 
-}
+} // namespace slowDeferred
 } // namespace graphics
 } // namespace gero

@@ -37,19 +37,19 @@ public:
   PhysicSixDofConstraint& operator=(PhysicSixDofConstraint&& other);
 
 public:
-	void setLinearLowerLimit(const glm::vec3& linearLower) override;
-	void setLinearUpperLimit(const glm::vec3& linearUpper) override;
-	glm::vec3 getLinearLowerLimit() const override;
-	glm::vec3 getLinearUpperLimit() const override;
+  void setLinearLowerLimit(const glm::vec3& linearLower) override;
+  void setLinearUpperLimit(const glm::vec3& linearUpper) override;
+  glm::vec3 getLinearLowerLimit() const override;
+  glm::vec3 getLinearUpperLimit() const override;
 
-	void setAngularLowerLimit(const glm::vec3& angularLower) override;
-	void setAngularUpperLimit(const glm::vec3& angularUpper) override;
-	glm::vec3 getAngularLowerLimit() const override;
-	glm::vec3 getAngularUpperLimit() const override;
-
+  void setAngularLowerLimit(const glm::vec3& angularLower) override;
+  void setAngularUpperLimit(const glm::vec3& angularUpper) override;
+  glm::vec3 getAngularLowerLimit() const override;
+  glm::vec3 getAngularUpperLimit() const override;
 };
 
-using PhysicSixDofConstraintsPool = safe_weak_ref_data_pool<PhysicSixDofConstraint, AbstractPhysicSixDofConstraint, 256, false>;
+using PhysicSixDofConstraintsPool =
+  safe_weak_ref_data_pool<PhysicSixDofConstraint, AbstractPhysicSixDofConstraint, 256, false>;
 
 } // namespace physics
 } // namespace gero

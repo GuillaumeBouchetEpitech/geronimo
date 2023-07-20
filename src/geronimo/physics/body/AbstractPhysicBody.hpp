@@ -93,7 +93,6 @@ public:
 
 protected:
   virtual btRigidBody* getRawRigidBody() const = 0;
-
 };
 
 using BodyWeakRef = data_pool_weak_ref<AbstractPhysicBody>;

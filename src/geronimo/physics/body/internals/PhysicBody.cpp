@@ -310,10 +310,7 @@ void PhysicBody::dumpData() {
 
 const PhysicShapeDef& PhysicBody::getShapeDefinition() const { return _shapeDef; }
 
-btRigidBody* PhysicBody::getRawRigidBody() const
-{
-  return _bullet.body;
-}
+btRigidBody* PhysicBody::getRawRigidBody() const { return _bullet.body; }
 
 // const std::vector<ContactPoint>& PhysicBody::getContacts() const
 // {

@@ -23,7 +23,8 @@ PhysicSixDofConstraint::PhysicSixDofConstraint(const PhysicSixDofConstraintDef& 
   // const btVector3 axis2 = btVector3(def.axis2.x, def.axis2.y, def.axis2.z);
   // // const bool useReferenceFrameA = true;
 
-    // btUniversalConstraint(btRigidBody& rbA, btRigidBody& rbB, const btVector3& anchor, const btVector3& axis1, const btVector3& axis2);
+  // btUniversalConstraint(btRigidBody& rbA, btRigidBody& rbB, const btVector3& anchor, const btVector3& axis1, const
+  // btVector3& axis2);
 
   glm::mat4 transformA = glm::identity<glm::mat4>();
   glm::mat4 transformB = glm::identity<glm::mat4>();
@@ -39,36 +40,31 @@ PhysicSixDofConstraint::PhysicSixDofConstraint(const PhysicSixDofConstraintDef& 
   // constraint_def.transformA = transformA;
   // constraint_def.transformB = transformB;
 
-
   btTransform frameInA = btTransform::getIdentity();
   btTransform frameInB = btTransform::getIdentity();
   frameInA.setFromOpenGLMatrix(glm::value_ptr(transformA));
   frameInB.setFromOpenGLMatrix(glm::value_ptr(transformB));
 
-  // btGeneric6DofSpring2Constraint(btRigidBody& rbA, btRigidBody& rbB, const btTransform& frameInA, const btTransform& frameInB, RotateOrder rotOrder = RO_XYZ);
-  // btGeneric6DofSpring2Constraint(btRigidBody& rbB, const btTransform& frameInB, RotateOrder rotOrder = RO_XYZ);
+  // btGeneric6DofSpring2Constraint(btRigidBody& rbA, btRigidBody& rbB, const btTransform& frameInA, const btTransform&
+  // frameInB, RotateOrder rotOrder = RO_XYZ); btGeneric6DofSpring2Constraint(btRigidBody& rbB, const btTransform&
+  // frameInB, RotateOrder rotOrder = RO_XYZ);
 
   _bullet.constraint = new btGeneric6DofSpring2Constraint(
-    *(def.body_a->getRawRigidBody()),
-    *(def.body_b->getRawRigidBody()),
-    frameInA,
-    frameInB
-  );
+    *(def.body_a->getRawRigidBody()), *(def.body_b->getRawRigidBody()), frameInA, frameInB);
 
   _bullet.constraint->setDbgDrawSize(1.0f);
 
+  // void setAngularLowerLimit(const btVector3& angularLower);
+  // void getAngularLowerLimit(btVector3& angularLower);
+  // void setAngularUpperLimit(const btVector3& angularUpper);
+  // void getAngularUpperLimit(btVector3& angularUpper);
 
-	// void setAngularLowerLimit(const btVector3& angularLower);
-	// void getAngularLowerLimit(btVector3& angularLower);
-	// void setAngularUpperLimit(const btVector3& angularUpper);
-	// void getAngularUpperLimit(btVector3& angularUpper);
+  // //first 3 are linear, next 3 are angular
 
-	// //first 3 are linear, next 3 are angular
+  // void setLimit(int axis, btScalar lo, btScalar hi);
+  // void setLimitReversed(int axis, btScalar lo, btScalar hi);
 
-	// void setLimit(int axis, btScalar lo, btScalar hi);
-	// void setLimitReversed(int axis, btScalar lo, btScalar hi);
-
-	// bool isLimited(int limitIndex);
+  // bool isLimited(int limitIndex);
 
   // void setRotationOrder(RotateOrder order) { m_rotateOrder = order; }
   // RotateOrder getRotationOrder() { return m_rotateOrder; }
@@ -78,24 +74,21 @@ PhysicSixDofConstraint::PhysicSixDofConstraint(const PhysicSixDofConstraintDef& 
   // void setBounce(int index, btScalar bounce);
 
   // void enableMotor(int index, bool onOff);
-  // void setServo(int index, bool onOff); // set the type of the motor (servo or not) (the motor has to be turned on for servo also)
-  // void setTargetVelocity(int index, btScalar velocity);
-  // void setServoTarget(int index, btScalar target);
-  // void setMaxMotorForce(int index, btScalar force);
+  // void setServo(int index, bool onOff); // set the type of the motor (servo or not) (the motor has to be turned on
+  // for servo also) void setTargetVelocity(int index, btScalar velocity); void setServoTarget(int index, btScalar
+  // target); void setMaxMotorForce(int index, btScalar force);
 
   // void enableSpring(int index, bool onOff);
-  // void setStiffness(int index, btScalar stiffness, bool limitIfNeeded = true); // if limitIfNeeded is true the system will automatically limit the stiffness in necessary situations where otherwise the spring would move unrealistically too widely
-  // void setDamping(int index, btScalar damping, bool limitIfNeeded = true); // if limitIfNeeded is true the system will automatically limit the damping in necessary situations where otherwise the spring would blow up
-  // void setEquilibriumPoint(); // set the current constraint position/orientation as an equilibrium point for all DOF
-  // void setEquilibriumPoint(int index);  // set the current constraint position/orientation as an equilibrium point for given DOF
-  // void setEquilibriumPoint(int index, btScalar val);
-
-
+  // void setStiffness(int index, btScalar stiffness, bool limitIfNeeded = true); // if limitIfNeeded is true the system
+  // will automatically limit the stiffness in necessary situations where otherwise the spring would move
+  // unrealistically too widely void setDamping(int index, btScalar damping, bool limitIfNeeded = true); // if
+  // limitIfNeeded is true the system will automatically limit the damping in necessary situations where otherwise the
+  // spring would blow up void setEquilibriumPoint(); // set the current constraint position/orientation as an
+  // equilibrium point for all DOF void setEquilibriumPoint(int index);  // set the current constraint
+  // position/orientation as an equilibrium point for given DOF void setEquilibriumPoint(int index, btScalar val);
 }
 
-PhysicSixDofConstraint::~PhysicSixDofConstraint() {
-  delete _bullet.constraint;
-}
+PhysicSixDofConstraint::~PhysicSixDofConstraint() { delete _bullet.constraint; }
 
 PhysicSixDofConstraint::PhysicSixDofConstraint(PhysicSixDofConstraint&& other) {
   if (&other == this)
@@ -123,71 +116,50 @@ PhysicSixDofConstraint& PhysicSixDofConstraint::operator=(PhysicSixDofConstraint
 //
 //
 
-void PhysicSixDofConstraint::setLinearLowerLimit(const glm::vec3& linearLower)
-{
+void PhysicSixDofConstraint::setLinearLowerLimit(const glm::vec3& linearLower) {
   _bullet.constraint->setLinearLowerLimit(btVector3(linearLower.x, linearLower.y, linearLower.z));
 }
 
-void PhysicSixDofConstraint::setLinearUpperLimit(const glm::vec3& linearUpper)
-{
+void PhysicSixDofConstraint::setLinearUpperLimit(const glm::vec3& linearUpper) {
   _bullet.constraint->setLinearUpperLimit(btVector3(linearUpper.x, linearUpper.y, linearUpper.z));
 }
 
-glm::vec3 PhysicSixDofConstraint::getLinearLowerLimit() const
-{
+glm::vec3 PhysicSixDofConstraint::getLinearLowerLimit() const {
   btVector3 value;
   _bullet.constraint->getLinearLowerLimit(value);
   return glm::vec3(value[0], value[1], value[2]);
 }
 
-glm::vec3 PhysicSixDofConstraint::getLinearUpperLimit() const
-{
+glm::vec3 PhysicSixDofConstraint::getLinearUpperLimit() const {
   btVector3 value;
   _bullet.constraint->getLinearUpperLimit(value);
   return glm::vec3(value[0], value[1], value[2]);
 }
 
-
-
-void PhysicSixDofConstraint::setAngularLowerLimit(const glm::vec3& angularLower)
-{
+void PhysicSixDofConstraint::setAngularLowerLimit(const glm::vec3& angularLower) {
   _bullet.constraint->setAngularLowerLimit(btVector3(angularLower.x, angularLower.y, angularLower.z));
 }
 
-void PhysicSixDofConstraint::setAngularUpperLimit(const glm::vec3& angularUpper)
-{
+void PhysicSixDofConstraint::setAngularUpperLimit(const glm::vec3& angularUpper) {
   _bullet.constraint->setAngularUpperLimit(btVector3(angularUpper.x, angularUpper.y, angularUpper.z));
 }
 
-glm::vec3 PhysicSixDofConstraint::getAngularLowerLimit() const
-{
+glm::vec3 PhysicSixDofConstraint::getAngularLowerLimit() const {
   btVector3 value;
   _bullet.constraint->getAngularLowerLimit(value);
   return glm::vec3(value[0], value[1], value[2]);
 }
 
-glm::vec3 PhysicSixDofConstraint::getAngularUpperLimit() const
-{
+glm::vec3 PhysicSixDofConstraint::getAngularUpperLimit() const {
   btVector3 value;
   _bullet.constraint->getAngularUpperLimit(value);
   return glm::vec3(value[0], value[1], value[2]);
 }
 
-
-
-
-
-	// void setAngularLowerLimit(const btVector3& angularLower);
-	// void getAngularLowerLimit(btVector3& angularLower);
-	// void setAngularUpperLimit(const btVector3& angularUpper);
-	// void getAngularUpperLimit(btVector3& angularUpper);
-
-
-
-
-
-
-
+// void setAngularLowerLimit(const btVector3& angularLower);
+// void getAngularLowerLimit(btVector3& angularLower);
+// void setAngularUpperLimit(const btVector3& angularUpper);
+// void getAngularUpperLimit(btVector3& angularUpper);
 
 // glm::vec3 PhysicSixDofConstraint::getAnchor1() const
 // {
@@ -233,11 +205,10 @@ glm::vec3 PhysicSixDofConstraint::getAngularUpperLimit() const
 // 	// btScalar getAngle1() { return getAngle(2); }
 // 	// btScalar getAngle2() { return getAngle(1); }
 // 	// // limits
-// 	// void setUpperLimit(btScalar ang1max, btScalar ang2max) { setAngularUpperLimit(btVector3(0.f, ang1max, ang2max)); }
-// 	// void setLowerLimit(btScalar ang1min, btScalar ang2min) { setAngularLowerLimit(btVector3(0.f, ang1min, ang2min)); }
-
-
-
+// 	// void setUpperLimit(btScalar ang1max, btScalar ang2max) { setAngularUpperLimit(btVector3(0.f, ang1max, ang2max));
+// }
+// 	// void setLowerLimit(btScalar ang1min, btScalar ang2min) { setAngularLowerLimit(btVector3(0.f, ang1min, ang2min));
+// }
 
 } // namespace physics
 } // namespace gero

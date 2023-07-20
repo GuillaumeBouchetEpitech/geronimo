@@ -34,7 +34,9 @@ void PerformanceProfiler::set(const std::string& name, int32_t inDuration) {
   _getOrCreate(name).pushNewValue(inDuration);
 }
 
-const PerformanceProfiler::HistoricalTimeDataMap& PerformanceProfiler::getHistoricalTimeDataMap() const { return _allTimes; }
+const PerformanceProfiler::HistoricalTimeDataMap& PerformanceProfiler::getHistoricalTimeDataMap() const {
+  return _allTimes;
+}
 
 const PerformanceProfiler::MaybeTimeDataRef PerformanceProfiler::tryGetTimeData(const std::string& name) const {
   auto it = _allTimes.find(name);

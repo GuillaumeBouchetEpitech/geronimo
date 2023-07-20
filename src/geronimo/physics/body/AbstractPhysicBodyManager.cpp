@@ -6,8 +6,7 @@
 namespace gero {
 namespace physics {
 
-std::unique_ptr<AbstractPhysicBodyManager> AbstractPhysicBodyManager::create(PhysicWorld& inPhysicWorld)
-{
+std::unique_ptr<AbstractPhysicBodyManager> AbstractPhysicBodyManager::create(PhysicWorld& inPhysicWorld) {
   return std::make_unique<PhysicBodyManager>(inPhysicWorld);
 }
 

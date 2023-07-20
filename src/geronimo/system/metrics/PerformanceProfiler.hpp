@@ -46,7 +46,6 @@ private:
   std::size_t _preAllocatedHistoricSize;
   HistoricalTimeDataMap _allTimes;
   std::vector<std::string> _allDataKeys;
-
 };
 
 } // namespace metrics

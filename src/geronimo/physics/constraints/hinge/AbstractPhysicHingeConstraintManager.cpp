@@ -6,8 +6,8 @@
 namespace gero {
 namespace physics {
 
-std::unique_ptr<AbstractPhysicHingeConstraintManager> AbstractPhysicHingeConstraintManager::create(PhysicWorld& inPhysicWorld)
-{
+std::unique_ptr<AbstractPhysicHingeConstraintManager>
+AbstractPhysicHingeConstraintManager::create(PhysicWorld& inPhysicWorld) {
   return std::make_unique<PhysicHingeConstraintManager>(inPhysicWorld);
 }
 

@@ -75,8 +75,8 @@ private:
 
 template <typename T>
 KDTree3d<T>::TreeNode::TreeNode(const IndexedVec3& inPi,
-                              const std::shared_ptr<TreeNode>& inLeftNode,
-                              const std::shared_ptr<TreeNode>& inRightNode) {
+                                const std::shared_ptr<TreeNode>& inLeftNode,
+                                const std::shared_ptr<TreeNode>& inRightNode) {
   position = inPi.position;
   index = inPi.index;
   leftNode = inLeftNode;
@@ -120,10 +120,10 @@ void KDTree3d<T>::searchWithRadius(const glm::vec3& inPosition, float inRadius, 
 
 template <typename T>
 void KDTree3d<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
-                                  const glm::vec3& inPosition,
-                                  float inRadius,
-                                  int32_t inCurrAxis,
-                                  IndexedVec3Arr& outResults) {
+                                    const glm::vec3& inPosition,
+                                    float inRadius,
+                                    int32_t inCurrAxis,
+                                    IndexedVec3Arr& outResults) {
   if (!inBranchPtr) {
     return;
   }
@@ -159,9 +159,9 @@ void KDTree3d<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
 
 template <typename T>
 std::shared_ptr<typename KDTree3d<T>::TreeNode> KDTree3d<T>::_build(const IndexedVec3ArrIt& inBeginIt,
-                                                                const IndexedVec3ArrIt& inEndIt,
-                                                                size_t inLength,
-                                                                int32_t inCurrAxis) {
+                                                                    const IndexedVec3ArrIt& inEndIt,
+                                                                    size_t inLength,
+                                                                    int32_t inCurrAxis) {
   if (inBeginIt == inEndIt) {
     return nullptr; // empty tree
   }

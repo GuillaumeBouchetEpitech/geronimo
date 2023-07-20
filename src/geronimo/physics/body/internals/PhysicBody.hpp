@@ -123,7 +123,6 @@ public:
 
 protected:
   btRigidBody* getRawRigidBody() const override;
-
 };
 
 using BodyContainer = safe_weak_ref_data_pool<PhysicBody, AbstractPhysicBody, 256, false>;

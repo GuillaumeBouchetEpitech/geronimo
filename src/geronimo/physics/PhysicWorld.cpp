@@ -1,7 +1,6 @@
 
 #include "PhysicWorld.hpp"
 
-
 // not ready (-_-)
 // #include "constraints/universal/internals/PhysicUniversalConstraintManager.hpp"
 // #include "constraints/six-dof/internals/PhysicSixDofConstraintManager.hpp"
@@ -202,13 +201,11 @@ const AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const
 //
 // constraints
 
-AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager()
-{
+AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager() {
   return *_physicHingeConstraintManager;
 }
 
-const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager() const
-{
+const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager() const {
   return *_physicHingeConstraintManager;
 }
 

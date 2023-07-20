@@ -47,7 +47,6 @@ private:
   int32_t _minDuration = 0;
 
   std::size_t _size = 60U;
-
 };
 
 } // namespace metrics

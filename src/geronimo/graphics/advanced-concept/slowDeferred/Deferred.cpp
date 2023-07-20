@@ -4,7 +4,9 @@
 namespace gero {
 namespace graphics {
 
-void Deferred::initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize, float inResolutionScaling /*= 1.0f*/) {
+void Deferred::initialize(const std::string& inRootPath,
+                          const glm::ivec2& inFrameSize,
+                          float inResolutionScaling /*= 1.0f*/) {
   _sunLightDirection = glm::normalize(_sunLightDirection);
 
   _resultQuadRenderer.initialize(inRootPath, inFrameSize);
@@ -58,9 +60,7 @@ void Deferred::renderHudQuad(const glm::mat4& composedMatrix) {
                              _ambiantLightCoef);
 }
 
-float Deferred::getResolutionScaling() const {
-  return _resolutionScaling;
-}
+float Deferred::getResolutionScaling() const { return _resolutionScaling; }
 
 } // namespace graphics
 } // namespace gero

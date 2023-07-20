@@ -37,18 +37,18 @@ public:
   PhysicUniversalConstraint& operator=(PhysicUniversalConstraint&& other);
 
 public:
-	glm::vec3 getAnchor1() const override;
-	glm::vec3 getAnchor2() const override;
-	glm::vec3 getAxis1() const override;
-	glm::vec3 getAxis2() const override;
-	float getAngle1() const override;
-	float getAngle2() const override;
+  glm::vec3 getAnchor1() const override;
+  glm::vec3 getAnchor2() const override;
+  glm::vec3 getAxis1() const override;
+  glm::vec3 getAxis2() const override;
+  float getAngle1() const override;
+  float getAngle2() const override;
   void setUpperLimit(float angle1Max, float angle2Max) override;
   void setLowerLimit(float angle1Min, float angle2Min) override;
-
 };
 
-using PhysicUniversalConstraintsPool = safe_weak_ref_data_pool<PhysicUniversalConstraint, AbstractPhysicUniversalConstraint, 256, false>;
+using PhysicUniversalConstraintsPool =
+  safe_weak_ref_data_pool<PhysicUniversalConstraint, AbstractPhysicUniversalConstraint, 256, false>;
 
 } // namespace physics
 } // namespace gero

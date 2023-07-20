@@ -6,7 +6,6 @@
 namespace gero {
 namespace graphics {
 
-
 namespace slowDeferred {
 
 using namespace gero::graphics;
@@ -55,7 +54,7 @@ const gero::graphics::Texture& ScreenRecorder::getNormalTexture() const { return
 
 const gero::graphics::Texture& ScreenRecorder::getDepthTexture() const { return _depthTexture; }
 
-}
+} // namespace slowDeferred
 
 } // namespace graphics
 } // namespace gero

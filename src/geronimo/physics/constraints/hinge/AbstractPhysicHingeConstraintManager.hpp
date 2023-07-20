@@ -35,7 +35,6 @@ public:
 
 public:
   static std::unique_ptr<AbstractPhysicHingeConstraintManager> create(PhysicWorld& inPhysicWorld);
-
 };
 
 } // namespace physics

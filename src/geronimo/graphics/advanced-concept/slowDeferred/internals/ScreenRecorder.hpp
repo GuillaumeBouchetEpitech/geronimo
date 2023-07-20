@@ -10,7 +10,6 @@
 namespace gero {
 namespace graphics {
 
-
 namespace slowDeferred {
 
 class ScreenRecorder {
@@ -40,7 +39,7 @@ private:
   gero::graphics::FrameBuffer _frameBufferGeometries;
 };
 
-}
+} // namespace slowDeferred
 
 } // namespace graphics
 } // namespace gero

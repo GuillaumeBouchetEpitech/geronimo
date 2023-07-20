@@ -130,6 +130,6 @@ void ResultQuadRenderer::render(const glm::vec3& eyePos,
   GlContext::Texture::active(0);
 }
 
-}
-}
-}
+} // namespace slowDeferred
+} // namespace graphics
+} // namespace gero

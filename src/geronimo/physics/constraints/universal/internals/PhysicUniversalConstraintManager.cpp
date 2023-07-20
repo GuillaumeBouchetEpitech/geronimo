@@ -7,7 +7,8 @@
 namespace gero {
 namespace physics {
 
-PhysicUniversalConstraintManager::PhysicUniversalConstraintManager(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {
+PhysicUniversalConstraintManager::PhysicUniversalConstraintManager(PhysicWorld& physicWorld)
+  : _physicWorld(physicWorld) {
   _universalConstraints.pre_allocate(1024);
 }
 
@@ -61,9 +62,13 @@ void PhysicUniversalConstraintManager::remove(UniversalConstraintWeakRef ref) {
   _totalLiveUniversalConstraints -= 1;
 }
 
-UniversalConstraintWeakRef PhysicUniversalConstraintManager::get(uint32_t index) { return _universalConstraints.get(index); }
+UniversalConstraintWeakRef PhysicUniversalConstraintManager::get(uint32_t index) {
+  return _universalConstraints.get(index);
+}
 
-const UniversalConstraintWeakRef PhysicUniversalConstraintManager::get(uint32_t index) const { return _universalConstraints.get(index); }
+const UniversalConstraintWeakRef PhysicUniversalConstraintManager::get(uint32_t index) const {
+  return _universalConstraints.get(index);
+}
 
 std::size_t PhysicUniversalConstraintManager::size() const { return _universalConstraints.size(); }
 

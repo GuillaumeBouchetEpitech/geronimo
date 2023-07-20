@@ -33,7 +33,6 @@ public:
 
 public:
   static std::unique_ptr<AbstractPhysicVehicleManager> create(PhysicWorld& inPhysicWorld);
-
 };
 
 } // namespace physics

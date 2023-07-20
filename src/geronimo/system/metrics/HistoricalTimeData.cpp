@@ -21,9 +21,7 @@ D_ALIAS_FUNCTION(_asMilliSeconds, std::chrono::duration_cast<std::chrono::millis
 namespace gero {
 namespace metrics {
 
-HistoricalTimeData::HistoricalTimeData(std::size_t inSize) {
-  setSize(inSize);
-}
+HistoricalTimeData::HistoricalTimeData(std::size_t inSize) { setSize(inSize); }
 
 void HistoricalTimeData::start() { _start = _getTime(); }
 
@@ -36,8 +34,7 @@ void HistoricalTimeData::stop() {
   pushNewValue(int32_t(_asMilliSeconds(_stop - _start).count()));
 }
 
-void HistoricalTimeData::reset()
-{
+void HistoricalTimeData::reset() {
   _historicData.clear();
   _latestDuration = 0;
   _historicIndex = 0;

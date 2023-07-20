@@ -132,33 +132,30 @@ public:
 
 private:
   std::unique_ptr<AbstractPhysicHingeConstraintManager> _physicHingeConstraintManager;
+
 public:
   AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager();
   const AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager() const;
 
-// not ready (-_-)
+  // not ready (-_-)
 
-// private:
-//   std::unique_ptr<AbstractPhysicUniversalConstraintManager> _physicUniversalConstraintManager;
-// public:
-//   AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager();
-//   const AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager() const;
+  // private:
+  //   std::unique_ptr<AbstractPhysicUniversalConstraintManager> _physicUniversalConstraintManager;
+  // public:
+  //   AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager();
+  //   const AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager() const;
 
-// private:
-//   std::unique_ptr<AbstractPhysicSixDofConstraintManager> _physicSixDofConstraintManager;
-// public:
-//   AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager();
-//   const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const;
+  // private:
+  //   std::unique_ptr<AbstractPhysicSixDofConstraintManager> _physicSixDofConstraintManager;
+  // public:
+  //   AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager();
+  //   const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const;
 
-// private:
-//   std::unique_ptr<AbstractPhysicConeTwistConstraintManager> _physicConeTwistConstraintManager;
-// public:
-//   AbstractPhysicConeTwistConstraintManager& getPhysicConeTwistConstraintManager();
-//   const AbstractPhysicConeTwistConstraintManager& getPhysicConeTwistConstraintManager() const;
-
-
-
-
+  // private:
+  //   std::unique_ptr<AbstractPhysicConeTwistConstraintManager> _physicConeTwistConstraintManager;
+  // public:
+  //   AbstractPhysicConeTwistConstraintManager& getPhysicConeTwistConstraintManager();
+  //   const AbstractPhysicConeTwistConstraintManager& getPhysicConeTwistConstraintManager() const;
 
   // private:
   //   std::vector<PhysicHingeConstraint*> _hinge_constraints;

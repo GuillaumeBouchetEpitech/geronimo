@@ -111,5 +111,4 @@ void Context::initializeGraphicResources() {
 
     graphic.scene.geometriesStackRenderer.createAlias(4444, vertices);
   }
-
 }
