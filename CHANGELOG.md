@@ -1,7 +1,14 @@
 
 # Changelog
 
-## [0.0.13] - 2023-08-20
+## [0.0.14] - 2023-08-??
+### Changed
+- feat: generic KdTree
+- feat: some more math angle features
+- feat: text renderer -> horizontal/vertical text align
+- feat: better fps meter
+
+## [0.0.13] - 2023-07-20
 ### Changed
 - feat: better metrics handling (sub class nad rendering)
 - feat: experimental support of physic hinge constraint

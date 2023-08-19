@@ -24,6 +24,7 @@ namespace widgets {
 
 void renderHistoricalTimeData(const glm::vec3& inPos,
                               const glm::vec2& inSize,
+                              bool inShowFps,
                               const gero::metrics::HistoricalTimeData& inTimeData,
                               gero::graphics::StackRenderers& inStackRenderers,
                               gero::graphics::TextRenderer& inTextRenderer) {
@@ -31,8 +32,8 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
   const glm::vec3 whiteColor = glm::vec3(1.0f, 1.0f, 1.0f) * 0.8f;
   const glm::vec3 redColor = glm::vec3(1.0f, 0.0f, 0.0f) * 0.8f;
 
-  const glm::vec3 borderPos = glm::vec3(inPos.x, inPos.y + k_textScale * 1.1f, inPos.z);
-  const glm::vec2 borderSize = glm::vec2(inSize.x, inSize.y - k_textScale * 1.1f);
+  const glm::vec3 borderPos = glm::vec3(inPos.x, inPos.y, inPos.z);
+  const glm::vec2 borderSize = glm::vec2(inSize.x, inSize.y);
 
   const int32_t maxDuration = inTimeData.getMaxDuration();
 
@@ -109,40 +110,137 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
     } // curve
   }
 
-  { // text
+  const float averageDuration = float(inTimeData.getAverageDuration());
+  const float minFDuration = float(inTimeData.getMinDuration());
+  const float maxFDuration = float(inTimeData.getMaxDuration());
 
-    const float averageDuration = float(inTimeData.getAverageDuration());
-    const float minFDuration = float(inTimeData.getMinDuration());
-    const float maxFDuration = float(inTimeData.getMaxDuration());
-    const float fpsValue = averageDuration > 0.0f ? 1000.0f / averageDuration : 0.0f;
-    const float minValue = minFDuration > 0.0f ? 1000.0f / minFDuration : 0.0f;
-    const float maxValue = maxFDuration > 0.0f ? 1000.0f / maxFDuration : 0.0f;
+  if (
+    averageDuration < 999 ||
+    minFDuration < 999 ||
+    maxFDuration < 999
+  ) {
 
-    std::stringstream sstr;
-    sstr << std::setw(3);
-    sstr << std::fixed;
-    sstr << std::setprecision(0);
-    sstr << fpsValue << "fps" << std::endl;
-    sstr << maxValue << "_" << minValue << std::endl;
+    { // text
 
-    std::string str = sstr.str();
+      inTextRenderer
+        .setOutlineColor(glm::vec4(0, 0, 0, 1))
+        .setScale(k_textScale)
+        .setDepth(inPos.z)
+        .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+        ;
 
-    inTextRenderer.setMainColor(glm::vec4(1, 1, 1, 1))
-      .setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1))
-      .setScale(k_textScale)
-      .setDepth(inPos.z)
-      .setTextAlign(TextRenderer::TextAlign::left);
 
-    inTextRenderer.pushText(inPos, str);
+      if (averageDuration < 999)
+      {
+        std::stringstream sstr;
+        sstr << std::fixed;
+        sstr << std::setprecision(0);
+        sstr << "~" << std::setw(2) << averageDuration << "ms";
+        if (inShowFps) {
+          const float avgFps = averageDuration > 0.0f ? 1000.0f / averageDuration : 0.0f;
+          sstr << std::endl << "~" << std::setw(3) << avgFps << "fps";
+        }
 
-    helpers::renderTextBackground(inPos.z,
-                                  glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-                                  glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-                                  3.0f,
-                                  6.0f,
-                                  inStackRenderers,
-                                  inTextRenderer);
-  } // text
+        std::string str = sstr.str();
+
+        inTextRenderer
+          .setMainColor(glm::vec4(1.0f, 1.0f, 0.75f, 1.0f))
+          .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
+          ;
+
+        inTextRenderer.pushText(inPos, str);
+
+        // wireFramesStack.pushCross(glm::vec3(inPos.x, inPos.y, +0.2f), whiteColor, 50.0f);
+
+        // helpers::renderTextBackground(inPos.z,
+        //                               glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+        //                               glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+        //                               3.0f,
+        //                               6.0f,
+        //                               inStackRenderers,
+        //                               inTextRenderer);
+
+      }
+
+
+      if (maxFDuration < 999)
+      {
+        std::stringstream sstr;
+        sstr << std::fixed;
+        sstr << std::setprecision(0);
+        sstr << "<" << std::setw(2) << maxFDuration << "ms";
+        if (inShowFps) {
+          const float minFps = maxFDuration > 0.0f ? 1000.0f / maxFDuration : 0.0f;
+          sstr << std::endl << "<" << std::setw(3) << minFps << "fps";
+        }
+
+        std::string str = sstr.str();
+
+        inTextRenderer
+          .setMainColor(glm::vec4(1.0f, 0.75f, 0.75f, 1.0f))
+          // .setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1))
+          // .setScale(k_textScale)
+          // .setDepth(inPos.z)
+          // .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+          .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
+          ;
+
+        const glm::vec2 textPos = glm::vec2(inPos.x + inSize.x, inPos.y + inSize.y);
+
+        // wireFramesStack.pushCross(glm::vec3(textPos, +0.2f), whiteColor, 50.0f);
+
+        inTextRenderer.pushText(textPos, str);
+
+        // helpers::renderTextBackground(inPos.z,
+        //                               glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+        //                               glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+        //                               3.0f,
+        //                               6.0f,
+        //                               inStackRenderers,
+        //                               inTextRenderer);
+
+      }
+
+      if (minFDuration < 999)
+      {
+        std::stringstream sstr;
+        sstr << std::fixed;
+        sstr << std::setprecision(0);
+        sstr << ">" << std::setw(2) << minFDuration << "ms";
+        if (inShowFps) {
+          const float maxFps = minFDuration > 0.0f ? 1000.0f / minFDuration : 0.0f;
+          sstr << std::endl << ">" << std::setw(3) << maxFps << "fps";
+        }
+
+        std::string str = sstr.str();
+
+        inTextRenderer
+          .setMainColor(glm::vec4(0.75f, 1.0f, 0.75f, 1.0f))
+          // .setTextAlign(TextRenderer::TextAlign::left)
+          // .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+          // .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
+          ;
+
+        const glm::vec2 textPos = glm::vec2(inPos.x + inSize.x, inPos.y);
+
+        // wireFramesStack.pushCross(glm::vec3(textPos, +0.2f), whiteColor, 50.0f);
+
+        inTextRenderer.pushText(textPos, str);
+
+        // helpers::renderTextBackground(inPos.z,
+        //                               glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+        //                               glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+        //                               3.0f,
+        //                               6.0f,
+        //                               inStackRenderers,
+        //                               inTextRenderer);
+
+      }
+
+    } // text
+
+  }
+
 }
 
 } // namespace widgets

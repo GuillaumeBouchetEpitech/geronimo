@@ -16,10 +16,15 @@ glm::vec2 rotate2d(const glm::vec2& point, const glm::vec2& center, float angle)
 glm::vec3 rotate2d(const glm::vec3& point, const glm::vec2& center, float angle);
 
 float sanitizeAngle(float inRadAngle);
+float sanitizeDeltaAngle(float inRadAngle);
 
 float getDeltaAngleFromAngles(float inCurrentRadAngle, float inDesiredRadAngle);
 
-float getDesiredAngleFromAngle(float inCurrentAngle, float inDesiredAngle, float rotationSpeed);
+float getDesiredDeltaFromDelta(float inDeltaRadAngle, float inRadRotationSpeed);
+
+float getDesiredAngleFromDelta(float inCurrentRadAngle, float inDeltaRadAngle, float inRadRotationSpeed);
+
+float getDesiredAngleFromAngle(float inCurrentRadAngle, float inDesiredRadAngle, float inRadRotationSpeed);
 
 float getDesiredAngleFromDestination(const glm::vec2& position,
                                      const glm::vec2& target,

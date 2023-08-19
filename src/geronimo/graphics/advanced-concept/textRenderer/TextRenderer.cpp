@@ -189,8 +189,13 @@ TextRenderer& TextRenderer::setDepth(float inDepth) {
   return *this;
 }
 
-TextRenderer& TextRenderer::setTextAlign(TextAlign inTextAlign) {
-  _logic.textAlign = inTextAlign;
+TextRenderer& TextRenderer::setHorizontalTextAlign(HorizontalTextAlign inHorizontalTextAlign) {
+  _logic.horizontalTextAlign = inHorizontalTextAlign;
+  return *this;
+}
+
+TextRenderer& TextRenderer::setVerticalTextAlign(VerticalTextAlign inVerticalTextAlign) {
+  _logic.verticalTextAlign = inVerticalTextAlign;
   return *this;
 }
 
@@ -212,7 +217,7 @@ void TextRenderer::_pushText(const glm::vec2& inPosition,
 
   _logic.latestMessageRectangles.clear();
 
-  if (_logic.textAlign != TextAlign::left) {
+  {
 
     _logic.allLinesWidth.clear();
     _logic.allLinesWidth.push_back(0);
@@ -241,15 +246,32 @@ void TextRenderer::_pushText(const glm::vec2& inPosition,
   }
 
   std::size_t currentLineIndex = 0;
-  const glm::vec2 basePos = inPosition + charHSize;
-  glm::vec3 currPos = glm::vec3(basePos, _logic.depth); // TextAlign::left
+  glm::vec3 currPos = glm::vec3(inPosition, _logic.depth); // HorizontalTextAlign::left
 
-  if (_logic.textAlign != TextAlign::left) {
-    const uint32_t currenLineSize = _logic.allLinesWidth.at(currentLineIndex);
 
-    if (_logic.textAlign == TextAlign::center) {
+  if (_logic.verticalTextAlign == VerticalTextAlign::top) {
+    currPos.y += -charHSize.y;
+  }
+  else {
+    const float totalLines = float(_logic.allLinesWidth.size());
+    if (_logic.verticalTextAlign == VerticalTextAlign::center) {
+      currPos.y += (totalLines - 1.0f) * charHSize.y;
+    }
+    else if (_logic.verticalTextAlign == VerticalTextAlign::bottom) {
+      currPos.y += charHSize.y;
+      currPos.y += (totalLines - 1.0f) * charSize.y;
+    }
+  }
+
+  {
+    const float currenLineSize = float(_logic.allLinesWidth.at(currentLineIndex));
+    if (_logic.horizontalTextAlign == HorizontalTextAlign::left) {
+      currPos.x += charHSize.x;
+    } else if (_logic.horizontalTextAlign == HorizontalTextAlign::center) {
+      currPos.x += charHSize.x;
       currPos.x -= float(currenLineSize) * charHSize.x;
-    } else if (_logic.textAlign == TextAlign::right) {
+    } else if (_logic.horizontalTextAlign == HorizontalTextAlign::right) {
+      currPos.x += charHSize.x;
       currPos.x -= float(currenLineSize) * charSize.x;
     }
   }
@@ -297,14 +319,17 @@ void TextRenderer::_pushText(const glm::vec2& inPosition,
     if (currCharacter == '\n') {
       currentLineIndex += 1;
 
-      currPos.x = basePos.x; // TextAlign::left
+      currPos.x = inPosition.x;
 
-      if (_logic.textAlign != TextAlign::left) {
-        const uint32_t currenLineSize = _logic.allLinesWidth.at(currentLineIndex);
-
-        if (_logic.textAlign == TextAlign::center) {
+      {
+        const float currenLineSize = float(_logic.allLinesWidth.at(currentLineIndex));
+        if (_logic.horizontalTextAlign == HorizontalTextAlign::left) {
+          currPos.x += charHSize.x;
+        } else if (_logic.horizontalTextAlign == HorizontalTextAlign::center) {
+          currPos.x += charHSize.x;
           currPos.x -= float(currenLineSize) * charHSize.x;
-        } else if (_logic.textAlign == TextAlign::right) {
+        } else if (_logic.horizontalTextAlign == HorizontalTextAlign::right) {
+          currPos.x += charHSize.x;
           currPos.x -= float(currenLineSize) * charSize.x;
         }
       }

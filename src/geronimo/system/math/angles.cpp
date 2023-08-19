@@ -2,6 +2,7 @@
 #include "angles.hpp"
 
 #include "constants.hpp"
+#include "clamp.hpp"
 
 #include "geronimo/system/TraceLogger.hpp"
 
@@ -28,50 +29,60 @@ glm::vec3 rotate2d(const glm::vec3& point, const glm::vec2& center, float angle)
 }
 
 float sanitizeAngle(float inRadAngle) {
-  // bring the delta value to the [-pi..pi] range
+  // bring the delta value to the [0..pi2] range
   while (inRadAngle >= +math::pi2)
     inRadAngle -= math::pi2;
   while (inRadAngle < 0.0f)
     inRadAngle += math::pi2;
+  return inRadAngle;
+}
 
+float sanitizeDeltaAngle(float inRadAngle) {
+  // bring the delta value to the [-pi..pi] range
+  while (inRadAngle > +math::pi)
+    inRadAngle -= math::pi2;
+  while (inRadAngle < -math::pi)
+    inRadAngle += math::pi2;
+  return inRadAngle;
+}
+
+float sanitizeAngle2(float inRadAngle) {
+  // bring the delta value to the [-pi2..pi2] range
+  while (inRadAngle >= +math::pi2)
+    inRadAngle -= math::pi2;
+  while (inRadAngle <= -math::pi2)
+    inRadAngle += math::pi2;
   return inRadAngle;
 }
 
 float getDeltaAngleFromAngles(float inCurrentRadAngle, float inDesiredRadAngle) {
-  float deltaRadAngle = sanitizeAngle(inDesiredRadAngle) - sanitizeAngle(inCurrentRadAngle);
+  const float safeDesiredRadAngle = sanitizeAngle(inDesiredRadAngle);
+  const float safeCurrentRadAngle = sanitizeAngle(inCurrentRadAngle);
+  return sanitizeDeltaAngle(safeDesiredRadAngle - safeCurrentRadAngle);
+}
 
-  // bring the delta value to the [-pi..pi] range
-  while (deltaRadAngle >= +math::pi)
-    deltaRadAngle -= math::pi2;
-  while (deltaRadAngle <= -math::pi)
-    deltaRadAngle += math::pi2;
+float getDesiredDeltaFromDelta(float inDeltaRadAngle, float inRadRotationSpeed) {
+  float outDeltaRadAngle = inDeltaRadAngle;
 
-  return deltaRadAngle;
+  if (outDeltaRadAngle > 0.0f) {
+    // limit
+    outDeltaRadAngle = std::min(outDeltaRadAngle, +inRadRotationSpeed);
+  } else if (outDeltaRadAngle < 0.0f) {
+    // limit
+    outDeltaRadAngle = std::max(outDeltaRadAngle, -inRadRotationSpeed);
+  }
+
+  return outDeltaRadAngle;
+}
+
+float getDesiredAngleFromDelta(float inCurrentRadAngle, float inDeltaRadAngle, float inRadRotationSpeed) {
+  const float outDeltaRadAngle = getDesiredDeltaFromDelta(inDeltaRadAngle, inRadRotationSpeed);
+  return sanitizeDeltaAngle(sanitizeAngle2(inCurrentRadAngle + outDeltaRadAngle));
 }
 
 float getDesiredAngleFromAngle(float inCurrentRadAngle, float inDesiredRadAngle, float inRadRotationSpeed) {
-
-  //
-  //
-  // get delta angle
-
-  float deltaRadAngle = getDeltaAngleFromAngles(inCurrentRadAngle, inDesiredRadAngle);
-
-  if (deltaRadAngle > 0.0f) {
-    // limit
-    if (deltaRadAngle > +inRadRotationSpeed)
-      deltaRadAngle = +inRadRotationSpeed;
-  } else if (deltaRadAngle < 0.0f) {
-    // limit
-    if (deltaRadAngle < -inRadRotationSpeed)
-      deltaRadAngle = -inRadRotationSpeed;
-  }
-
-  //
-  //
-  // determine final angle
-
-  return inCurrentRadAngle + deltaRadAngle;
+  const float deltaRadAngle = getDeltaAngleFromAngles(inCurrentRadAngle, inDesiredRadAngle);
+  return getDesiredAngleFromDelta(inCurrentRadAngle, deltaRadAngle, inRadRotationSpeed);
 }
 
 float getDesiredAngleFromDestination(const glm::vec2& position,

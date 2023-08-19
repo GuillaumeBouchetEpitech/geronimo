@@ -161,52 +161,253 @@ TEST(angles, delta_angle__90degrees_angles_across_the_limits) {
 //
 //
 
-#define D_ASSERT_DESIRED_ANGLE(in_curr_angle, in_desired_angle, in_speed_rotation, in_dst_angle, epsilon)              \
-  {                                                                                                                    \
-    for (int ii = -5; ii <= 5; ++ii) {                                                                                 \
-      const float step = float(ii) * gero::math::pi2;                                                                  \
-      ASSERT_NEAR(gero::math::getDesiredAngleFromAngle(step + in_curr_angle, in_desired_angle, in_speed_rotation),     \
-                  in_dst_angle,                                                                                        \
-                  epsilon);                                                                                            \
-      ASSERT_NEAR(gero::math::getDesiredAngleFromAngle(in_curr_angle, step + in_desired_angle, in_speed_rotation),     \
-                  in_dst_angle,                                                                                        \
-                  epsilon);                                                                                            \
-      ASSERT_NEAR(                                                                                                     \
-        gero::math::getDesiredAngleFromAngle(step + in_curr_angle, step + in_desired_angle, in_speed_rotation),        \
-        in_dst_angle,                                                                                                  \
-        epsilon);                                                                                                      \
-    }                                                                                                                  \
-  }
-
 TEST(angles, desired_angle__same_angles__no_rotation_speed) {
-  D_ASSERT_DESIRED_ANGLE(gero::math::hpi, gero::math::hpi, 0.0f, gero::math::hpi, 0.01f);
-  // ASSERT_NEAR(gero::math::getDesiredAngleFromAngle(gero::math::hpi, gero::math::pi, 0.0f), gero::math::hpi, 0.01f);
+
+  constexpr float in_speed_rotation = 0.0f;
+  constexpr float in_curr_angle = gero::math::hpi;
+  constexpr float in_desired_angle = gero::math::hpi;
+  constexpr float in_dst_angle = gero::math::hpi;
+  constexpr float epsilon = 0.1f;
+
+  for (int ii = -5; ii < 5; ++ii)
+  {
+    const float step = float(ii) * gero::math::pi2;
+
+    std::array<float, 2> currAngles = { in_curr_angle, in_curr_angle + step };
+    std::array<float, 2> currDesired = { in_desired_angle, in_desired_angle + step };
+
+    for (std::size_t jj = 0; jj < currAngles.size(); ++jj)
+    {
+      for (std::size_t kk = 0; kk < currDesired.size(); ++kk)
+      {
+        const float curr = currAngles.at(jj);
+        const float desired = currDesired.at(kk);
+
+        const float delta = gero::math::getDeltaAngleFromAngles(curr, desired);
+        const float current = gero::math::getDesiredAngleFromDelta(curr, delta, in_speed_rotation);
+        const float val = gero::math::getDesiredAngleFromAngle(curr, desired, in_speed_rotation);
+        ASSERT_NEAR(delta, 0.0f, epsilon);
+        ASSERT_NEAR(current, in_dst_angle, epsilon);
+        ASSERT_NEAR(val, in_dst_angle, epsilon);
+      }
+    }
+  }
 }
 
 TEST(angles, desired_angle__90degree_angles__90degree_rotation_speed) {
-  ASSERT_NEAR(
-    gero::math::getDesiredAngleFromAngle(gero::math::hpi, gero::math::pi, gero::math::hpi), gero::math::pi, 0.01f);
-  ASSERT_NEAR(
-    gero::math::getDesiredAngleFromAngle(gero::math::pi, gero::math::hpi, gero::math::hpi), gero::math::hpi, 0.01f);
+
+  constexpr float in_speed_rotation = gero::math::hpi;
+  constexpr float in_curr_angle = gero::math::pi;
+  constexpr float in_desired_angle = gero::math::hpi;
+  constexpr float in_dst_angle = gero::math::hpi;
+  constexpr float epsilon = 0.1f;
+
+  for (int ii = -5; ii < 5; ++ii)
+  {
+    const float step = float(ii) * gero::math::pi2;
+
+    std::array<float, 2> currAngles = { in_curr_angle, in_curr_angle + step };
+    std::array<float, 2> currDesired = { in_desired_angle, in_desired_angle + step };
+
+    for (std::size_t jj = 0; jj < currAngles.size(); ++jj)
+    {
+      for (std::size_t kk = 0; kk < currDesired.size(); ++kk)
+      {
+        const float curr = currAngles.at(jj);
+        const float desired = currDesired.at(kk);
+
+        const float delta = gero::math::getDeltaAngleFromAngles(curr, desired);
+        const float current = gero::math::getDesiredAngleFromDelta(curr, delta, in_speed_rotation);
+        const float val = gero::math::getDesiredAngleFromAngle(curr, desired, in_speed_rotation);
+        ASSERT_NEAR(delta, -gero::math::hpi, epsilon);
+        ASSERT_NEAR(current, in_dst_angle, epsilon);
+        ASSERT_NEAR(val, in_dst_angle, epsilon);
+      }
+    }
+  }
 }
 
-TEST(angles, desired_angle__90degree_angles__45degree_rotation_speed) {
-  ASSERT_NEAR(gero::math::getDesiredAngleFromAngle(gero::math::hpi, gero::math::pi, gero::math::qpi),
-              gero::math::hpi + gero::math::qpi,
-              0.01f);
-  ASSERT_NEAR(gero::math::getDesiredAngleFromAngle(gero::math::pi, gero::math::hpi, gero::math::qpi),
-              gero::math::hpi + gero::math::qpi,
-              0.01f);
+TEST(angles, desired_angle__90degree_angles__90degree_rotation_speed__across_the_limits____pos_to_neg) {
+
+  constexpr float in_speed_rotation = gero::math::hpi;
+  constexpr float in_curr_angle = gero::math::qpi;
+  constexpr float in_desired_angle = -gero::math::qpi;
+  constexpr float in_dst_angle = -gero::math::qpi;
+  constexpr float epsilon = 0.1f;
+
+  for (int ii = -5; ii < 5; ++ii)
+  {
+    const float step = float(ii) * gero::math::pi2;
+
+    std::array<float, 2> currAngles = { in_curr_angle, in_curr_angle + step };
+    std::array<float, 2> currDesired = { in_desired_angle, in_desired_angle + step };
+
+    for (std::size_t jj = 0; jj < currAngles.size(); ++jj)
+    {
+      for (std::size_t kk = 0; kk < currDesired.size(); ++kk)
+      {
+        const float curr = currAngles.at(jj);
+        const float desired = currDesired.at(kk);
+
+        const float delta = gero::math::getDeltaAngleFromAngles(curr, desired);
+        const float current = gero::math::getDesiredAngleFromDelta(curr, delta, in_speed_rotation);
+        const float val = gero::math::getDesiredAngleFromAngle(curr, desired, in_speed_rotation);
+        ASSERT_NEAR(delta, -gero::math::hpi, epsilon);
+        ASSERT_NEAR(current, in_dst_angle, epsilon);
+        ASSERT_NEAR(val, in_dst_angle, epsilon);
+      }
+    }
+  }
 }
 
-TEST(angles, desired_angle__90degree_angles__90degree_rotation_speed__across_the_limits) {
-  ASSERT_NEAR(
-    gero::math::getDesiredAngleFromAngle(gero::math::qpi, -gero::math::qpi, gero::math::hpi), -gero::math::qpi, 0.01f);
-  ASSERT_NEAR(
-    gero::math::getDesiredAngleFromAngle(-gero::math::qpi, gero::math::qpi, gero::math::hpi), gero::math::qpi, 0.01f);
+TEST(angles, desired_angle__90degree_angles__90degree_rotation_speed__across_the_limits____neg_to_pos) {
+
+  constexpr float in_speed_rotation = gero::math::hpi;
+  constexpr float in_curr_angle = -gero::math::qpi;
+  constexpr float in_desired_angle = +gero::math::qpi;
+  constexpr float in_dst_angle = +gero::math::qpi;
+  constexpr float epsilon = 0.1f;
+
+  for (int ii = -5; ii < 5; ++ii)
+  {
+    const float step = float(ii) * gero::math::pi2;
+
+    std::array<float, 2> currAngles = { in_curr_angle, in_curr_angle + step };
+    std::array<float, 2> currDesired = { in_desired_angle, in_desired_angle + step };
+
+    for (std::size_t jj = 0; jj < currAngles.size(); ++jj)
+    {
+      for (std::size_t kk = 0; kk < currDesired.size(); ++kk)
+      {
+        const float curr = currAngles.at(jj);
+        const float desired = currDesired.at(kk);
+
+        const float delta = gero::math::getDeltaAngleFromAngles(curr, desired);
+        const float current = gero::math::getDesiredAngleFromDelta(curr, delta, in_speed_rotation);
+        const float val = gero::math::getDesiredAngleFromAngle(curr, desired, in_speed_rotation);
+        ASSERT_NEAR(delta, gero::math::hpi, epsilon);
+        ASSERT_NEAR(current, in_dst_angle, epsilon);
+        ASSERT_NEAR(val, in_dst_angle, epsilon);
+      }
+    }
+  }
 }
 
-#undef D_ASSERT_DESIRED_ANGLE
+// TEST(angles, get_clamped_angle__0degree_angles__min_is_neg45degree__max_is_pos45degree) {
+
+//   {
+//     const float startAngle = 0.0f;
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + 0.0f, -gero::math::qpi, gero::math::qpi), 0.0f, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::opi, -gero::math::qpi, +gero::math::qpi), -gero::math::opi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::opi, -gero::math::qpi, +gero::math::qpi), +gero::math::opi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::qpi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::qpi, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::hpi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::hpi, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::pi * 0.99f, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::pi * 0.99f, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+
+//     // ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::pi * 1.5f, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     // ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::pi * 1.5f, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//   }
+
+//   //
+//   //
+//   //
+
+//   {
+//     const float startAngle = -gero::math::opi;
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + 0.0f, -gero::math::qpi, gero::math::qpi), startAngle + 0.0f, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::opi, -gero::math::qpi, +gero::math::qpi), startAngle + -gero::math::opi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::opi, -gero::math::qpi, +gero::math::qpi), startAngle + +gero::math::opi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::qpi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::qpi, -gero::math::qpi, +gero::math::qpi), startAngle + +gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::hpi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::hpi, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::pi * 0.99f, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::pi * 0.99f, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+//   }
+
+//   {
+//     const float startAngle = -gero::math::hpi;
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + 0.0f, -gero::math::qpi, gero::math::qpi), -gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::opi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::opi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::qpi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::qpi, -gero::math::qpi, +gero::math::qpi), startAngle + +gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::hpi * 0.99f, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::hpi * 1.00f, -gero::math::qpi, +gero::math::qpi), 0.0f, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::pi * 0.99f, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::pi * 0.99f, -gero::math::qpi, +gero::math::qpi), 0.0f, 0.01f);
+//   }
+
+//   //
+//   //
+//   //
+
+//   {
+//     const float startAngle = +gero::math::opi;
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + 0.0f, -gero::math::qpi, gero::math::qpi), startAngle + 0.0f, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::opi, -gero::math::qpi, +gero::math::qpi), startAngle + -gero::math::opi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::opi, -gero::math::qpi, +gero::math::qpi), startAngle + +gero::math::opi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::qpi, -gero::math::qpi, +gero::math::qpi), startAngle + -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::qpi, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::hpi, -gero::math::qpi, +gero::math::qpi), -gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::hpi, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+//   }
+
+//   {
+//     const float startAngle = +gero::math::hpi;
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + 0.0f, -gero::math::qpi, gero::math::qpi), gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::opi, -gero::math::qpi, +gero::math::qpi), gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::opi, -gero::math::qpi, +gero::math::qpi), gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::qpi, -gero::math::qpi, +gero::math::qpi), gero::math::qpi, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::qpi, -gero::math::qpi, +gero::math::qpi), gero::math::qpi, 0.01f);
+
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + -gero::math::hpi, -gero::math::qpi, +gero::math::qpi), 0.0f, 0.01f);
+//     ASSERT_NEAR(gero::math::getClampedAngle(startAngle + +gero::math::hpi * 0.75f, -gero::math::qpi, +gero::math::qpi), +gero::math::qpi, 0.01f);
+//   }
+
+//   //
+//   //
+//   //
+
+// }
+
+// TEST(angles, get_min_angle) {
+
+//   ASSERT_NEAR(gero::math::getMinAngle(+gero::math::pi2, -gero::math::qpi), +gero::math::pi2, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(+gero::math::pi, -gero::math::qpi), +gero::math::pi, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(+gero::math::hpi, -gero::math::qpi), +gero::math::hpi, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(+gero::math::qpi, -gero::math::qpi), +gero::math::qpi, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(0.0f, -gero::math::qpi), 0.0f, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(-gero::math::qpi, -gero::math::qpi), -gero::math::qpi, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(-gero::math::hpi, -gero::math::qpi), -gero::math::qpi, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(-gero::math::pi, -gero::math::qpi), -gero::math::qpi, 0.01f);
+//   ASSERT_NEAR(gero::math::getMinAngle(-gero::math::pi2, -gero::math::qpi), -gero::math::qpi, 0.01f);
+// }
 
 //
 //

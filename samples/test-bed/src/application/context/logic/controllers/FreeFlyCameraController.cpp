@@ -11,6 +11,26 @@ void FreeFlyCameraController::update(float elapsed_time) {
 
   { // mouse
 
+    auto& keyboard = KeyboardManager::get();
+
+    const bool lookUp = keyboard.isPressed(SDLK_UP);
+    const bool lookDown = keyboard.isPressed(SDLK_DOWN);
+    const bool lookLeft = keyboard.isPressed(SDLK_LEFT);
+    const bool lookRight = keyboard.isPressed(SDLK_RIGHT);
+
+    constexpr float k_lookSpeed = 1.1f;
+    if (lookUp) {
+      _verticalAngle += k_lookSpeed;
+    } else if (lookDown) {
+      _verticalAngle -= k_lookSpeed;
+    }
+
+    if (lookLeft) {
+      _horizontalAngle += k_lookSpeed;
+    } else if (lookRight) {
+      _horizontalAngle -= k_lookSpeed;
+    }
+
     // auto& mouse = context.inputs.mouse;
     auto& mouse = MouseManager::get();
 
@@ -61,30 +81,10 @@ void FreeFlyCameraController::update(float elapsed_time) {
 
     auto& keyboard = KeyboardManager::get();
 
-    const bool moveForward = keyboard.isPressed(SDLK_UP, SDLK_w, SDLK_z);
-    const bool moveBackward = keyboard.isPressed(SDLK_DOWN, SDLK_s);
-    const bool strafeLeft = keyboard.isPressed(SDLK_LEFT, SDLK_q, SDLK_a);
-    const bool strafeRight = keyboard.isPressed(SDLK_RIGHT, SDLK_d);
-
-    // const bool moveForward =
-    //   (keys[SDLK_UP] || // ARROW
-    //    keys[SDLK_w] ||  // QWERTY (UK-US keyboard layout)
-    //    keys[SDLK_z]     // AZERTY (FR keyboard layout)
-    //   );
-
-    // const bool moveBackward =
-    //   (keys[SDLK_DOWN] || // ARROW
-    //    keys[SDLK_s]);
-
-    // const bool strafeLeft =
-    //   (keys[SDLK_LEFT] || // ARROW
-    //    keys[SDLK_q] ||    // QWERTY (UK-US keyboard layout)
-    //    keys[SDLK_a]       // AZERTY (FR keyboard layout)
-    //   );
-
-    // const bool strafeRight =
-    //   (keys[SDLK_RIGHT] || // ARROW
-    //    keys[SDLK_d]);
+    const bool moveForward = keyboard.isPressed(SDLK_w, SDLK_z);
+    const bool moveBackward = keyboard.isPressed(SDLK_s);
+    const bool strafeLeft = keyboard.isPressed(SDLK_q, SDLK_a);
+    const bool strafeRight = keyboard.isPressed(SDLK_d);
 
     constexpr float speed = 16;
     glm::vec3 acceleration(0, 0, 0);

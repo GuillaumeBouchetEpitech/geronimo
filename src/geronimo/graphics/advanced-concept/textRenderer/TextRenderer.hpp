@@ -20,10 +20,15 @@ namespace graphics {
 struct TextRenderer : public gero::NonCopyable {
 
 public:
-  enum class TextAlign {
+  enum class HorizontalTextAlign {
     left = 0,
     center,
     right,
+  };
+  enum class VerticalTextAlign {
+    top = 0,
+    center,
+    bottom,
   };
 
 public:
@@ -68,7 +73,8 @@ private:
     glm::vec4 outlineColor;
     float scale;
     float depth;
-    TextAlign textAlign = TextAlign::left;
+    HorizontalTextAlign horizontalTextAlign = HorizontalTextAlign::left;
+    VerticalTextAlign verticalTextAlign = VerticalTextAlign::top;
 
   } _logic;
 
@@ -83,7 +89,8 @@ public:
   TextRenderer& setOutlineColor(const glm::vec4& inColor);
   TextRenderer& setScale(float inScale);
   TextRenderer& setDepth(float inDepth);
-  TextRenderer& setTextAlign(TextAlign inTextAlign);
+  TextRenderer& setHorizontalTextAlign(HorizontalTextAlign inHorizontalTextAlign);
+  TextRenderer& setVerticalTextAlign(VerticalTextAlign inVerticalTextAlign);
 
 public:
   TextRenderer& pushText(const glm::vec2& inPosition, const std::string_view inMessage);

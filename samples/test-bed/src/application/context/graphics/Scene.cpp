@@ -328,7 +328,9 @@ void Scene::_renderHud() {
         .setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1))
         .setScale(k_scale)
         .setDepth(k_textDepth)
-        .setTextAlign(TextRenderer::TextAlign::left);
+        .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+        .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
+        ;
 
       graphic.hud.textRenderer.pushText(glm::vec2(k_scale * 0.5f, float(vSize.y) - k_scale * 1.5f), str);
 
@@ -344,6 +346,206 @@ void Scene::_renderHud() {
     graphic.hud.textRenderer.render();
   }
 
+
+  {
+
+#if 0
+    {
+
+      const glm::vec2 k_pos = glm::vec2(400,200);
+      const glm::vec2 k_size = glm::vec2(300,200);
+
+
+      {
+
+        auto& stackRenderers = graphic.hud.stackRenderers;
+        auto& wireFrames = stackRenderers.getWireFramesStack();
+        wireFrames.pushRectangle(k_pos, k_size, glm::vec3(1, 1, 1));
+        wireFrames.pushRectangle(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y), glm::vec2(0.1f, k_size.y), glm::vec3(1, 1, 1));
+        wireFrames.pushRectangle(glm::vec2(k_pos.x, k_pos.y + k_size.y * 0.5f), glm::vec2(k_size.y, 0.1f), glm::vec3(1, 1, 1));
+        wireFrames.pushRectangle(k_pos - glm::vec2(10), glm::vec2(20), glm::vec3(1, 0, 0));
+        stackRenderers.flush();
+      }
+
+      {
+
+        // const auto& vSize = graphic.camera.viewportSize;
+
+        constexpr float k_textDepth = -0.5f;
+        constexpr float k_scale = 16.0f;
+
+        graphic.hud.textRenderer.setMainColor(glm::vec4(1, 1, 1, 1))
+          .setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1))
+          .setScale(k_scale)
+          .setDepth(k_textDepth)
+          .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
+          .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+          ;
+
+        {
+
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x, k_pos.y + k_size.y), "T-L\nT-L\nT-L");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::right)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y + k_size.y), "T-R\nT-R\nT-R");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::bottom)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x, k_pos.y), "B-L\nB-L\nB-L");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::bottom)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::right)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y), "B-R\nB-R\nB-R");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x, k_pos.y + k_size.y * 0.5f), "C-L\nC-L\nC-L");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::right)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y + k_size.y * 0.5f), "C-R\nC-R\nC-R");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y + k_size.y), "T-C\nT-C\nT-C");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::bottom)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
+            ;
+
+          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y), "B-C\nB-C\nB-C");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        {
+          graphic.hud.textRenderer
+            .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
+            .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
+            ;
+
+          graphic.hud.textRenderer.pushText(k_pos + k_size * 0.5f, "C-C\nC-C\nC-C");
+
+          gero::graphics::helpers::renderTextBackground(k_textDepth,
+                                                        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+                                                        glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+                                                        3.0f,
+                                                        6.0f,
+                                                        graphic.hud.stackRenderers,
+                                                        graphic.hud.textRenderer);
+        }
+
+        graphic.hud.textRenderer.render();
+        graphic.hud.stackRenderers.flush();
+
+      }
+
+    }
+#endif
+
+  }
+
   {
     auto& stackRenderers = graphic.hud.stackRenderers;
 
@@ -354,7 +556,13 @@ void Scene::_renderHud() {
 
     {
       auto& triangles = stackRenderers.getTrianglesStack();
-      triangles.pushCircle(glm::vec2(200, 30), 10.0f, glm::vec4(1, 1, 1, 0.5));
+
+      // triangles.pushCircle(glm::vec2(200, 550), 10.0f, glm::vec4(1, 1, 1, 0.5));
+
+      const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
+      const glm::vec3 k_pos = glm::vec3(vSize.x - 15, vSize.y * 0.5f, 0);
+      triangles.pushCircle(k_pos, 10.0f, glm::vec4(1, 1, 1, 0.5));
+
     }
 
     stackRenderers.flush();
@@ -367,10 +575,10 @@ void Scene::_renderHud() {
     const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
 
     const glm::vec2 k_size = glm::vec2(150, 50);
-    const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 10, vSize.y - k_size.y - 10, 0);
+    const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 120, vSize.y - k_size.y - 10 - 30, 0);
 
     gero::graphics::widgets::renderHistoricalTimeData(
-      k_pos, k_size, timeData, graphic.hud.stackRenderers, graphic.hud.textRenderer);
+      k_pos, k_size, true, timeData, graphic.hud.stackRenderers, graphic.hud.textRenderer);
 
     graphic.hud.stackRenderers.flush();
     graphic.hud.textRenderer.render();

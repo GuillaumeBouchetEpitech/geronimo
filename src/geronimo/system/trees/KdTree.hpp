@@ -14,67 +14,76 @@ namespace gero {
 
 namespace trees {
 
-template <typename T> class KDTree2d {
+//
+//
+//
+//
+//
+
+template <typename T_Data, typename T_Position, uint32_t T_Dimension>
+class GenericKDTree {
 public:
   //
   //
   //
 
   struct UserData {
-    glm::vec2 position;
-    T data;
+    T_Position position;
+    T_Data data;
   };
 
-  struct IndexedVec2 {
-    glm::vec2 position;
+  struct IndexedVec {
+    T_Position position;
     size_t index;
   };
+
+  using IndexedVecArr = typename std::vector<IndexedVec>;
+  using IndexedVecArrIt = typename IndexedVecArr::iterator;
+
+private:
 
   struct TreeNode {
     size_t index;
-    glm::vec2 position;
+    T_Position position;
     std::shared_ptr<TreeNode> leftNode;
     std::shared_ptr<TreeNode> rightNode;
 
-    TreeNode(const IndexedVec2& inPi,
+    TreeNode(const IndexedVec& inPi,
              const std::shared_ptr<TreeNode>& inLeftNode,
              const std::shared_ptr<TreeNode>& inRightNode);
     ~TreeNode() = default;
   };
 
-  using IndexedVec2Arr = typename std::vector<IndexedVec2>;
-  using IndexedVec2ArrIt = typename IndexedVec2Arr::iterator;
-
   //
   //
   //
 
 public:
-  KDTree2d() = default;
+  GenericKDTree() = default;
 
 public:
   void build(const std::vector<UserData>& inVec3Data);
 
 public:
-  void searchWithRadius(const glm::vec2& inPt, float inRadius, IndexedVec2Arr& outResults);
+  void searchWithRadius(const T_Position& inPt, float inRadius, IndexedVecArr& outResults, int32_t inMaxSize = -1);
 
 private:
   std::shared_ptr<TreeNode> _root;
-  IndexedVec2Arr _builderArray;
+  IndexedVecArr _builderArray;
 
 private:
   void _searchWithRadius(const std::shared_ptr<TreeNode> inBranch,
-                         const glm::vec2& inPt,
+                         const T_Position& inPt,
                          float inRadius,
                          int32_t inCurrAxis,
-                         IndexedVec2Arr& outResults);
+                         IndexedVecArr& outResults, int32_t inMaxSize);
 
   std::shared_ptr<TreeNode>
-  _build(const IndexedVec2ArrIt& inBeginIt, const IndexedVec2ArrIt& inEndIt, size_t inLength, int32_t inCurrAxis);
+  _build(const IndexedVecArrIt& inBeginIt, const IndexedVecArrIt& inEndIt, size_t inLength, int32_t inCurrAxis);
 };
 
-template <typename T>
-KDTree2d<T>::TreeNode::TreeNode(const IndexedVec2& inPi,
+template <typename T_Data, typename T_Position, uint32_t T_Dimension>
+GenericKDTree<T_Data, T_Position, T_Dimension>::TreeNode::TreeNode(const IndexedVec& inPi,
                                 const std::shared_ptr<TreeNode>& inLeftNode,
                                 const std::shared_ptr<TreeNode>& inRightNode) {
   position = inPi.position;
@@ -87,7 +96,8 @@ KDTree2d<T>::TreeNode::TreeNode(const IndexedVec2& inPi,
 //
 //
 
-template <typename T> void KDTree2d<T>::build(const std::vector<UserData>& inVec3Data) {
+template <typename T_Data, typename T_Position, uint32_t T_Dimension>
+void GenericKDTree<T_Data, T_Position, T_Dimension>::build(const std::vector<UserData>& inVec3Data) {
   // iterators
   _builderArray.clear();
   _builderArray.reserve(inVec3Data.size());
@@ -100,42 +110,43 @@ template <typename T> void KDTree2d<T>::build(const std::vector<UserData>& inVec
   const size_t length = _builderArray.size();
   constexpr size_t startAxis = 0;
 
-  _root = KDTree2d::_build(beginIt, endIt, length, startAxis);
+  _root = GenericKDTree::_build(beginIt, endIt, length, startAxis);
 }
 
 //
 //
 //
 
-template <typename T>
-void KDTree2d<T>::searchWithRadius(const glm::vec2& inPosition, float inRadius, IndexedVec2Arr& outResults) {
+template <typename T_Data, typename T_Position, uint32_t T_Dimension>
+void GenericKDTree<T_Data, T_Position, T_Dimension>::searchWithRadius(const T_Position& inPosition, float inRadius, IndexedVecArr& outResults, int32_t inMaxSize) {
   outResults.reserve(_builderArray.size());
   constexpr int32_t startAxis = 0;
-  _searchWithRadius(_root, inPosition, inRadius, startAxis, outResults);
+  const float squareRadius = inRadius * inRadius;
+  _searchWithRadius(_root, inPosition, squareRadius, startAxis, outResults, inMaxSize);
 }
 
 //
 //
 //
 
-template <typename T>
-void KDTree2d<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
-                                    const glm::vec2& inPosition,
-                                    float inRadius,
+template <typename T_Data, typename T_Position, uint32_t T_Dimension>
+void GenericKDTree<T_Data, T_Position, T_Dimension>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
+                                    const T_Position& inPosition,
+                                    float inSquareRadius,
                                     int32_t inCurrAxis,
-                                    IndexedVec2Arr& outResults) {
-  if (!inBranchPtr) {
+                                    IndexedVecArr& outResults,
+                                    int32_t inMaxSize) {
+  if (!inBranchPtr || (inMaxSize > 0 && outResults.size() >= std::size_t(inMaxSize))) {
     return;
   }
 
   const TreeNode& branch = *inBranchPtr;
 
-  const float squareRadius = inRadius * inRadius;
   const float squareDistance = glm::distance2(branch.position, inPosition);
   const float axisDiff = branch.position[inCurrAxis] - inPosition[inCurrAxis];
   const float squareAxisDiff = axisDiff * axisDiff;
 
-  if (squareDistance <= squareRadius) {
+  if (squareDistance <= inSquareRadius) {
     outResults.push_back({branch.position, branch.index});
   }
 
@@ -149,19 +160,20 @@ void KDTree2d<T>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
     other = branch.leftNode;
   }
 
-  const int32_t nextAxis = (inCurrAxis + 1) % 2;
+  const int32_t nextAxis = (inCurrAxis + 1) % int32_t(T_Dimension);
 
-  _searchWithRadius(section, inPosition, inRadius, nextAxis, outResults);
-  if (squareAxisDiff < squareRadius) {
-    _searchWithRadius(other, inPosition, inRadius, nextAxis, outResults);
+  _searchWithRadius(section, inPosition, inSquareRadius, nextAxis, outResults, inMaxSize);
+  if (squareAxisDiff < inSquareRadius) {
+    _searchWithRadius(other, inPosition, inSquareRadius, nextAxis, outResults, inMaxSize);
   }
 }
 
-template <typename T>
-std::shared_ptr<typename KDTree2d<T>::TreeNode> KDTree2d<T>::_build(const IndexedVec2ArrIt& inBeginIt,
-                                                                    const IndexedVec2ArrIt& inEndIt,
-                                                                    size_t inLength,
-                                                                    int32_t inCurrAxis) {
+template <typename T_Data, typename T_Position, uint32_t T_Dimension>
+std::shared_ptr<typename GenericKDTree<T_Data, T_Position, T_Dimension>::TreeNode>
+GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& inBeginIt,
+                                      const IndexedVecArrIt& inEndIt,
+                                      size_t inLength,
+                                      int32_t inCurrAxis) {
   if (inBeginIt == inEndIt) {
     return nullptr; // empty tree
   }
@@ -171,7 +183,7 @@ std::shared_ptr<typename KDTree2d<T>::TreeNode> KDTree2d<T>::_build(const Indexe
     std::nth_element(inBeginIt,
                      inBeginIt + std::distance(inBeginIt, inEndIt) / 2,
                      inEndIt,
-                     [inCurrAxis](const KDTree2d::IndexedVec2& inA, const KDTree2d::IndexedVec2& inB) {
+                     [inCurrAxis](const GenericKDTree::IndexedVec& inA, const GenericKDTree::IndexedVec& inB) {
                        return inA.position[inCurrAxis] < inB.position[inCurrAxis];
                      });
   }
@@ -185,7 +197,7 @@ std::shared_ptr<typename KDTree2d<T>::TreeNode> KDTree2d<T>::_build(const Indexe
     return std::make_shared<TreeNode>(*middleIt, nullptr, nullptr);
   }
 
-  const int32_t nextAxis = (inCurrAxis + 1) % 2;
+  const int32_t nextAxis = (inCurrAxis + 1) % int32_t(T_Dimension);
 
   std::shared_ptr<TreeNode> nextLeftNode = nullptr;
   if (leftLength > 0) {
@@ -204,7 +216,22 @@ std::shared_ptr<typename KDTree2d<T>::TreeNode> KDTree2d<T>::_build(const Indexe
   return std::make_shared<TreeNode>(*middleIt, nextLeftNode, nextRightNode);
 }
 
+//
+//
+//
+//
+//
+
+template<typename T_Data> using KDTree3d = GenericKDTree<T_Data, glm::vec3, 3>;
+template<typename T_Data> using KDTree2d = GenericKDTree<T_Data, glm::vec2, 2>;
+
+//
+//
+//
+//
+//
+
 } // namespace trees
 } // namespace gero
 
-// #include "KdTree2d.inl"
+// #include "GenericKdTree.inl"

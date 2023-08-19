@@ -58,7 +58,7 @@ func_handle_third_parties() {
     echo "###"
     echo ""
 
-    EMSDK_VERSION=3.1.26
+    EMSDK_VERSION=3.1.44
 
     if [ -z "${EMSDK}" ]; then
 

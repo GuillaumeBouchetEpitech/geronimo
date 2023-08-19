@@ -15,6 +15,7 @@ namespace widgets {
 
 void renderHistoricalTimeData(const glm::vec3& inPos,
                               const glm::vec2& inSize,
+                              bool inShowFps,
                               const gero::metrics::HistoricalTimeData& inTimeData,
                               gero::graphics::StackRenderers& inStackRenderers,
                               gero::graphics::TextRenderer& inTextRenderer);
