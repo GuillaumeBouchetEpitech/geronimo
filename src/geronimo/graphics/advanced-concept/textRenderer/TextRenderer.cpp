@@ -248,16 +248,13 @@ void TextRenderer::_pushText(const glm::vec2& inPosition,
   std::size_t currentLineIndex = 0;
   glm::vec3 currPos = glm::vec3(inPosition, _logic.depth); // HorizontalTextAlign::left
 
-
   if (_logic.verticalTextAlign == VerticalTextAlign::top) {
     currPos.y += -charHSize.y;
-  }
-  else {
+  } else {
     const float totalLines = float(_logic.allLinesWidth.size());
     if (_logic.verticalTextAlign == VerticalTextAlign::center) {
       currPos.y += (totalLines - 1.0f) * charHSize.y;
-    }
-    else if (_logic.verticalTextAlign == VerticalTextAlign::bottom) {
+    } else if (_logic.verticalTextAlign == VerticalTextAlign::bottom) {
       currPos.y += charHSize.y;
       currPos.y += (totalLines - 1.0f) * charSize.y;
     }

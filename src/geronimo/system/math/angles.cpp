@@ -1,8 +1,8 @@
 
 #include "angles.hpp"
 
-#include "constants.hpp"
 #include "clamp.hpp"
+#include "constants.hpp"
 
 #include "geronimo/system/TraceLogger.hpp"
 

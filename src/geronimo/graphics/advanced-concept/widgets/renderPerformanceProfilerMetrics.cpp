@@ -114,24 +114,16 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
   const float minFDuration = float(inTimeData.getMinDuration());
   const float maxFDuration = float(inTimeData.getMaxDuration());
 
-  if (
-    averageDuration < 999 ||
-    minFDuration < 999 ||
-    maxFDuration < 999
-  ) {
+  if (averageDuration < 999 || minFDuration < 999 || maxFDuration < 999) {
 
     { // text
 
-      inTextRenderer
-        .setOutlineColor(glm::vec4(0, 0, 0, 1))
+      inTextRenderer.setOutlineColor(glm::vec4(0, 0, 0, 1))
         .setScale(k_textScale)
         .setDepth(inPos.z)
-        .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
-        ;
+        .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left);
 
-
-      if (averageDuration < 999)
-      {
+      if (averageDuration < 999) {
         std::stringstream sstr;
         sstr << std::fixed;
         sstr << std::setprecision(0);
@@ -143,10 +135,8 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
 
         std::string str = sstr.str();
 
-        inTextRenderer
-          .setMainColor(glm::vec4(1.0f, 1.0f, 0.75f, 1.0f))
-          .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
-          ;
+        inTextRenderer.setMainColor(glm::vec4(1.0f, 1.0f, 0.75f, 1.0f))
+          .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top);
 
         inTextRenderer.pushText(inPos, str);
 
@@ -159,12 +149,9 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
         //                               6.0f,
         //                               inStackRenderers,
         //                               inTextRenderer);
-
       }
 
-
-      if (maxFDuration < 999)
-      {
+      if (maxFDuration < 999) {
         std::stringstream sstr;
         sstr << std::fixed;
         sstr << std::setprecision(0);
@@ -182,8 +169,7 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
           // .setScale(k_textScale)
           // .setDepth(inPos.z)
           // .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
-          .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
-          ;
+          .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center);
 
         const glm::vec2 textPos = glm::vec2(inPos.x + inSize.x, inPos.y + inSize.y);
 
@@ -198,11 +184,9 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
         //                               6.0f,
         //                               inStackRenderers,
         //                               inTextRenderer);
-
       }
 
-      if (minFDuration < 999)
-      {
+      if (minFDuration < 999) {
         std::stringstream sstr;
         sstr << std::fixed;
         sstr << std::setprecision(0);
@@ -214,8 +198,7 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
 
         std::string str = sstr.str();
 
-        inTextRenderer
-          .setMainColor(glm::vec4(0.75f, 1.0f, 0.75f, 1.0f))
+        inTextRenderer.setMainColor(glm::vec4(0.75f, 1.0f, 0.75f, 1.0f))
           // .setTextAlign(TextRenderer::TextAlign::left)
           // .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
           // .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
@@ -234,13 +217,10 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
         //                               6.0f,
         //                               inStackRenderers,
         //                               inTextRenderer);
-
       }
 
     } // text
-
   }
-
 }
 
 } // namespace widgets

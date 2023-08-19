@@ -20,8 +20,7 @@ namespace trees {
 //
 //
 
-template <typename T_Data, typename T_Position, uint32_t T_Dimension>
-class GenericKDTree {
+template <typename T_Data, typename T_Position, uint32_t T_Dimension> class GenericKDTree {
 public:
   //
   //
@@ -41,7 +40,6 @@ public:
   using IndexedVecArrIt = typename IndexedVecArr::iterator;
 
 private:
-
   struct TreeNode {
     size_t index;
     T_Position position;
@@ -76,7 +74,8 @@ private:
                          const T_Position& inPt,
                          float inRadius,
                          int32_t inCurrAxis,
-                         IndexedVecArr& outResults, int32_t inMaxSize);
+                         IndexedVecArr& outResults,
+                         int32_t inMaxSize);
 
   std::shared_ptr<TreeNode>
   _build(const IndexedVecArrIt& inBeginIt, const IndexedVecArrIt& inEndIt, size_t inLength, int32_t inCurrAxis);
@@ -84,8 +83,8 @@ private:
 
 template <typename T_Data, typename T_Position, uint32_t T_Dimension>
 GenericKDTree<T_Data, T_Position, T_Dimension>::TreeNode::TreeNode(const IndexedVec& inPi,
-                                const std::shared_ptr<TreeNode>& inLeftNode,
-                                const std::shared_ptr<TreeNode>& inRightNode) {
+                                                                   const std::shared_ptr<TreeNode>& inLeftNode,
+                                                                   const std::shared_ptr<TreeNode>& inRightNode) {
   position = inPi.position;
   index = inPi.index;
   leftNode = inLeftNode;
@@ -118,7 +117,10 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::build(const std::vector<Use
 //
 
 template <typename T_Data, typename T_Position, uint32_t T_Dimension>
-void GenericKDTree<T_Data, T_Position, T_Dimension>::searchWithRadius(const T_Position& inPosition, float inRadius, IndexedVecArr& outResults, int32_t inMaxSize) {
+void GenericKDTree<T_Data, T_Position, T_Dimension>::searchWithRadius(const T_Position& inPosition,
+                                                                      float inRadius,
+                                                                      IndexedVecArr& outResults,
+                                                                      int32_t inMaxSize) {
   outResults.reserve(_builderArray.size());
   constexpr int32_t startAxis = 0;
   const float squareRadius = inRadius * inRadius;
@@ -131,11 +133,11 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::searchWithRadius(const T_Po
 
 template <typename T_Data, typename T_Position, uint32_t T_Dimension>
 void GenericKDTree<T_Data, T_Position, T_Dimension>::_searchWithRadius(const std::shared_ptr<TreeNode> inBranchPtr,
-                                    const T_Position& inPosition,
-                                    float inSquareRadius,
-                                    int32_t inCurrAxis,
-                                    IndexedVecArr& outResults,
-                                    int32_t inMaxSize) {
+                                                                       const T_Position& inPosition,
+                                                                       float inSquareRadius,
+                                                                       int32_t inCurrAxis,
+                                                                       IndexedVecArr& outResults,
+                                                                       int32_t inMaxSize) {
   if (!inBranchPtr || (inMaxSize > 0 && outResults.size() >= std::size_t(inMaxSize))) {
     return;
   }
@@ -171,9 +173,9 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::_searchWithRadius(const std
 template <typename T_Data, typename T_Position, uint32_t T_Dimension>
 std::shared_ptr<typename GenericKDTree<T_Data, T_Position, T_Dimension>::TreeNode>
 GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& inBeginIt,
-                                      const IndexedVecArrIt& inEndIt,
-                                      size_t inLength,
-                                      int32_t inCurrAxis) {
+                                                       const IndexedVecArrIt& inEndIt,
+                                                       size_t inLength,
+                                                       int32_t inCurrAxis) {
   if (inBeginIt == inEndIt) {
     return nullptr; // empty tree
   }
@@ -222,8 +224,8 @@ GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& in
 //
 //
 
-template<typename T_Data> using KDTree3d = GenericKDTree<T_Data, glm::vec3, 3>;
-template<typename T_Data> using KDTree2d = GenericKDTree<T_Data, glm::vec2, 2>;
+template <typename T_Data> using KDTree3d = GenericKDTree<T_Data, glm::vec3, 3>;
+template <typename T_Data> using KDTree2d = GenericKDTree<T_Data, glm::vec2, 2>;
 
 //
 //

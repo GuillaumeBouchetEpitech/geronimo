@@ -38,6 +38,7 @@ struct PhysicShapeDef {
     struct StaticMesh {
       glm::vec3* verticesData = nullptr; // will be allocated and copied
       std::size_t verticesLength = 0;
+      // std::size_t verticesStride = 0;
 
       int32_t* indicesData = nullptr; // will be allocated and copied
       std::size_t indicesLength = 0;

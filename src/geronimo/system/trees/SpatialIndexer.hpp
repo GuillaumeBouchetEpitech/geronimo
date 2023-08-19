@@ -13,8 +13,7 @@ namespace trees {
 //
 //
 
-template <typename T_Data, typename T_Position, uint32_t T_Dimension>
-class GenericSpatialIndexer {
+template <typename T_Data, typename T_Position, uint32_t T_Dimension> class GenericSpatialIndexer {
 public:
   using LocalKdTree = gero::trees::GenericKDTree<T_Data, T_Position, T_Dimension>;
   using TreeUserData = typename LocalKdTree::UserData;
@@ -65,8 +64,8 @@ private:
 //
 //
 
-template<typename T_Data> using Spatial3dIndexer = GenericSpatialIndexer<T_Data, glm::vec3, 3>;
-template<typename T_Data> using Spatial2dIndexer = GenericSpatialIndexer<T_Data, glm::vec2, 2>;
+template <typename T_Data> using Spatial3dIndexer = GenericSpatialIndexer<T_Data, glm::vec3, 3>;
+template <typename T_Data> using Spatial2dIndexer = GenericSpatialIndexer<T_Data, glm::vec2, 2>;
 
 //
 //
