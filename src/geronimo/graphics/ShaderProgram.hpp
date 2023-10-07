@@ -9,15 +9,61 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <functional>
 
 namespace gero {
 namespace graphics {
 
-class UniformBufferObject;
+// class UniformBufferObject;
 
-class ShaderProgram {
-private:
-  friend UniformBufferObject;
+struct IBoundShaderProgram;
+
+struct IUnboundShaderProgram {
+  virtual ~IUnboundShaderProgram() = default;
+
+  virtual void rawBind() const = 0;
+  virtual void preBind(const std::function<void(IBoundShaderProgram&)>& callback) = 0;
+  virtual void bind(const std::function<void(IBoundShaderProgram&)>& callback) = 0;
+};
+
+struct IBoundShaderProgram : public IUnboundShaderProgram {
+
+  virtual int32_t getAttribute(const char* name) const = 0;
+  virtual int32_t getUniform(const char* name) const = 0;
+  virtual bool hasAttribute(const char* name) const = 0;
+  virtual bool hasUniform(const char* name) const = 0;
+
+  virtual void setUniform(const char* name, int32_t value) const = 0;
+  virtual void setUniform(const char* name, int32_t x, int32_t y) const = 0;
+  virtual void setUniform(const char* name, int32_t x, int32_t y, int32_t z) const = 0;
+  virtual void setUniform(const char* name, int32_t x, int32_t y, int32_t z, int32_t w) const = 0;
+  virtual void setUniform(const char* name, float value) const = 0;
+  virtual void setUniform(const char* name, float x, float y) const = 0;
+  virtual void setUniform(const char* name, float x, float y, float z) const = 0;
+  virtual void setUniform(const char* name, float x, float y, float z, float w) const = 0;
+  virtual void setUniform(const char* name, const glm::vec3& vec3) const = 0;
+  virtual void setUniform(const char* name, const glm::vec4& vec4) const = 0;
+  virtual void setUniform(const char* name, const glm::mat3& mat3) const = 0;
+  virtual void setUniform(const char* name, const glm::mat4& mat4) const = 0;
+
+  virtual void setUniform(int32_t location, int32_t value) const = 0;
+  virtual void setUniform(int32_t location, int32_t x, int32_t y) const = 0;
+  virtual void setUniform(int32_t location, int32_t x, int32_t y, int32_t z) const = 0;
+  virtual void setUniform(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w) const = 0;
+  virtual void setUniform(int32_t location, float value) const = 0;
+  virtual void setUniform(int32_t location, float x, float y) const = 0;
+  virtual void setUniform(int32_t location, float x, float y, float z) const = 0;
+  virtual void setUniform(int32_t location, float x, float y, float z, float w) const = 0;
+  virtual void setUniform(int32_t location, const glm::vec3& vec3) const = 0;
+  virtual void setUniform(int32_t location, const glm::vec4& vec4) const = 0;
+  virtual void setUniform(int32_t location, const glm::mat3& mat3) const = 0;
+  virtual void setUniform(int32_t location, const glm::mat4& mat4) const = 0;
+
+};
+
+class ShaderProgram : public IBoundShaderProgram {
+// private:
+//   friend UniformBufferObject;
 
 public:
   struct Definition {
@@ -42,44 +88,47 @@ public:
   ~ShaderProgram();
 
 public:
-  void bind() const;
+  // void bind() const;
+  void rawBind() const override;
+  void preBind(const std::function<void(IBoundShaderProgram&)>& callback) override;
+  void bind(const std::function<void(IBoundShaderProgram&)>& callback) override;
 
 public:
   static void unbind();
 
 public:
-  int32_t getAttribute(const char* name) const;
-  int32_t getUniform(const char* name) const;
-  bool hasAttribute(const char* name) const;
-  bool hasUniform(const char* name) const;
+  int32_t getAttribute(const char* name) const override;
+  int32_t getUniform(const char* name) const override;
+  bool hasAttribute(const char* name) const override;
+  bool hasUniform(const char* name) const override;
 
 public:
-  void setUniform(const char* name, int32_t value) const;
-  void setUniform(const char* name, int32_t x, int32_t y) const;
-  void setUniform(const char* name, int32_t x, int32_t y, int32_t z) const;
-  void setUniform(const char* name, int32_t x, int32_t y, int32_t z, int32_t w) const;
-  void setUniform(const char* name, float value) const;
-  void setUniform(const char* name, float x, float y) const;
-  void setUniform(const char* name, float x, float y, float z) const;
-  void setUniform(const char* name, float x, float y, float z, float w) const;
-  void setUniform(const char* name, const glm::vec3& vec3) const;
-  void setUniform(const char* name, const glm::vec4& vec4) const;
-  void setUniform(const char* name, const glm::mat3& mat3) const;
-  void setUniform(const char* name, const glm::mat4& mat4) const;
+  void setUniform(const char* name, int32_t value) const override;
+  void setUniform(const char* name, int32_t x, int32_t y) const override;
+  void setUniform(const char* name, int32_t x, int32_t y, int32_t z) const override;
+  void setUniform(const char* name, int32_t x, int32_t y, int32_t z, int32_t w) const override;
+  void setUniform(const char* name, float value) const override;
+  void setUniform(const char* name, float x, float y) const override;
+  void setUniform(const char* name, float x, float y, float z) const override;
+  void setUniform(const char* name, float x, float y, float z, float w) const override;
+  void setUniform(const char* name, const glm::vec3& vec3) const override;
+  void setUniform(const char* name, const glm::vec4& vec4) const override;
+  void setUniform(const char* name, const glm::mat3& mat3) const override;
+  void setUniform(const char* name, const glm::mat4& mat4) const override;
 
 public:
-  void setUniform(int32_t location, int32_t value) const;
-  void setUniform(int32_t location, int32_t x, int32_t y) const;
-  void setUniform(int32_t location, int32_t x, int32_t y, int32_t z) const;
-  void setUniform(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w) const;
-  void setUniform(int32_t location, float value) const;
-  void setUniform(int32_t location, float x, float y) const;
-  void setUniform(int32_t location, float x, float y, float z) const;
-  void setUniform(int32_t location, float x, float y, float z, float w) const;
-  void setUniform(int32_t location, const glm::vec3& vec3) const;
-  void setUniform(int32_t location, const glm::vec4& vec4) const;
-  void setUniform(int32_t location, const glm::mat3& mat3) const;
-  void setUniform(int32_t location, const glm::mat4& mat4) const;
+  void setUniform(int32_t location, int32_t value) const override;
+  void setUniform(int32_t location, int32_t x, int32_t y) const override;
+  void setUniform(int32_t location, int32_t x, int32_t y, int32_t z) const override;
+  void setUniform(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w) const override;
+  void setUniform(int32_t location, float value) const override;
+  void setUniform(int32_t location, float x, float y) const override;
+  void setUniform(int32_t location, float x, float y, float z) const override;
+  void setUniform(int32_t location, float x, float y, float z, float w) const override;
+  void setUniform(int32_t location, const glm::vec3& vec3) const override;
+  void setUniform(int32_t location, const glm::vec4& vec4) const override;
+  void setUniform(int32_t location, const glm::mat3& mat3) const override;
+  void setUniform(int32_t location, const glm::mat4& mat4) const override;
 };
 
 } // namespace graphics

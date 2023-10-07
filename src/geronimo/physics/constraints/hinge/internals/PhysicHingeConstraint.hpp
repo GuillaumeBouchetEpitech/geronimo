@@ -8,6 +8,7 @@
 
 class btDiscreteDynamicsWorld;
 class btHingeConstraint;
+// class btHinge2Constraint;
 
 namespace gero {
 namespace physics {
@@ -22,6 +23,7 @@ class PhysicHingeConstraint : public AbstractPhysicHingeConstraint {
 private:
   struct Bullet {
     btHingeConstraint* constraint = nullptr;
+    // btHinge2Constraint* constraint = nullptr;
   } _bullet;
 
   BodyWeakRef _body;
@@ -37,20 +39,8 @@ public:
   PhysicHingeConstraint& operator=(const PhysicHingeConstraint& other) = delete;
   PhysicHingeConstraint& operator=(PhysicHingeConstraint&& other);
 
-  // public:
-  //   void applyEngineForce(int32_t index, float force) override;
-  //   void applyBrake(int32_t index, float force) override;
-  //   void setSteeringValue(int32_t index, float steering) override;
-  //   void reset() override;
-
-  // public:
-  //   int32_t getNumWheels() const override;
-  //   const glm::mat4& getWheelTransform(int32_t index, glm::mat4& mat4x4) const override;
-  //   glm::vec3 getWheelPosition(int32_t index) const override;
-  //   glm::quat getWheelOrientation(int32_t index) const override;
-  //   float getCurrentSpeedKmHour() const override;
-  //   BodyWeakRef getPhysicBody() override;
-  //   const BodyWeakRef getPhysicBody() const override;
+public:
+  void setLimit(float low, float high) override;
 };
 
 using PhysicHingeConstraintsPool =

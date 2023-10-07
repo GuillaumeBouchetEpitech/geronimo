@@ -1,5 +1,5 @@
 
-#include "Raycaster.hpp"
+#include "RayCaster.hpp"
 
 #include "internals/CustomConvexResultCallback.hpp"
 #include "internals/CustomRayResultCallback.hpp"
@@ -12,7 +12,7 @@
 namespace gero {
 namespace physics {
 
-Raycaster::Raycaster(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
+RayCaster::RayCaster(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
 
 //
 //
@@ -25,8 +25,8 @@ Raycaster::Raycaster(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
 //
 //
 
-void Raycaster::_normalRaycast(RaycastParams& params,
-                               const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
+void RayCaster::_normalRayCast(RayCastParams& params,
+                               const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
 
   btVector3 rayFrom(params.from.x, params.from.y, params.from.z);
   btVector3 rayTo(params.to.x, params.to.y, params.to.z);
@@ -50,12 +50,12 @@ void Raycaster::_normalRaycast(RaycastParams& params,
 //
 //
 
-void Raycaster::_convexSweep(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
+void RayCaster::_convexSweep(RayCastParams& params, const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
 
   btVector3 rayFrom(params.from.x, params.from.y, params.from.z);
   btVector3 rayTo(params.to.x, params.to.y, params.to.z);
 
-  // replace raycast with convex sweep test
+  // replace rayCast with convex sweep test
 
   btSphereShape sphereShape(params.radius);
 
@@ -88,21 +88,21 @@ void Raycaster::_convexSweep(RaycastParams& params, const Raycaster::OnNewPhysic
 //
 //
 
-void Raycaster::_raycast(RaycastParams& inParams, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
+void RayCaster::_rayCast(RayCastParams& inParams, const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback) {
 
   if (inParams.radius <= 0.0f) {
-    _normalRaycast(inParams, onNewPhysicBodyCallback);
+    _normalRayCast(inParams, onNewPhysicBodyCallback);
   } else {
     _convexSweep(inParams, onNewPhysicBodyCallback);
   }
 }
 
-bool Raycaster::raycast(RaycastParams& inParams, std::vector<RaycastParams::ResultImpact>& outResultVector) {
+bool RayCaster::rayCast(RayCastParams& inParams, std::vector<RayCastParams::ResultImpact>& outResultVector) {
   outResultVector.reserve(256);
 
   const OnNewPhysicBodyCallback callback = [&inParams,
-                                            &outResultVector](const RaycastParams::ResultImpact& inResult) -> bool {
-    if (inParams.type == RaycastParams::Type::closest) {
+                                            &outResultVector](const RayCastParams::ResultImpact& inResult) -> bool {
+    if (inParams.type == RayCastParams::Type::closest) {
       if (outResultVector.empty()) {
         outResultVector.push_back(inResult);
       } else {
@@ -127,7 +127,7 @@ bool Raycaster::raycast(RaycastParams& inParams, std::vector<RaycastParams::Resu
     }
   };
 
-  _raycast(inParams, callback);
+  _rayCast(inParams, callback);
 
   return (outResultVector.empty() == false);
 }

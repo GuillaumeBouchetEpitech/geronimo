@@ -118,7 +118,6 @@ SRC+= \
 		$(DIR_SRC)/application/context/graphics/renderers/scene/helpers/*.cpp \
 		$(DIR_SRC)/application/context/logic/*.cpp \
 		$(DIR_SRC)/application/context/logic/controllers/*.cpp \
-		$(DIR_SRC)/application/context/logic/inputManagers/*.cpp \
 		$(DIR_SRC)/application/states/*.cpp \
 	)
 

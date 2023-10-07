@@ -5,8 +5,9 @@
 
 #include "context/Context.hpp"
 
-#include "context/logic/inputManagers/KeyboardManager.hpp"
-#include "context/logic/inputManagers/MouseManager.hpp"
+#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
+#include "geronimo/graphics/input-managers/MouseManager.hpp"
+// #include "geronimo/graphics/input-managers/TouchManager.hpp"
 
 #include "context/graphics/Scene.hpp"
 

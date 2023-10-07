@@ -11,7 +11,7 @@
 
 namespace {
 
-class CustomVehicleRaycaster : public btDefaultVehicleRaycaster {
+class CustomVehicleRayCaster : public btDefaultVehicleRaycaster {
 private:
   // must keep it as btDefaultVehicleRaycaster::m_dynamicsWorld is private
   // => that a design flaw from bullet3, kind of sad (;_;)
@@ -21,7 +21,7 @@ private:
   short _mask;
 
 public:
-  CustomVehicleRaycaster(btDynamicsWorld& world, short group, short mask)
+  CustomVehicleRayCaster(btDynamicsWorld& world, short group, short mask)
     : btDefaultVehicleRaycaster(&world), _dynamicsWorld(world), _group(group), _mask(mask) {}
 
   virtual void* castRay(const btVector3& from, const btVector3& to, btVehicleRaycasterResult& result) override {
@@ -61,7 +61,7 @@ PhysicVehicle::PhysicVehicle(btDiscreteDynamicsWorld& dynamicsWorld, const Physi
 
   btRaycastVehicle::btVehicleTuning tuning;
   _bullet.vehicleRayCaster =
-    new CustomVehicleRaycaster(dynamicsWorld, def.wheelsCollisionGroup, def.wheelsCollisionMask);
+    new CustomVehicleRayCaster(dynamicsWorld, def.wheelsCollisionGroup, def.wheelsCollisionMask);
 
   PhysicBody* implementation = reinterpret_cast<PhysicBody*>(_body.get());
 

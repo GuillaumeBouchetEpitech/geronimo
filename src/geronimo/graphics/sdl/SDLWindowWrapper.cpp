@@ -3,6 +3,7 @@
 
 #include "geronimo/graphics/GlContext.hpp"
 
+#include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/asValue.hpp"
 
@@ -64,6 +65,8 @@ SDLWindowWrapper::SDLWindowWrapper(const char* name,
 
     throw error;
   }
+
+  setWindowSize(width, height);
 
   _startTime = SDL_GetTicks();
 
@@ -177,17 +180,8 @@ void SDLWindowWrapper::update(uint32_t deltaTime) {
     case SDL_WINDOWEVENT: {
       switch (event.window.event) {
       case SDL_WINDOWEVENT_SIZE_CHANGED: {
-        int32_t width = 0;
-        int32_t height = 0;
-        SDL_GL_GetDrawableSize(_window, &width, &height);
-        if (width == 0 || height == 0)
-          SDL_GetWindowSize(_window, &width, &height);
-
-        if (width <= 0)
-          width = 1;
-        if (height <= 0)
-          height = 1;
-
+        const int32_t width = std::max(event.window.data1, 1);
+        const int32_t height = std::max(event.window.data2, 1);
         _onResize(uint32_t(width), uint32_t(height));
         break;
       }
@@ -217,6 +211,25 @@ void SDLWindowWrapper::render() {
 
   SDL_GL_SwapWindow(_window);
 }
+
+void SDLWindowWrapper::setWindowPosition(int32_t x, int32_t y)
+{
+  SDL_SetWindowPosition(_window, x, y);
+}
+void SDLWindowWrapper::setWindowSize(uint32_t width, uint32_t height)
+{
+  SDL_SetWindowSize(_window, int32_t(width), int32_t(height));
+}
+void SDLWindowWrapper::setMinimumWindowSize(uint32_t width, uint32_t height)
+{
+  SDL_SetWindowMinimumSize(_window, int32_t(width), int32_t(height));
+}
+void SDLWindowWrapper::setMaximumWindowSize(uint32_t width, uint32_t height)
+{
+  SDL_SetWindowMaximumSize(_window, int32_t(width), int32_t(height));
+}
+
+
 
 } // namespace graphics
 } // namespace gero

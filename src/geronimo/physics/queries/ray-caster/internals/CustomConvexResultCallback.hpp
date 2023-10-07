@@ -10,8 +10,8 @@ struct CustomConvexResultCallback : public BaseCustomRayResultCallback<btCollisi
   CustomConvexResultCallback(PhysicWorld& physicWorld,
                              float radius,
                              void* toIgnore,
-                             Raycaster::RaycastParams::Type type,
-                             const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
+                             RayCaster::RayCastParams::Type type,
+                             const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
 
   float _radius;
 

@@ -20,6 +20,9 @@ glm::vec4 lerp(const glm::vec4& valueA, const glm::vec4& valueB, float coef) {
 glm::quat lerp(const glm::quat& valueA, const glm::quat& valueB, float coef) {
   return glm::slerp(valueA, valueB, coef);
 }
+glm::mat4 lerp(const glm::mat4& valueA, const glm::mat4& valueB, float coef) {
+  return valueA + (valueB - valueA) * coef;
+}
 
 } // namespace math
 } // namespace gero

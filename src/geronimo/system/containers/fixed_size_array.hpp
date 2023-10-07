@@ -77,10 +77,44 @@ public:
   fixed_size_array& operator=(const fixed_size_array& other) = delete;
   // disable copy
 
+  // fixed_size_array(const fixed_size_array& other)
+  // {
+  //   if (&other == this)
+  //     return;
+  //   std::memcpy(this->_data, other._data, other._size * sizeof(InternalType));
+  //   this->_size = other._size;
+  // }
+  // fixed_size_array& operator=(const fixed_size_array& other)
+  // {
+  //   if (&other == this)
+  //     return *this;
+  //   std::memcpy(this->_data, other._data, other._size * sizeof(InternalType));
+  //   this->_size = other._size;
+  //   return *this;
+  // }
+
   // disable move
   fixed_size_array(fixed_size_array&& other) = delete;
   fixed_size_array& operator=(fixed_size_array&& other) = delete;
   // disable move
+
+  // fixed_size_array(fixed_size_array&& other)
+  // {
+  //   if (&other == this)
+  //     return;
+  //   for (std::size_t ii = 0; ii < _Capacity; ++ii)
+  //     std::swap(this->_data[ii], other._data[ii]);
+  //   std::swap(this->_size, other._size);
+  // }
+  // fixed_size_array& operator=(fixed_size_array&& other)
+  // {
+  //   if (&other == this)
+  //     return *this;
+  //   for (std::size_t ii = 0; ii < _Capacity; ++ii)
+  //     std::swap(this->_data[ii], other._data[ii]);
+  //   std::swap(this->_size, other._size);
+  //   return *this;
+  // }
 
   virtual ~fixed_size_array() { clear(); }
 

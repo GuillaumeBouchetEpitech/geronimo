@@ -140,11 +140,24 @@ ShaderProgram::~ShaderProgram() {
 
 //
 
-void ShaderProgram::bind() const {
+void ShaderProgram::rawBind() const
+{
   if (!_programId)
     D_THROW(std::runtime_error, "shader not initialized");
 
   GlContext::Shader::useProgram(_programId);
+}
+
+void ShaderProgram::preBind(const std::function<void(IBoundShaderProgram&)>& callback)
+{
+  rawBind();
+  callback(*this);
+}
+
+void ShaderProgram::bind(const std::function<void(IBoundShaderProgram&)>& callback)
+{
+  preBind(callback);
+  ShaderProgram::unbind();
 }
 
 void ShaderProgram::unbind() { GlContext::Shader::useProgram(0); }

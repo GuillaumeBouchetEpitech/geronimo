@@ -9,7 +9,6 @@
 #include "geronimo/system/math/clamp.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 namespace gero {
 namespace audio {

@@ -1,8 +1,9 @@
 
 #include "FreeFlyCameraController.hpp"
 
-#include "application/context/logic/inputManagers/KeyboardManager.hpp"
-#include "application/context/logic/inputManagers/MouseManager.hpp"
+#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
+#include "geronimo/graphics/input-managers/MouseManager.hpp"
+// #include "geronimo/graphics/input-managers/TouchManager.hpp"
 
 #include "application/context/Context.hpp"
 
@@ -103,23 +104,23 @@ void FreeFlyCameraController::update(float elapsed_time) {
 
   } // keyboard
 
-  { // death raycast
+  { // death rayCast
 
     // auto& mouse = context.inputs.mouse;
 
-    // if (_raycastCooldown >= 0.0f)
-    //     _raycastCooldown -= elapsed_time;
+    // if (_rayCastCooldown >= 0.0f)
+    //     _rayCastCooldown -= elapsed_time;
 
     // _target = _position + _forward  * 50.0f;
 
-    // PhysicWorld::RaycastParams params(_position, _target, 0.0f);
+    // PhysicWorld::RayCastParams params(_position, _target, 0.0f);
 
     // params.collisionGroup = gero::asValue(Groups::player);
     // params.collisionMask = gero::asValue(Groups::dynamic);
 
     // // params.radius = 0.25f;
 
-    // context.physic.world->getRaycaster().raycast(params);
+    // context.physic.world->getRayCaster().rayCast(params);
 
     // // if (target_body)
     // // {
@@ -142,10 +143,10 @@ void FreeFlyCameraController::update(float elapsed_time) {
 
     //     if (mouse.buttons[SDL_BUTTON_LEFT])
     //     {
-    //         if (_raycastCooldown < 0.0f)
+    //         if (_rayCastCooldown < 0.0f)
     //         {
-    //             _raycastCooldown = 0.06125f;
-    //             // _raycastCooldown = 0.0313f;
+    //             _rayCastCooldown = 0.06125f;
+    //             // _rayCastCooldown = 0.0313f;
 
     //             auto& normal = params.result.impactNormal;
 
@@ -156,10 +157,10 @@ void FreeFlyCameraController::update(float elapsed_time) {
     //     }
     //     if (mouse.buttons[SDL_BUTTON_RIGHT])
     //     {
-    //         if (_raycastCooldown < 0.0f)
+    //         if (_rayCastCooldown < 0.0f)
     //         {
-    //             _raycastCooldown = 0.06125f;
-    //             // _raycastCooldown = 0.0313f;
+    //             _rayCastCooldown = 0.06125f;
+    //             // _rayCastCooldown = 0.0313f;
 
     //             auto& normal = params.result.impactNormal;
 
@@ -187,9 +188,9 @@ void FreeFlyCameraController::update(float elapsed_time) {
 
     // // if (mouse.buttons[SDL_BUTTON_LEFT])
     // // {
-    // //     if (_raycastCooldown < 0.0f)
+    // //     if (_rayCastCooldown < 0.0f)
     // //     {
-    // //         _raycastCooldown = 0.06125f;
+    // //         _rayCastCooldown = 0.06125f;
 
     // //         Projectile::Def proj_def;
     // //         proj_def.position = _position;
@@ -210,7 +211,7 @@ void FreeFlyCameraController::update(float elapsed_time) {
     // //     }
     // // }
 
-  } // death raycast
+  } // death rayCast
 
   // if (target_body)
   // {

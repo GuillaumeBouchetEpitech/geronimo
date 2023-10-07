@@ -28,6 +28,17 @@ PhysicBody::PhysicBody(const PhysicBodyDef& def) {
 
   btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, _bullet.motionState, _shape->getRawShape(), localInertia);
 
+
+  // rbInfo.m_startWorldTransform
+  rbInfo.m_restitution = def.restitution;
+  rbInfo.m_friction = def.friction;
+  rbInfo.m_rollingFriction = def.rollingFriction;
+  rbInfo.m_spinningFriction = def.spinningFriction;
+  rbInfo.m_linearSleepingThreshold = def.linearSleepingThreshold;
+  rbInfo.m_angularSleepingThreshold = def.angularSleepingThreshold;
+
+
+
   _bullet.body = new btRigidBody(rbInfo);
 
   // float continuous_radius = std::max(def.continuous_radius, 0.0f);

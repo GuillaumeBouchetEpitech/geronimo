@@ -10,8 +10,8 @@ CustomConvexResultCallback::CustomConvexResultCallback(
   PhysicWorld& physicWorld,
   float radius,
   void* toIgnore,
-  Raycaster::RaycastParams::Type type,
-  const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
+  RayCaster::RayCastParams::Type type,
+  const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
   : BaseCustomRayResultCallback(physicWorld, toIgnore, type, onNewPhysicBodyCallback), _radius(radius) {}
 
 btScalar CustomConvexResultCallback::addSingleResult(btCollisionWorld::LocalConvexResult& convexResult,
@@ -26,7 +26,7 @@ btScalar CustomConvexResultCallback::addSingleResult(btCollisionWorld::LocalConv
              normalInWorldSpace);
   }
 
-  if (_type == Raycaster::RaycastParams::Type::everything) {
+  if (_type == RayCaster::RayCastParams::Type::everything) {
     return 1.0f;
   }
   return m_closestHitFraction;

@@ -1,7 +1,7 @@
 
 #include "headers.hpp"
 
-TEST(physic_wrapper, raycast_nothing) {
+TEST(physic_wrapper, rayCast_nothing) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef;
@@ -14,27 +14,27 @@ TEST(physic_wrapper, raycast_nothing) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(1000, 0, 10), glm::vec3(1000, 0, -10));
+  gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(1000, 0, 10), glm::vec3(1000, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::closest;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::closest;
   paramsRay.toIgnore = nullptr;
 
-  gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-  world.getRaycaster().raycast(paramsRay, resultRayStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+  world.getRayCaster().rayCast(paramsRay, resultRayStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-  world.getRaycaster().raycast(paramsRay, resultRayHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+  world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-  world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-  world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   ASSERT_EQ(resultRayStack.hasHit, false);
   ASSERT_EQ(resultRayStack.allImpactsTotal, 0);
@@ -49,7 +49,7 @@ TEST(physic_wrapper, raycast_nothing) {
   ASSERT_EQ(resultSphereHeap.size(), 0);
 }
 
-TEST(physic_wrapper, raycast_closest_static_object) {
+TEST(physic_wrapper, rayCast_closest_static_object) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef;
@@ -62,27 +62,27 @@ TEST(physic_wrapper, raycast_closest_static_object) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
+  gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::closest;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::closest;
   paramsRay.toIgnore = nullptr;
 
-  gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-  world.getRaycaster().raycast(paramsRay, resultRayStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+  world.getRayCaster().rayCast(paramsRay, resultRayStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-  world.getRaycaster().raycast(paramsRay, resultRayHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+  world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-  world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-  world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   ASSERT_EQ(resultRayStack.hasHit, true);
   ASSERT_EQ(resultRayStack.allImpactsTotal, 1);
@@ -125,7 +125,7 @@ TEST(physic_wrapper, raycast_closest_static_object) {
   ASSERT_NEAR(resultSphereHeap[0].impactPoint.z, 1, 0.001);
 }
 
-TEST(physic_wrapper, raycast_closest_static_object_with_collision_filters) {
+TEST(physic_wrapper, rayCast_closest_static_object_with_collision_filters) {
   gero::physics::PhysicWorld world;
 
   const short filter1 = 0b0100;
@@ -149,27 +149,27 @@ TEST(physic_wrapper, raycast_closest_static_object_with_collision_filters) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
+  gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = filter2;
   paramsRay.collisionMask = filter2;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::closest;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::closest;
   paramsRay.toIgnore = nullptr;
 
-  gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-  world.getRaycaster().raycast(paramsRay, resultRayStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+  world.getRayCaster().rayCast(paramsRay, resultRayStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-  world.getRaycaster().raycast(paramsRay, resultRayHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+  world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-  world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-  world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   ASSERT_EQ(resultRayStack.hasHit, true);
   ASSERT_EQ(resultRayStack.allImpactsTotal, 1);
@@ -212,7 +212,7 @@ TEST(physic_wrapper, raycast_closest_static_object_with_collision_filters) {
   ASSERT_NEAR(resultSphereHeap[0].impactPoint.z, 1, 0.001);
 }
 
-TEST(physic_wrapper, raycast_closest_static_object_with_ignore_parameter) {
+TEST(physic_wrapper, rayCast_closest_static_object_with_ignore_parameter) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef_1;
@@ -233,27 +233,27 @@ TEST(physic_wrapper, raycast_closest_static_object_with_ignore_parameter) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
+  gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::closest;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::closest;
   paramsRay.toIgnore = &(*bodyRef_1);
 
-  gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-  world.getRaycaster().raycast(paramsRay, resultRayStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+  world.getRayCaster().rayCast(paramsRay, resultRayStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-  world.getRaycaster().raycast(paramsRay, resultRayHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+  world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-  world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-  world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   ASSERT_EQ(resultRayStack.hasHit, true);
   ASSERT_EQ(resultRayStack.allImpactsTotal, 1);
@@ -296,7 +296,7 @@ TEST(physic_wrapper, raycast_closest_static_object_with_ignore_parameter) {
   ASSERT_NEAR(resultSphereHeap[0].impactPoint.z, 1, 0.001);
 }
 
-TEST(physic_wrapper, raycast_every_static_objects) {
+TEST(physic_wrapper, rayCast_every_static_objects) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef_1;
@@ -317,27 +317,27 @@ TEST(physic_wrapper, raycast_every_static_objects) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
+  gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::everything;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::everything;
   // paramsRay.toIgnore = &(*bodyRef_1);
 
-  gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-  world.getRaycaster().raycast(paramsRay, resultRayStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+  world.getRayCaster().rayCast(paramsRay, resultRayStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-  world.getRaycaster().raycast(paramsRay, resultRayHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+  world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-  world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-  world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   ASSERT_EQ(resultRayStack.hasHit, true);
   ASSERT_EQ(resultRayStack.allImpactsTotal, 2);
@@ -408,7 +408,7 @@ TEST(physic_wrapper, raycast_every_static_objects) {
   ASSERT_NEAR(resultSphereHeap[1].impactPoint.z, 6, 0.001);
 }
 
-TEST(physic_wrapper, raycast_every_static_objects_with_ignore_parameter) {
+TEST(physic_wrapper, rayCast_every_static_objects_with_ignore_parameter) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef_1;
@@ -437,27 +437,27 @@ TEST(physic_wrapper, raycast_every_static_objects_with_ignore_parameter) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
+  gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::everything;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::everything;
   paramsRay.toIgnore = &(*bodyRef_2);
 
-  gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-  world.getRaycaster().raycast(paramsRay, resultRayStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+  world.getRayCaster().rayCast(paramsRay, resultRayStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-  world.getRaycaster().raycast(paramsRay, resultRayHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+  world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-  world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-  world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+  world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   ASSERT_EQ(resultRayStack.hasHit, true);
   ASSERT_EQ(resultRayStack.allImpactsTotal, 2);
@@ -528,7 +528,7 @@ TEST(physic_wrapper, raycast_every_static_objects_with_ignore_parameter) {
   ASSERT_NEAR(resultSphereHeap[1].impactPoint.z, 6, 0.001);
 }
 
-TEST(physic_wrapper, raycast_every_static_objects_being_looped) {
+TEST(physic_wrapper, rayCast_every_static_objects_being_looped) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef_1;
@@ -559,27 +559,27 @@ TEST(physic_wrapper, raycast_every_static_objects_being_looped) {
 
   for (int ii = 0; ii < 10; ++ii) {
 
-    gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
+    gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
     paramsRay.radius = 0.0f;
     paramsRay.collisionGroup = -1;
     paramsRay.collisionMask = -1;
-    paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::everything;
+    paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::everything;
     paramsRay.toIgnore = &(*bodyRef_2);
 
-    gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+    gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
     paramsSphere.radius = 1.0f;
 
-    gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-    world.getRaycaster().raycast(paramsRay, resultRayStack);
+    gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+    world.getRayCaster().rayCast(paramsRay, resultRayStack);
 
-    std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-    world.getRaycaster().raycast(paramsRay, resultRayHeap);
+    std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+    world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-    gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-    world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+    gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+    world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-    std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-    world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+    std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+    world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
     ASSERT_EQ(resultRayStack.hasHit, true);
     ASSERT_EQ(resultRayStack.allImpactsTotal, 2);
@@ -651,7 +651,7 @@ TEST(physic_wrapper, raycast_every_static_objects_being_looped) {
   }
 }
 
-TEST(physic_wrapper, raycast_repro_static_box_bug) {
+TEST(physic_wrapper, rayCast_repro_static_box_bug) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef_1;
@@ -685,21 +685,21 @@ TEST(physic_wrapper, raycast_repro_static_box_bug) {
   const glm::vec3 rayTo = rayFrom + rayDir;
   // const float angle = std::atan2(rayDir.y, rayDir.x);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(rayFrom, rayTo);
+  gero::physics::RayCaster::RayCastParams paramsRay(rayFrom, rayTo);
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::closest;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::closest;
   // paramsRay.toIgnore = &(*bodyRef_2);
 
-  // gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  // gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   // paramsSphere.radius = 1.0f;
 
-  gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRay;
-  world.getRaycaster().raycast(paramsRay, resultRay);
+  gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRay;
+  world.getRayCaster().rayCast(paramsRay, resultRay);
 
-  // gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphere;
-  // world.getRaycaster().raycast(paramsSphere, resultSphere);
+  // gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphere;
+  // world.getRayCaster().rayCast(paramsSphere, resultSphere);
 
   ASSERT_EQ(resultRay.hasHit, true);
   ASSERT_EQ(resultRay.allImpactsTotal, 1);

@@ -72,11 +72,13 @@ void StackRenderers::flush() {
   if (!_shader)
     D_THROW(std::runtime_error, "shader not setup");
 
-  _shader->bind();
-  _shader->setUniform("u_composedMatrix", _matricesData.composed);
+  _shader->preBind([this](IBoundShaderProgram& bound){
 
-  _trianglesStackRenderer.flush();
-  _wireFramesStackRenderer.flush();
+    bound.setUniform("u_composedMatrix", _matricesData.composed);
+
+    _trianglesStackRenderer.flush();
+    _wireFramesStackRenderer.flush();
+  });
 }
 
 void StackRenderers::safeMode(const std::function<void()>& callback) {
@@ -86,19 +88,21 @@ void StackRenderers::safeMode(const std::function<void()>& callback) {
   if (!_shader)
     D_THROW(std::runtime_error, "shader not setup");
 
-  _shader->bind();
-  _shader->setUniform("u_composedMatrix", _matricesData.composed);
+  _shader->preBind([&](IBoundShaderProgram& bound) {
 
-  _trianglesStackRenderer.startSafeMode();
-  _wireFramesStackRenderer.startSafeMode();
+    bound.setUniform("u_composedMatrix", _matricesData.composed);
 
-  callback();
+    _trianglesStackRenderer.startSafeMode();
+    _wireFramesStackRenderer.startSafeMode();
 
-  _trianglesStackRenderer.stopSafeMode();
-  _wireFramesStackRenderer.stopSafeMode();
+    callback();
 
-  _trianglesStackRenderer.flush();
-  _wireFramesStackRenderer.flush();
+    _trianglesStackRenderer.stopSafeMode();
+    _wireFramesStackRenderer.stopSafeMode();
+
+    _trianglesStackRenderer.flush();
+    _wireFramesStackRenderer.flush();
+  });
 }
 
 ITrianglesStackRenderer& StackRenderers::getTrianglesStack() { return _trianglesStackRenderer; }

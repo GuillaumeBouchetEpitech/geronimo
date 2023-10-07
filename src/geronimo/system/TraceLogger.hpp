@@ -10,7 +10,8 @@
 
 #include <cstdint>
 #include <mutex>
-#include <ostream>
+// #include <ostream>
+#include <iosfwd>
 #include <vector>
 
 namespace gero {

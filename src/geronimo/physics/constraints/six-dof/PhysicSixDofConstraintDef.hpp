@@ -11,12 +11,22 @@ namespace gero {
 namespace physics {
 
 struct PhysicSixDofConstraintDef {
+
+  enum class RotationOrder : int8_t
+  {
+    XYZ = 0,
+    XZY,
+    YXZ,
+    YZX,
+    ZXY,
+    ZYX
+  };
+
   BodyWeakRef body_a;
   BodyWeakRef body_b;
-  glm::vec3 center;
-  // glm::vec3 anchor;
-  // glm::vec3 axis1;
-  // glm::vec3 axis2;
+  glm::mat4 transform_a;
+  glm::mat4 transform_b;
+  RotationOrder order = RotationOrder::XYZ;
 };
 
 } // namespace physics

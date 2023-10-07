@@ -4,7 +4,6 @@
 #include "geronimo/system/TraceLogger.hpp"
 
 #include <functional>
-#include <iostream>
 #include <mutex>
 #include <vector>
 

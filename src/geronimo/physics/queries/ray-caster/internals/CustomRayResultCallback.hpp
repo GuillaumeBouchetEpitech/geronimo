@@ -12,8 +12,8 @@ struct CustomRayResultCallback : public BaseCustomRayResultCallback<btCollisionW
                           const btVector3& rayFromWorld,
                           const btVector3& rayToWorld,
                           void* toIgnore,
-                          Raycaster::RaycastParams::Type type,
-                          const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
+                          RayCaster::RayCastParams::Type type,
+                          const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
 
   btVector3 _rayFromWorld;
   btVector3 _rayToWorld;

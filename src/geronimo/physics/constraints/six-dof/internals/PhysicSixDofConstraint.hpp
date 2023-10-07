@@ -46,6 +46,23 @@ public:
   void setAngularUpperLimit(const glm::vec3& angularUpper) override;
   glm::vec3 getAngularLowerLimit() const override;
   glm::vec3 getAngularUpperLimit() const override;
+
+  void setLinearBounce(float x, float y, float z) override;
+  void setAngularBounce(float x, float y, float z) override;
+
+  void setLinearSpring(bool x, bool y, bool z) override;
+  void setAngularSpring(bool x, bool y, bool z) override;
+
+  // ERP, error reduction parameter, is a rate of how fast the error is reduced
+  void setLinearStopERP(float x, float y, float z) override;
+  // ERP, error reduction parameter, is a rate of how fast the error is reduced
+  void setAngularStopERP(float x, float y, float z) override;
+
+  // CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid degenerate matrices
+  void setLinearStopCFM(float x, float y, float z) override;
+  // CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid degenerate matrices
+  void setAngularStopCFM(float x, float y, float z) override;
+
 };
 
 using PhysicSixDofConstraintsPool =

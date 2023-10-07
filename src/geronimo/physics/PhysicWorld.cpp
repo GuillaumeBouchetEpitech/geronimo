@@ -26,7 +26,7 @@ public:
   MyDebugDrawer(const PhysicWorld::debuggerPushLineCallback& callback) : _debuggerPushLineCallback(callback) {}
 
 public:
-  virtual void drawLine(const btVector3& from, const btVector3& to, const btVector3& color) override {
+  void drawLine(const btVector3& from, const btVector3& to, const btVector3& color) override {
     if (!_debuggerPushLineCallback)
       return;
 
@@ -34,11 +34,15 @@ public:
       glm::vec3(from[0], from[1], from[2]), glm::vec3(to[0], to[1], to[2]), glm::vec3(color[0], color[1], color[2]));
   }
 
-  virtual void drawContactPoint(const btVector3& PointOnB,
+  void drawContactPoint(const btVector3& PointOnB,
                                 const btVector3& normalOnB,
                                 btScalar distance,
                                 int32_t lifeTime,
                                 const btVector3& color) override {
+
+    if (!_debuggerPushLineCallback)
+      return;
+
     static_cast<void>(distance); // unused
     static_cast<void>(lifeTime); // unused
 
@@ -48,30 +52,30 @@ public:
     _debuggerPushLineCallback(point, point + normal * 0.5f, glm::vec3(color[0], color[1], color[2]));
   }
 
-  virtual void reportErrorWarning(const char* warningString) override { D_MYLOG("warningString: " << warningString); }
+  void reportErrorWarning(const char* warningString) override { D_MYLOG("warningString: " << warningString); }
 
-  virtual void draw3dText(const btVector3& location, const char* textString) override {
+  void draw3dText(const btVector3& location, const char* textString) override {
     static_cast<void>(location); // unused
 
     D_MYLOG("textString: " << textString);
   }
 
-  virtual void setDebugMode(int32_t debugMode) override { _debugMode = debugMode; }
+  void setDebugMode(int32_t debugMode) override { _debugMode = debugMode; }
 
-  virtual int32_t getDebugMode() const override { return _debugMode; }
+  int32_t getDebugMode() const override { return _debugMode; }
 };
 
 // PhysicWorld* PhysicWorld::self = nullptr;
 
-PhysicWorld::PhysicWorld() : _raycaster(*this), _queryShape(*this) {
+PhysicWorld::PhysicWorld() : _rayCaster(*this), _queryShape(*this) {
 
   _physicBodyManager = AbstractPhysicBodyManager::create(*this);
   _physicVehicleManager = AbstractPhysicVehicleManager::create(*this);
   _physicHingeConstraintManager = AbstractPhysicHingeConstraintManager::create(*this);
+  _physicSixDofConstraintManager = AbstractPhysicSixDofConstraintManager::create(*this);
 
   // not ready (-_-)
   // _physicUniversalConstraintManager = std::make_unique<PhysicUniversalConstraintManager>(*this);
-  // _physicSixDofConstraintManager = std::make_unique<PhysicSixDofConstraintManager>(*this);
   // _physicConeTwistConstraintManager = std::make_unique<PhysicConeTwistConstraintManager>(*this);
 
   // PhysicWorld::self = this;
@@ -110,8 +114,8 @@ PhysicWorld::~PhysicWorld() {
 
   // not ready (-_-)
   // _physicConeTwistConstraintManager->clear();
-  // _physicSixDofConstraintManager->clear();
   // _physicUniversalConstraintManager->clear();
+  _physicSixDofConstraintManager->clear();
   _physicHingeConstraintManager->clear();
   _physicVehicleManager->clear();
   _physicBodyManager->clear();
@@ -137,15 +141,115 @@ void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) 
     delete currentDebugDrawer;
 
   MyDebugDrawer* newDebugDrawer = new MyDebugDrawer(callback);
-  newDebugDrawer->setDebugMode(btIDebugDraw::DebugDrawModes::DBG_DrawWireframe
-                               // | btIDebugDraw::DebugDrawModes::DBG_DrawAabb
-                               | btIDebugDraw::DebugDrawModes::DBG_DrawContactPoints |
-                               btIDebugDraw::DebugDrawModes::DBG_DrawConstraints
-                               // | btIDebugDraw::DebugDrawModes::DBG_DrawConstraintLimits
-  );
+
+
+  int32_t debugMode = btIDebugDraw::DebugDrawModes::DBG_NoDebug;
+  debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawWireframe;
+  // debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawAabb;
+  // debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawContactPoints;
+  // debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawConstraints;
+  // debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawConstraintLimits;
+  // debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawNormals;
+  // debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawFrames;
+
+  newDebugDrawer->setDebugMode(debugMode);
+
+	// enum	DebugDrawModes
+	// {
+	// 	DBG_DrawFeaturesText=4,
+	// 	DBG_DrawContactPoints=8,
+	// 	DBG_NoDeactivation=16,
+	// 	DBG_NoHelpText = 32,
+	// 	DBG_DrawText=64,
+	// 	DBG_ProfileTimings = 128,
+	// 	DBG_EnableSatComparison = 256,
+	// 	DBG_DisableBulletLCP = 512,
+	// 	DBG_EnableCCD = 1024,
+	// 	DBG_FastWireframe = (1<<13),
+	// 	DBG_MAX_DEBUG_DRAW_MODE
+	// };
+
+
 
   _bullet.dynamicsWorld->setDebugDrawer(newDebugDrawer);
 }
+
+void PhysicWorld::setDebugAABB(bool isEnabled)
+{
+  btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
+  if (currentDebugDrawer == nullptr)
+  {
+    D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
+    return;
+  }
+
+  int32_t debugMode = currentDebugDrawer->getDebugMode();
+  if (isEnabled) {
+    debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawAabb;
+  } else {
+    debugMode &= ~btIDebugDraw::DebugDrawModes::DBG_DrawAabb;
+  }
+  currentDebugDrawer->setDebugMode(debugMode);
+}
+void PhysicWorld::setDebugContacts(bool isEnabled)
+{
+  btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
+  if (currentDebugDrawer == nullptr)
+  {
+    D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
+    return;
+  }
+
+  int32_t debugMode = currentDebugDrawer->getDebugMode();
+  if (isEnabled) {
+    debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawContactPoints;
+  } else {
+    debugMode &= ~btIDebugDraw::DebugDrawModes::DBG_DrawContactPoints;
+  }
+
+  currentDebugDrawer->setDebugMode(debugMode);
+}
+void PhysicWorld::setDebugConstraints(bool isEnabled)
+{
+  btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
+  if (currentDebugDrawer == nullptr)
+  {
+    D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
+    return;
+  }
+
+  int32_t debugMode = currentDebugDrawer->getDebugMode();
+  if (isEnabled) {
+    debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawConstraints;
+  } else {
+    debugMode &= ~btIDebugDraw::DebugDrawModes::DBG_DrawConstraints;
+  }
+
+  currentDebugDrawer->setDebugMode(debugMode);
+}
+void PhysicWorld::setDebugConstraintLimits(bool isEnabled)
+{
+  btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
+  if (currentDebugDrawer == nullptr)
+  {
+    D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
+    return;
+  }
+
+  int32_t debugMode = currentDebugDrawer->getDebugMode();
+  if (isEnabled) {
+    debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawConstraintLimits;
+  } else {
+    debugMode &= ~btIDebugDraw::DebugDrawModes::DBG_DrawConstraintLimits;
+  }
+
+  currentDebugDrawer->setDebugMode(debugMode);
+}
+
+// debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawAabb;
+// debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawContactPoints;
+// debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawConstraints;
+// debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawConstraintLimits;
 
 //
 //
@@ -221,15 +325,15 @@ const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstrain
 //   return *_physicUniversalConstraintManager;
 // }
 
-// AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager()
-// {
-//   return *_physicSixDofConstraintManager;
-// }
+AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager()
+{
+  return *_physicSixDofConstraintManager;
+}
 
-// const AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() const
-// {
-//   return *_physicSixDofConstraintManager;
-// }
+const AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() const
+{
+  return *_physicSixDofConstraintManager;
+}
 
 // AbstractPhysicConeTwistConstraintManager& PhysicWorld::getPhysicConeTwistConstraintManager()
 // {
@@ -247,7 +351,7 @@ const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstrain
 //
 //
 
-Raycaster& PhysicWorld::getRaycaster() { return _raycaster; }
+RayCaster& PhysicWorld::getRayCaster() { return _rayCaster; }
 
 QueryShape& PhysicWorld::getQueryShape() { return _queryShape; }
 

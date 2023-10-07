@@ -80,6 +80,8 @@ SRC_GERONIMO_SYSTEM+=	\
 		$(DIR_SRC)/geronimo/system/easing/*.cpp \
 		$(DIR_SRC)/geronimo/system/file-utils/*.cpp \
 		$(DIR_SRC)/geronimo/system/math/*.cpp \
+		$(DIR_SRC)/geronimo/system/math/2d/collisions/*.cpp \
+		$(DIR_SRC)/geronimo/system/math/2d/convex-polygon/*.cpp \
 		$(DIR_SRC)/geronimo/system/messaging/*.cpp \
 		$(DIR_SRC)/geronimo/system/metrics/*.cpp \
 		$(DIR_SRC)/geronimo/system/multithreading/*.cpp \
@@ -98,6 +100,7 @@ SRC_GERONIMO_GRAPHICS+=	\
 		$(DIR_SRC)/geronimo/graphics/loaders/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/make-geometries/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/sdl/*.cpp \
+		$(DIR_SRC)/geronimo/graphics/input-managers/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/vertexBuffers/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/wrappers/*.cpp \
 		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/*.cpp \
@@ -118,20 +121,20 @@ SRC_GERONIMO_PHYSICS+=	\
 		$(DIR_SRC)/geronimo/physics/body/internals/*.cpp \
 		$(DIR_SRC)/geronimo/physics/helpers/*.cpp \
 		$(DIR_SRC)/geronimo/physics/queries/query-shape/*.cpp \
-		$(DIR_SRC)/geronimo/physics/queries/raycaster/*.cpp \
-		$(DIR_SRC)/geronimo/physics/queries/raycaster/internals/*.cpp \
+		$(DIR_SRC)/geronimo/physics/queries/ray-caster/*.cpp \
+		$(DIR_SRC)/geronimo/physics/queries/ray-caster/internals/*.cpp \
 		$(DIR_SRC)/geronimo/physics/shape/*.cpp \
 		$(DIR_SRC)/geronimo/physics/vehicle/*.cpp \
 		$(DIR_SRC)/geronimo/physics/vehicle/internals/*.cpp \
 		$(DIR_SRC)/geronimo/physics/constraints/hinge/*.cpp \
 		$(DIR_SRC)/geronimo/physics/constraints/hinge/internals/*.cpp \
-		)
+		$(DIR_SRC)/geronimo/physics/constraints/six-dof/*.cpp \
+		$(DIR_SRC)/geronimo/physics/constraints/six-dof/internals/*.cpp \
+	)
 
 # not ready (-_-)
 # $(DIR_SRC)/geronimo/physics/constraints/universal/*.cpp \
 # $(DIR_SRC)/geronimo/physics/constraints/universal/internals/*.cpp \
-# $(DIR_SRC)/geronimo/physics/constraints/six-dof/*.cpp \
-# $(DIR_SRC)/geronimo/physics/constraints/six-dof/internals/*.cpp \
 # $(DIR_SRC)/geronimo/physics/constraints/cone-twist/*.cpp \
 # $(DIR_SRC)/geronimo/physics/constraints/cone-twist/internals/*.cpp \
 

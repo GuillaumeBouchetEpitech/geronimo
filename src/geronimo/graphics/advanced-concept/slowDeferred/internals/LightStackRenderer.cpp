@@ -174,31 +174,34 @@ void LightStackRenderer::_flushDiffuse(const glm::mat4& composedMatrix,
                                        const gero::graphics::Texture& positionTexture,
                                        const gero::graphics::Texture& normalTexture) {
 
-  _diffuse.shader->bind();
-  _diffuse.shader->setUniform("u_composedMatrix", composedMatrix);
-  _diffuse.shader->setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
+  _diffuse.shader->preBind([&](IBoundShaderProgram& bound)
+  {
 
-  struct TextureData {
-    std::string_view name;
-    const gero::graphics::Texture& texture;
-  };
+    bound.setUniform("u_composedMatrix", composedMatrix);
+    bound.setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
 
-  const std::array<TextureData, 2> allTextures = {{
-    {"u_positionTexture", positionTexture},
-    {"u_normalTexture", normalTexture},
-  }};
+    struct TextureData {
+      std::string_view name;
+      const gero::graphics::Texture& texture;
+    };
 
-  for (std::size_t index = 0; index < allTextures.size(); ++index) {
-    const TextureData& currData = allTextures.at(index);
-    GlContext::Texture::active(uint32_t(index));
-    auto location = _diffuse.shader->getUniform(currData.name.data());
-    _diffuse.shader->setUniform(location, int32_t(index));
-    currData.texture.bind();
-  }
+    const std::array<TextureData, 2> allTextures = {{
+      {"u_positionTexture", positionTexture},
+      {"u_normalTexture", normalTexture},
+    }};
 
-  _diffuse.geometry.updateOrAllocateBuffer(1, _vertices);
-  _diffuse.geometry.setInstancedCount(uint32_t(_vertices.size()));
-  _diffuse.geometry.render();
+    for (std::size_t index = 0; index < allTextures.size(); ++index) {
+      const TextureData& currData = allTextures.at(index);
+      GlContext::Texture::active(uint32_t(index));
+      auto location = bound.getUniform(currData.name.data());
+      bound.setUniform(location, int32_t(index));
+      currData.texture.bind();
+    }
+
+    _diffuse.geometry.updateOrAllocateBuffer(1, _vertices);
+    _diffuse.geometry.setInstancedCount(uint32_t(_vertices.size()));
+    _diffuse.geometry.render();
+  });
 }
 
 void LightStackRenderer::_flushSpecular(const glm::vec3& eyePos,
@@ -207,32 +210,34 @@ void LightStackRenderer::_flushSpecular(const glm::vec3& eyePos,
                                         const gero::graphics::Texture& normalTexture,
                                         const gero::graphics::Texture& diffuseCoefTexture) {
 
-  _specular.shader->bind();
-  _specular.shader->setUniform("u_composedMatrix", composedMatrix);
-  _specular.shader->setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
-  _specular.shader->setUniform("u_viewPos", eyePos.x, eyePos.y, eyePos.z);
+  _specular.shader->preBind([&](IBoundShaderProgram& bound)
+  {
+    bound.setUniform("u_composedMatrix", composedMatrix);
+    bound.setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
+    bound.setUniform("u_viewPos", eyePos.x, eyePos.y, eyePos.z);
 
-  struct TextureData {
-    std::string_view name;
-    const gero::graphics::Texture& texture;
-  };
+    struct TextureData {
+      std::string_view name;
+      const gero::graphics::Texture& texture;
+    };
 
-  const std::array<TextureData, 3> allTextures = {{
-    {"u_positionTexture", positionTexture},
-    {"u_normalTexture", normalTexture},
-    {"u_diffuseCoefTexture", diffuseCoefTexture},
-  }};
+    const std::array<TextureData, 3> allTextures = {{
+      {"u_positionTexture", positionTexture},
+      {"u_normalTexture", normalTexture},
+      {"u_diffuseCoefTexture", diffuseCoefTexture},
+    }};
 
-  for (std::size_t index = 0; index < allTextures.size(); ++index) {
-    GlContext::Texture::active(uint32_t(index));
-    auto location = _specular.shader->getUniform(allTextures.at(index).name.data());
-    _specular.shader->setUniform(location, int32_t(index));
-    allTextures.at(index).texture.bind();
-  }
+    for (std::size_t index = 0; index < allTextures.size(); ++index) {
+      GlContext::Texture::active(uint32_t(index));
+      auto location = bound.getUniform(allTextures.at(index).name.data());
+      bound.setUniform(location, int32_t(index));
+      allTextures.at(index).texture.bind();
+    }
 
-  _specular.geometry.updateOrAllocateBuffer(1, _vertices);
-  _specular.geometry.setInstancedCount(uint32_t(_vertices.size()));
-  _specular.geometry.render();
+    _specular.geometry.updateOrAllocateBuffer(1, _vertices);
+    _specular.geometry.setInstancedCount(uint32_t(_vertices.size()));
+    _specular.geometry.render();
+  });
 }
 
 void LightStackRenderer::reset() { _vertices.clear(); }

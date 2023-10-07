@@ -4,8 +4,12 @@
 #include "AbstractPhysicSixDofConstraint.hpp"
 #include "PhysicSixDofConstraintDef.hpp"
 
+#include <memory>
+
 namespace gero {
 namespace physics {
+
+class PhysicWorld;
 
 class AbstractPhysicSixDofConstraintManager {
 
@@ -28,6 +32,10 @@ public:
   virtual std::size_t size() const = 0;
   virtual uint32_t totalLive() const = 0;
   virtual bool isEmpty() const = 0;
+
+public:
+  static std::unique_ptr<AbstractPhysicSixDofConstraintManager> create(PhysicWorld& inPhysicWorld);
+
 };
 
 } // namespace physics

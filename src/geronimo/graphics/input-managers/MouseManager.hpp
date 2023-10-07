@@ -1,11 +1,12 @@
 
 #pragma once
 
+#include "geronimo/system/NonCopyable.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <unordered_set>
 
-class MouseManager {
+class MouseManager: public gero::NonCopyable {
 private:
   MouseManager() = default;
   ~MouseManager() = default;

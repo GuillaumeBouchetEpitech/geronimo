@@ -8,8 +8,8 @@ CustomRayResultCallback::CustomRayResultCallback(PhysicWorld& physicWorld,
                                                  const btVector3& rayFromWorld,
                                                  const btVector3& rayToWorld,
                                                  void* toIgnore,
-                                                 Raycaster::RaycastParams::Type type,
-                                                 const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
+                                                 RayCaster::RayCastParams::Type type,
+                                                 const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
   : BaseCustomRayResultCallback(physicWorld, toIgnore, type, onNewPhysicBodyCallback), _rayFromWorld(rayFromWorld),
     _rayToWorld(rayToWorld) {
 
@@ -58,7 +58,7 @@ btScalar CustomRayResultCallback::addSingleResult(btCollisionWorld::LocalRayResu
       rayResult.m_collisionObject, rayResult.m_hitNormalLocal, hitPos, rayResult.m_hitFraction, normalInWorldSpace);
   }
 
-  if (_type == Raycaster::RaycastParams::Type::everything) {
+  if (_type == RayCaster::RayCastParams::Type::everything) {
     return 1.0f;
   }
   return m_closestHitFraction;

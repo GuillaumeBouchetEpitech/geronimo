@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "geronimo/system/math/lerp.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 
 #include <array>
@@ -9,11 +10,11 @@
 namespace gero {
 namespace easing {
 
-template <std::size_t _MaxSize> class GenericEasing {
+template <std::size_t _MaxSize, typename T = float> class GenericEasing {
 private:
   struct Step {
     float coefStep;
-    float value;
+    T value;
     std::function<float(float)> easing;
   };
 
@@ -37,7 +38,7 @@ public:
 public:
   GenericEasing& reset() { _size = 0; }
 
-  GenericEasing& push(float coefStep, float value, const std::function<float(float)>& easing) {
+  GenericEasing& push(float coefStep, T value, const std::function<float(float)>& easing) {
     if (_size == _MaxSize)
       D_THROW(std::runtime_error, "max steps reached, max: " << _MaxSize);
     if (_size != 0 && coefStep <= _steps.at(_size - 1).coefStep)
@@ -52,11 +53,11 @@ public:
     return *this;
   }
 
-  GenericEasing& push(float coefStep, float value) {
-    return push(coefStep, value, [](float coef) { return coef; });
+  GenericEasing& push(float coefStep, T value) {
+    return push(coefStep, value, nullptr);
   }
 
-  float get(float coef) const {
+  T get(float coef) const {
     if (_size < 2)
       D_THROW(std::runtime_error, "not enought coef steps");
 
@@ -73,9 +74,12 @@ public:
       const Step& nextStep = _steps.at(index + 1);
 
       if (coef >= currStep.coefStep && coef < nextStep.coefStep) {
-        const float subCoef = (coef - currStep.coefStep) / (nextStep.coefStep - currStep.coefStep);
+        float subCoef = (coef - currStep.coefStep) / (nextStep.coefStep - currStep.coefStep);
 
-        return currStep.value + currStep.easing(subCoef) * (nextStep.value - currStep.value);
+        if (currStep.easing) {
+          subCoef = currStep.easing(subCoef);
+        }
+        return gero::math::lerp(currStep.value, nextStep.value, subCoef);
       }
     }
 

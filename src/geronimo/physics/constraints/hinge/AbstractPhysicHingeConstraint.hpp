@@ -18,6 +18,9 @@ public:
   AbstractPhysicHingeConstraint& operator=(const AbstractPhysicHingeConstraint& other) = delete;
   AbstractPhysicHingeConstraint& operator=(AbstractPhysicHingeConstraint&& other) = default;
 
+public:
+  virtual void setLimit(float low, float high) = 0;
+
   // public:
   //   virtual void applyEngineForce(int32_t index, float force) = 0;
   //   virtual void applyBrake(int32_t index, float force) = 0;

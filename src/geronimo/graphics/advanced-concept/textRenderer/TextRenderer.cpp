@@ -409,17 +409,19 @@ TextRenderer& TextRenderer::render() {
   if (!_graphic.shader)
     D_THROW(std::runtime_error, "shader not setup");
 
-  _graphic.shader->bind();
-  _graphic.shader->setUniform("u_composedMatrix", _graphic.matricesData.composed);
+  _graphic.shader->preBind([this](IBoundShaderProgram& bound)
+  {
+    bound.setUniform("u_composedMatrix", _graphic.matricesData.composed);
 
-  _graphic.texture->bind();
+    _graphic.texture->bind();
 
-  _graphic.geometry.updateOrAllocateBuffer(1, _graphic.vertices);
-  _graphic.geometry.setInstancedCount(uint32_t(_graphic.vertices.size()));
+    _graphic.geometry.updateOrAllocateBuffer(1, _graphic.vertices);
+    _graphic.geometry.setInstancedCount(uint32_t(_graphic.vertices.size()));
 
-  _graphic.geometry.render();
+    _graphic.geometry.render();
 
-  _graphic.vertices.clear();
+    _graphic.vertices.clear();
+  });
 
   return *this;
 }

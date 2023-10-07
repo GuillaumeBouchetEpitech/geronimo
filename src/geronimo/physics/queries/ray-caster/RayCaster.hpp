@@ -12,18 +12,18 @@ namespace physics {
 
 class PhysicWorld;
 
-class Raycaster {
+class RayCaster {
   friend PhysicWorld;
 
 private:
   PhysicWorld& _physicWorld;
 
 private:
-  Raycaster(PhysicWorld& physicWorld);
-  ~Raycaster() = default;
+  RayCaster(PhysicWorld& physicWorld);
+  ~RayCaster() = default;
 
 public:
-  struct RaycastParams {
+  struct RayCastParams {
     glm::vec3 from;
     glm::vec3 to;
     float radius;
@@ -53,7 +53,7 @@ public:
       std::size_t allImpactsTotal;
     };
 
-    RaycastParams(const glm::vec3& rayFrom,
+    RayCastParams(const glm::vec3& rayFrom,
                   const glm::vec3& rayTo,
                   float sweepRadius = 0.0f,
                   short group = -1,
@@ -65,22 +65,22 @@ public:
   };
 
 public:
-  using OnNewPhysicBodyCallback = std::function<bool(const RaycastParams::ResultImpact&)>;
+  using OnNewPhysicBodyCallback = std::function<bool(const RayCastParams::ResultImpact&)>;
 
 private:
-  void _normalRaycast(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
-  void _convexSweep(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
-  void _raycast(RaycastParams& params, const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
+  void _normalRayCast(RayCastParams& params, const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
+  void _convexSweep(RayCastParams& params, const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
+  void _rayCast(RayCastParams& params, const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback);
 
 public:
-  template <std::size_t N> bool raycast(RaycastParams& inParams, RaycastParams::ResultArray<N>& outResultArray) {
+  template <std::size_t N> bool rayCast(RayCastParams& inParams, RayCastParams::ResultArray<N>& outResultArray) {
 
     outResultArray.hasHit = false;
     outResultArray.allImpactsTotal = 0;
 
     const OnNewPhysicBodyCallback callback = [&inParams,
-                                              &outResultArray](const RaycastParams::ResultImpact& inResult) -> bool {
-      if (inParams.type == RaycastParams::Type::closest) {
+                                              &outResultArray](const RayCastParams::ResultImpact& inResult) -> bool {
+      if (inParams.type == RayCastParams::Type::closest) {
         outResultArray.allImpactsData[0] = inResult;
         outResultArray.allImpactsTotal = 1;
         return true;
@@ -105,10 +105,10 @@ public:
       return true;
     };
 
-    _raycast(inParams, callback);
+    _rayCast(inParams, callback);
 
     // if (
-    //   inParams.type == RaycastParams::Type::closest && inParams.radius > 0.0f
+    //   inParams.type == RayCastParams::Type::closest && inParams.radius > 0.0f
     // ) {
     //   D_MYLOG("inParams.from " << inParams.from);
     //   D_MYLOG("inParams.to   " << inParams.to);
@@ -124,7 +124,7 @@ public:
     return outResultArray.hasHit;
   }
 
-  bool raycast(RaycastParams& params, std::vector<RaycastParams::ResultImpact>& outResultVector);
+  bool rayCast(RayCastParams& params, std::vector<RayCastParams::ResultImpact>& outResultVector);
 };
 
 } // namespace physics

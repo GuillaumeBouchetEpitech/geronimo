@@ -7,14 +7,14 @@
 #include "vehicle/AbstractPhysicVehicleManager.hpp"
 
 #include "constraints/hinge/AbstractPhysicHingeConstraintManager.hpp"
+#include "constraints/six-dof/AbstractPhysicSixDofConstraintManager.hpp"
 
 // not ready (-_-)
 // #include "constraints/universal/AbstractPhysicUniversalConstraintManager.hpp"
-// #include "constraints/six-dof/AbstractPhysicSixDofConstraintManager.hpp"
 // #include "constraints/cone-twist/AbstractPhysicConeTwistConstraintManager.hpp"
 
 #include "queries/query-shape/QueryShape.hpp"
-#include "queries/raycaster/Raycaster.hpp"
+#include "queries/ray-caster/RayCaster.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -55,7 +55,7 @@ class PhysicWorld {
   friend PhysicSixDofConstraintManager;
   friend PhysicConeTwistConstraintManager;
   friend QueryShape;
-  friend Raycaster;
+  friend RayCaster;
 
 public:
   typedef std::vector<glm::vec3> t_vertices;
@@ -94,6 +94,11 @@ public:
 
 public:
   void setDebuggerPushLine(const debuggerPushLineCallback& callback);
+
+  void setDebugAABB(bool isEnabled);
+  void setDebugContacts(bool isEnabled);
+  void setDebugConstraints(bool isEnabled);
+  void setDebugConstraintLimits(bool isEnabled);
 
 public:
   void setGravity(float inX, float inY, float inZ);
@@ -145,11 +150,11 @@ public:
   //   AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager();
   //   const AbstractPhysicUniversalConstraintManager& getPhysicUniversalConstraintManager() const;
 
-  // private:
-  //   std::unique_ptr<AbstractPhysicSixDofConstraintManager> _physicSixDofConstraintManager;
-  // public:
-  //   AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager();
-  //   const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const;
+private:
+  std::unique_ptr<AbstractPhysicSixDofConstraintManager> _physicSixDofConstraintManager;
+public:
+  AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager();
+  const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const;
 
   // private:
   //   std::unique_ptr<AbstractPhysicConeTwistConstraintManager> _physicConeTwistConstraintManager;
@@ -171,13 +176,13 @@ public:
 
   //
   //
-  // raycast
+  // rayCast
 
 private:
-  Raycaster _raycaster;
+  RayCaster _rayCaster;
 
 public:
-  Raycaster& getRaycaster();
+  RayCaster& getRayCaster();
 
 private:
   QueryShape _queryShape;

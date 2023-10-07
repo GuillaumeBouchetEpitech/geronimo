@@ -3,8 +3,9 @@
 
 #include "StateManager.hpp"
 
-#include "application/context/logic/inputManagers/KeyboardManager.hpp"
-#include "application/context/logic/inputManagers/MouseManager.hpp"
+#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
+#include "geronimo/graphics/input-managers/MouseManager.hpp"
+// #include "geronimo/graphics/input-managers/TouchManager.hpp"
 
 #include "application/context/Context.hpp"
 #include "application/context/graphics/Scene.hpp"
@@ -12,7 +13,7 @@
 
 #include "geronimo/helpers/GLMath.hpp"
 // #include "geronimo/physics/body/PhysicBody.hpp"
-#include "geronimo/physics/queries/raycaster/Raycaster.hpp"
+#include "geronimo/physics/queries/ray-caster/RayCaster.hpp"
 #include "geronimo/system/math/constants.hpp"
 
 void State_Running::enter() {
@@ -88,10 +89,10 @@ void State_Running::update(uint32_t delta) {
   auto& context = Context::get();
 
   auto& performanceProfiler = context.logic.performanceProfiler;
-  performanceProfiler.stop("complete frame");
-  performanceProfiler.start("complete frame");
+  performanceProfiler.stop("FRAME");
+  performanceProfiler.start("FRAME");
 
-  performanceProfiler.start("update");
+  performanceProfiler.start("1 UPDATE");
 
   auto& mouse = MouseManager::get();
 
@@ -107,12 +108,16 @@ void State_Running::update(uint32_t delta) {
     // if (context.inputs.mouse.buttons[SDL_BUTTON_LEFT] == true) {
     // }
 
+    performanceProfiler.start("1 update physic");
+
     constexpr uint32_t k_maxSubSteps = 3;
     constexpr float k_fixedStep = 1.0f / 60.0f;
     context.physic.world->step(elapsedTime, k_maxSubSteps, k_fixedStep);
+
+    performanceProfiler.stop("1 update physic");
   }
 
-  performanceProfiler.stop("update");
+  performanceProfiler.stop("1 UPDATE");
 }
 
 void State_Running::render(const SDL_Window&) {
@@ -120,16 +125,16 @@ void State_Running::render(const SDL_Window&) {
   auto& context = Context::get();
 
   auto& performanceProfiler = context.logic.performanceProfiler;
-  performanceProfiler.stop("render frame");
-  performanceProfiler.start("render frame");
+  performanceProfiler.stop("2 render frame");
+  performanceProfiler.start("2 render frame");
 
-  performanceProfiler.start("render");
+  performanceProfiler.start("2 RENDER");
 
   Scene::updateMatrices();
 
   Scene::renderAll();
 
-  performanceProfiler.stop("render");
+  performanceProfiler.stop("2 RENDER");
 }
 
 void State_Running::resize(uint32_t width, uint32_t height) {

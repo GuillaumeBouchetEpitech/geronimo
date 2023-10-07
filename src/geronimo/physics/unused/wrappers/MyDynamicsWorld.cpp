@@ -1,8 +1,6 @@
 
 #include "MyDynamicsWorld.hpp"
 
-#include <iostream>
-
 namespace /*anonymous*/
 {
 

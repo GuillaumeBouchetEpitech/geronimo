@@ -121,52 +121,55 @@ void ResultQuadRenderer::render(const glm::vec3& sunLightDirection,
   if (inHudCamera.getProjectionType() != Camera::ProjectionType::orthographic)
     D_THROW(std::runtime_error, "hud camera is not set with a orthographic projection");
 
-  _quadShader->bind();
+  _quadShader->preBind([&](IBoundShaderProgram& bound)
+  {
 
-  _quadShader->setUniform("u_composedMatrix", inHudCamera.getMatricesData().composed);
-  _quadShader->setUniform("u_ambiantCoef", ambiantLightCoef);
-  _quadShader->setUniform("u_viewPos", inSceneCamera.getEye());
-  _quadShader->setUniform("u_sunLightDirection", sunLightDirection);
+    bound.setUniform("u_composedMatrix", inHudCamera.getMatricesData().composed);
+    bound.setUniform("u_ambiantCoef", ambiantLightCoef);
+    bound.setUniform("u_viewPos", inSceneCamera.getEye());
+    bound.setUniform("u_sunLightDirection", sunLightDirection);
 
-  _quadShader->setUniform("u_viewMatrix", inSceneCamera.getMatricesData().view);
+    bound.setUniform("u_viewMatrix", inSceneCamera.getMatricesData().view);
 
-  _quadShader->setUniform("u_screenWidth", 800.0f);
-  _quadShader->setUniform("u_screenHeight", 600.0f);
-  _quadShader->setUniform("u_camNear", inSceneCamera.getProjectionData().perspective.near);
-  _quadShader->setUniform("u_zStride", inZStride);
+    bound.setUniform("u_screenWidth", 800.0f);
+    bound.setUniform("u_screenHeight", 600.0f);
+    bound.setUniform("u_camNear", inSceneCamera.getProjectionData().perspective.near);
+    bound.setUniform("u_zStride", inZStride);
 
-  _quadShader->setUniform("u_numXSlices", int32_t(clusterDef.clusterSliceX));
-  _quadShader->setUniform("u_numYSlices", int32_t(clusterDef.clusterSliceY));
-  _quadShader->setUniform("u_maxLightsPerCluster", int32_t(clusterDef.maxLightsPerCluster));
+    bound.setUniform("u_numXSlices", int32_t(clusterDef.clusterSliceX));
+    bound.setUniform("u_numYSlices", int32_t(clusterDef.clusterSliceY));
+    bound.setUniform("u_maxLightsPerCluster", int32_t(clusterDef.maxLightsPerCluster));
 
-  struct TextureBinding {
-    std::string_view name;
-    const gero::graphics::Texture& texture;
-  };
+    struct TextureBinding {
+      std::string_view name;
+      const gero::graphics::Texture& texture;
+    };
 
-  struct DataTextureBinding {
-    std::string_view name;
-    const gero::graphics::DataTexture& texture;
-  };
+    struct DataTextureBinding {
+      std::string_view name;
+      const gero::graphics::DataTexture& texture;
+    };
 
-  const std::array<TextureBinding, 6> allTextures = {{
-    {"u_colorTexture", colorTexture},
-    {"u_positionTexture", positionTexture},
-    {"u_normalTexture", normalTexture},
-    {"u_depthTexture", depthTexture},
-    {"u_clusterDataTexture", clusterDataTexture.getTexture()},
-    {"u_lightsDataTexture", lightsDataTexture.getTexture()},
-  }};
+    const std::array<TextureBinding, 6> allTextures = {{
+      {"u_colorTexture", colorTexture},
+      {"u_positionTexture", positionTexture},
+      {"u_normalTexture", normalTexture},
+      {"u_depthTexture", depthTexture},
+      {"u_clusterDataTexture", clusterDataTexture.getTexture()},
+      {"u_lightsDataTexture", lightsDataTexture.getTexture()},
+    }};
 
-  for (std::size_t index = 0; index < allTextures.size(); ++index) {
-    const TextureBinding& currData = allTextures.at(index);
-    GlContext::Texture::active(uint32_t(index));
-    auto location = _quadShader->getUniform(currData.name.data());
-    _quadShader->setUniform(location, int32_t(index));
-    currData.texture.bind();
-  }
+    for (std::size_t index = 0; index < allTextures.size(); ++index) {
+      const TextureBinding& currData = allTextures.at(index);
+      GlContext::Texture::active(uint32_t(index));
+      auto location = _quadShader->getUniform(currData.name.data());
+      _quadShader->setUniform(location, int32_t(index));
+      currData.texture.bind();
+    }
 
-  _quadGeometry.render();
+    _quadGeometry.render();
+
+  });
 
   GlContext::Texture::active(0);
 }

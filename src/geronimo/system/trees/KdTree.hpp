@@ -162,7 +162,7 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::_searchWithRadius(const std
     other = branch.leftNode;
   }
 
-  const int32_t nextAxis = (inCurrAxis + 1) % int32_t(T_Dimension);
+  const int32_t nextAxis = (inCurrAxis + 1 == int32_t(T_Dimension)) ? 0 : inCurrAxis + 1;
 
   _searchWithRadius(section, inPosition, inSquareRadius, nextAxis, outResults, inMaxSize);
   if (squareAxisDiff < inSquareRadius) {
@@ -182,12 +182,17 @@ GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& in
 
   if (inLength > 1) {
     // sort along current axis
-    std::nth_element(inBeginIt,
-                     inBeginIt + std::distance(inBeginIt, inEndIt) / 2,
-                     inEndIt,
-                     [inCurrAxis](const GenericKDTree::IndexedVec& inA, const GenericKDTree::IndexedVec& inB) {
-                       return inA.position[inCurrAxis] < inB.position[inCurrAxis];
-                     });
+
+    auto middleIt = inBeginIt + std::distance(inBeginIt, inEndIt) / 2;
+
+    auto lessCallback = [inCurrAxis](
+      const GenericKDTree::IndexedVec& inA,
+      const GenericKDTree::IndexedVec& inB
+    ) {
+      return inA.position[inCurrAxis] < inB.position[inCurrAxis];
+    };
+
+    std::nth_element(inBeginIt, middleIt, inEndIt, lessCallback);
   }
 
   const size_t leftLength = inLength / 2;
@@ -199,7 +204,7 @@ GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& in
     return std::make_shared<TreeNode>(*middleIt, nullptr, nullptr);
   }
 
-  const int32_t nextAxis = (inCurrAxis + 1) % int32_t(T_Dimension);
+  const int32_t nextAxis = (inCurrAxis + 1 == int32_t(T_Dimension)) ? 0 : inCurrAxis + 1;
 
   std::shared_ptr<TreeNode> nextLeftNode = nullptr;
   if (leftLength > 0) {

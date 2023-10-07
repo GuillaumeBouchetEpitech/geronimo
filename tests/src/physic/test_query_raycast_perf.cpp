@@ -3,7 +3,7 @@
 
 #include "geronimo/system/metrics/Clock.hpp"
 
-TEST(physic_wrapper_perf, raycast_closest_static_object) {
+TEST(physic_wrapper_perf, rayCast_closest_static_object) {
   gero::physics::PhysicWorld world;
 
   gero::physics::PhysicBodyDef bodyDef;
@@ -16,39 +16,39 @@ TEST(physic_wrapper_perf, raycast_closest_static_object) {
 
   world.step(0, 0, 0);
 
-  gero::physics::Raycaster::RaycastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
+  gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
   paramsRay.collisionGroup = -1;
   paramsRay.collisionMask = -1;
-  paramsRay.type = gero::physics::Raycaster::RaycastParams::Type::closest;
+  paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::closest;
   paramsRay.toIgnore = nullptr;
 
-  gero::physics::Raycaster::RaycastParams paramsSphere = paramsRay;
+  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
   paramsSphere.radius = 1.0f;
 
-  // gero::physics::Raycaster::RaycastParams::ResultArray<5> resultRayStack;
-  std::vector<gero::physics::Raycaster::RaycastParams::ResultArray<5>> allResultsRayStack;
+  // gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
+  std::vector<gero::physics::RayCaster::RayCastParams::ResultArray<5>> allResultsRayStack;
   allResultsRayStack.resize(1024 * 10);
 
   gero::metrics::Clock tmpClock;
   tmpClock.start();
 
   for (auto& currResult : allResultsRayStack) {
-    world.getRaycaster().raycast(paramsRay, currResult);
+    world.getRayCaster().rayCast(paramsRay, currResult);
   }
 
   tmpClock.stop();
 
   D_MYLOG("duration: " << tmpClock.getDuration());
 
-  // std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultRayHeap;
-  // world.getRaycaster().raycast(paramsRay, resultRayHeap);
+  // std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
+  // world.getRayCaster().rayCast(paramsRay, resultRayHeap);
 
-  // gero::physics::Raycaster::RaycastParams::ResultArray<5> resultSphereStack;
-  // world.getRaycaster().raycast(paramsSphere, resultSphereStack);
+  // gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
+  // world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
-  // std::vector<gero::physics::Raycaster::RaycastParams::ResultImpact> resultSphereHeap;
-  // world.getRaycaster().raycast(paramsSphere, resultSphereHeap);
+  // std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
+  // world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   for (auto& currResult : allResultsRayStack) {
     ASSERT_EQ(currResult.hasHit, true);

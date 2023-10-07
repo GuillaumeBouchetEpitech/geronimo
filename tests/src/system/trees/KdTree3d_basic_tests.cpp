@@ -31,7 +31,7 @@ TEST(trees_KdTree3d, must_find_correct_number_of_object) {
 
   myKDTree.build(allPoints);
 
-  myKdTree::IndexedResultArr found;
+  myKdTree::IndexedVecArr found;
   found.reserve(allPoints.size());
 
   int totalFound = 0;
@@ -76,7 +76,7 @@ TEST(trees_KdTree3d, must_find_correct_object_in_range) {
 
   myKDTree.build(allPoints);
 
-  myKdTree::IndexedResultArr found;
+  myKdTree::IndexedVecArr found;
   found.reserve(allPoints.size());
 
   for (const auto& toSearchPoint : allPoints) {

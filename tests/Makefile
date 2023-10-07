@@ -26,6 +26,9 @@ SRC+= \
 		$(DIR_SRC)/system/parser-utils/*.cpp \
 		$(DIR_SRC)/system/compression/*.cpp \
 		$(DIR_SRC)/system/math/*.cpp \
+		$(DIR_SRC)/system/math/2d/collisions/*.cpp \
+		$(DIR_SRC)/system/math/2d/convex-polygon/*.cpp \
+		$(DIR_SRC)/system/filtering/*.cpp \
 		$(DIR_SRC)/system/multithreading/*.cpp \
 		$(DIR_SRC)/system/trees/*.cpp \
 	)

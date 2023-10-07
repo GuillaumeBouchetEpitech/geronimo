@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../Raycaster.hpp"
+#include "../RayCaster.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
 #include "geronimo/physics/PhysicWorld.hpp"
@@ -15,14 +15,14 @@ template <typename ResultCallback> struct BaseCustomRayResultCallback : public R
 
   PhysicWorld& _physicWorld;
   void* _toIgnore;
-  Raycaster::RaycastParams::Type _type;
-  Raycaster::OnNewPhysicBodyCallback _onNewPhysicBodyCallback;
+  RayCaster::RayCastParams::Type _type;
+  RayCaster::OnNewPhysicBodyCallback _onNewPhysicBodyCallback;
   bool _isCompleted = false;
 
   BaseCustomRayResultCallback(PhysicWorld& physicWorld,
                               void* toIgnore,
-                              Raycaster::RaycastParams::Type type,
-                              const Raycaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
+                              RayCaster::RayCastParams::Type type,
+                              const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)
     : _physicWorld(physicWorld), _toIgnore(toIgnore), _type(type), _onNewPhysicBodyCallback(onNewPhysicBodyCallback) {}
 
   bool _isValid(const btCollisionObject* pCollisionObject) const {

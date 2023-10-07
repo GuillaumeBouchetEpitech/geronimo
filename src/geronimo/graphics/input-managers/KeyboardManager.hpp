@@ -1,9 +1,11 @@
 
 #pragma once
 
+#include "geronimo/system/NonCopyable.hpp"
+
 #include <unordered_set>
 
-class KeyboardManager {
+class KeyboardManager : public gero::NonCopyable {
 private:
   KeyboardManager() = default;
   ~KeyboardManager() = default;

@@ -1,6 +1,22 @@
 
 # Changelog
 
+
+
+## [0.0.15] - ????-??-??
+### Changed
+- feat: graphics, input managers (keyboard, mouse, touchscreen)
+- feat: graphics, sdl2 window set size now exposed
+- feat: physics, 6dof constraint
+- feat: physics, rigid body definition exposing more options
+- feat: system, reduced iostream inclusion for faster compile time
+- feat: system, 2d polygon helpers
+- feat: system, kd-tree minor perf improvement
+- feat: system, bit-mask templated abstraction
+- chore: samples, test-bed updated
+
+
+
 ## [0.0.14] - 2023-08-??
 ### Changed
 - feat: generic KdTree

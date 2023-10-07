@@ -97,37 +97,40 @@ void ResultQuadRenderer::render(const glm::vec3& eyePos,
                                 const gero::graphics::Texture& specularCoefTexture,
                                 float ambiantLightCoef) {
 
-  _quadShader->bind();
-  _quadShader->setUniform("u_composedMatrix", composedMatrix);
-  _quadShader->setUniform("u_ambiantCoef", ambiantLightCoef);
-  _quadShader->setUniform("u_viewPos", eyePos);
-  _quadShader->setUniform("u_sunLightDirection", sunLightDirection);
+  _quadShader->preBind([&](IBoundShaderProgram& bound)
+  {
+    bound.setUniform("u_composedMatrix", composedMatrix);
+    bound.setUniform("u_ambiantCoef", ambiantLightCoef);
+    bound.setUniform("u_viewPos", eyePos);
+    bound.setUniform("u_sunLightDirection", sunLightDirection);
 
-  struct TextureData {
-    std::string_view name;
-    const gero::graphics::Texture& texture;
-  };
+    struct TextureData {
+      std::string_view name;
+      const gero::graphics::Texture& texture;
+    };
 
-  const std::array<TextureData, 6> allTextures = {{
-    {"u_colorTexture", colorTexture},
-    {"u_positionTexture", positionTexture},
-    {"u_normalTexture", normalTexture},
-    {"u_depthTexture", depthTexture},
-    {"u_diffuseCoefTexture", diffuseCoefTexture},
-    {"u_specularCoefTexture", specularCoefTexture},
-  }};
+    const std::array<TextureData, 6> allTextures = {{
+      {"u_colorTexture", colorTexture},
+      {"u_positionTexture", positionTexture},
+      {"u_normalTexture", normalTexture},
+      {"u_depthTexture", depthTexture},
+      {"u_diffuseCoefTexture", diffuseCoefTexture},
+      {"u_specularCoefTexture", specularCoefTexture},
+    }};
 
-  for (std::size_t index = 0; index < allTextures.size(); ++index) {
-    const TextureData& currData = allTextures.at(index);
-    GlContext::Texture::active(uint32_t(index));
-    auto location = _quadShader->getUniform(currData.name.data());
-    _quadShader->setUniform(location, int32_t(index));
-    currData.texture.bind();
-  }
+    for (std::size_t index = 0; index < allTextures.size(); ++index) {
+      const TextureData& currData = allTextures.at(index);
+      GlContext::Texture::active(uint32_t(index));
+      auto location = bound.getUniform(currData.name.data());
+      bound.setUniform(location, int32_t(index));
+      currData.texture.bind();
+    }
 
-  _quadGeometry.render();
+    _quadGeometry.render();
 
-  GlContext::Texture::active(0);
+    GlContext::Texture::active(0);
+
+  });
 }
 
 } // namespace slowDeferred

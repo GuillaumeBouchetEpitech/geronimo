@@ -7,7 +7,7 @@
 - [Online Demo Link](#online-demo-link)
   - [Diagrams](#diagrams)
 - [Dependencies](#dependencies)
-  - [Dependency: Emscripten 3.1.26 (for web-wasm build)](#dependency-emscripten-3126-for-web-wasm-build)
+  - [Dependency: Emscripten 3.1.44 (for web-wasm build)](#dependency-emscripten-3144-for-web-wasm-build)
   - [Dependency: SDL2 (for native build)](#dependency-sdl2-for-native-build)
   - [Dependency: bullet3, glm, tinyobjloader, stb](#dependency-bullet3-glm-tinyobjloader-stb)
 - [How to Build (Quick)](#how-to-build-quick)
@@ -31,7 +31,7 @@ https://guillaumebouchetepitech.github.io/geronimo/samples/test-bed/dist/index.h
 
 mindmap
   root((gero))
-    system
+    ((system))
       containers
         dynamic
           double<br>linked<br>list
@@ -46,7 +46,7 @@ mindmap
         parser
       multi threading
       logger
-    graphics
+    ((graphics))
       camera
       sld2
       obj loader
@@ -69,7 +69,7 @@ mindmap
         frame<br>buffer
         render<br>buffer
         resource<br>manager
-    physics
+    ((physics))
       bullet<br>physics
         physic<br>world
         physic<br>shape
@@ -83,23 +83,59 @@ mindmap
           convex<br>shape
           ray<br>cast
           convex<br>cast
-    audio
+        physic<br>constraints
+          hinge
+          6dof
+    ((audio))
       OpenAL<br>context
       ogg loaded
 
 ```
 
 
+```mermaid
+
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#242424',
+      'primaryTextColor': '#DDD',
+      'primaryBorderColor': '#000',
+      'lineColor': '#A0A0A0',
+      'secondaryColor': '#454545',
+      'tertiaryColor': '#353535'
+    }
+  }
+}%%
+
+  erDiagram
+
+    SYSTEM ||--o{ GRAPHIC : dependency
+    SYSTEM ||--o{ AUDIO : dependency
+    SYSTEM ||--o{ PHYSICS : dependency
+
+    SYSTEM ||--|| GLM : dependency
+    GRAPHIC ||--|| SDL2 : dependency
+    GRAPHIC ||--|| TINY_OBJ_LOADER : dependency
+    GRAPHIC ||--|| STB_IMAGE : dependency
+    AUDIO ||--|| OPENAL : dependency
+    AUDIO ||--|| STB_VORBIS : dependency
+    PHYSICS ||--|| BULLET_PHYSICS : dependency
+
+```
+
+
 # Dependencies
 
-## Dependency: Emscripten 3.1.26 (for web-wasm build)
+## Dependency: Emscripten 3.1.44 (for web-wasm build)
 ```bash
 git clone https://github.com/emscripten-core/emsdk.git
 
 cd emsdk
 
-./emsdk install 3.1.26
-./emsdk activate --embedded 3.1.26
+./emsdk install 3.1.44
+./emsdk activate --embedded 3.1.44
 
 . ./emsdk_env.sh
 

@@ -95,21 +95,24 @@ void GeometriesStackRenderer::renderAll() {
   if (_aliasedGeometriesMap.empty())
     return;
 
-  _shader->bind();
-  _shader->setUniform("u_composedMatrix", _matricesData.composed);
-  // _shader->setUniform("u_ambiantCoef", 0.2f);
+  _shader->preBind([this](gero::graphics::IBoundShaderProgram& bound)
+  {
+    bound.setUniform("u_composedMatrix", _matricesData.composed);
+    // bound.setUniform("u_ambiantCoef", 0.2f);
 
-  for (const auto& pair : _aliasedGeometriesMap) {
-    auto& vertices = pair.second->instanceVertices;
-    if (vertices.empty())
-      continue;
+    for (const auto& pair : _aliasedGeometriesMap) {
+      auto& vertices = pair.second->instanceVertices;
+      if (vertices.empty())
+        continue;
 
-    auto& geometry = pair.second->geometry;
+      auto& geometry = pair.second->geometry;
 
-    geometry.updateOrAllocateBuffer(1, vertices);
-    geometry.setInstancedCount(uint32_t(vertices.size()));
-    geometry.render();
+      geometry.updateOrAllocateBuffer(1, vertices);
+      geometry.setInstancedCount(uint32_t(vertices.size()));
+      geometry.render();
 
-    vertices.clear();
-  }
+      vertices.clear();
+    }
+
+  });
 }

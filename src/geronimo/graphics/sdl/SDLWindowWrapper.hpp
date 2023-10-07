@@ -51,6 +51,12 @@ public:
   void update(uint32_t deltaTime);
   void render();
 
+public:
+  void setWindowPosition(int32_t x, int32_t y);
+  void setWindowSize(uint32_t width, uint32_t height);
+  void setMinimumWindowSize(uint32_t width, uint32_t height);
+  void setMaximumWindowSize(uint32_t width, uint32_t height);
+
 protected:
   virtual void _onEvent(const SDL_Event& event) = 0; // TODO: convert event?
   virtual void _onUpdate(uint32_t deltaTime) = 0;

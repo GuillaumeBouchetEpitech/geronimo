@@ -8,7 +8,6 @@
 
 #include <vector>
 // #include <functional>
-#include <iostream>
 #include <utility>
 
 namespace gero {

@@ -248,34 +248,42 @@ void Context::initializePhysicResources() {
 
   //     gero::physics::PhysicBodyDef defB;
   //     defB.shape.type = gero::physics::PhysicShapeDef::Type::box;
-  //     defB.shape.data.box.size = {3, 2, 1};
+  //     defB.shape.data.box.size = {1, 3, 1};
   //     defB.mass = 1.0f;
   //     auto bodyB = this->physic.world->getPhysicBodyManager().createAndAddBody(defB);
-  //     bodyB->setPosition(k_anchor + glm::vec3(3,0,0));
-  //     bodyB->applyCentralImpulse(glm::vec3(1,1,1));
+  //     bodyB->setPosition(k_anchor + glm::vec3(0,2,0)); // joint will override that
+  //     // bodyB->applyCentralImpulse(glm::vec3(1,0,0));
 
-  // #if 1
+  // // #if 1
 
-  //     gero::physics::PhysicConeTwistConstraintDef constraintDef;
-  //     constraintDef.body_a = bodyA;
-  //     constraintDef.body_b = bodyB;
-  //     constraintDef.center = k_anchor;
-  //     // constraintDef.center = glm::vec3(0,0,0);
+  // //     gero::physics::PhysicConeTwistConstraintDef constraintDef;
+  // //     constraintDef.body_a = bodyA;
+  // //     constraintDef.body_b = bodyB;
+  // //     constraintDef.center = k_anchor;
+  // //     // constraintDef.center = glm::vec3(0,0,0);
 
-  //     auto constraintRef = this->physic.world->getPhysicConeTwistConstraintManager().createAndAdd(constraintDef);
+  // //     auto constraintRef = this->physic.world->getPhysicConeTwistConstraintManager().createAndAdd(constraintDef);
 
-  //     constraintRef->setLimit(0.0f, 0.0f, 0.0f, 0, 0, 0);
-  //     constraintRef->setDamping(false);
-  //     constraintRef->setAngularOnly(true);
+  // //     constraintRef->setLimit(0.0f, 0.0f, 0.0f, 0, 0, 0);
+  // //     constraintRef->setDamping(false);
+  // //     constraintRef->setAngularOnly(true);
 
-  // #else
+  // // #else
   //     gero::physics::PhysicSixDofConstraintDef constraintDef;
   //     constraintDef.body_a = bodyA;
   //     constraintDef.body_b = bodyB;
   //     // constraintDef.center = k_anchor;
-  //     constraintDef.center = glm::vec3(0,0,0);
+  //     // constraintDef.center = glm::vec3(0,0,0);
+  //     constraintDef.transform_a = glm::identity<glm::mat4>();
+  //     constraintDef.transform_b = glm::identity<glm::mat4>();
+  //     constraintDef.transform_b = glm::translate(constraintDef.transform_b, glm::vec3(0,2,0));
+  //     // constraintDef.transform_b = glm::rotate(constraintDef.transform_b, 0.1f, glm::vec3(0,0,1));
 
   //     auto constraintRef = this->physic.world->getPhysicSixDofConstraintManager().createAndAdd(constraintDef);
+
+
+  //     constraintRef->setAxis(glm::vec3(0,0,1), glm::vec3(0,1,0));
+
 
   //     constraintRef->setLinearLowerLimit(glm::vec3(0,0,0));
   //     constraintRef->setLinearUpperLimit(glm::vec3(0,0,0));
@@ -287,9 +295,109 @@ void Context::initializePhysicResources() {
   //     // constraintRef->setAngularLowerLimit(-glm::vec3(0, 0, 0));
   //     // constraintRef->setAngularUpperLimit(+glm::vec3(0, 0, 0));
 
+  //     glm::vec3 angularLowerLimit = glm::vec3(0,0,0);
+  //     glm::vec3 angularUpperLimit = glm::vec3(0,0,0);
+
+  //     // angularLowerLimit.x = 0.0f;
+  //     // angularUpperLimit.x = 0.0f;
+  //     angularLowerLimit.x = -gero::math::pi * 0.7f;
+  //     angularUpperLimit.x = -gero::math::pi * 0.3f;
+
+  //     // angularLowerLimit.y = -gero::math::pi * 0.1f;
+  //     // angularUpperLimit.y = -gero::math::pi * 0.9f;
+  //     // angularLowerLimit.y = -gero::math::pi * 0.0f;
+  //     // angularUpperLimit.y = +gero::math::pi * 1.0f;
+  //     angularLowerLimit.y = 0;
+  //     angularUpperLimit.y = 0;
+  //     // angularLowerLimit.y = -gero::math::pi * 0.9f;
+  //     // angularUpperLimit.y = -gero::math::pi * 0.1f;
+
+  //     angularLowerLimit.z = 0.0f;
+  //     angularUpperLimit.z = 0.0f;
+
+  //     constraintRef->setAngularLowerLimit(angularLowerLimit);
+  //     constraintRef->setAngularUpperLimit(angularUpperLimit);
+
   //     // constraintRef->setLowerLimit(gero::math::pi * -0.6f, gero::math::hpi * -0.5f);
   //     // constraintRef->setUpperLimit(gero::math::hpi * +0.1f, gero::math::hpi * +0.1f);
-  // #endif
+  // // #endif
 
   //   }
+
+
+
+
+
+
+
+
+
+
+    {
+
+      const glm::vec3 k_anchor = glm::vec3(5,-15,10);
+
+      gero::physics::PhysicBodyDef defA;
+      defA.shape.type = gero::physics::PhysicShapeDef::Type::box;
+      defA.shape.data.box.size = {1, 1, 1};
+      defA.mass = 0.0f;
+      auto bodyA = this->physic.world->getPhysicBodyManager().createAndAddBody(defA);
+      bodyA->setPosition(k_anchor + glm::vec3(0,0,0));
+
+      gero::physics::PhysicBodyDef defB;
+      defB.shape.type = gero::physics::PhysicShapeDef::Type::box;
+      defB.shape.data.box.size = {1, 1, 3};
+      defB.mass = 0.1f;
+      auto bodyB = this->physic.world->getPhysicBodyManager().createAndAddBody(defB);
+      bodyB->setPosition(k_anchor + glm::vec3(0,0,0)); // joint will override that
+
+
+
+
+      gero::physics::PhysicSixDofConstraintDef constraintDef;
+      constraintDef.body_a = bodyA;
+      constraintDef.body_b = bodyB;
+      constraintDef.transform_a = glm::identity<glm::mat4>();
+      constraintDef.transform_b = glm::identity<glm::mat4>();
+      constraintDef.transform_b = glm::translate(constraintDef.transform_b, glm::vec3(0,0,2));
+      // constraintDef.transform_b = glm::rotate(constraintDef.transform_b, 0.1f, glm::vec3(0,0,1));
+
+      auto constraintRef = this->physic.world->getPhysicSixDofConstraintManager().createAndAdd(constraintDef);
+
+      constraintRef->setLinearLowerLimit(glm::vec3(0,0,0));
+      constraintRef->setLinearUpperLimit(glm::vec3(0,0,0));
+
+      glm::vec3 angularLowerLimit = glm::vec3(0,0,0);
+      glm::vec3 angularUpperLimit = glm::vec3(0,0,0);
+
+      angularLowerLimit.x = gero::math::pi * -0.2f;
+      angularUpperLimit.x = gero::math::pi * +0.2f;
+
+      angularLowerLimit.y = gero::math::pi * +0.0f;
+      angularUpperLimit.y = gero::math::pi * +0.0f;
+
+      angularLowerLimit.z = gero::math::pi * -0.2f;
+      angularUpperLimit.z = gero::math::pi * +0.2f;
+
+      constraintRef->setAngularLowerLimit(angularLowerLimit);
+      constraintRef->setAngularUpperLimit(angularUpperLimit);
+
+
+      bodyB->applyCentralImpulse(glm::vec3(1,1,0));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

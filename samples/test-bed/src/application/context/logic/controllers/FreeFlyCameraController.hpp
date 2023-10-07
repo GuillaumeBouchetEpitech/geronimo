@@ -17,7 +17,7 @@ private:
 
   // glm::vec3 _target = { 0, 0, 0 };
 
-  // float _raycastCooldown = 0.0f;
+  // float _rayCastCooldown = 0.0f;
 
 public:
   FreeFlyCameraController() = default;

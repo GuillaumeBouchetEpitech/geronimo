@@ -21,6 +21,8 @@
 #include "geronimo/system/math/clamp.hpp"
 #include "geronimo/system/math/constants.hpp"
 
+#include <iomanip>
+
 using namespace gero::graphics;
 using namespace gero::graphics::GlContext;
 
@@ -42,7 +44,7 @@ void Scene::renderAll() {
   auto& performanceProfiler = context.logic.performanceProfiler;
 
   {
-    performanceProfiler.start("render scene");
+    performanceProfiler.start("2 render scene");
 
     context.graphic.scene.deferred.startRecording();
 
@@ -53,15 +55,15 @@ void Scene::renderAll() {
     context.graphic.scene.deferred.setEyePosition(context.graphic.camera.scene.getEye());
     context.graphic.scene.deferred.applySpotLights(context.graphic.camera.scene);
 
-    performanceProfiler.stop("render scene");
+    performanceProfiler.stop("2 render scene");
   }
 
   {
-    performanceProfiler.start("render hud");
+    performanceProfiler.start("2 render hud");
 
     Scene::_renderHud();
 
-    performanceProfiler.stop("render hud");
+    performanceProfiler.stop("2 render hud");
   }
 }
 
@@ -136,14 +138,14 @@ void Scene::_renderScene() {
       wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1000), glm::vec3(0, 0, 1));
 
       const auto getGroundPos = [&context](const glm::vec3& inOrigin) {
-        gero::physics::Raycaster::RaycastParams params(inOrigin + glm::vec3(0, 0, +100),
+        gero::physics::RayCaster::RayCastParams params(inOrigin + glm::vec3(0, 0, +100),
                                                        inOrigin + glm::vec3(0, 0, -100));
         params.collisionGroup = -1;
         params.collisionMask = -1;
         params.radius = 0.0f;
 
-        gero::physics::Raycaster::RaycastParams::ResultArray<1> result;
-        context.physic.world->getRaycaster().raycast(params, result);
+        gero::physics::RayCaster::RayCastParams::ResultArray<1> result;
+        context.physic.world->getRayCaster().rayCast(params, result);
 
         if (result.hasHit && result.allImpactsTotal > 0) {
           const auto& impact = result.allImpactsData.front();
@@ -248,99 +250,68 @@ void Scene::_renderHud() {
 
     {
 
+      auto& textRenderer = graphic.hud.textRenderer;
+
+      const auto& timeDataMap = context.logic.performanceProfiler.getHistoricalTimeDataMap();
+
+      const gero::graphics::TextRenderer::State state0 = {glm::vec4(1.0f,1.0f,1.0f,1), glm::vec4(0,0,0,1)};
+      const gero::graphics::TextRenderer::State state1 = {glm::vec4(1.0f,1.0f,0.5f,1), glm::vec4(0,0,0,1)};
+      const gero::graphics::TextRenderer::State state2 = {glm::vec4(0.5f,1.0f,0.5f,1), glm::vec4(0,0,0,1)};
+      const gero::graphics::TextRenderer::State state3 = {glm::vec4(1.0f,0.5f,0.5f,1), glm::vec4(0,0,0,1)};
+
       std::stringstream sstr;
+      for (const auto& timeData : timeDataMap) {
 
-      {
+        if (timeData.first[0] != '1')
+          continue;
 
-        // auto& timeDataMap = context.logic.performanceProfiler.getTimeDataMap();
+        const int32_t avgIndex = timeData.second.getAverageDuration() > 0 ? 1 : 0;
+        const int32_t minIndex = timeData.second.getMinDuration() > 0 ? 2 : 0;
+        const int32_t maxIndex = timeData.second.getMaxDuration() > 0 ? 3 : 0;
 
-        const auto& performanceProfiler = context.logic.performanceProfiler;
-        const auto& allDataKeys = performanceProfiler.getAllDataKeys();
-        for (const auto& keyName : allDataKeys) {
-          if (const auto timeDataRef = performanceProfiler.tryGetTimeData(keyName)) {
-            const auto& timeData = timeDataRef->get();
-
-            const int32_t latestDuration = timeData.getLatestDuration();
-            const int32_t averageDuration = timeData.getAverageDuration();
-
-            sstr << keyName << ":";
-            sstr << std::endl;
-
-            gero::graphics::helpers::writeTime(sstr, latestDuration, 0);
-            sstr << std::endl;
-
-            if (averageDuration > 0 && averageDuration < 999) {
-              sstr << "~";
-              gero::graphics::helpers::writeTime(sstr, averageDuration, 0);
-              sstr << std::endl;
-            }
-            sstr << std::endl;
-          }
-        }
-
-        if (auto timeDataRef = performanceProfiler.tryGetTimeData("update frame")) {
-          const auto& timeData = timeDataRef->get();
-
-          const int32_t latestDuration = timeData.getLatestDuration();
-          const int32_t averageDuration = timeData.getAverageDuration();
-          const int32_t latestFpsValue = int32_t(1000.0f / float(latestDuration));
-
-          sstr << "FPS (update):" << std::endl;
-          sstr << latestFpsValue << "fps" << std::endl;
-
-          if (averageDuration > 0) {
-            const int32_t averageFpsValue = int32_t(1000.0f / float(averageDuration));
-            if (averageFpsValue > 0 && averageFpsValue < 999) {
-              sstr << "~" << averageFpsValue << "fps" << std::endl;
-            }
-          }
-          sstr << std::endl;
-        }
-
-        if (auto timeDataRef = performanceProfiler.tryGetTimeData("render frame")) {
-          const auto& timeData = timeDataRef->get();
-
-          const int32_t latestDuration = timeData.getLatestDuration();
-          const int32_t averageDuration = timeData.getAverageDuration();
-          const int32_t latestFpsValue = int32_t(1000.0f / float(latestDuration));
-
-          sstr << "FPS (render):" << std::endl;
-          sstr << latestFpsValue << "fps" << std::endl;
-
-          if (averageDuration > 0) {
-            const int32_t averageFpsValue = int32_t(1000.0f / float(averageDuration));
-            if (averageFpsValue > 0 && averageFpsValue < 999) {
-              sstr << "~" << averageFpsValue << "fps" << std::endl;
-            }
-          }
-          sstr << std::endl;
-        }
+        sstr << "${0}" << std::left << std::setw(15) << timeData.first;
+        sstr << " " << std::setw(2) << timeData.second.getLatestDuration();
+        sstr << " ${" << avgIndex << "}" << std::setw(2) << timeData.second.getAverageDuration();
+        sstr << " ${" << minIndex << "}" << std::setw(2) << timeData.second.getMinDuration();
+        sstr << " ${" << maxIndex << "}" << std::setw(2) << timeData.second.getMaxDuration();
+        sstr << std::endl;
       }
 
+      sstr << std::endl;
+      sstr << std::endl;
+
+      for (const auto& timeData : timeDataMap) {
+
+        if (timeData.first[0] != '2')
+          continue;
+
+        const int32_t avgIndex = timeData.second.getAverageDuration() > 0 ? 1 : 0;
+        const int32_t minIndex = timeData.second.getMinDuration() > 0 ? 2 : 0;
+        const int32_t maxIndex = timeData.second.getMaxDuration() > 0 ? 3 : 0;
+
+        sstr << "${0}" << std::left << std::setw(15) << timeData.first;
+        sstr << " " << std::setw(2) << timeData.second.getLatestDuration();
+        sstr << " ${" << avgIndex << "}" << std::setw(2) << timeData.second.getAverageDuration();
+        sstr << " ${" << minIndex << "}" << std::setw(2) << timeData.second.getMinDuration();
+        sstr << " ${" << maxIndex << "}" << std::setw(2) << timeData.second.getMaxDuration();
+        sstr << std::endl;
+      }
+
+      const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
+
+      const glm::vec2 textPos = glm::vec2(5, vSize.y - 5);
       const std::string str = sstr.str();
 
-      const auto& vSize = graphic.camera.viewportSize;
+      textRenderer.setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left);
+      textRenderer.setVerticalTextAlign(TextRenderer::VerticalTextAlign::top);
 
-      constexpr float k_textDepth = -0.5f;
-      constexpr float k_scale = 16.0f;
+      textRenderer.pushText(textPos, str,
+        state0,
+        state1,
+        state2,
+        state3
+        );
 
-      graphic.hud.textRenderer.setMainColor(glm::vec4(1, 1, 1, 1))
-        .setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1))
-        .setScale(k_scale)
-        .setDepth(k_textDepth)
-        .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
-        .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
-        ;
-
-      graphic.hud.textRenderer.pushText(glm::vec2(k_scale * 0.5f, float(vSize.y) - k_scale * 1.5f), str);
-
-      gero::graphics::helpers::renderTextBackground(k_textDepth,
-                                                    glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-                                                    glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-                                                    3.0f,
-                                                    6.0f,
-                                                    graphic.hud.stackRenderers,
-                                                    graphic.hud.textRenderer);
     }
 
     graphic.hud.textRenderer.render();
@@ -569,7 +540,7 @@ void Scene::_renderHud() {
   }
 
   const auto& performanceProfiler = context.logic.performanceProfiler;
-  if (auto timeDataRef = performanceProfiler.tryGetTimeData("complete frame")) {
+  if (auto timeDataRef = performanceProfiler.tryGetTimeData("FRAME")) {
     const auto& timeData = timeDataRef->get();
 
     const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
