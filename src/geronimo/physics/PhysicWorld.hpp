@@ -152,6 +152,7 @@ public:
 
 private:
   std::unique_ptr<AbstractPhysicSixDofConstraintManager> _physicSixDofConstraintManager;
+
 public:
   AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager();
   const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const;

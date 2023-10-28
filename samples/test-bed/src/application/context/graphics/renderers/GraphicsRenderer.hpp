@@ -1,11 +1,10 @@
 
 #pragma once
 
-#include "scene/GraphicSceneRenderer.hpp"
 #include "hud/GraphicHudRenderer.hpp"
+#include "scene/GraphicSceneRenderer.hpp"
 
-class GraphicsRenderer
-{
+class GraphicsRenderer {
 public:
   GraphicsRenderer() = default;
   ~GraphicsRenderer() = default;
@@ -24,6 +23,4 @@ public:
 private:
   GraphicSceneRenderer _sceneRenderer;
   GraphicHudRenderer _hudRenderer;
-
 };
-

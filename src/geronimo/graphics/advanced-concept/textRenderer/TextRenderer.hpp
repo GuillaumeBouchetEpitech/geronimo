@@ -44,7 +44,6 @@ public:
     glm::vec2 size;
   };
 
-
 public:
   ~ITextRenderer() = default;
 
@@ -80,13 +79,10 @@ public:
   virtual ITextRenderer& render() = 0;
 
 protected:
-  virtual void
-  _pushText(const glm::vec2& inPosition,
-    const std::string_view inMessage,
-    const State* pStates,
-    std::size_t totalStates) = 0;
-
-
+  virtual void _pushText(const glm::vec2& inPosition,
+                         const std::string_view inMessage,
+                         const State* pStates,
+                         std::size_t totalStates) = 0;
 };
 
 struct TextRenderer : public ITextRenderer, public gero::NonCopyable {
@@ -175,7 +171,6 @@ public:
 public:
   ITextRenderer& clear() override;
   ITextRenderer& render() override;
-
 };
 
 } // namespace graphics

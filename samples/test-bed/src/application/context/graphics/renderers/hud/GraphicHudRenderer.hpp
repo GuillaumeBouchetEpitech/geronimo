@@ -4,17 +4,14 @@
 #include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
 #include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
 
-
-class IGraphicHudRenderer
-{
+class IGraphicHudRenderer {
 public:
   virtual gero::graphics::ICamera& getCamera() = 0;
   virtual gero::graphics::IStackRenderers& getStackRenderers() = 0;
   virtual gero::graphics::ITextRenderer& getTextRenderer() = 0;
 };
 
-class GraphicHudRenderer : public IGraphicHudRenderer
-{
+class GraphicHudRenderer : public IGraphicHudRenderer {
 public:
   GraphicHudRenderer() = default;
   ~GraphicHudRenderer() = default;

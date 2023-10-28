@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "geronimo/system/NonCopyable.hpp"
 #include "geronimo/helpers/GLMath.hpp"
+#include "geronimo/system/NonCopyable.hpp"
 
 #include <functional>
 #include <memory>
@@ -13,10 +13,9 @@
 #include <string>
 #include <unordered_map>
 
-
-#include <unordered_map>
 #include <optional>
 #include <string>
+#include <unordered_map>
 
 struct TouchData {
   int32_t fingerId = -1;
@@ -32,8 +31,7 @@ struct TouchData {
   // TouchData& operator=(TouchData&& other);
 };
 
-
-class TouchManager: public gero::NonCopyable {
+class TouchManager : public gero::NonCopyable {
 public:
   using MaybeTouchDataRef = std::optional<std::reference_wrapper<TouchData>>;
 

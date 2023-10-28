@@ -26,8 +26,7 @@ PerformanceProfiler::PerformanceProfiler(std::size_t inPreAllocatedHistoricSize 
   _allDataKeys.reserve(32);
 }
 
-void PerformanceProfiler::setSize(std::size_t inPreAllocatedHistoricSize)
-{
+void PerformanceProfiler::setSize(std::size_t inPreAllocatedHistoricSize) {
   if (_preAllocatedHistoricSize == inPreAllocatedHistoricSize) {
     return;
   }

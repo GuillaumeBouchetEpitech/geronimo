@@ -72,8 +72,7 @@ void StackRenderers::flush() {
   if (!_shader)
     D_THROW(std::runtime_error, "shader not setup");
 
-  _shader->preBind([this](IBoundShaderProgram& bound){
-
+  _shader->preBind([this](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", _matricesData.composed);
 
     _trianglesStackRenderer.flush();
@@ -89,7 +88,6 @@ void StackRenderers::safeMode(const std::function<void()>& callback) {
     D_THROW(std::runtime_error, "shader not setup");
 
   _shader->preBind([&](IBoundShaderProgram& bound) {
-
     bound.setUniform("u_composedMatrix", _matricesData.composed);
 
     _trianglesStackRenderer.startSafeMode();

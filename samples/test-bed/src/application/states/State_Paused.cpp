@@ -34,13 +34,8 @@ void State_Paused::render(const SDL_Window&) {
   Scene::renderAll();
 }
 
-void State_Paused::resize(uint32_t width, uint32_t height) {
-  Context::get().graphic.renderer.resize(width, height);
-}
+void State_Paused::resize(uint32_t width, uint32_t height) { Context::get().graphic.renderer.resize(width, height); }
 
 void State_Paused::visibility(bool visible) {
   static_cast<void>(visible); // <= unused
 }
-
-
-

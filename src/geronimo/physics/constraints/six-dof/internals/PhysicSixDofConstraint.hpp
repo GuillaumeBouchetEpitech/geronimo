@@ -58,11 +58,12 @@ public:
   // ERP, error reduction parameter, is a rate of how fast the error is reduced
   void setAngularStopERP(float x, float y, float z) override;
 
-  // CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid degenerate matrices
+  // CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid
+  // degenerate matrices
   void setLinearStopCFM(float x, float y, float z) override;
-  // CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid degenerate matrices
+  // CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid
+  // degenerate matrices
   void setAngularStopCFM(float x, float y, float z) override;
-
 };
 
 using PhysicSixDofConstraintsPool =

@@ -409,8 +409,7 @@ ITextRenderer& TextRenderer::render() {
   if (!_graphic.shader)
     D_THROW(std::runtime_error, "shader not setup");
 
-  _graphic.shader->preBind([this](IBoundShaderProgram& bound)
-  {
+  _graphic.shader->preBind([this](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", _graphic.matricesData.composed);
 
     _graphic.texture->bind();

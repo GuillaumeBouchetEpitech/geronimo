@@ -12,15 +12,7 @@ namespace physics {
 
 struct PhysicSixDofConstraintDef {
 
-  enum class RotationOrder : int8_t
-  {
-    XYZ = 0,
-    XZY,
-    YXZ,
-    YZX,
-    ZXY,
-    ZYX
-  };
+  enum class RotationOrder : int8_t { XYZ = 0, XZY, YXZ, YZX, ZXY, ZYX };
 
   BodyWeakRef body_a;
   BodyWeakRef body_b;

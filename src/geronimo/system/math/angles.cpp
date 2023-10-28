@@ -15,14 +15,12 @@ float getAngle(float inX, float inY) { return std::atan2(inY, inX); }
 
 float getAngle(const glm::vec2& direction) { return getAngle(direction.x, direction.y); }
 
-void getEulerAngles(const glm::vec3& inInputVector, float& outYaw, float& outPitch)
-{
+void getEulerAngles(const glm::vec3& inInputVector, float& outYaw, float& outPitch) {
   outYaw = getAngle(inInputVector.x, inInputVector.y);
   outPitch = getAngle(glm::length(glm::vec2(inInputVector.x, inInputVector.y)), -inInputVector.z);
 }
 
-glm::vec3 getForwardFromEuler(float inYaw, float inPitch)
-{
+glm::vec3 getForwardFromEuler(float inYaw, float inPitch) {
   glm::vec3 forward;
   const float forwardRadius = std::cos(-inPitch);
   forward.x = forwardRadius * std::cos(inYaw);

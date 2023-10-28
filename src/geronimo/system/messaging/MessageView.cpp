@@ -71,7 +71,6 @@ MessageView& MessageView::readVec4(glm::vec4& data) { return read(&data.x, sizeo
 MessageView& MessageView::readQuat(glm::quat& data) { return read(&data.x, sizeof(glm::quat)); }
 MessageView& MessageView::readMat4(glm::mat4& data) { return read(glm::value_ptr(data), sizeof(glm::mat4)); }
 
-
 MessageView& MessageView::operator>>(bool& data) { return readBoolean(data); }
 MessageView& MessageView::operator>>(int8_t& data) { return readInt8(data); }
 MessageView& MessageView::operator>>(uint8_t& data) { return readUint8(data); }

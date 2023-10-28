@@ -35,7 +35,6 @@ public:
 
 public:
   static std::unique_ptr<AbstractPhysicSixDofConstraintManager> create(PhysicWorld& inPhysicWorld);
-
 };
 
 } // namespace physics

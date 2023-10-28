@@ -28,9 +28,9 @@ public:
   virtual void pushSpotLight(const glm::vec3& inPos, float inRadius) = 0;
   virtual void applySpotLights(const gero::graphics::ICamera& inSceneCamera) = 0;
 
-  virtual void renderHudQuad(const gero::graphics::ICamera& inSceneCamera, const gero::graphics::ICamera& inHudCamera) = 0;
+  virtual void renderHudQuad(const gero::graphics::ICamera& inSceneCamera,
+                             const gero::graphics::ICamera& inHudCamera) = 0;
 };
-
 
 class ClusteredDeferred : public IClusteredDeferred, public gero::NonCopyable {
 public:

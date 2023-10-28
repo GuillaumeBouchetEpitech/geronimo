@@ -6,10 +6,10 @@
 
 #include "geronimo/helpers/GLMath.hpp"
 
+#include <functional>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <functional>
 
 namespace gero {
 namespace graphics {
@@ -62,12 +62,11 @@ public:
   virtual void setUniform(int32_t location, const glm::vec4& vec4) const = 0;
   virtual void setUniform(int32_t location, const glm::mat3& mat3) const = 0;
   virtual void setUniform(int32_t location, const glm::mat4& mat4) const = 0;
-
 };
 
 class ShaderProgram : public IBoundShaderProgram {
-// private:
-//   friend UniformBufferObject;
+  // private:
+  //   friend UniformBufferObject;
 
 public:
   struct Definition {
@@ -93,8 +92,10 @@ public:
 
 public:
   static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef);
-  static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef, fileUtils::FileManager& fileManager);
-  static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef, const fileUtils::LoadCallback& loadFileCallback);
+  static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef,
+                                                             fileUtils::FileManager& fileManager);
+  static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef,
+                                                             const fileUtils::LoadCallback& loadFileCallback);
 
 public:
   // void bind() const;

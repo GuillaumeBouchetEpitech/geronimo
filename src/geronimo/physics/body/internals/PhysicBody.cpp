@@ -28,7 +28,6 @@ PhysicBody::PhysicBody(const PhysicBodyDef& def) {
 
   btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, _bullet.motionState, _shape->getRawShape(), localInertia);
 
-
   // rbInfo.m_startWorldTransform
   rbInfo.m_restitution = def.restitution;
   rbInfo.m_friction = def.friction;
@@ -36,8 +35,6 @@ PhysicBody::PhysicBody(const PhysicBodyDef& def) {
   rbInfo.m_spinningFriction = def.spinningFriction;
   rbInfo.m_linearSleepingThreshold = def.linearSleepingThreshold;
   rbInfo.m_angularSleepingThreshold = def.angularSleepingThreshold;
-
-
 
   _bullet.body = new btRigidBody(rbInfo);
 

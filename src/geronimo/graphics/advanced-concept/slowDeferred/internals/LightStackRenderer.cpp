@@ -174,9 +174,7 @@ void LightStackRenderer::_flushDiffuse(const glm::mat4& composedMatrix,
                                        const gero::graphics::Texture& positionTexture,
                                        const gero::graphics::Texture& normalTexture) {
 
-  _diffuse.shader->preBind([&](IBoundShaderProgram& bound)
-  {
-
+  _diffuse.shader->preBind([&](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", composedMatrix);
     bound.setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
 
@@ -210,8 +208,7 @@ void LightStackRenderer::_flushSpecular(const glm::vec3& eyePos,
                                         const gero::graphics::Texture& normalTexture,
                                         const gero::graphics::Texture& diffuseCoefTexture) {
 
-  _specular.shader->preBind([&](IBoundShaderProgram& bound)
-  {
+  _specular.shader->preBind([&](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", composedMatrix);
     bound.setUniform("u_resolution", float(_frameSize.x), float(_frameSize.y));
     bound.setUniform("u_viewPos", eyePos.x, eyePos.y, eyePos.z);

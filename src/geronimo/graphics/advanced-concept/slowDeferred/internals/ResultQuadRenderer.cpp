@@ -97,8 +97,7 @@ void ResultQuadRenderer::render(const glm::vec3& eyePos,
                                 const gero::graphics::Texture& specularCoefTexture,
                                 float ambiantLightCoef) {
 
-  _quadShader->preBind([&](IBoundShaderProgram& bound)
-  {
+  _quadShader->preBind([&](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", composedMatrix);
     bound.setUniform("u_ambiantCoef", ambiantLightCoef);
     bound.setUniform("u_viewPos", eyePos);
@@ -129,7 +128,6 @@ void ResultQuadRenderer::render(const glm::vec3& eyePos,
     _quadGeometry.render();
 
     GlContext::Texture::active(0);
-
   });
 }
 

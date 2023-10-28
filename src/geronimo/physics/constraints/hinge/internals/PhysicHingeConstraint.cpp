@@ -43,9 +43,7 @@ PhysicHingeConstraint::PhysicHingeConstraint(const PhysicHingeConstraintDef& def
 
   // btHinge2Constraint(btRigidBody& rbA, btRigidBody& rbB, btVector3& anchor, btVector3& axis1, btVector3& axis2);
 
-
   _bullet.constraint->setDbgDrawSize(1.0f);
-
 }
 
 PhysicHingeConstraint::~PhysicHingeConstraint() { delete _bullet.constraint; }
@@ -76,10 +74,7 @@ PhysicHingeConstraint& PhysicHingeConstraint::operator=(PhysicHingeConstraint&& 
 //
 //
 
-void PhysicHingeConstraint::setLimit(float low, float high)
-{
-  _bullet.constraint->setLimit(low, high);
-}
+void PhysicHingeConstraint::setLimit(float low, float high) { _bullet.constraint->setLimit(low, high); }
 
 } // namespace physics
 } // namespace gero

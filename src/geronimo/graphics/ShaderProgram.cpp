@@ -140,37 +140,33 @@ ShaderProgram::~ShaderProgram() {
 
 //
 
-std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const ShaderProgram::Definition& inDef)
-{
+std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const ShaderProgram::Definition& inDef) {
   return std::make_shared<ShaderProgram>(inDef);
 }
-std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const Definition& inDef, fileUtils::FileManager& fileManager)
-{
+std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const Definition& inDef,
+                                                                   fileUtils::FileManager& fileManager) {
   return std::make_shared<ShaderProgram>(inDef, fileManager);
 }
-std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const Definition& inDef, const fileUtils::LoadCallback& loadFileCallback)
-{
+std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const Definition& inDef,
+                                                                   const fileUtils::LoadCallback& loadFileCallback) {
   return std::make_shared<ShaderProgram>(inDef, loadFileCallback);
 }
 
 //
 
-void ShaderProgram::rawBind() const
-{
+void ShaderProgram::rawBind() const {
   if (!_programId)
     D_THROW(std::runtime_error, "shader not initialized");
 
   GlContext::Shader::useProgram(_programId);
 }
 
-void ShaderProgram::preBind(const std::function<void(IBoundShaderProgram&)>& callback)
-{
+void ShaderProgram::preBind(const std::function<void(IBoundShaderProgram&)>& callback) {
   rawBind();
   callback(*this);
 }
 
-void ShaderProgram::bind(const std::function<void(IBoundShaderProgram&)>& callback)
-{
+void ShaderProgram::bind(const std::function<void(IBoundShaderProgram&)>& callback) {
   preBind(callback);
   ShaderProgram::unbind();
 }

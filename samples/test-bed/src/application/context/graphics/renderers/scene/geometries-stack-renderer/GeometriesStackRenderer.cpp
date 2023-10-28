@@ -96,8 +96,7 @@ void GeometriesStackRenderer::renderAll() {
   if (_aliasedGeometriesMap.empty())
     return;
 
-  _shader->preBind([this](gero::graphics::IBoundShaderProgram& bound)
-  {
+  _shader->preBind([this](gero::graphics::IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", _matricesData.composed);
     // bound.setUniform("u_ambiantCoef", 0.2f);
 
@@ -114,6 +113,5 @@ void GeometriesStackRenderer::renderAll() {
 
       vertices.clear();
     }
-
   });
 }

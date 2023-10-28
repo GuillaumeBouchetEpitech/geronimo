@@ -8,8 +8,7 @@
 namespace gero {
 namespace math {
 
-class ConvexPolygon
-{
+class ConvexPolygon {
 public:
   ConvexPolygon() = default;
   ~ConvexPolygon() = default;
@@ -32,8 +31,7 @@ public:
 private:
   std::vector<glm::vec2> _vertices;
   glm::vec2 _center;
-
 };
 
-}
-}
+} // namespace math
+} // namespace gero

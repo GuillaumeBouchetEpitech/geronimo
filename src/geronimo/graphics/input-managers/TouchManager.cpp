@@ -28,20 +28,15 @@ TouchManager& TouchManager::get() {
 
 //
 
-void TouchManager::updateAsTouchedDown(int32_t inFingerId, const glm::vec2& inPos)
-{
+void TouchManager::updateAsTouchedDown(int32_t inFingerId, const glm::vec2& inPos) {
   TouchData newData;
   newData.fingerId = inFingerId;
   newData.position = inPos;
   newData.delta = {0, 0};
   _touchDataMap[inFingerId] = newData;
 }
-void TouchManager::updateAsTouchedUp(int32_t inFingerId)
-{
-  _touchDataMap.erase(inFingerId);
-}
-void TouchManager::updateAsTouchedMotion(int32_t inFingerId, const glm::vec2& inPos, const glm::vec2& inDelta)
-{
+void TouchManager::updateAsTouchedUp(int32_t inFingerId) { _touchDataMap.erase(inFingerId); }
+void TouchManager::updateAsTouchedMotion(int32_t inFingerId, const glm::vec2& inPos, const glm::vec2& inDelta) {
   auto it = _touchDataMap.find(inFingerId);
   if (it == _touchDataMap.end())
     return;
@@ -53,8 +48,7 @@ void TouchManager::updateAsTouchedMotion(int32_t inFingerId, const glm::vec2& in
 
 //
 
-TouchManager::MaybeTouchDataRef TouchManager::getTouchData(int32_t inFingerId)
-{
+TouchManager::MaybeTouchDataRef TouchManager::getTouchData(int32_t inFingerId) {
   auto it = _touchDataMap.find(inFingerId);
   if (it == _touchDataMap.end())
     return {};
@@ -63,7 +57,4 @@ TouchManager::MaybeTouchDataRef TouchManager::getTouchData(int32_t inFingerId)
 
 //
 
-void TouchManager::reset() {
-  _touchDataMap.clear();
-}
-
+void TouchManager::reset() { _touchDataMap.clear(); }

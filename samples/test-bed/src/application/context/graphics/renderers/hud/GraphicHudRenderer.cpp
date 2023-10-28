@@ -1,8 +1,7 @@
 
 #include "GraphicHudRenderer.hpp"
 
-void GraphicHudRenderer::initialize(uint32_t width, uint32_t height)
-{
+void GraphicHudRenderer::initialize(uint32_t width, uint32_t height) {
   _camera.setOrthographic(0.0f, float(width), 0.0f, float(height), -10.0f, +10.0f);
   _camera.setSize(width, height);
 
@@ -15,27 +14,14 @@ void GraphicHudRenderer::initialize(uint32_t width, uint32_t height)
   _textRenderer.initialize("../../src");
 }
 
-void GraphicHudRenderer::resize(uint32_t width, uint32_t height)
-{
-  _camera.setSize(width, height);
-}
+void GraphicHudRenderer::resize(uint32_t width, uint32_t height) { _camera.setSize(width, height); }
 
-void GraphicHudRenderer::computeMatrices()
-{
+void GraphicHudRenderer::computeMatrices() {
   _camera.computeMatrices();
   _stackRenderers.setMatricesData(_camera.getMatricesData());
   _textRenderer.setMatricesData(_camera.getMatricesData());
 }
 
-gero::graphics::ICamera& GraphicHudRenderer::getCamera()
-{
-  return _camera;
-}
-gero::graphics::IStackRenderers& GraphicHudRenderer::getStackRenderers()
-{
-  return _stackRenderers;
-}
-gero::graphics::ITextRenderer& GraphicHudRenderer::getTextRenderer()
-{
-  return _textRenderer;
-}
+gero::graphics::ICamera& GraphicHudRenderer::getCamera() { return _camera; }
+gero::graphics::IStackRenderers& GraphicHudRenderer::getStackRenderers() { return _stackRenderers; }
+gero::graphics::ITextRenderer& GraphicHudRenderer::getTextRenderer() { return _textRenderer; }

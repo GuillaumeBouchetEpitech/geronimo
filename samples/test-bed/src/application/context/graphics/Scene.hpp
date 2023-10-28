@@ -11,7 +11,6 @@ public:
   static void renderAll();
 
 private:
-
   static void _renderScene();
   static void _renderHud();
 };

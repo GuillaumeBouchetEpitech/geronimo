@@ -1,14 +1,10 @@
 
 #include "GraphicSceneRenderer.hpp"
 
-
-
-void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height)
-{
+void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height) {
 
   _camera.setPerspective(70.0f, 1.0f, 150.0f);
   _camera.setSize(width, height);
-
 
   _stackRenderers.initialize();
 
@@ -85,39 +81,22 @@ void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height)
   }
 }
 
-void GraphicSceneRenderer::resize(uint32_t width, uint32_t height)
-{
-  _camera.setSize(width, height);
-}
+void GraphicSceneRenderer::resize(uint32_t width, uint32_t height) { _camera.setSize(width, height); }
 
-void GraphicSceneRenderer::computeMatrices()
-{
+void GraphicSceneRenderer::computeMatrices() {
   _camera.computeMatrices();
   _stackRenderers.setMatricesData(_camera.getMatricesData());
   _geometriesStackRenderer.setMatricesData(_camera.getMatricesData());
 }
 
-void GraphicSceneRenderer::lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up)
-{
+void GraphicSceneRenderer::lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up) {
   _camera.lookAt(eye, target, up);
 }
 
-gero::graphics::ICamera& GraphicSceneRenderer::getCamera()
-{
-  return _camera;
-}
+gero::graphics::ICamera& GraphicSceneRenderer::getCamera() { return _camera; }
 
-gero::graphics::IStackRenderers& GraphicSceneRenderer::getStackRenderers()
-{
-  return _stackRenderers;
-}
+gero::graphics::IStackRenderers& GraphicSceneRenderer::getStackRenderers() { return _stackRenderers; }
 
-IGeometriesStackRenderer& GraphicSceneRenderer::getGeometriesStackRenderer()
-{
-  return _geometriesStackRenderer;
-}
+IGeometriesStackRenderer& GraphicSceneRenderer::getGeometriesStackRenderer() { return _geometriesStackRenderer; }
 
-gero::graphics::IClusteredDeferred& GraphicSceneRenderer::getClusteredDeferred()
-{
-  return _deferred;
-}
+gero::graphics::IClusteredDeferred& GraphicSceneRenderer::getClusteredDeferred() { return _deferred; }

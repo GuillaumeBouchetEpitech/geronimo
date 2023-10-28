@@ -121,9 +121,7 @@ void ResultQuadRenderer::render(const glm::vec3& sunLightDirection,
   if (inHudCamera.getProjectionType() != Camera::ProjectionType::orthographic)
     D_THROW(std::runtime_error, "hud camera is not set with a orthographic projection");
 
-  _quadShader->preBind([&](IBoundShaderProgram& bound)
-  {
-
+  _quadShader->preBind([&](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", inHudCamera.getMatricesData().composed);
     bound.setUniform("u_ambiantCoef", ambiantLightCoef);
     bound.setUniform("u_viewPos", inSceneCamera.getEye());
@@ -168,7 +166,6 @@ void ResultQuadRenderer::render(const glm::vec3& sunLightDirection,
     }
 
     _quadGeometry.render();
-
   });
 
   GlContext::Texture::active(0);

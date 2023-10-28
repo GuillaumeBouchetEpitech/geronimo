@@ -27,7 +27,6 @@ void Context::initialize(uint32_t width, uint32_t height) {
 
   graphic.renderer.initialize(width, height);
 
-
   physic.world = new gero::physics::PhysicWorld();
   physic.world->setDebuggerPushLine([this](const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
     graphic.renderer.getSceneRenderer().getStackRenderers().getWireFramesStack().pushLine(posA, posB, color);

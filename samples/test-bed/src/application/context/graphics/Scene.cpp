@@ -253,10 +253,10 @@ void Scene::_renderHud() {
 
       const auto& timeDataMap = context.logic.performanceProfiler.getHistoricalTimeDataMap();
 
-      const gero::graphics::TextRenderer::State state0 = {glm::vec4(1.0f,1.0f,1.0f,1), glm::vec4(0,0,0,1)};
-      const gero::graphics::TextRenderer::State state1 = {glm::vec4(1.0f,1.0f,0.5f,1), glm::vec4(0,0,0,1)};
-      const gero::graphics::TextRenderer::State state2 = {glm::vec4(0.5f,1.0f,0.5f,1), glm::vec4(0,0,0,1)};
-      const gero::graphics::TextRenderer::State state3 = {glm::vec4(1.0f,0.5f,0.5f,1), glm::vec4(0,0,0,1)};
+      const gero::graphics::TextRenderer::State state0 = {glm::vec4(1.0f, 1.0f, 1.0f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::TextRenderer::State state1 = {glm::vec4(1.0f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::TextRenderer::State state2 = {glm::vec4(0.5f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::TextRenderer::State state3 = {glm::vec4(1.0f, 0.5f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
 
       std::stringstream sstr;
       for (const auto& timeData : timeDataMap) {
@@ -304,18 +304,11 @@ void Scene::_renderHud() {
       textRenderer.setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left);
       textRenderer.setVerticalTextAlign(TextRenderer::VerticalTextAlign::top);
 
-      textRenderer.pushText(textPos, str,
-        state0,
-        state1,
-        state2,
-        state3
-        );
-
+      textRenderer.pushText(textPos, str, state0, state1, state2, state3);
     }
 
     hud.getTextRenderer().render();
   }
-
 
   {
 
@@ -513,7 +506,6 @@ void Scene::_renderHud() {
 
     }
 #endif
-
   }
 
   {
@@ -530,7 +522,6 @@ void Scene::_renderHud() {
       const glm::vec2 vSize = glm::vec2(hud.getCamera().getSize());
       const glm::vec3 k_pos = glm::vec3(vSize.x - 15, vSize.y * 0.5f, 0);
       triangles.pushCircle(k_pos, 10.0f, glm::vec4(1, 1, 1, 0.5));
-
     }
 
     stackRenderers.flush();

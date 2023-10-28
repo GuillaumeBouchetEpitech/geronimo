@@ -15,6 +15,7 @@ namespace graphics {
 class IStackRenderers {
 public:
   virtual ~IStackRenderers() = default;
+
 public:
 public:
   virtual void setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) = 0;
@@ -26,7 +27,6 @@ public:
 public:
   virtual ITrianglesStackRenderer& getTrianglesStack() = 0;
   virtual IWireFramesStackRenderer& getWireFramesStack() = 0;
-
 };
 
 class StackRenderers : public IStackRenderers, public gero::NonCopyable {

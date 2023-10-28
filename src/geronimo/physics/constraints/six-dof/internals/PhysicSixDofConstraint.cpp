@@ -28,12 +28,24 @@ PhysicSixDofConstraint::PhysicSixDofConstraint(const PhysicSixDofConstraintDef& 
 
   RotateOrder rotOrder = RO_XYZ;
   switch (def.order) {
-    case PhysicSixDofConstraintDef::RotationOrder::XYZ : rotOrder = RO_XYZ; break;
-    case PhysicSixDofConstraintDef::RotationOrder::XZY : rotOrder = RO_XZY; break;
-    case PhysicSixDofConstraintDef::RotationOrder::YXZ : rotOrder = RO_YXZ; break;
-    case PhysicSixDofConstraintDef::RotationOrder::YZX : rotOrder = RO_YZX; break;
-    case PhysicSixDofConstraintDef::RotationOrder::ZXY : rotOrder = RO_ZXY; break;
-    case PhysicSixDofConstraintDef::RotationOrder::ZYX : rotOrder = RO_ZYX; break;
+  case PhysicSixDofConstraintDef::RotationOrder::XYZ:
+    rotOrder = RO_XYZ;
+    break;
+  case PhysicSixDofConstraintDef::RotationOrder::XZY:
+    rotOrder = RO_XZY;
+    break;
+  case PhysicSixDofConstraintDef::RotationOrder::YXZ:
+    rotOrder = RO_YXZ;
+    break;
+  case PhysicSixDofConstraintDef::RotationOrder::YZX:
+    rotOrder = RO_YZX;
+    break;
+  case PhysicSixDofConstraintDef::RotationOrder::ZXY:
+    rotOrder = RO_ZXY;
+    break;
+  case PhysicSixDofConstraintDef::RotationOrder::ZYX:
+    rotOrder = RO_ZYX;
+    break;
   }
 
   _bullet.constraint = new btGeneric6DofSpring2Constraint(rbA, rbB, frameInA, frameInB, rotOrder);
@@ -159,14 +171,16 @@ void PhysicSixDofConstraint::setAngularStopERP(float x, float y, float z) {
   _bullet.constraint->setParam(BT_CONSTRAINT_STOP_ERP, z, 5);
 }
 
-// CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid degenerate matrices
+// CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid
+// degenerate matrices
 void PhysicSixDofConstraint::setLinearStopCFM(float x, float y, float z) {
   _bullet.constraint->setParam(BT_CONSTRAINT_STOP_CFM, x, 0);
   _bullet.constraint->setParam(BT_CONSTRAINT_STOP_CFM, y, 1);
   _bullet.constraint->setParam(BT_CONSTRAINT_STOP_CFM, z, 2);
 }
 
-// CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid degenerate matrices
+// CFM, constraint force mixing, adds some small value to the main diagonal of the constraint matrix, to avoid
+// degenerate matrices
 void PhysicSixDofConstraint::setAngularStopCFM(float x, float y, float z) {
   _bullet.constraint->setParam(BT_CONSTRAINT_STOP_CFM, x, 3);
   _bullet.constraint->setParam(BT_CONSTRAINT_STOP_CFM, y, 4);

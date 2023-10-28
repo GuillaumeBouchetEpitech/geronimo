@@ -95,8 +95,7 @@ GeometryBuilder& GeometryBuilder::validate() {
   if (_def.vbos.empty())
     D_THROW(std::runtime_error, "cannot build, no vbo(s) defined");
 
-  for (const auto& vbo : _def.vbos)
-  {
+  for (const auto& vbo : _def.vbos) {
     if (vbo.attrs.empty())
       D_THROW(std::runtime_error, "cannot build, no vbo.attrs defined");
 

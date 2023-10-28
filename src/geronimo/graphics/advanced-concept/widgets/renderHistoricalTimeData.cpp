@@ -224,7 +224,6 @@ void renderHistoricalTimeData(const glm::vec3& inPos,
       } // text
     }
   }
-
 }
 
 } // namespace widgets

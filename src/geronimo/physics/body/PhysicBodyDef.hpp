@@ -14,14 +14,13 @@ struct PhysicBodyDef {
   short group = -1;
   short mask = -1;
 
-    // rbInfo.m_startWorldTransform
+  // rbInfo.m_startWorldTransform
   float restitution = 0.0f;
   float friction = 0.5f;
   float rollingFriction = 0.5f;
   float spinningFriction = 0.5f;
   float linearSleepingThreshold = 0.8f;
   float angularSleepingThreshold = 1.0f;
-
 
   // float continuous_radius = 0.0f;
 };

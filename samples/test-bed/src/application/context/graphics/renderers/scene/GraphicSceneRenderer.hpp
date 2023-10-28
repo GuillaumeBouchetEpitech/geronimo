@@ -6,20 +6,18 @@
 
 #include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
 
-class IGraphicSceneRenderer
-{
+class IGraphicSceneRenderer {
 public:
   virtual void lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up) = 0;
+
 public:
   virtual gero::graphics::ICamera& getCamera() = 0;
   virtual gero::graphics::IStackRenderers& getStackRenderers() = 0;
   virtual IGeometriesStackRenderer& getGeometriesStackRenderer() = 0;
   virtual gero::graphics::IClusteredDeferred& getClusteredDeferred() = 0;
-
 };
 
-class GraphicSceneRenderer : public IGraphicSceneRenderer
-{
+class GraphicSceneRenderer : public IGraphicSceneRenderer {
 public:
   GraphicSceneRenderer() = default;
   ~GraphicSceneRenderer() = default;
@@ -45,4 +43,3 @@ private:
   GeometriesStackRenderer _geometriesStackRenderer;
   gero::graphics::ClusteredDeferred _deferred;
 };
-

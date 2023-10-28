@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "geronimo/system/math/lerp.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
+#include "geronimo/system/math/lerp.hpp"
 
 #include <array>
 #include <functional>
@@ -53,9 +53,7 @@ public:
     return *this;
   }
 
-  GenericEasing& push(float coefStep, T value) {
-    return push(coefStep, value, nullptr);
-  }
+  GenericEasing& push(float coefStep, T value) { return push(coefStep, value, nullptr); }
 
   T get(float coef) const {
     if (_size < 2)

@@ -14,8 +14,8 @@ namespace gero {
 namespace graphics {
 
 std::shared_ptr<IUnboundShaderProgram> ResourceManager::createShader(int32_t aliasCode,
-                                                             const ShaderProgram::Definition def,
-                                                             bool allowDuplicates /*= false*/) {
+                                                                     const ShaderProgram::Definition def,
+                                                                     bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
   sstr << def.filenames.vertex << "-" << def.filenames.fragment;
   std::string shaderUniqueName = sstr.str();

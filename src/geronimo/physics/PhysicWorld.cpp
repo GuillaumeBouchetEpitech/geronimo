@@ -35,10 +35,10 @@ public:
   }
 
   void drawContactPoint(const btVector3& PointOnB,
-                                const btVector3& normalOnB,
-                                btScalar distance,
-                                int32_t lifeTime,
-                                const btVector3& color) override {
+                        const btVector3& normalOnB,
+                        btScalar distance,
+                        int32_t lifeTime,
+                        const btVector3& color) override {
 
     if (!_debuggerPushLineCallback)
       return;
@@ -142,7 +142,6 @@ void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) 
 
   MyDebugDrawer* newDebugDrawer = new MyDebugDrawer(callback);
 
-
   int32_t debugMode = btIDebugDraw::DebugDrawModes::DBG_NoDebug;
   debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawWireframe;
   // debugMode |= btIDebugDraw::DebugDrawModes::DBG_DrawAabb;
@@ -154,31 +153,27 @@ void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) 
 
   newDebugDrawer->setDebugMode(debugMode);
 
-	// enum	DebugDrawModes
-	// {
-	// 	DBG_DrawFeaturesText=4,
-	// 	DBG_DrawContactPoints=8,
-	// 	DBG_NoDeactivation=16,
-	// 	DBG_NoHelpText = 32,
-	// 	DBG_DrawText=64,
-	// 	DBG_ProfileTimings = 128,
-	// 	DBG_EnableSatComparison = 256,
-	// 	DBG_DisableBulletLCP = 512,
-	// 	DBG_EnableCCD = 1024,
-	// 	DBG_FastWireframe = (1<<13),
-	// 	DBG_MAX_DEBUG_DRAW_MODE
-	// };
-
-
+  // enum	DebugDrawModes
+  // {
+  // 	DBG_DrawFeaturesText=4,
+  // 	DBG_DrawContactPoints=8,
+  // 	DBG_NoDeactivation=16,
+  // 	DBG_NoHelpText = 32,
+  // 	DBG_DrawText=64,
+  // 	DBG_ProfileTimings = 128,
+  // 	DBG_EnableSatComparison = 256,
+  // 	DBG_DisableBulletLCP = 512,
+  // 	DBG_EnableCCD = 1024,
+  // 	DBG_FastWireframe = (1<<13),
+  // 	DBG_MAX_DEBUG_DRAW_MODE
+  // };
 
   _bullet.dynamicsWorld->setDebugDrawer(newDebugDrawer);
 }
 
-void PhysicWorld::setDebugAABB(bool isEnabled)
-{
+void PhysicWorld::setDebugAABB(bool isEnabled) {
   btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
-  if (currentDebugDrawer == nullptr)
-  {
+  if (currentDebugDrawer == nullptr) {
     D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
     return;
   }
@@ -191,11 +186,9 @@ void PhysicWorld::setDebugAABB(bool isEnabled)
   }
   currentDebugDrawer->setDebugMode(debugMode);
 }
-void PhysicWorld::setDebugContacts(bool isEnabled)
-{
+void PhysicWorld::setDebugContacts(bool isEnabled) {
   btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
-  if (currentDebugDrawer == nullptr)
-  {
+  if (currentDebugDrawer == nullptr) {
     D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
     return;
   }
@@ -209,11 +202,9 @@ void PhysicWorld::setDebugContacts(bool isEnabled)
 
   currentDebugDrawer->setDebugMode(debugMode);
 }
-void PhysicWorld::setDebugConstraints(bool isEnabled)
-{
+void PhysicWorld::setDebugConstraints(bool isEnabled) {
   btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
-  if (currentDebugDrawer == nullptr)
-  {
+  if (currentDebugDrawer == nullptr) {
     D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
     return;
   }
@@ -227,11 +218,9 @@ void PhysicWorld::setDebugConstraints(bool isEnabled)
 
   currentDebugDrawer->setDebugMode(debugMode);
 }
-void PhysicWorld::setDebugConstraintLimits(bool isEnabled)
-{
+void PhysicWorld::setDebugConstraintLimits(bool isEnabled) {
   btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
-  if (currentDebugDrawer == nullptr)
-  {
+  if (currentDebugDrawer == nullptr) {
     D_MYERR("Warning: cannot set the physic world debug option without calling setDebuggerPushLine");
     return;
   }
@@ -325,13 +314,11 @@ const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstrain
 //   return *_physicUniversalConstraintManager;
 // }
 
-AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager()
-{
+AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() {
   return *_physicSixDofConstraintManager;
 }
 
-const AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() const
-{
+const AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() const {
   return *_physicSixDofConstraintManager;
 }
 

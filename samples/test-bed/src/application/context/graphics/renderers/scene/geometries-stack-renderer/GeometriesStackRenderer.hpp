@@ -41,8 +41,6 @@ public:
   virtual void renderAll() = 0;
 };
 
-
-
 class GeometriesStackRenderer : public IGeometriesStackRenderer, public gero::NonCopyable {
 public:
   using GeometryInstance = IGeometriesStackRenderer::GeometryInstance;
@@ -66,7 +64,6 @@ public:
   void clearAll() override;
   void renderAll() override;
 
-
 private:
   std::shared_ptr<gero::graphics::ShaderProgram> _shader = nullptr;
   gero::graphics::Geometry::Definition _geomDef;
@@ -79,6 +76,4 @@ private:
   };
 
   std::unordered_map<int32_t, std::shared_ptr<AliasedGeometry>> _aliasedGeometriesMap;
-
-
 };

@@ -58,10 +58,8 @@ TEST(filtering, can_check_if_any_bits_matches) {
   ASSERT_EQ(gero::filtering::anyBitsMatches(input, (1 << 14)), false);
   ASSERT_EQ(gero::filtering::anyBitsMatches(input, (1 << 15)), false);
 
-
   ASSERT_EQ(gero::filtering::anyBitsMatches(input, (1 << 1) | (1 << 2)), true);
   ASSERT_EQ(gero::filtering::anyBitsMatches(input, (1 << 2) | (1 << 3)), false);
-
 }
 
 TEST(filtering, can_set_bit) {

@@ -120,8 +120,7 @@ void State_Running::update(uint32_t delta) {
 
     auto& currCamera = context.graphic.renderer.getSceneRenderer().getCamera();
 
-    context.audio.soundManager->setListener(
-      currCamera.getEye(), currCamera.getForwardAxis(), glm::vec3(0, 0, 1));
+    context.audio.soundManager->setListener(currCamera.getEye(), currCamera.getForwardAxis(), glm::vec3(0, 0, 1));
 
     // if (context.inputs.mouse.buttons[SDL_BUTTON_LEFT] == true) {
     // }
@@ -153,9 +152,7 @@ void State_Running::render(const SDL_Window&) {
   performanceProfiler.stop("2 RENDER");
 }
 
-void State_Running::resize(uint32_t width, uint32_t height) {
-  Context::get().graphic.renderer.resize(width, height);
-}
+void State_Running::resize(uint32_t width, uint32_t height) { Context::get().graphic.renderer.resize(width, height); }
 
 void State_Running::visibility(bool visible) {
   auto* stateManager = StateManager::get();

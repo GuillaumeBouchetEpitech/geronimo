@@ -75,8 +75,6 @@ void FreeFlyCameraController::update(float elapsedTime) {
       _doubleTapTimeLeft = 0.0f;
     }
 
-
-
     _verticalAngle = std::min(std::max(_verticalAngle, -89.f), 89.f);
 
     constexpr float halfPi = float(M_PI_2);

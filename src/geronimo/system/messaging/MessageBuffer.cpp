@@ -76,7 +76,9 @@ MessageBuffer& MessageBuffer::writeString(const std::string& data) {
 MessageBuffer& MessageBuffer::writeVec3(const glm::vec3& data) { return append(&data.x, sizeof(glm::vec3)); }
 MessageBuffer& MessageBuffer::writeVec4(const glm::vec4& data) { return append(&data.x, sizeof(glm::vec4)); }
 MessageBuffer& MessageBuffer::writeQuat(const glm::quat& data) { return append(&data.x, sizeof(glm::quat)); }
-MessageBuffer& MessageBuffer::writeMat4(const glm::mat4& data) { return append(glm::value_ptr(data), sizeof(glm::mat4)); }
+MessageBuffer& MessageBuffer::writeMat4(const glm::mat4& data) {
+  return append(glm::value_ptr(data), sizeof(glm::mat4));
+}
 
 //
 //
