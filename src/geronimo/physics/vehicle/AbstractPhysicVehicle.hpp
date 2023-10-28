@@ -29,6 +29,7 @@ public:
   virtual const glm::mat4& getWheelTransform(int32_t index, glm::mat4& mat4x4) const = 0;
   virtual glm::vec3 getWheelPosition(int32_t index) const = 0;
   virtual glm::quat getWheelOrientation(int32_t index) const = 0;
+  virtual bool getWheelIsTouchingGround(int32_t index) const = 0;
   virtual float getCurrentSpeedKmHour() const = 0;
   virtual BodyWeakRef getPhysicBody() = 0;
   virtual const BodyWeakRef getPhysicBody() const = 0;

@@ -50,6 +50,8 @@ make build_mode="release" build_platform="native" all -j3
 # ./bin/exec --gtest_filter=physic_wrapper*
 
 # ./bin/exec --gtest_filter=physic_wrapper_perf*
-./bin/exec
+# ./bin/exec
+# ./bin/exec --gtest_filter=angles.*
+./bin/exec --gtest_filter=filtering.*
 
 

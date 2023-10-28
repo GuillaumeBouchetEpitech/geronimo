@@ -44,53 +44,60 @@ void MessageBuffer::clear() {
   _dataContainer.clear(); // <= clear the used size but keep it's (cached) capacity
 }
 
-MessageBuffer& MessageBuffer::operator<<(bool data) {
-  *this << int8_t(data); // <= write like a char
-  return *this;
-}
+//
+//
+//
 
-MessageBuffer& MessageBuffer::operator<<(int8_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeBoolean(bool data) { return writeInt8(data ? 1 : 0); }
+MessageBuffer& MessageBuffer::writeInt8(int8_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeUint8(uint8_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeInt16(int16_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeUint16(uint16_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeInt32(int32_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeUint32(uint32_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeInt64(int64_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeUint64(uint64_t data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeFloat(float data) { return append(&data, sizeof(data)); }
+MessageBuffer& MessageBuffer::writeDouble(double data) { return append(&data, sizeof(data)); }
 
-MessageBuffer& MessageBuffer::operator<<(uint8_t data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(int16_t data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(uint16_t data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(int32_t data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(uint32_t data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(int64_t data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(uint64_t data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(float data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(double data) { return append(&data, sizeof(data)); }
-
-MessageBuffer& MessageBuffer::operator<<(const std::string& data) {
-  if (data.empty())
+MessageBuffer& MessageBuffer::writeString(const std::string& data) {
+  if (data.empty()) {
     D_THROW(std::runtime_error, "can't append an empty string");
+  }
 
   const uint32_t length = uint32_t(data.size());
   const char* rawString = data.c_str();
-  append(&length, sizeof(length));
-
+  writeUint32(length);
   append(rawString, length * sizeof(char));
 
   return *this;
 }
 
-MessageBuffer& MessageBuffer::operator<<(const glm::vec3& data) { return append(&data.x, sizeof(glm::vec3)); }
+MessageBuffer& MessageBuffer::writeVec3(const glm::vec3& data) { return append(&data.x, sizeof(glm::vec3)); }
+MessageBuffer& MessageBuffer::writeVec4(const glm::vec4& data) { return append(&data.x, sizeof(glm::vec4)); }
+MessageBuffer& MessageBuffer::writeQuat(const glm::quat& data) { return append(&data.x, sizeof(glm::quat)); }
+MessageBuffer& MessageBuffer::writeMat4(const glm::mat4& data) { return append(glm::value_ptr(data), sizeof(glm::mat4)); }
 
-MessageBuffer& MessageBuffer::operator<<(const glm::vec4& data) { return append(&data.x, sizeof(glm::vec4)); }
+//
+//
+//
 
-MessageBuffer& MessageBuffer::operator<<(const glm::quat& data) { return append(&data.x, sizeof(glm::quat)); }
-
-MessageBuffer& MessageBuffer::operator<<(const glm::mat4& data) {
-  return append(glm::value_ptr(data), sizeof(glm::mat4));
-}
+MessageBuffer& MessageBuffer::operator<<(bool data) { return writeBoolean(data); }
+MessageBuffer& MessageBuffer::operator<<(int8_t data) { return writeInt8(data); }
+MessageBuffer& MessageBuffer::operator<<(uint8_t data) { return writeUint8(data); }
+MessageBuffer& MessageBuffer::operator<<(int16_t data) { return writeInt16(data); }
+MessageBuffer& MessageBuffer::operator<<(uint16_t data) { return writeUint16(data); }
+MessageBuffer& MessageBuffer::operator<<(int32_t data) { return writeInt32(data); }
+MessageBuffer& MessageBuffer::operator<<(uint32_t data) { return writeUint32(data); }
+MessageBuffer& MessageBuffer::operator<<(int64_t data) { return writeInt64(data); }
+MessageBuffer& MessageBuffer::operator<<(uint64_t data) { return writeUint64(data); }
+MessageBuffer& MessageBuffer::operator<<(float data) { return writeFloat(data); }
+MessageBuffer& MessageBuffer::operator<<(double data) { return writeDouble(data); }
+MessageBuffer& MessageBuffer::operator<<(const std::string& data) { return writeString(data); }
+MessageBuffer& MessageBuffer::operator<<(const glm::vec3& data) { return writeVec3(data); }
+MessageBuffer& MessageBuffer::operator<<(const glm::vec4& data) { return writeVec4(data); }
+MessageBuffer& MessageBuffer::operator<<(const glm::quat& data) { return writeQuat(data); }
+MessageBuffer& MessageBuffer::operator<<(const glm::mat4& data) { return writeMat4(data); }
 
 } // namespace messaging
 } // namespace gero

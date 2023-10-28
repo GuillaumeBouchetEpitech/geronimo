@@ -59,6 +59,12 @@ std::shared_ptr<ShaderProgram> ShaderProgramBuilder::build() {
   return std::make_shared<ShaderProgram>(_def);
 }
 
+std::shared_ptr<IUnboundShaderProgram> ShaderProgramBuilder::buildUnbound()
+{
+  validate();
+  return ShaderProgram::buildUnbound(_def);
+}
+
 ShaderProgram::Definition ShaderProgramBuilder::getDefinition() {
   validate();
   return _def;

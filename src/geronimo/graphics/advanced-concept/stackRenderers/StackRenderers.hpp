@@ -12,27 +12,44 @@
 namespace gero {
 namespace graphics {
 
-class StackRenderers : public gero::NonCopyable {
+class IStackRenderers {
 public:
-  void initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader,
+  virtual ~IStackRenderers() = default;
+public:
+public:
+  virtual void setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) = 0;
+
+public:
+  virtual void flush() = 0;
+  virtual void safeMode(const std::function<void()>& callback) = 0;
+
+public:
+  virtual ITrianglesStackRenderer& getTrianglesStack() = 0;
+  virtual IWireFramesStackRenderer& getWireFramesStack() = 0;
+
+};
+
+class StackRenderers : public IStackRenderers, public gero::NonCopyable {
+public:
+  void initialize(std::shared_ptr<gero::graphics::IUnboundShaderProgram> inShader,
                   const gero::graphics::Geometry::Definition& geoDef);
   void initialize(const gero::graphics::ShaderProgram::Definition& inShaderDef,
                   const gero::graphics::Geometry::Definition& geoDef);
   void initialize(const std::string& inRootPath);
 
 public:
-  void setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData);
+  void setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) override;
 
 public:
-  void flush();
-  void safeMode(const std::function<void()>& callback);
+  void flush() override;
+  void safeMode(const std::function<void()>& callback) override;
 
 public:
-  ITrianglesStackRenderer& getTrianglesStack();
-  IWireFramesStackRenderer& getWireFramesStack();
+  ITrianglesStackRenderer& getTrianglesStack() override;
+  IWireFramesStackRenderer& getWireFramesStack() override;
 
 private:
-  std::shared_ptr<gero::graphics::ShaderProgram> _shader;
+  std::shared_ptr<gero::graphics::IUnboundShaderProgram> _shader;
 
   gero::graphics::ICamera::MatricesData _matricesData;
 

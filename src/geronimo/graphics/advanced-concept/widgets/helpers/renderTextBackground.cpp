@@ -11,8 +11,8 @@ void renderTextBackground(float textDepth,
                           const glm::vec4& colorB,
                           float extraSizeA,
                           float extraSizeB,
-                          gero::graphics::StackRenderers& inStackRenderers,
-                          gero::graphics::TextRenderer& inTextRenderer) {
+                          gero::graphics::IStackRenderers& inStackRenderers,
+                          gero::graphics::ITextRenderer& inTextRenderer) {
 
   auto& triangles = inStackRenderers.getTrianglesStack();
 

@@ -66,23 +66,23 @@ bool getShaderSource(const std::string& filename,
 
 //
 
-ShaderProgram::ShaderProgram(const Definition& def) : ShaderProgram(def, fileUtils::getDefaulCallback()) {}
+ShaderProgram::ShaderProgram(const Definition& inDef) : ShaderProgram(inDef, fileUtils::getDefaulCallback()) {}
 
-ShaderProgram::ShaderProgram(const Definition& def, fileUtils::FileManager& fileManager)
-  : ShaderProgram(def, fileUtils::getFileManagerCallback(fileManager)) {}
+ShaderProgram::ShaderProgram(const Definition& inDef, fileUtils::FileManager& fileManager)
+  : ShaderProgram(inDef, fileUtils::getFileManagerCallback(fileManager)) {}
 
-ShaderProgram::ShaderProgram(const Definition& def, const fileUtils::LoadCallback& loadFileCallback) {
+ShaderProgram::ShaderProgram(const Definition& inDef, const fileUtils::LoadCallback& loadFileCallback) {
   std::string vertexSourceCode;
   std::string fragmentSourceCode;
 
-  if (!utilities::getShaderSource(def.filenames.vertex, vertexSourceCode, loadFileCallback))
-    D_THROW(std::invalid_argument, "fail to read a file, filename=" << def.filenames.vertex);
+  if (!utilities::getShaderSource(inDef.filenames.vertex, vertexSourceCode, loadFileCallback))
+    D_THROW(std::invalid_argument, "fail to read a file, filename=" << inDef.filenames.vertex);
 
-  if (!utilities::getShaderSource(def.filenames.fragment, fragmentSourceCode, loadFileCallback))
-    D_THROW(std::invalid_argument, "fail to read a file, filename=" << def.filenames.fragment);
+  if (!utilities::getShaderSource(inDef.filenames.fragment, fragmentSourceCode, loadFileCallback))
+    D_THROW(std::invalid_argument, "fail to read a file, filename=" << inDef.filenames.fragment);
 
-  uint32_t vertexShader = GlContext::Shader::loadVertexShader(def.filenames.vertex, vertexSourceCode);
-  uint32_t fragmentShader = GlContext::Shader::loadFragmentShader(def.filenames.fragment, fragmentSourceCode);
+  uint32_t vertexShader = GlContext::Shader::loadVertexShader(inDef.filenames.vertex, vertexSourceCode);
+  uint32_t fragmentShader = GlContext::Shader::loadFragmentShader(inDef.filenames.fragment, fragmentSourceCode);
 
   _programId = GlContext::Shader::createProgram();
 
@@ -95,39 +95,39 @@ ShaderProgram::ShaderProgram(const Definition& def, const fileUtils::LoadCallbac
 
     D_THROW(std::runtime_error,
             "fail to link a shader"
-              << ", vertex=" << def.filenames.vertex << ", fragment=" << def.filenames.fragment);
+              << ", vertex=" << inDef.filenames.vertex << ", fragment=" << inDef.filenames.fragment);
   }
 
-  for (const auto& attribute : def.attributes) {
+  for (const auto& attribute : inDef.attributes) {
     if (_attributesMap.count(attribute) > 0)
       D_THROW(std::runtime_error,
               "duplicate attribute"
-                << ", input=" << attribute << ", vertex=" << def.filenames.vertex);
+                << ", input=" << attribute << ", vertex=" << inDef.filenames.vertex);
 
     const int32_t location = GlContext::Shader::getAttribLocation(_programId, attribute.c_str());
 
     if (location == -1)
       D_THROW(std::runtime_error,
               "fail to find an attribute location (missing or unused)"
-                << ", input=" << attribute << ", vertex=" << def.filenames.vertex);
+                << ", input=" << attribute << ", vertex=" << inDef.filenames.vertex);
 
     _attributesMap[attribute] = location;
   }
 
-  for (const auto& uniform : def.uniforms) {
+  for (const auto& uniform : inDef.uniforms) {
     if (_uniformsMap.count(uniform) > 0)
       D_THROW(std::runtime_error,
               "duplicate uniform"
-                << ", input=" << uniform << ", vertex=" << def.filenames.vertex
-                << ", fragment=" << def.filenames.fragment);
+                << ", input=" << uniform << ", vertex=" << inDef.filenames.vertex
+                << ", fragment=" << inDef.filenames.fragment);
 
     const int32_t location = GlContext::Shader::getUniformLocation(_programId, uniform.c_str());
 
     if (location == -1)
       D_THROW(std::runtime_error,
               "fail to find an uniform location (missing or unused)"
-                << ", input=" << uniform << ", vertex=" << def.filenames.vertex
-                << ", fragment=" << def.filenames.fragment);
+                << ", input=" << uniform << ", vertex=" << inDef.filenames.vertex
+                << ", fragment=" << inDef.filenames.fragment);
 
     _uniformsMap[uniform] = location;
   }
@@ -136,6 +136,21 @@ ShaderProgram::ShaderProgram(const Definition& def, const fileUtils::LoadCallbac
 ShaderProgram::~ShaderProgram() {
   if (_programId)
     GlContext::Shader::deleteProgram(_programId);
+}
+
+//
+
+std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const ShaderProgram::Definition& inDef)
+{
+  return std::make_shared<ShaderProgram>(inDef);
+}
+std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const Definition& inDef, fileUtils::FileManager& fileManager)
+{
+  return std::make_shared<ShaderProgram>(inDef, fileManager);
+}
+std::shared_ptr<IUnboundShaderProgram> ShaderProgram::buildUnbound(const Definition& inDef, const fileUtils::LoadCallback& loadFileCallback)
+{
+  return std::make_shared<ShaderProgram>(inDef, loadFileCallback);
 }
 
 //

@@ -9,7 +9,7 @@
 namespace gero {
 namespace graphics {
 
-void StackRenderers::initialize(std::shared_ptr<gero::graphics::ShaderProgram> inShader,
+void StackRenderers::initialize(std::shared_ptr<gero::graphics::IUnboundShaderProgram> inShader,
                                 const gero::graphics::Geometry::Definition& inGeoDef) {
   _shader = inShader;
 
@@ -29,7 +29,7 @@ void StackRenderers::initialize(std::shared_ptr<gero::graphics::ShaderProgram> i
 void StackRenderers::initialize(const gero::graphics::ShaderProgram::Definition& inShaderDef,
                                 const gero::graphics::Geometry::Definition& inGeoDef) {
 
-  auto newShader = std::make_shared<gero::graphics::ShaderProgram>(inShaderDef);
+  auto newShader = gero::graphics::ShaderProgram::buildUnbound(inShaderDef);
 
   initialize(newShader, inGeoDef);
 }

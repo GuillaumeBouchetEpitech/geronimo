@@ -6,12 +6,12 @@
 namespace gero {
 namespace graphics {
 
-class ShaderProgram;
+class IUnboundShaderProgram;
 
 class GeometryBuilder {
 private:
   Geometry::Definition _def;
-  ShaderProgram* _shader = nullptr;
+  IUnboundShaderProgram* _shader = nullptr;
 
 public:
   GeometryBuilder();
@@ -20,7 +20,7 @@ public:
 public:
   GeometryBuilder& reset();
 
-  GeometryBuilder& setShader(ShaderProgram& shader);
+  GeometryBuilder& setShader(IUnboundShaderProgram& shader);
   GeometryBuilder& setPrimitiveType(Geometry::PrimitiveType primitiveType);
   GeometryBuilder& addVbo();
   GeometryBuilder& setVboAsInstanced();

@@ -164,44 +164,44 @@ void TextRenderer::initialize(const std::string& inRootPath) {
   _logic.stateRegexp = std::regex(R"(\$\{(\d+)\})");
 }
 
-TextRenderer& TextRenderer::setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) {
+ITextRenderer& TextRenderer::setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) {
   _graphic.matricesData = matricesData;
   return *this;
 }
 
-TextRenderer& TextRenderer::setMainColor(const glm::vec4& inColor) {
+ITextRenderer& TextRenderer::setMainColor(const glm::vec4& inColor) {
   _logic.mainColor = inColor;
   return *this;
 }
 
-TextRenderer& TextRenderer::setOutlineColor(const glm::vec4& inColor) {
+ITextRenderer& TextRenderer::setOutlineColor(const glm::vec4& inColor) {
   _logic.outlineColor = inColor;
   return *this;
 }
 
-TextRenderer& TextRenderer::setScale(float inScale) {
+ITextRenderer& TextRenderer::setScale(float inScale) {
   _logic.scale = inScale;
   return *this;
 }
 
-TextRenderer& TextRenderer::setDepth(float inDepth) {
+ITextRenderer& TextRenderer::setDepth(float inDepth) {
   _logic.depth = inDepth;
   return *this;
 }
 
-TextRenderer& TextRenderer::setHorizontalTextAlign(HorizontalTextAlign inHorizontalTextAlign) {
+ITextRenderer& TextRenderer::setHorizontalTextAlign(HorizontalTextAlign inHorizontalTextAlign) {
   _logic.horizontalTextAlign = inHorizontalTextAlign;
   return *this;
 }
 
-TextRenderer& TextRenderer::setVerticalTextAlign(VerticalTextAlign inVerticalTextAlign) {
+ITextRenderer& TextRenderer::setVerticalTextAlign(VerticalTextAlign inVerticalTextAlign) {
   _logic.verticalTextAlign = inVerticalTextAlign;
   return *this;
 }
 
 //
 
-TextRenderer& TextRenderer::pushText(const glm::vec2& inPosition, const std::string_view inMessage) {
+ITextRenderer& TextRenderer::pushText(const glm::vec2& inPosition, const std::string_view inMessage) {
   _pushText(inPosition, inMessage, nullptr, 0);
 
   return *this;
@@ -397,12 +397,12 @@ const std::vector<TextRenderer::MessageRectangle>& TextRenderer::getLatestTextRe
   return _logic.latestMessageRectangles;
 }
 
-TextRenderer& TextRenderer::clear() {
+ITextRenderer& TextRenderer::clear() {
   _graphic.vertices.clear();
   return *this;
 }
 
-TextRenderer& TextRenderer::render() {
+ITextRenderer& TextRenderer::render() {
   if (_graphic.vertices.empty())
     return *this;
 

@@ -50,6 +50,7 @@ public:
   const glm::mat4& getWheelTransform(int32_t index, glm::mat4& mat4x4) const override;
   glm::vec3 getWheelPosition(int32_t index) const override;
   glm::quat getWheelOrientation(int32_t index) const override;
+  bool getWheelIsTouchingGround(int32_t index) const override;
   float getCurrentSpeedKmHour() const override;
   BodyWeakRef getPhysicBody() override;
   const BodyWeakRef getPhysicBody() const override;

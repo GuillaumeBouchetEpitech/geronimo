@@ -10,7 +10,9 @@
 void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) {
 
   auto& context = Context::get();
-  const auto& frustumCulling = context.graphic.camera.scene.getFrustumCulling();
+  auto& scene = context.graphic.renderer.getSceneRenderer();
+  auto& geometriesStackRenderer = scene.getGeometriesStackRenderer();
+  const auto& frustumCulling = scene.getCamera().getFrustumCulling();
 
   {
     const auto body = inVehicle.getPhysicBody();
@@ -27,8 +29,9 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
     glm::vec3 lightPos2 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 4);
     glm::vec3 lightPos3 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 5);
 
-    if (frustumCulling.sphereInFrustum(lightPos3, 5))
-      Context::get().graphic.scene.deferred.pushSpotLight(lightPos3, 10);
+    if (frustumCulling.sphereInFrustum(lightPos3, 5)) {
+      scene.getClusteredDeferred().pushSpotLight(lightPos3, 10);
+    }
 
     {
       const float radius = 0.5f;
@@ -39,25 +42,25 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
       instance.scale = glm::vec3(radius);
       instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-      if (frustumCulling.sphereInFrustum(instance.position, radius))
-        Context::get().graphic.scene.geometriesStackRenderer.pushAlias(1112, instance);
+      if (frustumCulling.sphereInFrustum(instance.position, radius)) {
+        geometriesStackRenderer.pushAlias(1112, instance);
+      }
 
       instance.scale = glm::vec3(radius * 0.5f);
 
       instance.position = lightPos1;
-      if (frustumCulling.sphereInFrustum(instance.position, radius))
-        Context::get().graphic.scene.geometriesStackRenderer.pushAlias(1112, instance);
+      if (frustumCulling.sphereInFrustum(instance.position, radius)) {
+        geometriesStackRenderer.pushAlias(1112, instance);
+      }
 
       instance.position = lightPos2;
-      if (frustumCulling.sphereInFrustum(instance.position, radius))
-        Context::get().graphic.scene.geometriesStackRenderer.pushAlias(1112, instance);
+      if (frustumCulling.sphereInFrustum(instance.position, radius)) {
+        geometriesStackRenderer.pushAlias(1112, instance);
+      }
     }
   }
 
   {
-
-    auto& graphic = Context::get().graphic;
-    auto& geometriesStackRenderer = graphic.scene.geometriesStackRenderer;
 
     GeometriesStackRenderer::GeometryInstance instance;
     instance.scale = glm::vec3(1, 1, 1);

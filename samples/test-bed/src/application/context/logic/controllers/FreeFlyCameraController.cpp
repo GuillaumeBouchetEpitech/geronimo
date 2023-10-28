@@ -3,11 +3,11 @@
 
 #include "geronimo/graphics/input-managers/KeyboardManager.hpp"
 #include "geronimo/graphics/input-managers/MouseManager.hpp"
-// #include "geronimo/graphics/input-managers/TouchManager.hpp"
+#include "geronimo/graphics/input-managers/TouchManager.hpp"
 
 #include "application/context/Context.hpp"
 
-void FreeFlyCameraController::update(float elapsed_time) {
+void FreeFlyCameraController::update(float elapsedTime) {
   auto& context = Context::get();
 
   { // mouse
@@ -32,13 +32,50 @@ void FreeFlyCameraController::update(float elapsed_time) {
       _horizontalAngle -= k_lookSpeed;
     }
 
-    // auto& mouse = context.inputs.mouse;
-    auto& mouse = MouseManager::get();
+    const bool hasTouchEvent = TouchManager::get().getTouchData(0).has_value();
+    const bool hasMouseEvent = MouseManager::get().isLocked();
 
-    _horizontalAngle -= float(mouse.getDelta().x) / 5.f;
-    _verticalAngle -= float(mouse.getDelta().y) / 5.f;
+    // touch OR mouse, not both
 
-    mouse.resetDelta();
+    if (hasTouchEvent) {
+
+      // touch event(s)
+
+      if (_doubleTapTimeLeft > 0.0f) {
+        _doubleTapTimeLeft -= elapsedTime;
+      }
+
+      if (auto touch = TouchManager::get().getTouchData(0)) {
+
+        if (_doubleTapTimeLeft > 0.0f) {
+          _forceForward = true;
+        } else {
+          _forceForward = false;
+          _doubleTapTimeLeft = 0.25f;
+        }
+
+        _horizontalAngle -= float(touch->get().delta.x) / 5.0f;
+        _verticalAngle -= float(touch->get().delta.y) / 5.0f;
+      }
+
+    } else if (hasMouseEvent) {
+
+      // mouse event(s)
+
+      auto& mouse = MouseManager::get();
+
+      if (mouse.isLocked()) {
+        _horizontalAngle -= float(mouse.getDelta().x) / 5.f;
+        _verticalAngle -= float(mouse.getDelta().y) / 5.f;
+      }
+      mouse.resetDelta();
+
+    } else {
+      _forceForward = false;
+      _doubleTapTimeLeft = 0.0f;
+    }
+
+
 
     _verticalAngle = std::min(std::max(_verticalAngle, -89.f), 89.f);
 
@@ -70,9 +107,7 @@ void FreeFlyCameraController::update(float elapsed_time) {
     _leftMovement.y = _upAxis.z * _forwardAxis.x - _upAxis.x * _forwardAxis.z;
     _leftMovement.z = _upAxis.x * _forwardAxis.y - _upAxis.y * _forwardAxis.x;
 
-    auto& camera = context.graphic.camera.scene;
-
-    camera.lookAt(_position, _position + _forwardAxis, glm::vec3(0, 0, 1));
+    context.graphic.renderer.getSceneRenderer().lookAt(_position, _position + _forwardAxis, glm::vec3(0, 0, 1));
 
   } // mouse
 
@@ -86,19 +121,20 @@ void FreeFlyCameraController::update(float elapsed_time) {
     const bool moveBackward = keyboard.isPressed(SDLK_s);
     const bool strafeLeft = keyboard.isPressed(SDLK_q, SDLK_a);
     const bool strafeRight = keyboard.isPressed(SDLK_d);
+    const bool accelerated = keyboard.isPressed(SDLK_LSHIFT);
 
-    constexpr float speed = 16;
+    const float speed = 16.0f * (accelerated ? 4.0f : 1.0f);
     glm::vec3 acceleration(0, 0, 0);
 
-    if (moveForward)
-      acceleration += _forwardMovement * elapsed_time * speed;
+    if (moveForward || _forceForward)
+      acceleration += _forwardMovement * elapsedTime * speed;
     else if (moveBackward)
-      acceleration -= _forwardMovement * elapsed_time * speed;
+      acceleration -= _forwardMovement * elapsedTime * speed;
 
     if (strafeLeft)
-      acceleration -= _leftMovement * elapsed_time * speed;
+      acceleration -= _leftMovement * elapsedTime * speed;
     else if (strafeRight)
-      acceleration += _leftMovement * elapsed_time * speed;
+      acceleration += _leftMovement * elapsedTime * speed;
 
     _position += acceleration;
 
@@ -109,7 +145,7 @@ void FreeFlyCameraController::update(float elapsed_time) {
     // auto& mouse = context.inputs.mouse;
 
     // if (_rayCastCooldown >= 0.0f)
-    //     _rayCastCooldown -= elapsed_time;
+    //     _rayCastCooldown -= elapsedTime;
 
     // _target = _position + _forward  * 50.0f;
 

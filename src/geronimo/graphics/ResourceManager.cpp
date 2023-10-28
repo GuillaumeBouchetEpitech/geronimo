@@ -13,7 +13,7 @@
 namespace gero {
 namespace graphics {
 
-std::shared_ptr<ShaderProgram> ResourceManager::createShader(int32_t aliasCode,
+std::shared_ptr<IUnboundShaderProgram> ResourceManager::createShader(int32_t aliasCode,
                                                              const ShaderProgram::Definition def,
                                                              bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
@@ -38,13 +38,13 @@ std::shared_ptr<ShaderProgram> ResourceManager::createShader(int32_t aliasCode,
   if (_shadersMap.count(aliasCode) > 0)
     D_THROW(std::runtime_error, "resource manager new shader alias is duplicated, aliasCode=" << aliasCode);
 
-  auto newShader = std::make_shared<ShaderProgram>(def, _fileManager);
+  auto newShader = ShaderProgram::buildUnbound(def, _fileManager);
   _shadersMap[aliasCode] = newShader;
   _shaderDefsMap[shaderUniqueName] = aliasCode;
   return newShader;
 }
 
-std::shared_ptr<ShaderProgram> ResourceManager::getShader(int32_t aliasCode) {
+std::shared_ptr<IUnboundShaderProgram> ResourceManager::getShader(int32_t aliasCode) {
   auto it = _shadersMap.find(aliasCode);
   if (it == _shadersMap.end())
     D_THROW(std::runtime_error, "resource manager shader does not exist, aliasCode=" << aliasCode);

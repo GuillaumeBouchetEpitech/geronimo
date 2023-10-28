@@ -112,10 +112,13 @@ SRC+= \
 		$(DIR_SRC)/application/context/*.cpp \
 		$(DIR_SRC)/application/context/graphics/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/*.cpp \
+		$(DIR_SRC)/application/context/graphics/renderers/hud/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/hud/helpers/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/hud/widgets/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/scene/*.cpp \
 		$(DIR_SRC)/application/context/graphics/renderers/scene/helpers/*.cpp \
+		$(DIR_SRC)/application/context/graphics/renderers/scene/geometries-stack-renderer/*.cpp \
+		$(DIR_SRC)/application/context/graphics/renderers/scene/scene-stack-renderers/*.cpp \
 		$(DIR_SRC)/application/context/logic/*.cpp \
 		$(DIR_SRC)/application/context/logic/controllers/*.cpp \
 		$(DIR_SRC)/application/states/*.cpp \
@@ -193,6 +196,8 @@ LDFLAGS+=	--preload-file ./assets/
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/textRenderer/assets
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/stackRenderers/shaders
+LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/geometries-stack-renderer/shaders
+LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/scene-stack-renderers/shaders
 
 LDFLAGS+=	-s TOTAL_MEMORY=128Mb
 LDFLAGS+= -s EXPORTED_RUNTIME_METHODS=cwrap

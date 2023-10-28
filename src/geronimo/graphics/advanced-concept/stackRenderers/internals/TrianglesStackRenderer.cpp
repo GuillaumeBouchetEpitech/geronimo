@@ -8,7 +8,7 @@
 namespace gero {
 namespace graphics {
 
-void TrianglesStackRenderer::initialize(gero::graphics::ShaderProgram& shader,
+void TrianglesStackRenderer::initialize(gero::graphics::IUnboundShaderProgram& shader,
                                         const gero::graphics::Geometry::Definition& geoDef) {
 
   _geometry.initialize(shader, geoDef);

@@ -16,23 +16,26 @@ namespace graphics {
 
 // class UniformBufferObject;
 
-struct IBoundShaderProgram;
+class IBoundShaderProgram;
 
-struct IUnboundShaderProgram {
+class IUnboundShaderProgram {
+public:
   virtual ~IUnboundShaderProgram() = default;
 
-  virtual void rawBind() const = 0;
-  virtual void preBind(const std::function<void(IBoundShaderProgram&)>& callback) = 0;
-  virtual void bind(const std::function<void(IBoundShaderProgram&)>& callback) = 0;
-};
-
-struct IBoundShaderProgram : public IUnboundShaderProgram {
-
+public:
   virtual int32_t getAttribute(const char* name) const = 0;
   virtual int32_t getUniform(const char* name) const = 0;
   virtual bool hasAttribute(const char* name) const = 0;
   virtual bool hasUniform(const char* name) const = 0;
 
+public:
+  virtual void rawBind() const = 0;
+  virtual void preBind(const std::function<void(IBoundShaderProgram&)>& callback) = 0;
+  virtual void bind(const std::function<void(IBoundShaderProgram&)>& callback) = 0;
+};
+
+class IBoundShaderProgram : public IUnboundShaderProgram {
+public:
   virtual void setUniform(const char* name, int32_t value) const = 0;
   virtual void setUniform(const char* name, int32_t x, int32_t y) const = 0;
   virtual void setUniform(const char* name, int32_t x, int32_t y, int32_t z) const = 0;
@@ -46,6 +49,7 @@ struct IBoundShaderProgram : public IUnboundShaderProgram {
   virtual void setUniform(const char* name, const glm::mat3& mat3) const = 0;
   virtual void setUniform(const char* name, const glm::mat4& mat4) const = 0;
 
+public:
   virtual void setUniform(int32_t location, int32_t value) const = 0;
   virtual void setUniform(int32_t location, int32_t x, int32_t y) const = 0;
   virtual void setUniform(int32_t location, int32_t x, int32_t y, int32_t z) const = 0;
@@ -82,10 +86,15 @@ private:
   std::unordered_map<std::string, int32_t> _uniformsMap;
 
 public:
-  ShaderProgram(const Definition& def);
-  ShaderProgram(const Definition& def, fileUtils::FileManager& fileManager);
-  ShaderProgram(const Definition& def, const fileUtils::LoadCallback& loadFileCallback);
+  ShaderProgram(const Definition& inDef);
+  ShaderProgram(const Definition& inDef, fileUtils::FileManager& fileManager);
+  ShaderProgram(const Definition& inDef, const fileUtils::LoadCallback& loadFileCallback);
   ~ShaderProgram();
+
+public:
+  static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef);
+  static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef, fileUtils::FileManager& fileManager);
+  static std::shared_ptr<IUnboundShaderProgram> buildUnbound(const Definition& inDef, const fileUtils::LoadCallback& loadFileCallback);
 
 public:
   // void bind() const;

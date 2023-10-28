@@ -22,6 +22,9 @@ public:
   ~PerformanceProfiler() = default;
 
 public:
+  void setSize(std::size_t inPreAllocatedHistoricSize);
+
+public:
   void start(const std::string& name);
   void stop(const std::string& name);
   void set(const std::string& name, int32_t inDuration);

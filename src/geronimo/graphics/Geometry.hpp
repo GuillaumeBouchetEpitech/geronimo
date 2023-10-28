@@ -15,7 +15,7 @@
 namespace gero {
 namespace graphics {
 
-class ShaderProgram;
+class IUnboundShaderProgram;
 
 class Geometry {
 public:
@@ -93,7 +93,7 @@ public:
   Geometry() = default;
 
 public:
-  void initialize(ShaderProgram& shader, const Definition& def);
+  void initialize(IUnboundShaderProgram& shader, const Definition& def);
 
 public:
   void allocateBuffer(uint32_t index, uint32_t dataSize, const void* data = nullptr);

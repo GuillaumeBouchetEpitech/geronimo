@@ -115,5 +115,8 @@
     "/dev": true,
     "/proc": true,
     "/etc":true
-  }
+  },
+  "cSpell.words": [
+    "gero"
+  ]
 }

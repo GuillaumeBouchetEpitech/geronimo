@@ -7,7 +7,7 @@
 
 #include "geronimo/graphics/input-managers/KeyboardManager.hpp"
 #include "geronimo/graphics/input-managers/MouseManager.hpp"
-// #include "geronimo/graphics/input-managers/TouchManager.hpp"
+#include "geronimo/graphics/input-managers/TouchManager.hpp"
 
 #include "context/graphics/Scene.hpp"
 
@@ -31,6 +31,7 @@ Application::Application(const Definition& def)
 
   KeyboardManager::create();
   MouseManager::create();
+  TouchManager::create();
   Context::create(def.width, def.height);
   StateManager::create();
 

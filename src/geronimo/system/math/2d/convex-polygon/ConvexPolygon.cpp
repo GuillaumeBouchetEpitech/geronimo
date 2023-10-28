@@ -46,7 +46,7 @@ bool ConvexPolygon::contains(const glm::vec2& pos)
 
     // D_MYLOG("  -> p1 " << _vertices.at(ii) << ", p2 " << _vertices.at(jj));
 
-    if (pointIsLeftOfLine(_vertices.at(ii), _vertices.at(jj), pos))
+    if (collisionPointIsLeftOfLine(_vertices.at(ii), _vertices.at(jj), pos))
       return false;
   }
   return true;

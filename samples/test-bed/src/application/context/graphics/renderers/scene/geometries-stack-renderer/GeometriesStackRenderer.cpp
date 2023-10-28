@@ -6,12 +6,13 @@
 
 void GeometriesStackRenderer::initialize() {
 
-  const std::string basePath = "./assets/graphics/shaders/scene/";
+  // const std::string basePath = "./assets/graphics/shaders/scene/";
+  const std::string basePath = "./src/application/context/graphics/renderers/scene/geometries-stack-renderer/shaders/";
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()
-    .setVertexFilename(basePath + "geometriesStackRenderer.glsl.vert")
-    .setFragmentFilename(basePath + "geometriesStackRenderer.glsl.frag")
+    .setVertexFilename(basePath + "geometries-stack-renderer.glsl.vert")
+    .setFragmentFilename(basePath + "geometries-stack-renderer.glsl.frag")
 
     .addAttribute("a_vertexPosition")
     .addAttribute("a_vertexNormal")

@@ -34,7 +34,7 @@ public:
 class WireFramesStackRenderer : public IWireFramesStackRenderer, public gero::NonCopyable {
 
 public:
-  void initialize(gero::graphics::ShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef);
+  void initialize(gero::graphics::IUnboundShaderProgram& shader, const gero::graphics::Geometry::Definition& geoDef);
 
 public:
   void

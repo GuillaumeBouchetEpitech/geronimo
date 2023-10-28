@@ -97,9 +97,7 @@ void Context::initializePhysicResources() {
         geoVertices.push_back({pos3, normal3});
       }
 
-      // gero::graphics::MakeGeometries::convertToPerFacesNormals(geoVertices);
-
-      graphic.scene.geometriesStackRenderer.createAlias(100, geoVertices);
+      graphic.renderer.getSceneRenderer().getGeometriesStackRenderer().createAlias(100, geoVertices);
     }
   }
 

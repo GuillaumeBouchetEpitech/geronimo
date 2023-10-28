@@ -26,6 +26,18 @@ PerformanceProfiler::PerformanceProfiler(std::size_t inPreAllocatedHistoricSize 
   _allDataKeys.reserve(32);
 }
 
+void PerformanceProfiler::setSize(std::size_t inPreAllocatedHistoricSize)
+{
+  if (_preAllocatedHistoricSize == inPreAllocatedHistoricSize) {
+    return;
+  }
+
+  _preAllocatedHistoricSize = inPreAllocatedHistoricSize;
+  for (auto& pair : _allTimes) {
+    pair.second.setSize(_preAllocatedHistoricSize);
+  }
+}
+
 void PerformanceProfiler::start(const std::string& name) { _getOrCreate(name).start(); }
 
 void PerformanceProfiler::stop(const std::string& name) { _getOrCreate(name).stop(); }

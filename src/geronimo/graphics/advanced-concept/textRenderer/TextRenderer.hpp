@@ -17,7 +17,7 @@
 namespace gero {
 namespace graphics {
 
-struct TextRenderer : public gero::NonCopyable {
+struct ITextRenderer {
 
 public:
   enum class HorizontalTextAlign {
@@ -31,7 +31,6 @@ public:
     bottom,
   };
 
-public:
   struct State {
     std::optional<glm::vec4> color;
     std::optional<glm::vec4> outline;
@@ -40,11 +39,63 @@ public:
       : color(inColor), outline(inOutline) {}
   };
 
-public:
   struct MessageRectangle {
     glm::vec2 pos;
     glm::vec2 size;
   };
+
+
+public:
+  ~ITextRenderer() = default;
+
+public:
+  virtual ITextRenderer& setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) = 0;
+
+public:
+  virtual ITextRenderer& setMainColor(const glm::vec4& inColor) = 0;
+  virtual ITextRenderer& setOutlineColor(const glm::vec4& inColor) = 0;
+  virtual ITextRenderer& setScale(float inScale) = 0;
+  virtual ITextRenderer& setDepth(float inDepth) = 0;
+  virtual ITextRenderer& setHorizontalTextAlign(HorizontalTextAlign inHorizontalTextAlign) = 0;
+  virtual ITextRenderer& setVerticalTextAlign(VerticalTextAlign inVerticalTextAlign) = 0;
+
+public:
+  virtual ITextRenderer& pushText(const glm::vec2& inPosition, const std::string_view inMessage) = 0;
+
+  template <typename... Args>
+  ITextRenderer& pushText(const glm::vec2& inPosition, const std::string_view inMessage, Args... args) {
+
+    std::array<State, sizeof...(args)> allStates{{args...}};
+
+    _pushText(inPosition, inMessage, allStates.data(), allStates.size());
+
+    return *this;
+  }
+
+public:
+  virtual const std::vector<MessageRectangle>& getLatestTextRectangles() const = 0;
+
+public:
+  virtual ITextRenderer& clear() = 0;
+  virtual ITextRenderer& render() = 0;
+
+protected:
+  virtual void
+  _pushText(const glm::vec2& inPosition,
+    const std::string_view inMessage,
+    const State* pStates,
+    std::size_t totalStates) = 0;
+
+
+};
+
+struct TextRenderer : public ITextRenderer, public gero::NonCopyable {
+
+public:
+  using HorizontalTextAlign = ITextRenderer::HorizontalTextAlign;
+  using VerticalTextAlign = ITextRenderer::VerticalTextAlign;
+  using State = ITextRenderer::State;
+  using MessageRectangle = ITextRenderer::MessageRectangle;
 
 private:
   struct LetterOffset {
@@ -82,21 +133,21 @@ public:
   void initialize(const std::string& inRootPath);
 
 public:
-  TextRenderer& setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData);
+  ITextRenderer& setMatricesData(const gero::graphics::ICamera::MatricesData& matricesData) override;
 
 public:
-  TextRenderer& setMainColor(const glm::vec4& inColor);
-  TextRenderer& setOutlineColor(const glm::vec4& inColor);
-  TextRenderer& setScale(float inScale);
-  TextRenderer& setDepth(float inDepth);
-  TextRenderer& setHorizontalTextAlign(HorizontalTextAlign inHorizontalTextAlign);
-  TextRenderer& setVerticalTextAlign(VerticalTextAlign inVerticalTextAlign);
+  ITextRenderer& setMainColor(const glm::vec4& inColor) override;
+  ITextRenderer& setOutlineColor(const glm::vec4& inColor) override;
+  ITextRenderer& setScale(float inScale) override;
+  ITextRenderer& setDepth(float inDepth) override;
+  ITextRenderer& setHorizontalTextAlign(HorizontalTextAlign inHorizontalTextAlign) override;
+  ITextRenderer& setVerticalTextAlign(VerticalTextAlign inVerticalTextAlign) override;
 
 public:
-  TextRenderer& pushText(const glm::vec2& inPosition, const std::string_view inMessage);
+  ITextRenderer& pushText(const glm::vec2& inPosition, const std::string_view inMessage) override;
 
   template <typename... Args>
-  TextRenderer& pushText(const glm::vec2& inPosition, const std::string_view inMessage, Args... args) {
+  ITextRenderer& pushText(const glm::vec2& inPosition, const std::string_view inMessage, Args... args) {
 
     std::array<State, sizeof...(args)> allStates{{args...}};
 
@@ -109,7 +160,7 @@ private:
   void _pushText(const glm::vec2& inPosition,
                  const std::string_view inMessage,
                  const State* pStates,
-                 std::size_t totalStates);
+                 std::size_t totalStates) override;
 
 private:
   void _pushSingleCharacter(const glm::vec3& inPosition,
@@ -119,11 +170,12 @@ private:
                             const glm::vec4& inOutlineColor);
 
 public:
-  const std::vector<MessageRectangle>& getLatestTextRectangles() const;
+  const std::vector<MessageRectangle>& getLatestTextRectangles() const override;
 
 public:
-  TextRenderer& clear();
-  TextRenderer& render();
+  ITextRenderer& clear() override;
+  ITextRenderer& render() override;
+
 };
 
 } // namespace graphics

@@ -19,6 +19,9 @@ private:
 
   // float _rayCastCooldown = 0.0f;
 
+  float _doubleTapTimeLeft = 0.0f;
+  bool _forceForward = false;
+
 public:
   FreeFlyCameraController() = default;
   // ~FreeFlyCameraController();

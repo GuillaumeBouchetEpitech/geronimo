@@ -23,12 +23,12 @@ private:
 
 private:
   std::unordered_map<std::string, int32_t> _shaderDefsMap;
-  std::unordered_map<int32_t, std::shared_ptr<ShaderProgram>> _shadersMap;
+  std::unordered_map<int32_t, std::shared_ptr<IUnboundShaderProgram>> _shadersMap;
 
 public:
-  std::shared_ptr<ShaderProgram>
+  std::shared_ptr<IUnboundShaderProgram>
   createShader(int32_t aliasCode, const ShaderProgram::Definition def, bool allowDuplicates = false);
-  std::shared_ptr<ShaderProgram> getShader(int32_t aliasCode);
+  std::shared_ptr<IUnboundShaderProgram> getShader(int32_t aliasCode);
 
 private:
   std::unordered_map<std::string, int32_t> _textureDefsMap;

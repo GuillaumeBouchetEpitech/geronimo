@@ -53,7 +53,7 @@ void PhysicSixDofConstraintManager::remove(SixDofConstraintWeakRef ref) {
   if (!ref)
     return;
   PhysicSixDofConstraint* implementation = reinterpret_cast<PhysicSixDofConstraint*>(ref.get());
-  if (!implementation->_isAdded)
+  if (!implementation || !implementation->_isAdded)
     return;
   _physicWorld._bullet.dynamicsWorld->removeConstraint(implementation->_bullet.constraint);
   implementation->_isAdded = false;

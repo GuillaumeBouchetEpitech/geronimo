@@ -14,7 +14,7 @@
 namespace gero {
 namespace graphics {
 
-void Geometry::initialize(ShaderProgram& shader, const Definition& def) {
+void Geometry::initialize(IUnboundShaderProgram& shader, const Definition& def) {
   if (_vao.isAllocated() || _vbo.isAllocated())
     D_THROW(std::runtime_error, "vao/vbo already allocated");
 

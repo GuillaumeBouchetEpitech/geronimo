@@ -7,8 +7,7 @@ void renderPhysicBody(const gero::physics::PhysicShapeDef& inShapeDef,
                       const glm::vec3& inPosition,
                       const glm::quat& inOrientation) {
 
-  auto& graphic = Context::get().graphic;
-  auto& geometriesStackRenderer = graphic.scene.geometriesStackRenderer;
+  auto& geometriesStackRenderer = Context::get().graphic.renderer.getSceneRenderer().getGeometriesStackRenderer();
 
   switch (inShapeDef.type) {
   case gero::physics::PhysicShapeDef::Type::sphere: {

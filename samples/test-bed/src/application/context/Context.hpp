@@ -1,12 +1,9 @@
 
 #pragma once
 
-// #include "graphics/renderers/common/StackRenderers.hpp"
-
 #include "application/states/StateManager.hpp"
 
-#include "graphics/renderers/scene/GeometriesStackRenderer.hpp"
-#include "graphics/renderers/scene/SceneStackRenderers.hpp"
+#include "graphics/renderers/GraphicsRenderer.hpp"
 
 #include "logic/HeightField.hpp"
 #include "logic/controllers/FreeFlyCameraController.hpp"
@@ -15,7 +12,6 @@
 #include "geronimo/graphics/FrameBuffer.hpp"
 #include "geronimo/graphics/Geometry.hpp"
 #include "geronimo/graphics/RenderBuffer.hpp"
-#include "geronimo/graphics/ResourceManager.hpp"
 #include "geronimo/graphics/ShaderProgram.hpp"
 #include "geronimo/graphics/Texture.hpp"
 #include "geronimo/graphics/camera/Camera.hpp"
@@ -78,8 +74,6 @@ public:
   //
 
 private:
-  void initializeGraphicResources();
-
   void initializePhysicResources();
 
 #if 1
@@ -88,31 +82,7 @@ private:
 
 public:
   struct Graphic {
-    struct CameraData {
-      glm::uvec2 viewportSize = {800, 600};
-
-      gero::graphics::Camera scene;
-      gero::graphics::Camera hud;
-    } camera;
-
-    struct Hud {
-      gero::graphics::StackRenderers stackRenderers;
-
-      gero::graphics::TextRenderer textRenderer;
-
-    } hud;
-
-    struct Scene {
-      SceneStackRenderers stackRenderers;
-
-      GeometriesStackRenderer geometriesStackRenderer;
-
-      gero::graphics::ClusteredDeferred deferred;
-
-    } scene;
-
-    gero::graphics::ResourceManager resourceManager;
-
+    GraphicsRenderer renderer;
   } graphic;
 
   //

@@ -1,10 +1,6 @@
 
 #include "Scene.hpp"
 
-// #include "renderers/hud/helpers/renderTextBackground.hpp"
-// #include "renderers/hud/helpers/writeTime.hpp"
-// #include "renderers/hud/widgets/renderPerformanceProfilerMetrics.hpp"
-
 #include "renderers/scene/helpers/renderPhysicBody.hpp"
 #include "renderers/scene/helpers/renderPhysicVehicle.hpp"
 
@@ -14,7 +10,7 @@
 #include "geronimo/graphics/ShaderProgram.hpp"
 #include "geronimo/graphics/advanced-concept/widgets/helpers/renderTextBackground.hpp"
 #include "geronimo/graphics/advanced-concept/widgets/helpers/writeTime.hpp"
-#include "geronimo/graphics/advanced-concept/widgets/renderPerformanceProfilerMetrics.hpp"
+#include "geronimo/graphics/advanced-concept/widgets/renderHistoricalTimeData.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/math/angles.hpp"
@@ -38,22 +34,34 @@ void Scene::initialize() {
 }
 
 void Scene::renderAll() {
-  Scene::_clear();
 
   auto& context = Context::get();
+  auto& renderer = context.graphic.renderer;
+
+  const glm::uvec2 uVSize(renderer.getSceneRenderer().getCamera().getSize());
+
+  GlContext::setViewport(0, 0, uVSize.x, uVSize.y);
+
+  GlContext::clearColor(0.3f, 0.3f, 0.3f, 1.0f);
+  GlContext::clearDepth(1.0f);
+  GlContext::clears(Buffers::color, Buffers::depth);
+
+  renderer.computeMatrices();
+
   auto& performanceProfiler = context.logic.performanceProfiler;
 
   {
     performanceProfiler.start("2 render scene");
 
-    context.graphic.scene.deferred.startRecording();
+    auto& scene = renderer.getSceneRenderer();
+    scene.getClusteredDeferred().startRecording();
 
     Scene::_renderScene();
 
-    context.graphic.scene.deferred.stopRecording();
+    scene.getClusteredDeferred().stopRecording();
 
-    context.graphic.scene.deferred.setEyePosition(context.graphic.camera.scene.getEye());
-    context.graphic.scene.deferred.applySpotLights(context.graphic.camera.scene);
+    scene.getClusteredDeferred().setEyePosition(scene.getCamera().getEye());
+    scene.getClusteredDeferred().applySpotLights(scene.getCamera());
 
     performanceProfiler.stop("2 render scene");
   }
@@ -71,14 +79,10 @@ void Scene::_renderScene() {
   GlContext::enable(States::cullFace);
 
   auto& context = Context::get();
-  auto& graphic = context.graphic;
-  auto& camera = graphic.camera;
-  gero::graphics::Camera& camInstance = camera.scene;
+  auto& renderer = context.graphic.renderer;
+  gero::graphics::ICamera& camInstance = renderer.getSceneRenderer().getCamera();
 
-  const auto& matricesData = camInstance.getMatricesData();
-
-  graphic.scene.stackRenderers.setMatricesData(matricesData);
-  graphic.scene.geometriesStackRenderer.setMatricesData(matricesData);
+  auto& scene = renderer.getSceneRenderer();
 
   {
 
@@ -107,7 +111,7 @@ void Scene::_renderScene() {
       instance.color = glm::vec4(0.6f, 1.0f, 0.6f, 1.0f);
       instance.light = 0.5f;
 
-      graphic.scene.geometriesStackRenderer.pushAlias(100, instance);
+      scene.getGeometriesStackRenderer().pushAlias(100, instance);
     }
 
     {
@@ -123,12 +127,12 @@ void Scene::_renderScene() {
       }
     }
 
-    graphic.scene.geometriesStackRenderer.renderAll();
+    scene.getGeometriesStackRenderer().renderAll();
   }
 
   {
 
-    auto& stackRenderers = graphic.scene.stackRenderers;
+    auto& stackRenderers = scene.getStackRenderers();
 
     {
       auto& wireFrames = stackRenderers.getWireFramesStack();
@@ -154,7 +158,7 @@ void Scene::_renderScene() {
         return 0.0f;
       };
 
-      auto& frustumCulling = context.graphic.camera.scene.getFrustumCulling();
+      auto& frustumCulling = camInstance.getFrustumCulling();
 
       for (int xx = -2; xx <= 1; ++xx)
         for (int yy = -2; yy <= 2; ++yy) {
@@ -169,7 +173,7 @@ void Scene::_renderScene() {
           if (!frustumCulling.sphereInFrustum(lightPos, 5))
             continue;
 
-          context.graphic.scene.deferred.pushSpotLight(lightPos, 5);
+          scene.getClusteredDeferred().pushSpotLight(lightPos, 5);
 
           {
             const float radius = 0.5f;
@@ -181,7 +185,7 @@ void Scene::_renderScene() {
             instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
             instance.light = 0.0f;
 
-            Context::get().graphic.scene.geometriesStackRenderer.pushAlias(1112, instance);
+            scene.getGeometriesStackRenderer().pushAlias(1112, instance);
           }
 
           // wireFrames.pushCross(lightPos, glm::vec3(1,1,1), 1.0f);
@@ -195,7 +199,7 @@ void Scene::_renderScene() {
 
       if (context.logic.debugMode) {
 
-        graphic.scene.stackRenderers.safeMode([&context]() { context.physic.world->renderDebug(); });
+        scene.getStackRenderers().safeMode([&context]() { context.physic.world->renderDebug(); });
       }
     }
   }
@@ -208,19 +212,14 @@ void Scene::_renderHud() {
   GlContext::disable(States::cullFace);
 
   auto& context = Context::get();
-  auto& graphic = context.graphic;
-  auto& camera = graphic.camera;
-  gero::graphics::Camera& camInstance = camera.hud;
+  auto& renderer = context.graphic.renderer;
+  auto& hud = renderer.getHudRenderer();
 
-  const auto& matricesData = camInstance.getMatricesData();
+  auto& scene = renderer.getSceneRenderer();
 
-  graphic.hud.stackRenderers.setMatricesData(matricesData);
-  graphic.hud.textRenderer.setMatricesData(matricesData);
-
-  context.graphic.scene.deferred.setAmbiantLightCoef(0.1f);
-  context.graphic.scene.deferred.setSunLightDirection(glm::vec3(-1.0f, -1.0f, -2.0f));
-  // context.graphic.scene.deferred.renderHudQuad(matricesData.composed);
-  context.graphic.scene.deferred.renderHudQuad(camera.scene, camera.hud);
+  scene.getClusteredDeferred().setAmbiantLightCoef(0.1f);
+  scene.getClusteredDeferred().setSunLightDirection(glm::vec3(-1.0f, -1.0f, -2.0f));
+  scene.getClusteredDeferred().renderHudQuad(scene.getCamera(), hud.getCamera());
 
   GlContext::clears(Buffers::depth);
 
@@ -229,7 +228,7 @@ void Scene::_renderHud() {
     // {
     //   constexpr float k_textDepth = -0.5f;
 
-    //   graphic.hud.textRenderer.pushText(
+    //   hud.getTextRenderer().pushText(
     //     glm::vec2(100, 100),
     //     "test",
     //     glm::vec4(1,1,1,1),
@@ -250,7 +249,7 @@ void Scene::_renderHud() {
 
     {
 
-      auto& textRenderer = graphic.hud.textRenderer;
+      auto& textRenderer = hud.getTextRenderer();
 
       const auto& timeDataMap = context.logic.performanceProfiler.getHistoricalTimeDataMap();
 
@@ -297,7 +296,7 @@ void Scene::_renderHud() {
         sstr << std::endl;
       }
 
-      const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
+      const glm::vec2 vSize = glm::vec2(hud.getCamera().getSize());
 
       const glm::vec2 textPos = glm::vec2(5, vSize.y - 5);
       const std::string str = sstr.str();
@@ -314,7 +313,7 @@ void Scene::_renderHud() {
 
     }
 
-    graphic.hud.textRenderer.render();
+    hud.getTextRenderer().render();
   }
 
 
@@ -329,7 +328,7 @@ void Scene::_renderHud() {
 
       {
 
-        auto& stackRenderers = graphic.hud.stackRenderers;
+        auto& stackRenderers = hud.getStackRenderers();
         auto& wireFrames = stackRenderers.getWireFramesStack();
         wireFrames.pushRectangle(k_pos, k_size, glm::vec3(1, 1, 1));
         wireFrames.pushRectangle(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y), glm::vec2(0.1f, k_size.y), glm::vec3(1, 1, 1));
@@ -340,12 +339,12 @@ void Scene::_renderHud() {
 
       {
 
-        // const auto& vSize = graphic.camera.viewportSize;
+        // const auto& vSize = hud._viewportSize;
 
         constexpr float k_textDepth = -0.5f;
         constexpr float k_scale = 16.0f;
 
-        graphic.hud.textRenderer.setMainColor(glm::vec4(1, 1, 1, 1))
+        hud.getTextRenderer().setMainColor(glm::vec4(1, 1, 1, 1))
           .setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1))
           .setScale(k_scale)
           .setDepth(k_textDepth)
@@ -355,160 +354,160 @@ void Scene::_renderHud() {
 
         {
 
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x, k_pos.y + k_size.y), "T-L\nT-L\nT-L");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x, k_pos.y + k_size.y), "T-L\nT-L\nT-L");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::right)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y + k_size.y), "T-R\nT-R\nT-R");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y + k_size.y), "T-R\nT-R\nT-R");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::bottom)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x, k_pos.y), "B-L\nB-L\nB-L");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x, k_pos.y), "B-L\nB-L\nB-L");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::bottom)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::right)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y), "B-R\nB-R\nB-R");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y), "B-R\nB-R\nB-R");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x, k_pos.y + k_size.y * 0.5f), "C-L\nC-L\nC-L");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x, k_pos.y + k_size.y * 0.5f), "C-L\nC-L\nC-L");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::right)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y + k_size.y * 0.5f), "C-R\nC-R\nC-R");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x + k_size.x, k_pos.y + k_size.y * 0.5f), "C-R\nC-R\nC-R");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y + k_size.y), "T-C\nT-C\nT-C");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y + k_size.y), "T-C\nT-C\nT-C");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::bottom)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
             ;
 
-          graphic.hud.textRenderer.pushText(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y), "B-C\nB-C\nB-C");
+          hud.getTextRenderer().pushText(glm::vec2(k_pos.x + k_size.x * 0.5f, k_pos.y), "B-C\nB-C\nB-C");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
         {
-          graphic.hud.textRenderer
+          hud.getTextRenderer()
             .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
             .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
             ;
 
-          graphic.hud.textRenderer.pushText(k_pos + k_size * 0.5f, "C-C\nC-C\nC-C");
+          hud.getTextRenderer().pushText(k_pos + k_size * 0.5f, "C-C\nC-C\nC-C");
 
           gero::graphics::helpers::renderTextBackground(k_textDepth,
                                                         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
                                                         glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
                                                         3.0f,
                                                         6.0f,
-                                                        graphic.hud.stackRenderers,
-                                                        graphic.hud.textRenderer);
+                                                        hud.getStackRenderers(),
+                                                        hud.getTextRenderer());
         }
 
-        graphic.hud.textRenderer.render();
-        graphic.hud.stackRenderers.flush();
+        hud.getTextRenderer().render();
+        hud.getStackRenderers().flush();
 
       }
 
@@ -518,7 +517,7 @@ void Scene::_renderHud() {
   }
 
   {
-    auto& stackRenderers = graphic.hud.stackRenderers;
+    auto& stackRenderers = hud.getStackRenderers();
 
     {
       auto& wireFrames = stackRenderers.getWireFramesStack();
@@ -528,9 +527,7 @@ void Scene::_renderHud() {
     {
       auto& triangles = stackRenderers.getTrianglesStack();
 
-      // triangles.pushCircle(glm::vec2(200, 550), 10.0f, glm::vec4(1, 1, 1, 0.5));
-
-      const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
+      const glm::vec2 vSize = glm::vec2(hud.getCamera().getSize());
       const glm::vec3 k_pos = glm::vec3(vSize.x - 15, vSize.y * 0.5f, 0);
       triangles.pushCircle(k_pos, 10.0f, glm::vec4(1, 1, 1, 0.5));
 
@@ -543,40 +540,17 @@ void Scene::_renderHud() {
   if (auto timeDataRef = performanceProfiler.tryGetTimeData("FRAME")) {
     const auto& timeData = timeDataRef->get();
 
-    const glm::vec2 vSize = glm::vec2(graphic.camera.viewportSize);
+    const glm::vec2 vSize = glm::vec2(hud.getCamera().getSize());
 
     const glm::vec2 k_size = glm::vec2(150, 50);
     const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 120, vSize.y - k_size.y - 10 - 30, 0);
 
     gero::graphics::widgets::renderHistoricalTimeData(
-      k_pos, k_size, true, timeData, graphic.hud.stackRenderers, graphic.hud.textRenderer);
+      k_pos, k_size, true, timeData, hud.getStackRenderers(), hud.getTextRenderer());
 
-    graphic.hud.stackRenderers.flush();
-    graphic.hud.textRenderer.render();
+    hud.getStackRenderers().flush();
+    hud.getTextRenderer().render();
   }
 
   gero::graphics::ShaderProgram::unbind();
-}
-
-void Scene::updateMatrices() {
-
-  auto& context = Context::get();
-  auto& graphic = context.graphic;
-  auto& camera = graphic.camera;
-
-  camera.scene.setSize(camera.viewportSize.x, camera.viewportSize.y);
-  camera.scene.computeMatrices();
-  camera.hud.setSize(camera.viewportSize.x, camera.viewportSize.y);
-  camera.hud.computeMatrices();
-}
-
-void Scene::_clear() {
-  const auto& viewportSize = Context::get().graphic.camera.viewportSize;
-  const glm::uvec2 uVSize(viewportSize);
-
-  GlContext::setViewport(0, 0, uVSize.x, uVSize.y);
-
-  GlContext::clearColor(0.3f, 0.3f, 0.3f, 1.0f);
-  GlContext::clearDepth(1.0f);
-  GlContext::clears(Buffers::color, Buffers::depth);
 }

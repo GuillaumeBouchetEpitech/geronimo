@@ -27,6 +27,7 @@ public:
   ShaderProgramBuilder& validate();
 
   std::shared_ptr<ShaderProgram> build();
+  std::shared_ptr<IUnboundShaderProgram> buildUnbound();
   ShaderProgram::Definition getDefinition();
 };
 

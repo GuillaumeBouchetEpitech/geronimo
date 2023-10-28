@@ -55,7 +55,7 @@ void PhysicConeTwistConstraintManager::remove(PhysicConeTwistConstraintWeakRef r
   if (!ref)
     return;
   PhysicConeTwistConstraint* implementation = reinterpret_cast<PhysicConeTwistConstraint*>(ref.get());
-  if (!implementation->_isAdded)
+  if (!implementation || !implementation->_isAdded)
     return;
   _physicWorld._bullet.dynamicsWorld->removeConstraint(implementation->_bullet.constraint);
   implementation->_isAdded = false;

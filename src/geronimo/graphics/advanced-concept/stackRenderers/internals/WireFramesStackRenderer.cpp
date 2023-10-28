@@ -7,7 +7,7 @@
 namespace gero {
 namespace graphics {
 
-void WireFramesStackRenderer::initialize(gero::graphics::ShaderProgram& shader,
+void WireFramesStackRenderer::initialize(gero::graphics::IUnboundShaderProgram& shader,
                                          const gero::graphics::Geometry::Definition& geoDef) {
 
   _geometry.initialize(shader, geoDef);

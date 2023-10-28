@@ -109,19 +109,49 @@ mindmap
   }
 }%%
 
-  erDiagram
+  flowchart RL
 
-    SYSTEM ||--o{ GRAPHIC : dependency
-    SYSTEM ||--o{ AUDIO : dependency
-    SYSTEM ||--o{ PHYSICS : dependency
+    subgraph system
+      direction LR
+      SYSTEM((system))
+      GLM[[glm]]
+    end
 
-    SYSTEM ||--|| GLM : dependency
-    GRAPHIC ||--|| SDL2 : dependency
-    GRAPHIC ||--|| TINY_OBJ_LOADER : dependency
-    GRAPHIC ||--|| STB_IMAGE : dependency
-    AUDIO ||--|| OPENAL : dependency
-    AUDIO ||--|| STB_VORBIS : dependency
-    PHYSICS ||--|| BULLET_PHYSICS : dependency
+    subgraph graphics
+      direction LR
+      GRAPHICS((graphics))
+      SDL2[[sdl2]]
+      TINY_OBJ_LOADER[[Tiny OBJ<br>Loader]]
+      STB_IMAGE[[std_image]]
+    end
+
+    subgraph audio
+      direction LR
+      AUDIO((audio))
+      OPENAL[[OpenAL]]
+      STB_VORBIS[[stb_vorbis]]
+    end
+
+    subgraph physics
+      direction LR
+      PHYSICS((physics))
+      BULLET_PHYSICS[[bullet<br>physics]]
+    end
+
+    SYSTEM -..-> GLM
+
+    GRAPHICS -..-> SDL2
+    GRAPHICS -..-> TINY_OBJ_LOADER
+    GRAPHICS -..-> STB_IMAGE
+
+    AUDIO -..-> OPENAL
+    AUDIO -..-> STB_VORBIS
+
+    PHYSICS -..-> BULLET_PHYSICS
+
+    graphics --dependency--> system
+    audio --dependency--> system
+    physics --dependency--> system
 
 ```
 

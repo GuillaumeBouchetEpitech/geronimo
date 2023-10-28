@@ -5,7 +5,7 @@
 
 #include "geronimo/graphics/input-managers/KeyboardManager.hpp"
 #include "geronimo/graphics/input-managers/MouseManager.hpp"
-// #include "geronimo/graphics/input-managers/TouchManager.hpp"
+#include "geronimo/graphics/input-managers/TouchManager.hpp"
 
 #include "application/context/Context.hpp"
 #include "application/context/graphics/Scene.hpp"
@@ -33,6 +33,7 @@ void State_Running::handleEvent(const SDL_Event& event) {
 
   auto& keyboard = KeyboardManager::get();
   auto& mouse = MouseManager::get();
+  auto& touch = TouchManager::get();
 
   switch (event.type) {
   case SDL_KEYDOWN: {
@@ -77,6 +78,24 @@ void State_Running::handleEvent(const SDL_Event& event) {
     break;
   }
 
+  case SDL_FINGERDOWN: {
+    const glm::vec2 vSize = glm::vec2(context.graphic.renderer.getHudRenderer().getCamera().getSize());
+    const glm::vec2 currPos = glm::vec2(event.tfinger.x, event.tfinger.y) * vSize;
+    touch.updateAsTouchedDown(int32_t(event.tfinger.fingerId), currPos);
+    break;
+  }
+  case SDL_FINGERUP: {
+    touch.updateAsTouchedUp(int32_t(event.tfinger.fingerId));
+    break;
+  }
+  case SDL_FINGERMOTION: {
+    const glm::vec2 vSize = glm::vec2(context.graphic.renderer.getHudRenderer().getCamera().getSize());
+    const glm::vec2 currPos = glm::vec2(event.tfinger.x, event.tfinger.y) * vSize;
+    const glm::vec2 currDelta = glm::vec2(event.tfinger.dx, event.tfinger.dy) * vSize;
+    touch.updateAsTouchedMotion(int32_t(event.tfinger.fingerId), currPos, currDelta);
+    break;
+  }
+
   default:
     break;
   }
@@ -94,16 +113,15 @@ void State_Running::update(uint32_t delta) {
 
   performanceProfiler.start("1 UPDATE");
 
-  auto& mouse = MouseManager::get();
-
-  if (mouse.isLocked()) {
-
+  {
     context.logic.controllers.freeFly.update(elapsedTime);
 
     context.logic.time += elapsedTime;
 
+    auto& currCamera = context.graphic.renderer.getSceneRenderer().getCamera();
+
     context.audio.soundManager->setListener(
-      context.graphic.camera.scene.getEye(), context.graphic.camera.scene.getForwardAxis(), glm::vec3(0, 0, 1));
+      currCamera.getEye(), currCamera.getForwardAxis(), glm::vec3(0, 0, 1));
 
     // if (context.inputs.mouse.buttons[SDL_BUTTON_LEFT] == true) {
     // }
@@ -130,26 +148,20 @@ void State_Running::render(const SDL_Window&) {
 
   performanceProfiler.start("2 RENDER");
 
-  Scene::updateMatrices();
-
   Scene::renderAll();
 
   performanceProfiler.stop("2 RENDER");
 }
 
 void State_Running::resize(uint32_t width, uint32_t height) {
-  auto& context = Context::get();
-  auto& graphic = context.graphic;
-
-  graphic.camera.viewportSize = {width, height};
-  graphic.camera.scene.setSize(width, height);
-  graphic.camera.hud.setSize(width, height);
+  Context::get().graphic.renderer.resize(width, height);
 }
 
 void State_Running::visibility(bool visible) {
   auto* stateManager = StateManager::get();
   StateManager::States currentState = stateManager->getState();
 
-  if (currentState != StateManager::States::Paused && !visible)
+  if (currentState != StateManager::States::Paused && !visible) {
     stateManager->changeState(StateManager::States::Paused);
+  }
 }

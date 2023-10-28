@@ -31,20 +31,16 @@ void State_Paused::update(uint32_t delta) {
 void State_Paused::render(const SDL_Window&) {
   // static_cast<void>(window); // <= unused
 
-  Scene::updateMatrices();
-
   Scene::renderAll();
 }
 
 void State_Paused::resize(uint32_t width, uint32_t height) {
-  auto& context = Context::get();
-  auto& graphic = context.graphic;
-
-  graphic.camera.viewportSize = {width, height};
-  graphic.camera.scene.setSize(width, height);
-  graphic.camera.hud.setSize(width, height);
+  Context::get().graphic.renderer.resize(width, height);
 }
 
 void State_Paused::visibility(bool visible) {
   static_cast<void>(visible); // <= unused
 }
+
+
+
