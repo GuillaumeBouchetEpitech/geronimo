@@ -137,20 +137,16 @@ void Scene::_renderScene() {
     {
 
       std::array<glm::vec3, 5> allPos = {{
-        glm::vec3(10,10,10),
-        glm::vec3(20,20,20),
-        glm::vec3(10,20,30),
-        glm::vec3(20,10,40),
-        glm::vec3(0,0,50),
+        glm::vec3(10, 10, 10),
+        glm::vec3(20, 20, 20),
+        glm::vec3(10, 20, 30),
+        glm::vec3(20, 10, 40),
+        glm::vec3(0, 0, 50),
       }};
 
       for (std::size_t ii = 0; ii + 1 < allPos.size(); ++ii) {
         stackRenderers.getTrianglesStack().pushThickTriangle3dLine(
-          allPos.at(ii + 0),
-          allPos.at(ii + 1),
-          0.5f,
-          glm::vec4(1,1,1,1)
-        );
+          allPos.at(ii + 0), allPos.at(ii + 1), 0.5f, glm::vec4(1, 1, 1, 1));
       }
     }
 

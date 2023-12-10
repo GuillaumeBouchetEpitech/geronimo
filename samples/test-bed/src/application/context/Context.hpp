@@ -10,10 +10,10 @@
 
 #include "geronimo/audio/OpenALSoundManager.hpp"
 
+#include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/physics/AbstractPhysicWorld.hpp"
 #include "geronimo/system/NonCopyable.hpp"
 #include "geronimo/system/metrics/PerformanceProfiler.hpp"
-#include "geronimo/helpers/GLMath.hpp"
 
 #include <array>
 #include <cstdint>
