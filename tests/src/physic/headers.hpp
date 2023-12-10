@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 
 #include "geronimo/system/TraceLogger.hpp"
 

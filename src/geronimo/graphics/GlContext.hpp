@@ -203,6 +203,46 @@ enum class BlendFuncs {
 };
 void setBlendFunc(BlendFuncs srcFactor, BlendFuncs destFactor);
 
+enum class StencilFuncs {
+  // gl.NEVER: Never pass.
+  never,
+  // gl.LESS: Pass if (ref & mask) < (stencil & mask).
+  less,
+  // gl.EQUAL: Pass if (ref & mask) = (stencil & mask).
+  equal,
+  // gl.LEQUAL: Pass if (ref & mask) <= (stencil & mask).
+  lessEqual,
+  // gl.GREATER: Pass if (ref & mask) > (stencil & mask).
+  greater,
+  // gl.NOTEQUAL: Pass if (ref & mask) !== (stencil & mask).
+  notEqual,
+  // gl.GEQUAL: Pass if (ref & mask) >= (stencil & mask).
+  greaterEqual,
+  // gl.ALWAYS: Always pass.
+  always,
+};
+void setStencilFunc(StencilFuncs srcFactor, int32_t ref, uint32_t mask);
+
+enum class StencilOps {
+  // gl.KEEP Keeps the current value.
+  keep,
+  // gl.ZERO Sets the stencil buffer value to 0.
+  zero,
+  // gl.REPLACE Sets the stencil buffer value to the reference value as specified by WebGLRenderingContext.stencilFunc().
+  replace,
+  // gl.INCR Increments the current stencil buffer value. Clamps to the maximum representable unsigned value.
+  increment,
+  // gl.INCR_WRAP Increments the current stencil buffer value. Wraps stencil buffer value to zero when incrementing the maximum representable unsigned value.
+  incrementWrap,
+  // gl.DECR Decrements the current stencil buffer value. Clamps to 0.
+  decrement,
+  // gl.DECR_WRAP Decrements the current stencil buffer value. Wraps stencil buffer value to the maximum representable unsigned value when decrementing a stencil buffer value of 0.
+  decrementWrap,
+  // gl.INVERT Inverts the current stencil buffer value bitwise.
+  invert,
+};
+void setStencilOp(StencilOps fail, StencilOps zFail, StencilOps zPass);
+
 //
 //
 //
@@ -212,6 +252,7 @@ enum class States {
   depthTest,
   blend,
   scissorTest,
+  stencilTest,
 };
 void enable(States state);
 

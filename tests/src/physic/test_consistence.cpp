@@ -4,8 +4,8 @@
 #include "geronimo/system/containers/weak_ref_data_pool.hpp"
 
 TEST(physic_wrapper, test_consistence_raw) {
-  gero::physics::PhysicWorld world;
-  auto& bodyManager = world.getPhysicBodyManager();
+  auto world = gero::physics::AbstractPhysicWorld::create();
+  auto& bodyManager = world->getPhysicBodyManager();
 
   auto addBody = [&bodyManager](int userVal) {
     gero::physics::PhysicBodyDef bodyDef;
@@ -27,7 +27,7 @@ TEST(physic_wrapper, test_consistence_raw) {
   auto ref3 = addBody(3);
   auto ref4 = addBody(4);
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   struct TestData {
     int expectedVal;
@@ -163,17 +163,17 @@ TEST(physic_wrapper, test_consistence_raw) {
 }
 
 TEST(physic_wrapper, test_consistence_nested_class_attribute) {
-  gero::physics::PhysicWorld world;
-  auto& bodyManager = world.getPhysicBodyManager();
+  auto world = gero::physics::AbstractPhysicWorld::create();
+  auto& bodyManager = world->getPhysicBodyManager();
 
   struct TestClass {
 
-    gero::physics::PhysicWorld& _world;
+    gero::physics::AbstractPhysicWorld& _world;
 
     int _val;
     gero::physics::BodyWeakRef _bodyRef;
 
-    TestClass(gero::physics::PhysicWorld& world, int val) : _world(world) {
+    TestClass(gero::physics::AbstractPhysicWorld& world, int val) : _world(world) {
       _val = val;
 
       //
@@ -226,7 +226,7 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
   DataRef ref3 = dataPool.acquire(world, 444);
   DataRef ref4 = dataPool.acquire(world, 555);
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   struct TestData {
     int expectedVal;

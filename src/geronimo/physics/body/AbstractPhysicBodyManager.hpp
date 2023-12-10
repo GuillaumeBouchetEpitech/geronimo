@@ -9,7 +9,7 @@
 namespace gero {
 namespace physics {
 
-class PhysicWorld;
+class AbstractPhysicWorld;
 
 class AbstractPhysicBodyManager {
 
@@ -35,7 +35,7 @@ public:
   virtual void dumpData() = 0;
 
 public:
-  static std::unique_ptr<AbstractPhysicBodyManager> create(PhysicWorld& inPhysicWorld);
+  static std::unique_ptr<AbstractPhysicBodyManager> create(AbstractPhysicWorld& inPhysicWorld, std::size_t pre_allocated_size = 256);
 };
 
 } // namespace physics

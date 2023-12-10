@@ -42,7 +42,7 @@ void Scene::renderAll() {
 
   GlContext::setViewport(0, 0, uVSize.x, uVSize.y);
 
-  GlContext::clearColor(0.3f, 0.3f, 0.3f, 1.0f);
+  GlContext::clearColor(0.0f, 0.0f, 0.0f, 1.0f);
   GlContext::clearDepth(1.0f);
   GlContext::clears(Buffers::color, Buffers::depth);
 
@@ -54,14 +54,14 @@ void Scene::renderAll() {
     performanceProfiler.start("2 render scene");
 
     auto& scene = renderer.getSceneRenderer();
-    scene.getClusteredDeferred().startRecording();
+    scene.getDeferred().startRecording();
 
     Scene::_renderScene();
 
-    scene.getClusteredDeferred().stopRecording();
+    scene.getDeferred().stopRecording();
 
-    scene.getClusteredDeferred().setEyePosition(scene.getCamera().getEye());
-    scene.getClusteredDeferred().applySpotLights(scene.getCamera());
+    scene.getDeferred().setEyePosition(scene.getCamera().getEye());
+    scene.getDeferred().applySpotLights(scene.getCamera());
 
     performanceProfiler.stop("2 render scene");
   }
@@ -135,6 +135,26 @@ void Scene::_renderScene() {
     auto& stackRenderers = scene.getStackRenderers();
 
     {
+
+      std::array<glm::vec3, 5> allPos = {{
+        glm::vec3(10,10,10),
+        glm::vec3(20,20,20),
+        glm::vec3(10,20,30),
+        glm::vec3(20,10,40),
+        glm::vec3(0,0,50),
+      }};
+
+      for (std::size_t ii = 0; ii + 1 < allPos.size(); ++ii) {
+        stackRenderers.getTrianglesStack().pushThickTriangle3dLine(
+          allPos.at(ii + 0),
+          allPos.at(ii + 1),
+          0.5f,
+          glm::vec4(1,1,1,1)
+        );
+      }
+    }
+
+    {
       auto& wireFrames = stackRenderers.getWireFramesStack();
 
       wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(1000, 0, 0), glm::vec3(1, 0, 0));
@@ -173,7 +193,7 @@ void Scene::_renderScene() {
           if (!frustumCulling.sphereInFrustum(lightPos, 5))
             continue;
 
-          scene.getClusteredDeferred().pushSpotLight(lightPos, 5);
+          scene.getDeferred().pushSpotLight(lightPos, 5);
 
           {
             const float radius = 0.5f;
@@ -217,9 +237,10 @@ void Scene::_renderHud() {
 
   auto& scene = renderer.getSceneRenderer();
 
-  scene.getClusteredDeferred().setAmbiantLightCoef(0.1f);
-  scene.getClusteredDeferred().setSunLightDirection(glm::vec3(-1.0f, -1.0f, -2.0f));
-  scene.getClusteredDeferred().renderHudQuad(scene.getCamera(), hud.getCamera());
+  scene.getDeferred().setAmbientLightRatio(0.2f);
+  scene.getDeferred().setSunLightDirection(glm::vec3(-1.0f, -1.0f, -2.0f));
+  // scene.getDeferred().renderHudQuad(scene.getCamera(), hud.getCamera());
+  scene.getDeferred().renderHudQuad(hud.getCamera());
 
   GlContext::clears(Buffers::depth);
 

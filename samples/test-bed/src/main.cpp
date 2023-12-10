@@ -93,8 +93,9 @@ extern "C" {
 
 EMSCRIPTEN_KEEPALIVE
 void startApplication(uint32_t inWidth, uint32_t inHeight) {
-  if (myApplication)
+  if (myApplication) {
     return;
+  }
 
   Application::Definition def;
   def.width = inWidth;
@@ -107,8 +108,9 @@ void startApplication(uint32_t inWidth, uint32_t inHeight) {
 
 EMSCRIPTEN_KEEPALIVE
 void updateApplication(uint32_t inDelta, uint32_t inMouseLocked) {
-  if (!myApplication)
+  if (!myApplication) {
     return;
+  }
 
   myApplication->setMouseLockStatus(inMouseLocked != 0);
 
@@ -117,8 +119,9 @@ void updateApplication(uint32_t inDelta, uint32_t inMouseLocked) {
 
 EMSCRIPTEN_KEEPALIVE
 void renderApplication() {
-  if (!myApplication)
+  if (!myApplication) {
     return;
+  }
 
   myApplication->render();
 }

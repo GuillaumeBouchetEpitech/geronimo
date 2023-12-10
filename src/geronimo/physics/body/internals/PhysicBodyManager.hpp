@@ -9,17 +9,17 @@
 namespace gero {
 namespace physics {
 
-class PhysicWorld;
+class AbstractPhysicWorld;
 
 class PhysicBodyManager : public AbstractPhysicBodyManager {
-  friend PhysicWorld;
+  friend AbstractPhysicWorld;
 
 private:
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
   BodyContainer _bodies;
 
 public:
-  PhysicBodyManager(PhysicWorld& physicWorld);
+  PhysicBodyManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size = 256);
   ~PhysicBodyManager();
 
 public:

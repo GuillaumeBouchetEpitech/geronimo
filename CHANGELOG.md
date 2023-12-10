@@ -8,8 +8,10 @@
 - feat: graphics, input managers (keyboard, mouse, touchscreen)
 - feat: graphics, sdl2 window set size now exposed
 - feat: graphics, safer shader binding
+- feat: graphics, stencil operations (limited support)
 - feat: physics, 6dof constraint
 - feat: physics, rigid body definition exposing more options
+- feat: physics, abstract physic world
 - feat: system, reduced iostream inclusion for faster compile time
 - feat: system, 2d polygon helpers
 - feat: system, kd-tree minor perf improvement

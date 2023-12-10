@@ -45,13 +45,13 @@ void main(void)
   vec4 tmpNormal = texture(u_normalTexture, v_uv);
   float tmpDepth = texture(u_depthTexture, v_uv).x;
 
-  if (tmpNormal.w < 0.25)
+  if (tmpDepth == 1.0)
+  {
+    discard;
+  }
+  else if (tmpNormal.w < 0.25)
   {
     out_color = vec4(tmpColor.rgb, 1.0); // raw color
-  }
-  else if (tmpDepth == 1.0)
-  {
-    out_color = vec4(tmpColor.rgb * u_ambiantCoef, 1.0); // ambiant color
   }
   else
   {

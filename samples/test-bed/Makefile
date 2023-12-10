@@ -193,14 +193,20 @@ LDFLAGS+=	-s WASM=1
 LDFLAGS+=	--preload-file ./assets/
 
 
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
+# LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
+LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/slowDeferred/internals/shaders/resultQuadRenderer
+LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/slowDeferred/internals/shaders/lightStackRenderer
+
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/textRenderer/assets
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/stackRenderers/shaders
 LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/geometries-stack-renderer/shaders
 LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/scene-stack-renderers/shaders
 
 LDFLAGS+=	-s TOTAL_MEMORY=128Mb
-LDFLAGS+= -s EXPORTED_RUNTIME_METHODS=cwrap
+# LDFLAGS+= -s EXPORTED_RUNTIME_METHODS=cwrap
+# LDFLAGS += -s EXPORTED_FUNCTIONS="['_free']"
+# LDFLAGS += -s EXPORTED_RUNTIME_METHODS="['cwrap','_malloc','stringToUTF8','lengthBytesUTF8','UTF8ToString']"
+LDFLAGS += -s EXPORTED_RUNTIME_METHODS="['cwrap']"
 
 ifeq ($(build_mode),debug)
 

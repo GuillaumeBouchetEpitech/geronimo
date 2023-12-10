@@ -2,7 +2,7 @@
 #include "QueryShape.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
@@ -22,7 +22,7 @@ struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback 
   int32_t m_linkIndexB;
   btScalar m_deltaTime;
 
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
 
   btPairCachingGhostObject& _volume;
   void* _toIgnore;
@@ -30,7 +30,7 @@ struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback 
   OnNewPhysicBodyCallback _onNewPhysicBodyCallback;
   bool _isCompleted = false;
 
-  MyContactResultCallback(PhysicWorld& physicWorld,
+  MyContactResultCallback(AbstractPhysicWorld& physicWorld,
                           btPairCachingGhostObject& volume,
                           int32_t collisionGroup,
                           int32_t collisionMask,
@@ -84,7 +84,7 @@ struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback 
 
 } // namespace
 
-QueryShape::QueryShape(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
+QueryShape::QueryShape(AbstractPhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
 
 bool QueryShape::_queryShape(QueryShapeParams& inParams, QueryShapeParams::ResultRaw& outResultArray) {
   outResultArray.allBodiesTotal = 0;
@@ -117,7 +117,7 @@ bool QueryShape::_queryShape(QueryShapeParams& inParams, QueryShapeParams::Resul
   MyContactResultCallback cr(
     _physicWorld, volume, inParams.collisionGroup, inParams.collisionMask, inParams.toIgnore, callback);
 
-  _physicWorld._bullet.dynamicsWorld->contactTest(&volume, cr);
+  _physicWorld.getRawDynamicsWorld()->contactTest(&volume, cr);
 
   delete pShape;
 
@@ -154,7 +154,7 @@ bool QueryShape::queryShape(QueryShapeParams& inParams, std::vector<AbstractPhys
   MyContactResultCallback cr(
     _physicWorld, volume, inParams.collisionGroup, inParams.collisionMask, inParams.toIgnore, callback);
 
-  _physicWorld._bullet.dynamicsWorld->contactTest(&volume, cr);
+  _physicWorld.getRawDynamicsWorld()->contactTest(&volume, cr);
 
   delete pShape;
 

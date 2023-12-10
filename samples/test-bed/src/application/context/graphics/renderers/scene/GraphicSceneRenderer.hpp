@@ -4,7 +4,8 @@
 #include "geometries-stack-renderer/GeometriesStackRenderer.hpp"
 #include "scene-stack-renderers/SceneStackRenderers.hpp"
 
-#include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
+// #include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
+#include "geronimo/graphics/advanced-concept/slowDeferred/SlowerDeferred.hpp"
 
 class IGraphicSceneRenderer {
 public:
@@ -14,7 +15,8 @@ public:
   virtual gero::graphics::ICamera& getCamera() = 0;
   virtual gero::graphics::IStackRenderers& getStackRenderers() = 0;
   virtual IGeometriesStackRenderer& getGeometriesStackRenderer() = 0;
-  virtual gero::graphics::IClusteredDeferred& getClusteredDeferred() = 0;
+  // virtual gero::graphics::IClusteredDeferred& getDeferred() = 0;
+  virtual gero::graphics::SlowerDeferred& getDeferred() = 0;
 };
 
 class GraphicSceneRenderer : public IGraphicSceneRenderer {
@@ -34,12 +36,15 @@ public:
   gero::graphics::ICamera& getCamera() override;
   gero::graphics::IStackRenderers& getStackRenderers() override;
   IGeometriesStackRenderer& getGeometriesStackRenderer() override;
-  gero::graphics::IClusteredDeferred& getClusteredDeferred() override;
+  // gero::graphics::IClusteredDeferred& getDeferred() override;
+  gero::graphics::SlowerDeferred& getDeferred() override;
 
 private:
   gero::graphics::Camera _camera;
 
   SceneStackRenderers _stackRenderers;
   GeometriesStackRenderer _geometriesStackRenderer;
-  gero::graphics::ClusteredDeferred _deferred;
+
+  // gero::graphics::ClusteredDeferred _deferred;
+  gero::graphics::SlowerDeferred _deferred;
 };

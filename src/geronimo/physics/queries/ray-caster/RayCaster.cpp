@@ -5,14 +5,14 @@
 #include "internals/CustomRayResultCallback.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
 namespace gero {
 namespace physics {
 
-RayCaster::RayCaster(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
+RayCaster::RayCaster(AbstractPhysicWorld& physicWorld) : _physicWorld(physicWorld) {}
 
 //
 //
@@ -36,7 +36,7 @@ void RayCaster::_normalRayCast(RayCastParams& params,
   rayCallback.m_collisionFilterGroup = params.collisionGroup;
   rayCallback.m_collisionFilterMask = params.collisionMask;
 
-  _physicWorld._bullet.dynamicsWorld->rayTest(rayFrom, rayTo, rayCallback);
+  _physicWorld.getRawDynamicsWorld()->rayTest(rayFrom, rayTo, rayCallback);
 }
 
 //
@@ -74,7 +74,7 @@ void RayCaster::_convexSweep(RayCastParams& params, const RayCaster::OnNewPhysic
 
   btScalar allowedCcdPenetration = 0.0f;
 
-  _physicWorld._bullet.dynamicsWorld->convexSweepTest(&sphereShape, from, to, sweepCallback, allowedCcdPenetration);
+  _physicWorld.getRawDynamicsWorld()->convexSweepTest(&sphereShape, from, to, sweepCallback, allowedCcdPenetration);
 }
 
 //

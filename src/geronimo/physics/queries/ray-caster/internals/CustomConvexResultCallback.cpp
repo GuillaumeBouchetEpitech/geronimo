@@ -7,7 +7,7 @@ namespace gero {
 namespace physics {
 
 CustomConvexResultCallback::CustomConvexResultCallback(
-  PhysicWorld& physicWorld,
+  AbstractPhysicWorld& physicWorld,
   float radius,
   void* toIgnore,
   RayCaster::RayCastParams::Type type,

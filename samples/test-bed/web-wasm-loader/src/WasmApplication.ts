@@ -157,7 +157,7 @@ export class WasmApplication {
           inLogger.log("[JS][wasm] initialising");
 
           const wasmFunctions = {
-            startApplication: (window as any).Module.cwrap('startApplication', undefined, ['number', 'number', 'number', 'number']),
+            startApplication: (window as any).Module.cwrap('startApplication', undefined, ['number', 'number']),
             updateApplication: (window as any).Module.cwrap('updateApplication', undefined, ['number', 'number']),
             renderApplication: (window as any).Module.cwrap('renderApplication', undefined, []),
           };
@@ -188,27 +188,35 @@ export class WasmApplication {
   }
 
   update(deltaTime: number) {
-    if (!this._isInitialized || this._isAborted)
+    if (
+      !this._isInitialized ||
+      this._isAborted ||
+      !this._wasmApplicationUpdateFunc
+    ) {
       return;
-
-    if (this._wasmApplicationUpdateFunc) {
-      const isLocked = isMousePointerLocked() ? 1 : 0;
-      this._wasmApplicationUpdateFunc(deltaTime, isLocked);
     }
+
+    const isLocked = isMousePointerLocked() ? 1 : 0;
+    this._wasmApplicationUpdateFunc(deltaTime, isLocked);
   }
 
   render() {
-    if (!this._isInitialized || this._isAborted)
+    if (
+      !this._isInitialized ||
+      this._isAborted ||
+      !this._wasmApplicationRenderFunc
+    ) {
       return;
+    }
 
-    if (this._wasmApplicationRenderFunc)
-      this._wasmApplicationRenderFunc();
+    this._wasmApplicationRenderFunc();
   }
 
   abort(): void {
 
-    if (!this._isInitialized || this._isAborted)
+    if (!this._isInitialized || this._isAborted) {
       return;
+    }
 
     this._isAborted = true;
     const currModule = (window as any).Module;

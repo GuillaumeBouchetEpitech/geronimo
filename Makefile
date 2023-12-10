@@ -21,7 +21,7 @@ $(error unsupported value for "build_platform", value=$(build_platform))
 
 endif
 
-LOG_INFO= '[$(build_mode)] [$(build_platform)]'
+LOG_INFO= '[${build_mode}] [${build_platform}]'
 
 #
 
@@ -117,6 +117,7 @@ SRC_GERONIMO_GRAPHICS+=	\
 SRC_GERONIMO_PHYSICS+=	\
 	$(wildcard \
 		$(DIR_SRC)/geronimo/physics/*.cpp \
+		$(DIR_SRC)/geronimo/physics/world/*.cpp \
 		$(DIR_SRC)/geronimo/physics/body/*.cpp \
 		$(DIR_SRC)/geronimo/physics/body/internals/*.cpp \
 		$(DIR_SRC)/geronimo/physics/helpers/*.cpp \

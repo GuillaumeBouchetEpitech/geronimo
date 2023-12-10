@@ -7,19 +7,19 @@
 namespace gero {
 namespace physics {
 
-class PhysicWorld;
+class AbstractPhysicWorld;
 
 class PhysicVehicleManager : public AbstractPhysicVehicleManager {
-  friend PhysicWorld;
+  friend AbstractPhysicWorld;
 
 private:
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
   VehiclesPool _vehicles;
 
   uint32_t _totalLiveVehicles = 0;
 
 public:
-  PhysicVehicleManager(PhysicWorld& physicWorld);
+  PhysicVehicleManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size = 256);
   ~PhysicVehicleManager();
 
 public:

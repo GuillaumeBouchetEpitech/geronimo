@@ -12,7 +12,7 @@ TEST(physic_wrapper, test_all_shapes) {
 
   {
 
-    gero::physics::PhysicWorld world;
+    auto world = gero::physics::AbstractPhysicWorld::create();
 
     const float frameTime = 1.0f / 60.0f;
 
@@ -23,10 +23,10 @@ TEST(physic_wrapper, test_all_shapes) {
       bodyDef.mass = 0.0f;
       bodyDef.mask = 1;
       bodyDef.group = 1;
-      auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+      auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
+      world->getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -36,10 +36,10 @@ TEST(physic_wrapper, test_all_shapes) {
       bodyDef.mass = 0.0f;
       bodyDef.mask = 1;
       bodyDef.group = 1;
-      auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+      auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
+      world->getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -50,10 +50,10 @@ TEST(physic_wrapper, test_all_shapes) {
       bodyDef.mass = 0.0f;
       bodyDef.mask = 1;
       bodyDef.group = 1;
-      auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+      auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
+      world->getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -68,10 +68,10 @@ TEST(physic_wrapper, test_all_shapes) {
       bodyDef.mass = 0.0f;
       bodyDef.mask = 1;
       bodyDef.group = 1;
-      auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+      auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
+      world->getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     {
@@ -128,10 +128,10 @@ TEST(physic_wrapper, test_all_shapes) {
       bodyDef.mass = 0.0f;
       bodyDef.mask = 1;
       bodyDef.group = 1;
-      auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+      auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
       bodyRef->setPosition({0, 0, 10});
       // bodyRef->setUserValue(1111);
-      world.getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
+      world->getPhysicBodyManager().addBody(bodyRef, bodyDef.group, bodyDef.mask);
     }
 
     gero::physics::PhysicBodyDef bodyDef_2;
@@ -140,12 +140,12 @@ TEST(physic_wrapper, test_all_shapes) {
     bodyDef_2.mass = 0.0f;
     bodyDef_2.mask = 8;
     bodyDef_2.group = 8;
-    auto bodyRef_2 = world.getPhysicBodyManager().createBody(bodyDef_2);
+    auto bodyRef_2 = world->getPhysicBodyManager().createBody(bodyDef_2);
     bodyRef_2->setPosition({0, 0, 0});
     bodyRef_2->setUserValue(2222);
-    world.getPhysicBodyManager().addBody(bodyRef_2, 8, 8);
+    world->getPhysicBodyManager().addBody(bodyRef_2, 8, 8);
 
     for (int ii = 0; ii < 100; ++ii)
-      world.step(frameTime, 1, frameTime);
+      world->step(frameTime, 1, frameTime);
   }
 }

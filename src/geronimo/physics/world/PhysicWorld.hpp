@@ -1,20 +1,22 @@
 
 #pragma once
 
+#include "../AbstractPhysicWorld.hpp"
+
 #include "geronimo/helpers/GLMath.hpp"
 
-#include "body/AbstractPhysicBodyManager.hpp"
-#include "vehicle/AbstractPhysicVehicleManager.hpp"
+#include "../body/AbstractPhysicBodyManager.hpp"
+#include "../vehicle/AbstractPhysicVehicleManager.hpp"
 
-#include "constraints/hinge/AbstractPhysicHingeConstraintManager.hpp"
-#include "constraints/six-dof/AbstractPhysicSixDofConstraintManager.hpp"
+#include "../constraints/hinge/AbstractPhysicHingeConstraintManager.hpp"
+#include "../constraints/six-dof/AbstractPhysicSixDofConstraintManager.hpp"
 
 // not ready (-_-)
 // #include "constraints/universal/AbstractPhysicUniversalConstraintManager.hpp"
 // #include "constraints/cone-twist/AbstractPhysicConeTwistConstraintManager.hpp"
 
-#include "queries/query-shape/QueryShape.hpp"
-#include "queries/ray-caster/RayCaster.hpp"
+#include "../queries/query-shape/QueryShape.hpp"
+#include "../queries/ray-caster/RayCaster.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -44,9 +46,7 @@ class btRigidBody;
 namespace gero {
 namespace physics {
 
-class PhysicWorld {
-  // private:
-  //   static PhysicWorld* self;
+class PhysicWorld : public AbstractPhysicWorld {
 
   friend PhysicBodyManager;
   friend PhysicVehicleManager;
@@ -58,8 +58,16 @@ class PhysicWorld {
   friend RayCaster;
 
 public:
-  typedef std::vector<glm::vec3> t_vertices;
-  typedef std::vector<int32_t> t_indices;
+  // typedef std::vector<glm::vec3> t_vertices;
+  // typedef std::vector<int32_t> t_indices;
+
+  struct PhysicWorldOptions {
+    std::size_t bodies_pre_allocated_size = 256;
+    std::size_t vehicles_pre_allocated_size = 256;
+    std::size_t hinge_pre_allocated_size = 256;
+    std::size_t six_dof_pre_allocated_size = 256;
+  };
+
 
   using debuggerPushLineCallback = std::function<void(const glm::vec3&, const glm::vec3&, const glm::vec3&)>;
 
@@ -85,7 +93,7 @@ private:
   glm::vec3 _gravity;
 
 public:
-  PhysicWorld();
+  PhysicWorld(std::optional<PhysicWorldOptions> options = std::nullopt);
   ~PhysicWorld();
 
   //
@@ -93,21 +101,21 @@ public:
   // world
 
 public:
-  void setDebuggerPushLine(const debuggerPushLineCallback& callback);
+  void setDebuggerPushLine(const debuggerPushLineCallback& callback) override;
 
-  void setDebugAABB(bool isEnabled);
-  void setDebugContacts(bool isEnabled);
-  void setDebugConstraints(bool isEnabled);
-  void setDebugConstraintLimits(bool isEnabled);
-
-public:
-  void setGravity(float inX, float inY, float inZ);
-  void setGravity(const glm::vec3& inGravity);
-  const glm::vec3& getGravity() const;
+  void setDebugAABB(bool isEnabled) override;
+  void setDebugContacts(bool isEnabled) override;
+  void setDebugConstraints(bool isEnabled) override;
+  void setDebugConstraintLimits(bool isEnabled) override;
 
 public:
-  void step(float elapsedTime, uint32_t maxSubSteps, float fixedTimeStep);
-  void renderDebug();
+  void setGravity(float inX, float inY, float inZ) override;
+  void setGravity(const glm::vec3& inGravity) override;
+  const glm::vec3& getGravity() const override;
+
+public:
+  void step(float elapsedTime, uint32_t maxSubSteps, float fixedTimeStep) override;
+  void renderDebug() override;
 
   //
   //
@@ -117,8 +125,8 @@ private:
   std::unique_ptr<AbstractPhysicBodyManager> _physicBodyManager;
 
 public:
-  AbstractPhysicBodyManager& getPhysicBodyManager();
-  const AbstractPhysicBodyManager& getPhysicBodyManager() const;
+  AbstractPhysicBodyManager& getPhysicBodyManager() override;
+  const AbstractPhysicBodyManager& getPhysicBodyManager() const override;
 
   //
   //
@@ -128,8 +136,8 @@ private:
   std::unique_ptr<AbstractPhysicVehicleManager> _physicVehicleManager;
 
 public:
-  AbstractPhysicVehicleManager& getPhysicVehicleManager();
-  const AbstractPhysicVehicleManager& getPhysicVehicleManager() const;
+  AbstractPhysicVehicleManager& getPhysicVehicleManager() override;
+  const AbstractPhysicVehicleManager& getPhysicVehicleManager() const override;
 
   //
   //
@@ -139,8 +147,8 @@ private:
   std::unique_ptr<AbstractPhysicHingeConstraintManager> _physicHingeConstraintManager;
 
 public:
-  AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager();
-  const AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager() const;
+  AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager() override;
+  const AbstractPhysicHingeConstraintManager& getPhysicHingeConstraintManager() const override;
 
   // not ready (-_-)
 
@@ -154,8 +162,8 @@ private:
   std::unique_ptr<AbstractPhysicSixDofConstraintManager> _physicSixDofConstraintManager;
 
 public:
-  AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager();
-  const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const;
+  AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() override;
+  const AbstractPhysicSixDofConstraintManager& getPhysicSixDofConstraintManager() const override;
 
   // private:
   //   std::unique_ptr<AbstractPhysicConeTwistConstraintManager> _physicConeTwistConstraintManager;
@@ -183,13 +191,18 @@ private:
   RayCaster _rayCaster;
 
 public:
-  RayCaster& getRayCaster();
+  RayCaster& getRayCaster() override;
 
 private:
   QueryShape _queryShape;
 
 public:
-  QueryShape& getQueryShape();
+  QueryShape& getQueryShape() override;
+
+protected:
+  btDiscreteDynamicsWorld* getRawDynamicsWorld() override;
+
+
 };
 
 } // namespace physics

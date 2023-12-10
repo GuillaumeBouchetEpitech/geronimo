@@ -2,14 +2,14 @@
 #include "PhysicBodyManager.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
 namespace gero {
 namespace physics {
 
-PhysicBodyManager::PhysicBodyManager(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {
-  _bodies.pre_allocate(1024);
+PhysicBodyManager::PhysicBodyManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size) : _physicWorld(physicWorld) {
+  _bodies.pre_allocate(pre_allocated_size);
 }
 
 PhysicBodyManager::~PhysicBodyManager() { clear(); }
@@ -41,7 +41,7 @@ void PhysicBodyManager::addBody(BodyWeakRef ref, short group, short mask) {
   PhysicBody* implementation = reinterpret_cast<PhysicBody*>(ref.get());
   if (implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->addRigidBody(implementation->_bullet.body, group, mask);
+  _physicWorld.getRawDynamicsWorld()->addRigidBody(implementation->_bullet.body, group, mask);
   implementation->_isAdded = true;
 }
 
@@ -49,7 +49,7 @@ void PhysicBodyManager::removeBody(AbstractPhysicBody& body) {
   PhysicBody& implementation = reinterpret_cast<PhysicBody&>(body);
   if (!implementation._isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->removeRigidBody(implementation._bullet.body);
+  _physicWorld.getRawDynamicsWorld()->removeRigidBody(implementation._bullet.body);
   implementation._isAdded = false;
 }
 

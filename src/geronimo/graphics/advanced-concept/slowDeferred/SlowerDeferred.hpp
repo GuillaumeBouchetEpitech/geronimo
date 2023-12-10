@@ -5,6 +5,7 @@
 #include "internals/ResultQuadRenderer.hpp"
 #include "internals/ScreenRecorder.hpp"
 
+#include "geronimo/graphics/camera/Camera.hpp"
 #include "geronimo/graphics/FrameBuffer.hpp"
 #include "geronimo/graphics/Texture.hpp"
 #include "geronimo/helpers/GLMath.hpp"
@@ -14,10 +15,10 @@
 namespace gero {
 namespace graphics {
 
-class Deferred {
+class SlowerDeferred {
 public:
-  Deferred() = default;
-  ~Deferred() = default;
+  SlowerDeferred() = default;
+  ~SlowerDeferred() = default;
 
 public:
   void initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize, float inResolutionScaling = 1.0f);
@@ -27,15 +28,15 @@ public:
 
   void setEyePosition(const glm::vec3& inEyePos);
   void setSunLightDirection(const glm::vec3& inSunLightDirection);
-  void setAmbiantLightCoef(float ambiantLightCoef);
+  void setAmbientLightRatio(float ambientLightRatio);
 
   void startRecording();
   void stopRecording();
 
   void pushSpotLight(const glm::vec3& inPos, float inRadius);
-  void applySpotLights(const glm::mat4& composedMatrix);
+  void applySpotLights(const gero::graphics::ICamera& inSceneCamera);
 
-  void renderHudQuad(const glm::mat4& composedMatrix);
+  void renderHudQuad(const gero::graphics::ICamera& inHudCamera);
 
 public:
   float getResolutionScaling() const;
@@ -47,7 +48,7 @@ private:
 
   glm::vec3 _eyePos;
   glm::vec3 _sunLightDirection = {-1.0f, -1.0f, -2.0f};
-  float _ambiantLightCoef = 0.1f;
+  float _ambientLightRatio = 0.1f;
   float _resolutionScaling = 1.0f;
 };
 

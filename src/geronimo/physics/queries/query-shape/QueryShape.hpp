@@ -2,7 +2,6 @@
 #pragma once
 
 #include "geronimo/helpers/GLMath.hpp"
-// #include "geronimo/physics/body/PhysicBodyManager.hpp"
 #include "geronimo/physics/body/AbstractPhysicBody.hpp"
 #include "geronimo/physics/shape/PhysicShapeDef.hpp"
 
@@ -11,16 +10,18 @@
 namespace gero {
 namespace physics {
 
+class AbstractPhysicWorld;
 class PhysicWorld;
 
 class QueryShape {
+  friend AbstractPhysicWorld;
   friend PhysicWorld;
 
 private:
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
 
 private:
-  QueryShape(PhysicWorld& physicWorld);
+  QueryShape(AbstractPhysicWorld& physicWorld);
   ~QueryShape() = default;
 
 public:

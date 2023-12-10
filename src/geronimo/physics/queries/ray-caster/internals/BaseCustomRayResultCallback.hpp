@@ -4,7 +4,7 @@
 #include "../RayCaster.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
@@ -13,13 +13,13 @@ namespace physics {
 
 template <typename ResultCallback> struct BaseCustomRayResultCallback : public ResultCallback {
 
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
   void* _toIgnore;
   RayCaster::RayCastParams::Type _type;
   RayCaster::OnNewPhysicBodyCallback _onNewPhysicBodyCallback;
   bool _isCompleted = false;
 
-  BaseCustomRayResultCallback(PhysicWorld& physicWorld,
+  BaseCustomRayResultCallback(AbstractPhysicWorld& physicWorld,
                               void* toIgnore,
                               RayCaster::RayCastParams::Type type,
                               const RayCaster::OnNewPhysicBodyCallback& onNewPhysicBodyCallback)

@@ -26,6 +26,14 @@ public:
   virtual void
   pushTriangle(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& posC, const glm::vec4& color) = 0;
 
+  // virtual void
+  // push3dQuad(
+  //   const glm::vec3& posA,
+  //   const glm::vec3& posB,
+  //   const glm::vec3& posC,
+  //   const glm::vec3& posD,
+  //   const glm::vec4& color) = 0;
+
 public:
   virtual void pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec4& color, float z) = 0;
   virtual void pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec4& color) = 0;
@@ -62,6 +70,12 @@ public:
                                        const glm::vec4& colorB) = 0;
   virtual void
   pushThickTriangle3dLine(const glm::vec3& posA, const glm::vec3& posB, float thickness, const glm::vec4& color) = 0;
+  // virtual void
+  // pushThickTriangle3dCross(const glm::vec3& center,
+  //                              float halfExtent,
+  //                              float thickness,
+  //                              const glm::vec4& color) = 0;
+
 };
 
 struct TrianglesStackRenderer : public ITrianglesStackRenderer, public gero::NonCopyable {
@@ -79,6 +93,14 @@ public:
 
   void
   pushTriangle(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& posC, const glm::vec4& color) override;
+
+  // void
+  // push3dQuad(
+  //   const glm::vec3& posA,
+  //   const glm::vec3& posB,
+  //   const glm::vec3& posC,
+  //   const glm::vec3& posD,
+  //   const glm::vec4& color) override;
 
 public:
   void pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec4& color, float z) override;
@@ -120,6 +142,10 @@ public:
                                const glm::vec3& posB,
                                float thickness,
                                const glm::vec4& color) override;
+  // void pushThickTriangle3dCross(const glm::vec3& center,
+  //                              float halfExtent,
+  //                              float thickness,
+  //                              const glm::vec4& color) override;
 
 public:
   void flush();

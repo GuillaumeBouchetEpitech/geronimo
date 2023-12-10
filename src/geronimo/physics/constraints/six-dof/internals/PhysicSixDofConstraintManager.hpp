@@ -7,19 +7,19 @@
 namespace gero {
 namespace physics {
 
-class PhysicWorld;
+class AbstractPhysicWorld;
 
 class PhysicSixDofConstraintManager : public AbstractPhysicSixDofConstraintManager {
-  friend PhysicWorld;
+  friend AbstractPhysicWorld;
 
 private:
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
   PhysicSixDofConstraintsPool _pool;
 
   uint32_t _totalLive = 0;
 
 public:
-  PhysicSixDofConstraintManager(PhysicWorld& physicWorld);
+  PhysicSixDofConstraintManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size = 256);
   ~PhysicSixDofConstraintManager();
 
 public:

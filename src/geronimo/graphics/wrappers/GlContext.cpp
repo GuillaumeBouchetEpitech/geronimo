@@ -127,8 +127,9 @@ void setDepthFunc(DepthFuncs func) {
 void setDepthMask(bool isEnabled) { glDepthMask(isEnabled ? GL_TRUE : GL_FALSE); }
 
 void setColorMask(bool red, bool green, bool blue, bool alpha) {
-  glColorMask(
-    red ? GL_TRUE : GL_FALSE, green ? GL_TRUE : GL_FALSE, blue ? GL_TRUE : GL_FALSE, alpha ? GL_TRUE : GL_FALSE);
+#define D_GL_BOOL(_tmp_val) (_tmp_val ? GL_TRUE : GL_FALSE)
+  glColorMask(D_GL_BOOL(red), D_GL_BOOL(green), D_GL_BOOL(blue), D_GL_BOOL(alpha));
+#undef D_GL_BOOL
 }
 
 namespace {
@@ -155,6 +156,84 @@ void setBlendFunc(BlendFuncs sfactor, BlendFuncs dfactor) {
   glCheck(glBlendFunc(getRawBlendFunc(sfactor), getRawBlendFunc(dfactor)));
 }
 
+namespace {
+GLenum getRawStencilFunc(StencilFuncs func) {
+  switch (func) {
+  case StencilFuncs::never:
+    return GL_NEVER;
+    break;
+  case StencilFuncs::less:
+    return GL_LESS;
+    break;
+  case StencilFuncs::equal:
+    return GL_EQUAL;
+    break;
+  case StencilFuncs::lessEqual:
+    return GL_LEQUAL;
+    break;
+  case StencilFuncs::greater:
+    return GL_GREATER;
+    break;
+  case StencilFuncs::notEqual:
+    return GL_NOTEQUAL;
+    break;
+  case StencilFuncs::greaterEqual:
+    return GL_GEQUAL;
+    break;
+  case StencilFuncs::always:
+    return GL_ALWAYS;
+    break;
+
+  default:
+    D_THROW(std::runtime_error, "unknown stencil func");
+    break;
+  }
+}
+} // namespace
+
+void setStencilFunc(StencilFuncs srcFactor, int32_t ref, uint32_t mask) {
+  glCheck(glStencilFunc(getRawStencilFunc(srcFactor), ref, mask));
+}
+
+namespace {
+GLenum getRawStencilOp(StencilOps func) {
+  switch (func) {
+
+  case StencilOps::keep:
+    return GL_KEEP;
+    break;
+  case StencilOps::zero:
+    return GL_ZERO;
+    break;
+  case StencilOps::replace:
+    return GL_REPLACE;
+    break;
+  case StencilOps::increment:
+    return GL_INCR;
+    break;
+  case StencilOps::incrementWrap:
+    return GL_INCR_WRAP;
+    break;
+  case StencilOps::decrement:
+    return GL_DECR;
+    break;
+  case StencilOps::decrementWrap:
+    return GL_DECR_WRAP;
+    break;
+  case StencilOps::invert:
+    return GL_INVERT;
+    break;
+  default:
+    D_THROW(std::runtime_error, "unknown stencil op");
+    break;
+  }
+}
+} // namespace
+
+void setStencilOp(StencilOps fail, StencilOps zFail, StencilOps zPass) {
+  glStencilOp(getRawStencilOp(fail), getRawStencilOp(zFail), getRawStencilOp(zPass));
+}
+
 void enable(States state) {
   switch (state) {
   case States::cullFace:
@@ -168,6 +247,9 @@ void enable(States state) {
     break;
   case States::scissorTest:
     glCheck(glEnable(GL_SCISSOR_TEST));
+    break;
+  case States::stencilTest:
+    glCheck(glEnable(GL_STENCIL_TEST));
     break;
 
   default:
@@ -189,6 +271,9 @@ void disable(States state) {
     break;
   case States::scissorTest:
     glCheck(glDisable(GL_SCISSOR_TEST));
+    break;
+  case States::stencilTest:
+    glCheck(glDisable(GL_STENCIL_TEST));
     break;
 
   default:

@@ -4,7 +4,6 @@
 #include "geronimo/physics/helpers/transformConversion.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
 #include "geronimo/physics/body/internals/PhysicBody.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"

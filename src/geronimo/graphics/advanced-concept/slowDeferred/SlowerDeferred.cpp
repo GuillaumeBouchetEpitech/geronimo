@@ -1,10 +1,10 @@
 
-#include "Deferred.hpp"
+#include "SlowerDeferred.hpp"
 
 namespace gero {
 namespace graphics {
 
-void Deferred::initialize(const std::string& inRootPath,
+void SlowerDeferred::initialize(const std::string& inRootPath,
                           const glm::ivec2& inFrameSize,
                           float inResolutionScaling /*= 1.0f*/) {
   _sunLightDirection = glm::normalize(_sunLightDirection);
@@ -15,7 +15,7 @@ void Deferred::initialize(const std::string& inRootPath,
   resize(inFrameSize, inResolutionScaling);
 }
 
-void Deferred::resize(const glm::ivec2& inFrameSize, float inResolutionScaling /*= 1.0f*/) {
+void SlowerDeferred::resize(const glm::ivec2& inFrameSize, float inResolutionScaling /*= 1.0f*/) {
 
   _resolutionScaling = inResolutionScaling;
 
@@ -26,41 +26,41 @@ void Deferred::resize(const glm::ivec2& inFrameSize, float inResolutionScaling /
   _resultQuadRenderer.resize(inFrameSize);
 }
 
-void Deferred::setEyePosition(const glm::vec3& inEyePos) { _eyePos = inEyePos; }
+void SlowerDeferred::setEyePosition(const glm::vec3& inEyePos) { _eyePos = inEyePos; }
 
-void Deferred::setSunLightDirection(const glm::vec3& inSunLightDirection) {
+void SlowerDeferred::setSunLightDirection(const glm::vec3& inSunLightDirection) {
   _sunLightDirection = glm::normalize(inSunLightDirection);
 }
 
-void Deferred::setAmbiantLightCoef(float ambiantLightCoef) { _ambiantLightCoef = ambiantLightCoef; }
+void SlowerDeferred::setAmbientLightRatio(float ambientLightRatio) { _ambientLightRatio = ambientLightRatio; }
 
-void Deferred::startRecording() { _screenRecorder.startRecording(); }
+void SlowerDeferred::startRecording() { _screenRecorder.startRecording(); }
 
-void Deferred::stopRecording() { _screenRecorder.stopRecording(); }
+void SlowerDeferred::stopRecording() { _screenRecorder.stopRecording(); }
 
-void Deferred::pushSpotLight(const glm::vec3& inPosition, float inRadius) {
+void SlowerDeferred::pushSpotLight(const glm::vec3& inPosition, float inRadius) {
   _lightStackRenderer.pushSpotLight(inPosition, inRadius);
 }
 
-void Deferred::applySpotLights(const glm::mat4& composedMatrix) {
+void SlowerDeferred::applySpotLights(const gero::graphics::ICamera& inSceneCamera) {
   _lightStackRenderer.flush(
-    _eyePos, composedMatrix, _screenRecorder.getPositionTexture(), _screenRecorder.getNormalTexture());
+    _eyePos, inSceneCamera.getMatricesData().composed, _screenRecorder.getPositionTexture(), _screenRecorder.getNormalTexture());
 }
 
-void Deferred::renderHudQuad(const glm::mat4& composedMatrix) {
+void SlowerDeferred::renderHudQuad(const gero::graphics::ICamera& inHudCamera) {
   _resultQuadRenderer.render(_eyePos,
                              _sunLightDirection,
-                             composedMatrix,
+                             inHudCamera.getMatricesData().composed,
                              _screenRecorder.getColorTexture(),
                              _screenRecorder.getPositionTexture(),
                              _screenRecorder.getNormalTexture(),
                              _screenRecorder.getDepthTexture(),
                              _lightStackRenderer.getDiffuseCoefTexture(),
                              _lightStackRenderer.getSpecularCoefTexture(),
-                             _ambiantLightCoef);
+                             _ambientLightRatio);
 }
 
-float Deferred::getResolutionScaling() const { return _resolutionScaling; }
+float SlowerDeferred::getResolutionScaling() const { return _resolutionScaling; }
 
 } // namespace graphics
 } // namespace gero

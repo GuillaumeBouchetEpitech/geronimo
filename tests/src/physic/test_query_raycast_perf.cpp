@@ -4,17 +4,18 @@
 #include "geronimo/system/metrics/Clock.hpp"
 
 TEST(physic_wrapper_perf, rayCast_closest_static_object) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
+
 
   gero::physics::PhysicBodyDef bodyDef;
   bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
   bodyDef.shape.data.sphere.radius = 1.0f;
   bodyDef.mass = 0.0f;
-  auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+  auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
   bodyRef->setPosition({0, 0, 0});
-  world.getPhysicBodyManager().addBody(bodyRef, -1, -1);
+  world->getPhysicBodyManager().addBody(bodyRef, -1, -1);
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   gero::physics::RayCaster::RayCastParams paramsRay(glm::vec3(0, 0, 10), glm::vec3(0, 0, -10));
   paramsRay.radius = 0.0f;
@@ -34,7 +35,7 @@ TEST(physic_wrapper_perf, rayCast_closest_static_object) {
   tmpClock.start();
 
   for (auto& currResult : allResultsRayStack) {
-    world.getRayCaster().rayCast(paramsRay, currResult);
+    world->getRayCaster().rayCast(paramsRay, currResult);
   }
 
   tmpClock.stop();
@@ -42,13 +43,13 @@ TEST(physic_wrapper_perf, rayCast_closest_static_object) {
   D_MYLOG("duration: " << tmpClock.getDuration());
 
   // std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultRayHeap;
-  // world.getRayCaster().rayCast(paramsRay, resultRayHeap);
+  // world->getRayCaster().rayCast(paramsRay, resultRayHeap);
 
   // gero::physics::RayCaster::RayCastParams::ResultArray<5> resultSphereStack;
-  // world.getRayCaster().rayCast(paramsSphere, resultSphereStack);
+  // world->getRayCaster().rayCast(paramsSphere, resultSphereStack);
 
   // std::vector<gero::physics::RayCaster::RayCastParams::ResultImpact> resultSphereHeap;
-  // world.getRayCaster().rayCast(paramsSphere, resultSphereHeap);
+  // world->getRayCaster().rayCast(paramsSphere, resultSphereHeap);
 
   for (auto& currResult : allResultsRayStack) {
     ASSERT_EQ(currResult.hasHit, true);

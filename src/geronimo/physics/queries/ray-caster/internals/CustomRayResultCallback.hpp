@@ -8,7 +8,7 @@ namespace physics {
 
 struct CustomRayResultCallback : public BaseCustomRayResultCallback<btCollisionWorld::RayResultCallback> {
 
-  CustomRayResultCallback(PhysicWorld& physicWorld,
+  CustomRayResultCallback(AbstractPhysicWorld& physicWorld,
                           const btVector3& rayFromWorld,
                           const btVector3& rayToWorld,
                           void* toIgnore,

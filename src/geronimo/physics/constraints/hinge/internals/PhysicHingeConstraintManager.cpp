@@ -2,13 +2,13 @@
 #include "PhysicHingeConstraintManager.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 
 namespace gero {
 namespace physics {
 
-PhysicHingeConstraintManager::PhysicHingeConstraintManager(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {
-  _hingeConstraints.pre_allocate(1024);
+PhysicHingeConstraintManager::PhysicHingeConstraintManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size) : _physicWorld(physicWorld) {
+  _hingeConstraints.pre_allocate(pre_allocated_size);
 }
 
 PhysicHingeConstraintManager::~PhysicHingeConstraintManager() { clear(); }
@@ -43,7 +43,7 @@ void PhysicHingeConstraintManager::add(HingeConstraintWeakRef ref) {
   PhysicHingeConstraint* implementation = reinterpret_cast<PhysicHingeConstraint*>(ref.get());
   if (implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->addConstraint(implementation->_bullet.constraint, true);
+  _physicWorld.getRawDynamicsWorld()->addConstraint(implementation->_bullet.constraint, true);
   implementation->_isAdded = true;
 
   _totalLiveHingeConstraints += 1;
@@ -55,7 +55,7 @@ void PhysicHingeConstraintManager::remove(HingeConstraintWeakRef ref) {
   PhysicHingeConstraint* implementation = reinterpret_cast<PhysicHingeConstraint*>(ref.get());
   if (!implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->removeConstraint(implementation->_bullet.constraint);
+  _physicWorld.getRawDynamicsWorld()->removeConstraint(implementation->_bullet.constraint);
   implementation->_isAdded = false;
 
   _totalLiveHingeConstraints -= 1;

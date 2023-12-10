@@ -7,19 +7,19 @@
 namespace gero {
 namespace physics {
 
-class PhysicWorld;
+class AbstractPhysicWorld;
 
 class PhysicHingeConstraintManager : public AbstractPhysicHingeConstraintManager {
-  friend PhysicWorld;
+  friend AbstractPhysicWorld;
 
 private:
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
   PhysicHingeConstraintsPool _hingeConstraints;
 
   uint32_t _totalLiveHingeConstraints = 0;
 
 public:
-  PhysicHingeConstraintManager(PhysicWorld& physicWorld);
+  PhysicHingeConstraintManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size = 256);
   ~PhysicHingeConstraintManager();
 
 public:

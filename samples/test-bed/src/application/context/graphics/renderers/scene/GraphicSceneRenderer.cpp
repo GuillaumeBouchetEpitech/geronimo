@@ -11,13 +11,14 @@ void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height) {
   _geometriesStackRenderer.initialize();
 
   {
-    gero::graphics::PerspectiveClustering::Def clusterDef;
-    clusterDef.clusterSliceX = 15U;
-    clusterDef.clusterSliceY = 15U;
-    clusterDef.clusterSliceZ = 15U;
-    clusterDef.maxLightsPerCluster = 10U;
+    // gero::graphics::PerspectiveClustering::Def clusterDef;
+    // clusterDef.clusterSliceX = 15U;
+    // clusterDef.clusterSliceY = 15U;
+    // clusterDef.clusterSliceZ = 15U;
+    // clusterDef.maxLightsPerCluster = 10U;
 
-    _deferred.initialize("../../src", clusterDef, _camera.getSize());
+    // _deferred.initialize("../../src", clusterDef, _camera.getSize());
+    _deferred.initialize("../../src", glm::ivec2(width, height), 1.0f);
   }
 
   {
@@ -99,4 +100,5 @@ gero::graphics::IStackRenderers& GraphicSceneRenderer::getStackRenderers() { ret
 
 IGeometriesStackRenderer& GraphicSceneRenderer::getGeometriesStackRenderer() { return _geometriesStackRenderer; }
 
-gero::graphics::IClusteredDeferred& GraphicSceneRenderer::getClusteredDeferred() { return _deferred; }
+// gero::graphics::IClusteredDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }
+gero::graphics::SlowerDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }

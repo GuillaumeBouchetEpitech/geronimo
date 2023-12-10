@@ -4,7 +4,7 @@
 namespace gero {
 namespace physics {
 
-CustomRayResultCallback::CustomRayResultCallback(PhysicWorld& physicWorld,
+CustomRayResultCallback::CustomRayResultCallback(AbstractPhysicWorld& physicWorld,
                                                  const btVector3& rayFromWorld,
                                                  const btVector3& rayToWorld,
                                                  void* toIgnore,

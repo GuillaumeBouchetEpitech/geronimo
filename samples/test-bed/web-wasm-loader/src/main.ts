@@ -21,6 +21,7 @@ const onGlobalPageLoad = async () => {
 
   const onInitialGlobalPageError = (event: ErrorEvent) => {
     isRunning = false;
+    console.error('error event', event);
     logger.error(`[JS] exception, event=${event}`);
   };
   window.addEventListener("error", onInitialGlobalPageError);

@@ -7,6 +7,7 @@
 // #include "constraints/cone-twist/internals/PhysicConeTwistConstraintManager.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
+#include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
 #include <algorithm>
@@ -67,12 +68,24 @@ public:
 
 // PhysicWorld* PhysicWorld::self = nullptr;
 
-PhysicWorld::PhysicWorld() : _rayCaster(*this), _queryShape(*this) {
+PhysicWorld::PhysicWorld(std::optional<PhysicWorldOptions> options) : _rayCaster(*this), _queryShape(*this) {
 
-  _physicBodyManager = AbstractPhysicBodyManager::create(*this);
-  _physicVehicleManager = AbstractPhysicVehicleManager::create(*this);
-  _physicHingeConstraintManager = AbstractPhysicHingeConstraintManager::create(*this);
-  _physicSixDofConstraintManager = AbstractPhysicSixDofConstraintManager::create(*this);
+  std::size_t bodies_pre_allocated_size = 256;
+  std::size_t vehicles_pre_allocated_size = 256;
+  std::size_t hinge_pre_allocated_size = 256;
+  std::size_t six_dof_pre_allocated_size = 256;
+
+  if (options.has_value()) {
+    bodies_pre_allocated_size = options->bodies_pre_allocated_size;
+    vehicles_pre_allocated_size = options->vehicles_pre_allocated_size;
+    hinge_pre_allocated_size = options->hinge_pre_allocated_size;
+    six_dof_pre_allocated_size = options->six_dof_pre_allocated_size;
+  }
+
+  _physicBodyManager = AbstractPhysicBodyManager::create(*this, bodies_pre_allocated_size);
+  _physicVehicleManager = AbstractPhysicVehicleManager::create(*this, vehicles_pre_allocated_size);
+  _physicHingeConstraintManager = AbstractPhysicHingeConstraintManager::create(*this, hinge_pre_allocated_size);
+  _physicSixDofConstraintManager = AbstractPhysicSixDofConstraintManager::create(*this, six_dof_pre_allocated_size);
 
   // not ready (-_-)
   // _physicUniversalConstraintManager = std::make_unique<PhysicUniversalConstraintManager>(*this);
@@ -286,19 +299,35 @@ const AbstractPhysicBodyManager& PhysicWorld::getPhysicBodyManager() const { ret
 //
 //
 
-AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() { return *_physicVehicleManager; }
+AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() {
+  if (_physicVehicleManager == nullptr) {
+    D_THROW(std::runtime_error, "PhysicVehicles are disabled");
+  }
+  return *_physicVehicleManager;
+}
 
-const AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const { return *_physicVehicleManager; }
+const AbstractPhysicVehicleManager& PhysicWorld::getPhysicVehicleManager() const {
+  if (_physicVehicleManager == nullptr) {
+    D_THROW(std::runtime_error, "PhysicVehicles are disabled");
+  }
+  return *_physicVehicleManager;
+}
 
 //
 //
 // constraints
 
 AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager() {
+  if (_physicHingeConstraintManager == nullptr) {
+    D_THROW(std::runtime_error, "PhysicHingeConstraint are disabled");
+  }
   return *_physicHingeConstraintManager;
 }
 
 const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstraintManager() const {
+  if (_physicHingeConstraintManager == nullptr) {
+    D_THROW(std::runtime_error, "PhysicHingeConstraint are disabled");
+  }
   return *_physicHingeConstraintManager;
 }
 
@@ -315,10 +344,16 @@ const AbstractPhysicHingeConstraintManager& PhysicWorld::getPhysicHingeConstrain
 // }
 
 AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() {
+  if (_physicSixDofConstraintManager == nullptr) {
+    D_THROW(std::runtime_error, "PhysicSixDofConstraint are disabled");
+  }
   return *_physicSixDofConstraintManager;
 }
 
 const AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstraintManager() const {
+  if (_physicSixDofConstraintManager == nullptr) {
+    D_THROW(std::runtime_error, "PhysicSixDofConstraint are disabled");
+  }
   return *_physicSixDofConstraintManager;
 }
 
@@ -341,6 +376,10 @@ const AbstractPhysicSixDofConstraintManager& PhysicWorld::getPhysicSixDofConstra
 RayCaster& PhysicWorld::getRayCaster() { return _rayCaster; }
 
 QueryShape& PhysicWorld::getQueryShape() { return _queryShape; }
+
+//
+
+btDiscreteDynamicsWorld* PhysicWorld::getRawDynamicsWorld() { return _bullet.dynamicsWorld; }
 
 //
 

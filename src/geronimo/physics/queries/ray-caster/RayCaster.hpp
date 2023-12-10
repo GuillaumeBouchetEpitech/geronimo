@@ -1,7 +1,6 @@
 
 #pragma once
 
-// #include "geronimo/physics/body/PhysicBodyManager.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/physics/body/AbstractPhysicBody.hpp"
 
@@ -10,16 +9,18 @@
 namespace gero {
 namespace physics {
 
+class AbstractPhysicWorld;
 class PhysicWorld;
 
 class RayCaster {
+  friend AbstractPhysicWorld;
   friend PhysicWorld;
 
 private:
-  PhysicWorld& _physicWorld;
+  AbstractPhysicWorld& _physicWorld;
 
 private:
-  RayCaster(PhysicWorld& physicWorld);
+  RayCaster(AbstractPhysicWorld& physicWorld);
   ~RayCaster() = default;
 
 public:

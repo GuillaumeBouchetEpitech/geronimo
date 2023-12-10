@@ -7,7 +7,7 @@ namespace gero {
 namespace physics {
 
 struct CustomConvexResultCallback : public BaseCustomRayResultCallback<btCollisionWorld::ConvexResultCallback> {
-  CustomConvexResultCallback(PhysicWorld& physicWorld,
+  CustomConvexResultCallback(AbstractPhysicWorld& physicWorld,
                              float radius,
                              void* toIgnore,
                              RayCaster::RayCastParams::Type type,

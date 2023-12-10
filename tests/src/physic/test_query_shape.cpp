@@ -2,17 +2,17 @@
 #include "headers.hpp"
 
 TEST(physic_wrapper, query_shape_nothing) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
 
   gero::physics::PhysicBodyDef bodyDef;
   bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
   bodyDef.shape.data.sphere.radius = 1.0f;
   bodyDef.mass = 0.0f;
-  auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+  auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
   bodyRef->setPosition({0, 0, 0});
-  world.getPhysicBodyManager().addBody(bodyRef, -1, -1);
+  world->getPhysicBodyManager().addBody(bodyRef, -1, -1);
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   gero::physics::PhysicShapeDef shapeDef;
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -22,10 +22,10 @@ TEST(physic_wrapper, query_shape_nothing) {
   params.collisionGroup = -1;
   params.collisionMask = -1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<5> resultStack;
-  world.getQueryShape().queryShape(params, resultStack);
+  world->getQueryShape().queryShape(params, resultStack);
 
   std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
-  world.getQueryShape().queryShape(params, resultHeap);
+  world->getQueryShape().queryShape(params, resultHeap);
 
   ASSERT_EQ(resultStack.hasHit, false);
   ASSERT_EQ(resultStack.allBodiesTotal, 0);
@@ -35,17 +35,17 @@ TEST(physic_wrapper, query_shape_nothing) {
 }
 
 TEST(physic_wrapper, query_shape_static_object) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
 
   gero::physics::PhysicBodyDef bodyDef;
   bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
   bodyDef.shape.data.sphere.radius = 1.0f;
   bodyDef.mass = 0.0f;
-  auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+  auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
   bodyRef->setPosition({0, 0, 0});
-  world.getPhysicBodyManager().addBody(bodyRef, -1, -1);
+  world->getPhysicBodyManager().addBody(bodyRef, -1, -1);
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   gero::physics::PhysicShapeDef shapeDef;
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -55,10 +55,10 @@ TEST(physic_wrapper, query_shape_static_object) {
   params.collisionGroup = -1;
   params.collisionMask = -1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<5> resultStack;
-  world.getQueryShape().queryShape(params, resultStack);
+  world->getQueryShape().queryShape(params, resultStack);
 
   std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
-  world.getQueryShape().queryShape(params, resultHeap);
+  world->getQueryShape().queryShape(params, resultHeap);
 
   ASSERT_EQ(resultStack.hasHit, true);
   ASSERT_EQ(resultStack.allBodiesTotal, 1);
@@ -70,7 +70,7 @@ TEST(physic_wrapper, query_shape_static_object) {
 }
 
 TEST(physic_wrapper, query_shape_all_static_objects) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
 
   std::vector<gero::physics::BodyWeakRef> allBodyRef;
   allBodyRef.reserve(10);
@@ -92,14 +92,14 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
     bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
     bodyDef.shape.data.sphere.radius = 1.0f;
     bodyDef.mass = 0.0f;
-    auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+    auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
     bodyRef->setPosition(pos);
-    world.getPhysicBodyManager().addBody(bodyRef, -1, -1);
+    world->getPhysicBodyManager().addBody(bodyRef, -1, -1);
 
     allBodyRef.push_back(bodyRef);
   }
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   gero::physics::PhysicShapeDef shapeDef;
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -109,10 +109,10 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
   params.collisionGroup = -1;
   params.collisionMask = -1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
-  world.getQueryShape().queryShape(params, resultStack);
+  world->getQueryShape().queryShape(params, resultStack);
 
   std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
-  world.getQueryShape().queryShape(params, resultHeap);
+  world->getQueryShape().queryShape(params, resultHeap);
 
   ASSERT_EQ(resultStack.hasHit, true);
   ASSERT_EQ(resultStack.allBodiesTotal, 7);
@@ -144,7 +144,7 @@ TEST(physic_wrapper, query_shape_all_static_objects) {
 }
 
 TEST(physic_wrapper, query_shape_some_static_objects) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
 
   std::vector<gero::physics::BodyWeakRef> allBodyRef;
   allBodyRef.reserve(10);
@@ -166,14 +166,14 @@ TEST(physic_wrapper, query_shape_some_static_objects) {
     bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
     bodyDef.shape.data.sphere.radius = 1.0f;
     bodyDef.mass = 0.0f;
-    auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+    auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
     bodyRef->setPosition(pos);
-    world.getPhysicBodyManager().addBody(bodyRef, -1, -1);
+    world->getPhysicBodyManager().addBody(bodyRef, -1, -1);
 
     allBodyRef.push_back(bodyRef);
   }
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   gero::physics::PhysicShapeDef shapeDef;
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -183,10 +183,10 @@ TEST(physic_wrapper, query_shape_some_static_objects) {
   params.collisionGroup = -1;
   params.collisionMask = -1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
-  world.getQueryShape().queryShape(params, resultStack);
+  world->getQueryShape().queryShape(params, resultStack);
 
   std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
-  world.getQueryShape().queryShape(params, resultHeap);
+  world->getQueryShape().queryShape(params, resultHeap);
 
   ASSERT_EQ(resultStack.hasHit, true);
   ASSERT_EQ(resultStack.allBodiesTotal, 3);
@@ -210,7 +210,7 @@ TEST(physic_wrapper, query_shape_some_static_objects) {
 }
 
 TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
 
   const short filter1 = 0b0100;
   const short filter2 = 0b0010;
@@ -242,14 +242,14 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
     bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
     bodyDef.shape.data.sphere.radius = 1.0f;
     bodyDef.mass = 0.0f;
-    auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+    auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
     bodyRef->setPosition(testDef.pos);
-    world.getPhysicBodyManager().addBody(bodyRef, testDef.filter, testDef.filter);
+    world->getPhysicBodyManager().addBody(bodyRef, testDef.filter, testDef.filter);
 
     allBodyRef.push_back(bodyRef);
   }
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   gero::physics::PhysicShapeDef shapeDef;
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -259,10 +259,10 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
   params.collisionGroup = filter1;
   params.collisionMask = filter1;
   gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
-  world.getQueryShape().queryShape(params, resultStack);
+  world->getQueryShape().queryShape(params, resultStack);
 
   std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
-  world.getQueryShape().queryShape(params, resultHeap);
+  world->getQueryShape().queryShape(params, resultHeap);
 
   ASSERT_EQ(resultStack.hasHit, true);
   ASSERT_EQ(resultStack.allBodiesTotal, 3);
@@ -299,7 +299,7 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_collision_filters) {
 }
 
 TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
 
   const std::array<glm::vec3, 7> allBodyPos = {{
     glm::vec3(0, 0, 0),
@@ -323,14 +323,14 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
     bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
     bodyDef.shape.data.sphere.radius = 1.0f;
     bodyDef.mass = 0.0f;
-    auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+    auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
     bodyRef->setPosition(pos);
-    world.getPhysicBodyManager().addBody(bodyRef, -1, -1);
+    world->getPhysicBodyManager().addBody(bodyRef, -1, -1);
 
     allBodyRef.push_back(bodyRef);
   }
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   gero::physics::PhysicShapeDef shapeDef;
   shapeDef.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -341,10 +341,10 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
   params.collisionMask = -1;
   params.toIgnore = &(*allBodyRef[4]);
   gero::physics::QueryShape::QueryShapeParams::ResultArray<10> resultStack;
-  world.getQueryShape().queryShape(params, resultStack);
+  world->getQueryShape().queryShape(params, resultStack);
 
   std::vector<gero::physics::AbstractPhysicBody*> resultHeap;
-  world.getQueryShape().queryShape(params, resultHeap);
+  world->getQueryShape().queryShape(params, resultHeap);
 
   ASSERT_EQ(resultStack.hasHit, true);
   ASSERT_EQ(resultStack.allBodiesTotal, 6);
@@ -383,24 +383,24 @@ TEST(physic_wrapper, query_shape_some_static_objects_with_to_ignore) {
 #if 0
 
 TEST(physic_wrapper, query_shape_static_object_out_of_scope) {
-  gero::physics::PhysicWorld world;
+  auto world = gero::physics::AbstractPhysicWorld::create();
 
   gero::physics::PhysicBodyDef bodyDef;
   bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
   bodyDef.shape.data.sphere.radius = 1.0f;
   bodyDef.mass = 0.0f;
-  auto bodyRef = world.getPhysicBodyManager().createBody(bodyDef);
+  auto bodyRef = world->getPhysicBodyManager().createBody(bodyDef);
   bodyRef->setPosition({0, 0, 0});
-  world.getPhysicBodyManager().addBody(bodyRef, -1, -1);
+  world->getPhysicBodyManager().addBody(bodyRef, -1, -1);
 
-  world.step(0, 0, 0);
+  world->step(0, 0, 0);
 
   {
     gero::physics::QueryShape::QueryShapeParams params(glm::vec3(5, 0, 0), 5.0f);
     params.collisionGroup = -1;
     params.collisionMask = -1;
     gero::physics::QueryShape::QueryShapeParams::ResultArray<5> result;
-    world.getQueryShape().queryShape(params, result);
+    world->getQueryShape().queryShape(params, result);
 
     ASSERT_EQ(result.hasHit, true);
     ASSERT_EQ(result.allBodiesTotal, 1);
@@ -413,7 +413,7 @@ TEST(physic_wrapper, query_shape_static_object_out_of_scope) {
     params.collisionGroup = -1;
     params.collisionMask = -1;
     gero::physics::QueryShape::QueryShapeParams::ResultArray<5> result;
-    world.getQueryShape().queryShape(params, result);
+    world->getQueryShape().queryShape(params, result);
 
     ASSERT_EQ(result.hasHit, true);
     ASSERT_EQ(result.allBodiesTotal, 1);
@@ -426,7 +426,7 @@ TEST(physic_wrapper, query_shape_static_object_out_of_scope) {
     params.collisionGroup = -1;
     params.collisionMask = -1;
     gero::physics::QueryShape::QueryShapeParams::ResultArray<5> result;
-    world.getQueryShape().queryShape(params, result);
+    world->getQueryShape().queryShape(params, result);
 
     ASSERT_EQ(result.hasHit, true);
     ASSERT_EQ(result.allBodiesTotal, 1);

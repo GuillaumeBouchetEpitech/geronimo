@@ -2,13 +2,13 @@
 #include "PhysicVehicleManager.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 
 namespace gero {
 namespace physics {
 
-PhysicVehicleManager::PhysicVehicleManager(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {
-  _vehicles.pre_allocate(1024);
+PhysicVehicleManager::PhysicVehicleManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size) : _physicWorld(physicWorld) {
+  _vehicles.pre_allocate(pre_allocated_size);
 }
 
 PhysicVehicleManager::~PhysicVehicleManager() { clear(); }
@@ -20,7 +20,7 @@ void PhysicVehicleManager::clear() {
 }
 
 VehicleWeakRef PhysicVehicleManager::createVehicle(const PhysicVehicleDef& def) {
-  return _vehicles.acquire(*_physicWorld._bullet.dynamicsWorld, def);
+  return _vehicles.acquire(*_physicWorld.getRawDynamicsWorld(), def);
 }
 
 VehicleWeakRef PhysicVehicleManager::createAndAddVehicle(const PhysicVehicleDef& def) {
@@ -43,7 +43,7 @@ void PhysicVehicleManager::addVehicle(VehicleWeakRef ref) {
   PhysicVehicle* implementation = reinterpret_cast<PhysicVehicle*>(ref.get());
   if (implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->addVehicle(implementation->_bullet.vehicle);
+  _physicWorld.getRawDynamicsWorld()->addVehicle(implementation->_bullet.vehicle);
   implementation->_isAdded = true;
 
   _totalLiveVehicles += 1;
@@ -55,7 +55,7 @@ void PhysicVehicleManager::removeVehicle(VehicleWeakRef ref) {
   PhysicVehicle* implementation = reinterpret_cast<PhysicVehicle*>(ref.get());
   if (!implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->removeVehicle(implementation->_bullet.vehicle);
+  _physicWorld.getRawDynamicsWorld()->removeVehicle(implementation->_bullet.vehicle);
   implementation->_isAdded = false;
 
   _totalLiveVehicles -= 1;

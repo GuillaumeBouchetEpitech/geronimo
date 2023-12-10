@@ -9,20 +9,11 @@
 #include "logic/controllers/FreeFlyCameraController.hpp"
 
 #include "geronimo/audio/OpenALSoundManager.hpp"
-#include "geronimo/graphics/FrameBuffer.hpp"
-#include "geronimo/graphics/Geometry.hpp"
-#include "geronimo/graphics/RenderBuffer.hpp"
-#include "geronimo/graphics/ShaderProgram.hpp"
-#include "geronimo/graphics/Texture.hpp"
-#include "geronimo/graphics/camera/Camera.hpp"
-#include "geronimo/helpers/GLMath.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 #include "geronimo/system/NonCopyable.hpp"
 #include "geronimo/system/metrics/PerformanceProfiler.hpp"
-
-#include "geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.hpp"
-#include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
-#include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
+#include "geronimo/helpers/GLMath.hpp"
 
 #include <array>
 #include <cstdint>
@@ -88,7 +79,7 @@ public:
   //
 
   struct t_physic {
-    gero::physics::PhysicWorld* world;
+    std::unique_ptr<gero::physics::AbstractPhysicWorld> world;
   } physic;
 
   struct t_audio {

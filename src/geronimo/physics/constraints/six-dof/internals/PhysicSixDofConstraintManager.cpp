@@ -2,13 +2,13 @@
 #include "PhysicSixDofConstraintManager.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
-#include "geronimo/physics/PhysicWorld.hpp"
+#include "geronimo/physics/AbstractPhysicWorld.hpp"
 
 namespace gero {
 namespace physics {
 
-PhysicSixDofConstraintManager::PhysicSixDofConstraintManager(PhysicWorld& physicWorld) : _physicWorld(physicWorld) {
-  _pool.pre_allocate(1024);
+PhysicSixDofConstraintManager::PhysicSixDofConstraintManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size) : _physicWorld(physicWorld) {
+  _pool.pre_allocate(pre_allocated_size);
 }
 
 PhysicSixDofConstraintManager::~PhysicSixDofConstraintManager() { clear(); }
@@ -43,7 +43,7 @@ void PhysicSixDofConstraintManager::add(SixDofConstraintWeakRef ref) {
   PhysicSixDofConstraint* implementation = reinterpret_cast<PhysicSixDofConstraint*>(ref.get());
   if (implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->addConstraint(implementation->_bullet.constraint, true);
+  _physicWorld.getRawDynamicsWorld()->addConstraint(implementation->_bullet.constraint, true);
   implementation->_isAdded = true;
 
   _totalLive += 1;
@@ -55,7 +55,7 @@ void PhysicSixDofConstraintManager::remove(SixDofConstraintWeakRef ref) {
   PhysicSixDofConstraint* implementation = reinterpret_cast<PhysicSixDofConstraint*>(ref.get());
   if (!implementation || !implementation->_isAdded)
     return;
-  _physicWorld._bullet.dynamicsWorld->removeConstraint(implementation->_bullet.constraint);
+  _physicWorld.getRawDynamicsWorld()->removeConstraint(implementation->_bullet.constraint);
   implementation->_isAdded = false;
 
   _totalLive -= 1;

@@ -30,7 +30,7 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
     glm::vec3 lightPos3 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 5);
 
     if (frustumCulling.sphereInFrustum(lightPos3, 5)) {
-      scene.getClusteredDeferred().pushSpotLight(lightPos3, 10);
+      scene.getDeferred().pushSpotLight(lightPos3, 10);
     }
 
     {

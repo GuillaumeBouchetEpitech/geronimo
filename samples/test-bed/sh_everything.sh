@@ -69,12 +69,12 @@ func_build_main_application() {
 
   echo "building projects applicaton"
   echo "  native version"
-  make build_mode="release" build_platform="native" all -j1
+  make build_mode="release" build_platform="native" all -j4
 
   case $WEB_WASM_AVAILABLE in
   yes)
     echo "  web-wasm version"
-    make build_mode="release" build_platform="web-wasm" all -j1
+    make build_mode="release" build_platform="web-wasm" all -j4
     ;;
   esac
 
@@ -96,6 +96,7 @@ func_build_wasm_loader_webapp() {
     cd ./web-wasm-loader
     npm install
     npm run build
+    npm run update-dist
     cd $DIR_ROOT
     ;;
   esac

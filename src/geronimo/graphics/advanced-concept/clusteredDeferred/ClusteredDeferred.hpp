@@ -20,7 +20,7 @@ public:
 
   virtual void setEyePosition(const glm::vec3& inEyePos) = 0;
   virtual void setSunLightDirection(const glm::vec3& inSunLightDirection) = 0;
-  virtual void setAmbiantLightCoef(float ambiantLightCoef) = 0;
+  virtual void setAmbientLightRatio(float ambiantLightCoef) = 0;
 
   virtual void startRecording() = 0;
   virtual void stopRecording() = 0;
@@ -47,7 +47,7 @@ public:
 
   void setEyePosition(const glm::vec3& inEyePos) override;
   void setSunLightDirection(const glm::vec3& inSunLightDirection) override;
-  void setAmbiantLightCoef(float ambiantLightCoef) override;
+  void setAmbientLightRatio(float ambiantLightCoef) override;
 
   void startRecording() override;
   void stopRecording() override;

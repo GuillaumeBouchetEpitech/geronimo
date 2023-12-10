@@ -30,7 +30,7 @@ void ClusteredDeferred::setSunLightDirection(const glm::vec3& inSunLightDirectio
   _sunLightDirection = glm::normalize(inSunLightDirection);
 }
 
-void ClusteredDeferred::setAmbiantLightCoef(float ambiantLightCoef) { _ambiantLightCoef = ambiantLightCoef; }
+void ClusteredDeferred::setAmbientLightRatio(float ambiantLightCoef) { _ambiantLightCoef = ambiantLightCoef; }
 
 void ClusteredDeferred::startRecording() { _screenRecorder.startRecording(); }
 
