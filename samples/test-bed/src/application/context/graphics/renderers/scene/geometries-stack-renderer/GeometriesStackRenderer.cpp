@@ -57,6 +57,10 @@ void GeometriesStackRenderer::setMatricesData(const gero::graphics::Camera::Matr
 
 void GeometriesStackRenderer::createAlias(int32_t alias, const gero::graphics::MakeGeometries::Vertices& vertices) {
 
+  if (_aliasedGeometriesMap.count(alias) > 0) {
+    D_THROW(std::runtime_error, "alias already exist, alias: " << alias);
+  }
+
   auto newAlias = std::make_shared<AliasedGeometry>();
 
   newAlias->instanceVertices.reserve(256); // pre-allocate
@@ -73,41 +77,60 @@ void GeometriesStackRenderer::createAlias(int32_t alias, const gero::graphics::M
 void GeometriesStackRenderer::deleteAlias(int32_t alias) { _aliasedGeometriesMap.erase(alias); }
 void GeometriesStackRenderer::clearAlias(int32_t alias) {
   auto it = _aliasedGeometriesMap.find(alias);
-  if (it == _aliasedGeometriesMap.end())
-    return;
+  if (it == _aliasedGeometriesMap.end()) {
+    D_THROW(std::runtime_error, "alias not found, alias: " << alias);
+  }
 
   it->second->instanceVertices.clear();
 }
 
 void GeometriesStackRenderer::pushAlias(int32_t alias, const GeometryInstance& newInstance) {
   auto it = _aliasedGeometriesMap.find(alias);
-  if (it == _aliasedGeometriesMap.end())
-    return;
+  if (it == _aliasedGeometriesMap.end()) {
+    D_THROW(std::runtime_error, "alias not found, alias: " << alias);
+  }
 
-  it->second->instanceVertices.push_back(newInstance);
+  auto& tmpData = *it->second;
+
+  if (
+    _strictMode &&
+    tmpData.instanceVertices.size() + 1 >= tmpData.instanceVertices.capacity()
+  ) {
+    D_THROW(std::runtime_error, "alias buffer of space, alias: " << alias << ", capacity: " << tmpData.instanceVertices.capacity());
+  }
+
+  tmpData.instanceVertices.push_back(newInstance);
 }
 
 void GeometriesStackRenderer::clearAll() { _aliasedGeometriesMap.clear(); }
 
 void GeometriesStackRenderer::renderAll() {
-  if (!_shader)
-    D_THROW(std::runtime_error, "not initialized");
+  if (!_shader) {
+    D_THROW(std::runtime_error, "shader not setup");
+  }
 
-  if (_aliasedGeometriesMap.empty())
+  if (_aliasedGeometriesMap.empty()) {
     return;
+  }
 
-  _shader->preBind([this](gero::graphics::IBoundShaderProgram& bound) {
-    bound.setUniform("u_composedMatrix", _matricesData.composed);
-    // bound.setUniform("u_ambiantCoef", 0.2f);
+  _shader->preBind([this](gero::graphics::IBoundShaderProgram& boundShader) {
+    boundShader.setUniform("u_composedMatrix", _matricesData.composed);
+    // boundShader.setUniform("u_ambiantCoef", 0.2f);
 
     for (const auto& pair : _aliasedGeometriesMap) {
-      auto& vertices = pair.second->instanceVertices;
-      if (vertices.empty())
+      auto& tmpData = *pair.second;
+      auto& vertices = tmpData.instanceVertices;
+      if (vertices.empty()) {
         continue;
+      }
 
-      auto& geometry = pair.second->geometry;
+      auto& geometry = tmpData.geometry;
+      if (_strictMode) {
+        geometry.updateBuffer(1, vertices);
+      } else {
+        geometry.updateOrAllocateBuffer(1, vertices);
+      }
 
-      geometry.updateOrAllocateBuffer(1, vertices);
       geometry.setInstancedCount(uint32_t(vertices.size()));
       geometry.render();
 

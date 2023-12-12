@@ -220,11 +220,11 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
 
   DataPoll dataPool;
 
-  DataRef ref0 = dataPool.acquire(world, 111);
-  DataRef ref1 = dataPool.acquire(world, 222);
-  DataRef ref2 = dataPool.acquire(world, 333);
-  DataRef ref3 = dataPool.acquire(world, 444);
-  DataRef ref4 = dataPool.acquire(world, 555);
+  DataRef ref0 = dataPool.acquire(*world.get(), 111);
+  DataRef ref1 = dataPool.acquire(*world.get(), 222);
+  DataRef ref2 = dataPool.acquire(*world.get(), 333);
+  DataRef ref3 = dataPool.acquire(*world.get(), 444);
+  DataRef ref4 = dataPool.acquire(*world.get(), 555);
 
   world->step(0, 0, 0);
 
@@ -285,7 +285,7 @@ TEST(physic_wrapper, test_consistence_nested_class_attribute) {
     }
   }
 
-  DataRef ref5 = dataPool.acquire(world, 666);
+  DataRef ref5 = dataPool.acquire(*world.get(), 666);
 
   {
 
