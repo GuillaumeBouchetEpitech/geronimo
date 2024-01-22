@@ -82,7 +82,7 @@ TEST_F(system_generic_array_container, do_not_call_any_ctor_when_moving_containe
     (*mySizedDynamicArray1)[int(ii)].set_value(int(ii));
 
   auto mySizedDynamicArray2 = std::move(mySizedDynamicArray1);
-  ASSERT_EQ(mySizedDynamicArray1, nullptr);
+  ASSERT_EQ(mySizedDynamicArray1.get(), nullptr);
 
   ASSERT_EQ(common::getTotalCtor(), 0);
   ASSERT_EQ(common::getTotalCopyCtor(), 0);

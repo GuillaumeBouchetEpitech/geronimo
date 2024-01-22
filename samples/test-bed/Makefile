@@ -202,6 +202,9 @@ LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-conc
 LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/geometries-stack-renderer/shaders
 LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/scene-stack-renderers/shaders
 
+LDFLAGS += -s EXPORT_NAME="testBedApp"
+LDFLAGS += -s MODULARIZE=1
+
 LDFLAGS+=	-s TOTAL_MEMORY=128Mb
 # LDFLAGS+= -s EXPORTED_RUNTIME_METHODS=cwrap
 # LDFLAGS += -s EXPORTED_FUNCTIONS="['_free']"

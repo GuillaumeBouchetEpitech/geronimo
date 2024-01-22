@@ -33,7 +33,12 @@ public:
 
   struct IndexedVec {
     T_Position position;
-    size_t index;
+    std::size_t index;
+
+    IndexedVec(const T_Position& inPosition, std::size_t inIndex)
+      : position(inPosition), index(inIndex)
+    {}
+
   };
 
   using IndexedVecArr = typename std::vector<IndexedVec>;
@@ -41,7 +46,7 @@ public:
 
 private:
   struct TreeNode {
-    size_t index;
+    std::size_t index;
     T_Position position;
     std::shared_ptr<TreeNode> leftNode;
     std::shared_ptr<TreeNode> rightNode;
@@ -78,7 +83,7 @@ private:
                          int32_t inMaxSize);
 
   std::shared_ptr<TreeNode>
-  _build(const IndexedVecArrIt& inBeginIt, const IndexedVecArrIt& inEndIt, size_t inLength, int32_t inCurrAxis);
+  _build(const IndexedVecArrIt& inBeginIt, const IndexedVecArrIt& inEndIt, std::size_t inLength, int32_t inCurrAxis);
 };
 
 template <typename T_Data, typename T_Position, uint32_t T_Dimension>
@@ -100,14 +105,14 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::build(const std::vector<Use
   // iterators
   _builderArray.clear();
   _builderArray.reserve(inVec3Data.size());
-  for (size_t ii = 0; ii < inVec3Data.size(); ++ii)
-    _builderArray.push_back({inVec3Data.at(ii).position, ii});
+  for (std::size_t ii = 0; ii < inVec3Data.size(); ++ii)
+    _builderArray.emplace_back(inVec3Data.at(ii).position, ii);
 
   const auto beginIt = _builderArray.begin();
   const auto endIt = _builderArray.end();
 
-  const size_t length = _builderArray.size();
-  constexpr size_t startAxis = 0;
+  const std::size_t length = _builderArray.size();
+  constexpr std::size_t startAxis = 0;
 
   _root = GenericKDTree::_build(beginIt, endIt, length, startAxis);
 }
@@ -121,6 +126,17 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::searchWithRadius(const T_Po
                                                                       float inRadius,
                                                                       IndexedVecArr& outResults,
                                                                       int32_t inMaxSize) {
+
+  // no root node to search
+  if (!_root) {
+    return;
+  }
+
+  // no more result needed
+  if (inMaxSize > 0 && outResults.size() >= std::size_t(inMaxSize)) {
+    return;
+  }
+
   outResults.reserve(_builderArray.size());
   constexpr int32_t startAxis = 0;
   const float squareRadius = inRadius * inRadius;
@@ -138,9 +154,6 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::_searchWithRadius(const std
                                                                        int32_t inCurrAxis,
                                                                        IndexedVecArr& outResults,
                                                                        int32_t inMaxSize) {
-  if (!inBranchPtr || (inMaxSize > 0 && outResults.size() >= std::size_t(inMaxSize))) {
-    return;
-  }
 
   const TreeNode& branch = *inBranchPtr;
 
@@ -152,21 +165,58 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::_searchWithRadius(const std
     outResults.push_back({branch.position, branch.index});
   }
 
-  std::shared_ptr<TreeNode> section;
-  std::shared_ptr<TreeNode> other;
-  if (axisDiff > 0.0f) {
-    section = branch.leftNode;
-    other = branch.rightNode;
+
+  // if (_boxContains(inPosition, inBoxHalfExtent, branch.position)) {
+  //   outResults.emplace_back(branch.position, branch.index);
+  // }
+
+  // no more result needed
+  if (inMaxSize > 0 && outResults.size() >= std::size_t(inMaxSize)) {
+    // stop early
+    return;
+  }
+
+  // no more nodes to search
+  if (!branch.leftNode && !branch.rightNode) {
+    return;
+  }
+
+  float closestAxisDistance = branch.position[inCurrAxis] - inPosition[inCurrAxis];
+
+  std::shared_ptr<TreeNode> closestSection;
+  std::shared_ptr<TreeNode> farthestSection;
+  if (closestAxisDistance > 0.0f) {
+    // left node is closer
+    closestSection = branch.leftNode;
+    farthestSection = branch.rightNode;
   } else {
-    section = branch.rightNode;
-    other = branch.leftNode;
+    // right node is closer
+    closestSection = branch.rightNode;
+    farthestSection = branch.leftNode;
+
+    closestAxisDistance = -closestAxisDistance;
   }
 
   const int32_t nextAxis = (inCurrAxis + 1 == int32_t(T_Dimension)) ? 0 : inCurrAxis + 1;
 
-  _searchWithRadius(section, inPosition, inSquareRadius, nextAxis, outResults, inMaxSize);
-  if (squareAxisDiff < inSquareRadius) {
-    _searchWithRadius(other, inPosition, inSquareRadius, nextAxis, outResults, inMaxSize);
+  // check closest axis
+  if (closestSection) {
+    _searchWithRadius(closestSection, inPosition, inSquareRadius, nextAxis, outResults, inMaxSize);
+
+    // no more result needed
+    if (inMaxSize > 0 && outResults.size() >= std::size_t(inMaxSize)) {
+      return;
+    }
+  }
+
+  // farthest axis not in range
+  if (squareAxisDiff > inSquareRadius) {
+    return;
+  }
+
+  // check farthest axis
+  if (farthestSection) {
+    _searchWithRadius(farthestSection, inPosition, inSquareRadius, nextAxis, outResults, inMaxSize);
   }
 }
 
@@ -174,7 +224,7 @@ template <typename T_Data, typename T_Position, uint32_t T_Dimension>
 std::shared_ptr<typename GenericKDTree<T_Data, T_Position, T_Dimension>::TreeNode>
 GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& inBeginIt,
                                                        const IndexedVecArrIt& inEndIt,
-                                                       size_t inLength,
+                                                       std::size_t inLength,
                                                        int32_t inCurrAxis) {
   if (inBeginIt == inEndIt) {
     return nullptr; // empty tree
@@ -185,15 +235,18 @@ GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& in
 
     auto middleIt = inBeginIt + std::distance(inBeginIt, inEndIt) / 2;
 
-    auto lessCallback = [inCurrAxis](const GenericKDTree::IndexedVec& inA, const GenericKDTree::IndexedVec& inB) {
+    auto lessCallback = [inCurrAxis](
+      const GenericKDTree::IndexedVec& inA,
+      const GenericKDTree::IndexedVec& inB
+    ) {
       return inA.position[inCurrAxis] < inB.position[inCurrAxis];
     };
 
     std::nth_element(inBeginIt, middleIt, inEndIt, lessCallback);
   }
 
-  const size_t leftLength = inLength / 2;
-  const size_t rightLength = inLength - leftLength - 1;
+  const std::size_t leftLength = inLength / 2;
+  const std::size_t rightLength = inLength - leftLength - 1;
 
   const auto middleIt = inBeginIt + (inLength / 2);
 

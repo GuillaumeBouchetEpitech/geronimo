@@ -24,6 +24,7 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include <optional>
 
 class btBroadphaseInterface;
 class btDefaultCollisionConfiguration;

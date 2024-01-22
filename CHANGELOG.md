@@ -1,9 +1,13 @@
 
 # Changelog
 
+## [0.0.16] - 2024-01-18
+### Changed
+- feat: graphics, stencil operations (limited support)
+- feat: physics, abstract physic world
 
 
-## [0.0.15] - ????-??-??
+## [0.0.15] - 2023-10-28
 ### Changed
 - feat: graphics, input managers (keyboard, mouse, touchscreen)
 - feat: graphics, sdl2 window set size now exposed
