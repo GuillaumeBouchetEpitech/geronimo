@@ -7,7 +7,9 @@
 namespace gero {
 namespace physics {
 
-PhysicSixDofConstraintManager::PhysicSixDofConstraintManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size) : _physicWorld(physicWorld) {
+PhysicSixDofConstraintManager::PhysicSixDofConstraintManager(AbstractPhysicWorld& physicWorld,
+                                                             std::size_t pre_allocated_size)
+  : _physicWorld(physicWorld) {
   _pool.pre_allocate(pre_allocated_size);
 }
 

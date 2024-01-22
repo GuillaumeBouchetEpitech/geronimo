@@ -123,7 +123,6 @@ protected:
 
 public:
   static std::unique_ptr<AbstractPhysicWorld> create();
-
 };
 
 } // namespace physics

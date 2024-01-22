@@ -21,10 +21,10 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <set>
 #include <unordered_map>
 #include <vector>
-#include <optional>
 
 class btBroadphaseInterface;
 class btDefaultCollisionConfiguration;
@@ -68,7 +68,6 @@ public:
     std::size_t hinge_pre_allocated_size = 256;
     std::size_t six_dof_pre_allocated_size = 256;
   };
-
 
   using debuggerPushLineCallback = std::function<void(const glm::vec3&, const glm::vec3&, const glm::vec3&)>;
 
@@ -202,8 +201,6 @@ public:
 
 protected:
   btDiscreteDynamicsWorld* getRawDynamicsWorld() override;
-
-
 };
 
 } // namespace physics

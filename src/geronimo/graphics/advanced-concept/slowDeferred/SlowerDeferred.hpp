@@ -5,9 +5,9 @@
 #include "internals/ResultQuadRenderer.hpp"
 #include "internals/ScreenRecorder.hpp"
 
-#include "geronimo/graphics/camera/Camera.hpp"
 #include "geronimo/graphics/FrameBuffer.hpp"
 #include "geronimo/graphics/Texture.hpp"
+#include "geronimo/graphics/camera/Camera.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <cstdint>

@@ -34,7 +34,8 @@ public:
   virtual bool isEmpty() const = 0;
 
 public:
-  static std::unique_ptr<AbstractPhysicSixDofConstraintManager> create(AbstractPhysicWorld& inPhysicWorld, std::size_t pre_allocated_size = 256);
+  static std::unique_ptr<AbstractPhysicSixDofConstraintManager> create(AbstractPhysicWorld& inPhysicWorld,
+                                                                       std::size_t pre_allocated_size = 256);
 };
 
 } // namespace physics

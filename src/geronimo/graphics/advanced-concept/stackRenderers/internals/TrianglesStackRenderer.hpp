@@ -75,7 +75,6 @@ public:
   //                              float halfExtent,
   //                              float thickness,
   //                              const glm::vec4& color) = 0;
-
 };
 
 struct TrianglesStackRenderer : public ITrianglesStackRenderer, public gero::NonCopyable {

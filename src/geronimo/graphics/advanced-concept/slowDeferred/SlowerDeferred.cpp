@@ -5,8 +5,8 @@ namespace gero {
 namespace graphics {
 
 void SlowerDeferred::initialize(const std::string& inRootPath,
-                          const glm::ivec2& inFrameSize,
-                          float inResolutionScaling /*= 1.0f*/) {
+                                const glm::ivec2& inFrameSize,
+                                float inResolutionScaling /*= 1.0f*/) {
   _sunLightDirection = glm::normalize(_sunLightDirection);
 
   _resultQuadRenderer.initialize(inRootPath, inFrameSize);
@@ -43,8 +43,10 @@ void SlowerDeferred::pushSpotLight(const glm::vec3& inPosition, float inRadius) 
 }
 
 void SlowerDeferred::applySpotLights(const gero::graphics::ICamera& inSceneCamera) {
-  _lightStackRenderer.flush(
-    _eyePos, inSceneCamera.getMatricesData().composed, _screenRecorder.getPositionTexture(), _screenRecorder.getNormalTexture());
+  _lightStackRenderer.flush(_eyePos,
+                            inSceneCamera.getMatricesData().composed,
+                            _screenRecorder.getPositionTexture(),
+                            _screenRecorder.getNormalTexture());
 }
 
 void SlowerDeferred::renderHudQuad(const gero::graphics::ICamera& inHudCamera) {

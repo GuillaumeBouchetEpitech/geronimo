@@ -6,7 +6,6 @@
 TEST(physic_wrapper_perf, rayCast_closest_static_object) {
   auto world = gero::physics::AbstractPhysicWorld::create();
 
-
   gero::physics::PhysicBodyDef bodyDef;
   bodyDef.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
   bodyDef.shape.data.sphere.radius = 1.0f;

@@ -7,7 +7,9 @@
 namespace gero {
 namespace physics {
 
-PhysicHingeConstraintManager::PhysicHingeConstraintManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size) : _physicWorld(physicWorld) {
+PhysicHingeConstraintManager::PhysicHingeConstraintManager(AbstractPhysicWorld& physicWorld,
+                                                           std::size_t pre_allocated_size)
+  : _physicWorld(physicWorld) {
   _hingeConstraints.pre_allocate(pre_allocated_size);
 }
 

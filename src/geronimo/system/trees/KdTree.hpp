@@ -35,10 +35,7 @@ public:
     T_Position position;
     std::size_t index;
 
-    IndexedVec(const T_Position& inPosition, std::size_t inIndex)
-      : position(inPosition), index(inIndex)
-    {}
-
+    IndexedVec(const T_Position& inPosition, std::size_t inIndex) : position(inPosition), index(inIndex) {}
   };
 
   using IndexedVecArr = typename std::vector<IndexedVec>;
@@ -165,7 +162,6 @@ void GenericKDTree<T_Data, T_Position, T_Dimension>::_searchWithRadius(const std
     outResults.push_back({branch.position, branch.index});
   }
 
-
   // if (_boxContains(inPosition, inBoxHalfExtent, branch.position)) {
   //   outResults.emplace_back(branch.position, branch.index);
   // }
@@ -235,10 +231,7 @@ GenericKDTree<T_Data, T_Position, T_Dimension>::_build(const IndexedVecArrIt& in
 
     auto middleIt = inBeginIt + std::distance(inBeginIt, inEndIt) / 2;
 
-    auto lessCallback = [inCurrAxis](
-      const GenericKDTree::IndexedVec& inA,
-      const GenericKDTree::IndexedVec& inB
-    ) {
+    auto lessCallback = [inCurrAxis](const GenericKDTree::IndexedVec& inA, const GenericKDTree::IndexedVec& inB) {
       return inA.position[inCurrAxis] < inB.position[inCurrAxis];
     };
 

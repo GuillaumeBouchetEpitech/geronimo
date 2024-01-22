@@ -228,15 +228,18 @@ enum class StencilOps {
   keep,
   // gl.ZERO Sets the stencil buffer value to 0.
   zero,
-  // gl.REPLACE Sets the stencil buffer value to the reference value as specified by WebGLRenderingContext.stencilFunc().
+  // gl.REPLACE Sets the stencil buffer value to the reference value as specified by
+  // WebGLRenderingContext.stencilFunc().
   replace,
   // gl.INCR Increments the current stencil buffer value. Clamps to the maximum representable unsigned value.
   increment,
-  // gl.INCR_WRAP Increments the current stencil buffer value. Wraps stencil buffer value to zero when incrementing the maximum representable unsigned value.
+  // gl.INCR_WRAP Increments the current stencil buffer value. Wraps stencil buffer value to zero when incrementing the
+  // maximum representable unsigned value.
   incrementWrap,
   // gl.DECR Decrements the current stencil buffer value. Clamps to 0.
   decrement,
-  // gl.DECR_WRAP Decrements the current stencil buffer value. Wraps stencil buffer value to the maximum representable unsigned value when decrementing a stencil buffer value of 0.
+  // gl.DECR_WRAP Decrements the current stencil buffer value. Wraps stencil buffer value to the maximum representable
+  // unsigned value when decrementing a stencil buffer value of 0.
   decrementWrap,
   // gl.INVERT Inverts the current stencil buffer value bitwise.
   invert,

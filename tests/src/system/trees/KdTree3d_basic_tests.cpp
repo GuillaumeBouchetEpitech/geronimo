@@ -34,13 +34,10 @@ using myTestDataList = std::vector<myKdTree::UserData>;
 //   );
 // }
 
-
-void _validateTest(
-  const myTestDataList& inDataPoints,
-  const glm::vec3& inSearchPos,
-  const float inSearchRadius,
-  std::size_t inExpectedSize
-) {
+void _validateTest(const myTestDataList& inDataPoints,
+                   const glm::vec3& inSearchPos,
+                   const float inSearchRadius,
+                   std::size_t inExpectedSize) {
 
   std::unordered_set<std::size_t> confirmedValues;
   for (const auto& tmpPoint : inDataPoints) {
@@ -51,8 +48,7 @@ void _validateTest(
 
   ASSERT_EQ(confirmedValues.size(), inExpectedSize)
     << "the number of expected result is incorrect"
-    << ", expect: " << inExpectedSize
-    << ", got: " << confirmedValues.size();
+    << ", expect: " << inExpectedSize << ", got: " << confirmedValues.size();
 
   myKdTree myKDTree;
   myKDTree.build(inDataPoints);
@@ -65,8 +61,7 @@ void _validateTest(
 
   ASSERT_EQ(found.size(), confirmedValues.size())
     << "the number of found result is incorrect"
-    << ", expect: " << confirmedValues.size()
-    << ", got: " << found.size();
+    << ", expect: " << confirmedValues.size() << ", got: " << found.size();
 
   // ASSERT_EQ(found.size(), 8);
 
@@ -78,19 +73,12 @@ void _validateTest(
     ASSERT_GT(confirmedValues.count(found.at(ii).index), 0)
       << "data point was not found"
       << ", index"
-      << ": " << found.at(ii).index
-      << ", position"
-      << ": " << found.at(ii).position.x
-      << ", " << found.at(ii).position.y
-      << ", " << found.at(ii).position.z
-      ;
+      << ": " << found.at(ii).index << ", position"
+      << ": " << found.at(ii).position.x << ", " << found.at(ii).position.y << ", " << found.at(ii).position.z;
   }
-
-
 };
 
-
-}
+} // namespace
 
 //
 //
@@ -101,24 +89,19 @@ TEST(trees_KdTree3d, simple_find_negZ_negY_negX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(10.0f, 10.0f, 10.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 TEST(trees_KdTree3d, simple_find_negZ_negY_posX) {
@@ -126,24 +109,19 @@ TEST(trees_KdTree3d, simple_find_negZ_negY_posX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(20.0f, 10.0f, 10.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 TEST(trees_KdTree3d, simple_find_negZ_posY_posX) {
@@ -151,24 +129,19 @@ TEST(trees_KdTree3d, simple_find_negZ_posY_posX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(20.0f, 20.0f, 10.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 TEST(trees_KdTree3d, simple_find_negZ_posY_negX) {
@@ -176,24 +149,19 @@ TEST(trees_KdTree3d, simple_find_negZ_posY_negX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(10.0f, 20.0f, 10.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 //
@@ -205,24 +173,19 @@ TEST(trees_KdTree3d, simple_find_posZ_negY_negX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(10.0f, 10.0f, 20.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 TEST(trees_KdTree3d, simple_find_posZ_negY_posX) {
@@ -230,24 +193,19 @@ TEST(trees_KdTree3d, simple_find_posZ_negY_posX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(20.0f, 10.0f, 20.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 TEST(trees_KdTree3d, simple_find_posZ_posY_posX) {
@@ -255,24 +213,19 @@ TEST(trees_KdTree3d, simple_find_posZ_posY_posX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(20.0f, 20.0f, 20.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 TEST(trees_KdTree3d, simple_find_posZ_posY_negX) {
@@ -280,24 +233,19 @@ TEST(trees_KdTree3d, simple_find_posZ_posY_negX) {
   std::vector<myKdTree::UserData> allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   const glm::vec3 searchPos = glm::vec3(10.0f, 20.0f, 20.0f);
   const float searchRadius = 5.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    1
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 1);
 }
 
 //
@@ -309,14 +257,14 @@ TEST(trees_KdTree3d, simple_find_all_top_4) {
   myTestDataList allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   //
   //
@@ -324,12 +272,7 @@ TEST(trees_KdTree3d, simple_find_all_top_4) {
   const glm::vec3 searchPos = glm::vec3(15.0f, 15.0f, 20.0f);
   const float searchRadius = 12.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    4
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 4);
 }
 
 TEST(trees_KdTree3d, simple_find_all_bottom_4) {
@@ -337,14 +280,14 @@ TEST(trees_KdTree3d, simple_find_all_bottom_4) {
   myTestDataList allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   //
   //
@@ -352,12 +295,7 @@ TEST(trees_KdTree3d, simple_find_all_bottom_4) {
   const glm::vec3 searchPos = glm::vec3(15.0f, 15.0f, 10.0f);
   const float searchRadius = 12.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    4
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 4);
 }
 
 TEST(trees_KdTree3d, simple_find_all_right_4) {
@@ -365,14 +303,14 @@ TEST(trees_KdTree3d, simple_find_all_right_4) {
   myTestDataList allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   //
   //
@@ -380,12 +318,7 @@ TEST(trees_KdTree3d, simple_find_all_right_4) {
   const glm::vec3 searchPos = glm::vec3(15.0f, 10.0f, 15.0f);
   const float searchRadius = 12.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    4
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 4);
 }
 
 TEST(trees_KdTree3d, simple_find_all_left_4) {
@@ -393,14 +326,14 @@ TEST(trees_KdTree3d, simple_find_all_left_4) {
   myTestDataList allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   //
   //
@@ -408,12 +341,7 @@ TEST(trees_KdTree3d, simple_find_all_left_4) {
   const glm::vec3 searchPos = glm::vec3(15.0f, 20.0f, 15.0f);
   const float searchRadius = 12.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    4
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 4);
 }
 
 TEST(trees_KdTree3d, simple_find_all_front_4) {
@@ -421,14 +349,14 @@ TEST(trees_KdTree3d, simple_find_all_front_4) {
   myTestDataList allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   //
   //
@@ -436,12 +364,7 @@ TEST(trees_KdTree3d, simple_find_all_front_4) {
   const glm::vec3 searchPos = glm::vec3(20.0f, 15.0f, 15.0f);
   const float searchRadius = 12.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    4
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 4);
 }
 
 TEST(trees_KdTree3d, simple_find_all_back_4) {
@@ -449,14 +372,14 @@ TEST(trees_KdTree3d, simple_find_all_back_4) {
   myTestDataList allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   //
   //
@@ -464,12 +387,7 @@ TEST(trees_KdTree3d, simple_find_all_back_4) {
   const glm::vec3 searchPos = glm::vec3(10.0f, 15.0f, 15.0f);
   const float searchRadius = 12.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    4
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 4);
 }
 
 TEST(trees_KdTree3d, simple_find_all_8) {
@@ -477,14 +395,14 @@ TEST(trees_KdTree3d, simple_find_all_8) {
   myTestDataList allPoints;
   allPoints.reserve(5);
 
-  allPoints.push_back({{10.0f, 10.0f, 10.0f}, { 0 }});
-  allPoints.push_back({{20.0f, 10.0f, 10.0f}, { 1 }});
-  allPoints.push_back({{20.0f, 20.0f, 10.0f}, { 2 }});
-  allPoints.push_back({{10.0f, 20.0f, 10.0f}, { 3 }});
-  allPoints.push_back({{10.0f, 10.0f, 20.0f}, { 4 }});
-  allPoints.push_back({{20.0f, 10.0f, 20.0f}, { 5 }});
-  allPoints.push_back({{20.0f, 20.0f, 20.0f}, { 6 }});
-  allPoints.push_back({{10.0f, 20.0f, 20.0f}, { 7 }});
+  allPoints.push_back({{10.0f, 10.0f, 10.0f}, {0}});
+  allPoints.push_back({{20.0f, 10.0f, 10.0f}, {1}});
+  allPoints.push_back({{20.0f, 20.0f, 10.0f}, {2}});
+  allPoints.push_back({{10.0f, 20.0f, 10.0f}, {3}});
+  allPoints.push_back({{10.0f, 10.0f, 20.0f}, {4}});
+  allPoints.push_back({{20.0f, 10.0f, 20.0f}, {5}});
+  allPoints.push_back({{20.0f, 20.0f, 20.0f}, {6}});
+  allPoints.push_back({{10.0f, 20.0f, 20.0f}, {7}});
 
   //
   //
@@ -492,12 +410,7 @@ TEST(trees_KdTree3d, simple_find_all_8) {
   const glm::vec3 searchPos = glm::vec3(15.0f, 15.0f, 15.0f);
   const float searchRadius = 12.0f;
 
-  _validateTest(
-    allPoints,
-    searchPos,
-    searchRadius,
-    8
-  );
+  _validateTest(allPoints, searchPos, searchRadius, 8);
 }
 
 //

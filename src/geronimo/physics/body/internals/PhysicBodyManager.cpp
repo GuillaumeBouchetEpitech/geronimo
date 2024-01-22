@@ -8,7 +8,8 @@
 namespace gero {
 namespace physics {
 
-PhysicBodyManager::PhysicBodyManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size) : _physicWorld(physicWorld) {
+PhysicBodyManager::PhysicBodyManager(AbstractPhysicWorld& physicWorld, std::size_t pre_allocated_size)
+  : _physicWorld(physicWorld) {
   _bodies.pre_allocate(pre_allocated_size);
 }
 

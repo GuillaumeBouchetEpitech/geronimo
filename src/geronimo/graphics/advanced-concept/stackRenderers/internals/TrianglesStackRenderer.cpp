@@ -129,8 +129,6 @@ void TrianglesStackRenderer::pushTriangle(const glm::vec3& posA,
 //     return bestIndex;
 //   };
 
-
-
 //   // const glm::vec3 posX_posY = _xxxxx____sortingCall(tmpVertices, true, true);
 //   // const glm::vec3 posX_negY = _xxxxx____sortingCall(tmpVertices, false, true);
 //   // const glm::vec3 negX_posY = _xxxxx____sortingCall(tmpVertices, true, false);
@@ -265,24 +263,24 @@ void TrianglesStackRenderer::pushThickTriangle3dLine(const glm::vec3& posA,
   const float verticalAngle = std::atan2(diff.z, glm::length(glm::vec2(diff.x, diff.y)));
 
   glm::mat4 transform = glm::identity<glm::mat4>();
-  transform = glm::rotate(transform, horizontalAngle, glm::vec3(0,0,1));
-  transform = glm::rotate(transform, -verticalAngle, glm::vec3(0,1,0));
+  transform = glm::rotate(transform, horizontalAngle, glm::vec3(0, 0, 1));
+  transform = glm::rotate(transform, -verticalAngle, glm::vec3(0, 1, 0));
 
   // transform
 
   const float magnitude = glm::length(diff);
 
   std::array<glm::vec3, 4> sideA = {{
-    glm::vec3(magnitude*0.0f,+thicknessA*0.5f,+thicknessA*0.5f),
-    glm::vec3(magnitude*0.0f,-thicknessA*0.5f,+thicknessA*0.5f),
-    glm::vec3(magnitude*0.0f,-thicknessA*0.5f,-thicknessA*0.5f),
-    glm::vec3(magnitude*0.0f,+thicknessA*0.5f,-thicknessA*0.5f),
+    glm::vec3(magnitude * 0.0f, +thicknessA * 0.5f, +thicknessA * 0.5f),
+    glm::vec3(magnitude * 0.0f, -thicknessA * 0.5f, +thicknessA * 0.5f),
+    glm::vec3(magnitude * 0.0f, -thicknessA * 0.5f, -thicknessA * 0.5f),
+    glm::vec3(magnitude * 0.0f, +thicknessA * 0.5f, -thicknessA * 0.5f),
   }};
   std::array<glm::vec3, 4> sideB = {{
-    glm::vec3(magnitude*1.0f,+thicknessB*0.5f,+thicknessB*0.5f),
-    glm::vec3(magnitude*1.0f,-thicknessB*0.5f,+thicknessB*0.5f),
-    glm::vec3(magnitude*1.0f,-thicknessB*0.5f,-thicknessB*0.5f),
-    glm::vec3(magnitude*1.0f,+thicknessB*0.5f,-thicknessB*0.5f),
+    glm::vec3(magnitude * 1.0f, +thicknessB * 0.5f, +thicknessB * 0.5f),
+    glm::vec3(magnitude * 1.0f, -thicknessB * 0.5f, +thicknessB * 0.5f),
+    glm::vec3(magnitude * 1.0f, -thicknessB * 0.5f, -thicknessB * 0.5f),
+    glm::vec3(magnitude * 1.0f, +thicknessB * 0.5f, -thicknessB * 0.5f),
   }};
 
   for (glm::vec3& pos : sideA)
