@@ -45,6 +45,10 @@ void State_Running::handleEvent(const SDL_Event& event) {
     if (keyboard.isPressed(SDLK_g))
       context.logic.debugMode = !context.logic.debugMode;
 
+    if (keyboard.isPressed(SDLK_h)) {
+      context.logic.pauseMode = !context.logic.pauseMode;
+    }
+
     keyboard.updateAsReleased(event.key.keysym.sym);
 
     break;
@@ -116,8 +120,6 @@ void State_Running::update(uint32_t delta) {
   {
     context.logic.controllers.freeFly.update(elapsedTime);
 
-    context.logic.time += elapsedTime;
-
     auto& currCamera = context.graphic.renderer.getSceneRenderer().getCamera();
 
     context.audio.soundManager->setListener(currCamera.getEye(), currCamera.getForwardAxis(), glm::vec3(0, 0, 1));
@@ -125,13 +127,18 @@ void State_Running::update(uint32_t delta) {
     // if (context.inputs.mouse.buttons[SDL_BUTTON_LEFT] == true) {
     // }
 
-    performanceProfiler.start("1 update physic");
+    if (context.logic.pauseMode == false) {
 
-    constexpr uint32_t k_maxSubSteps = 3;
-    constexpr float k_fixedStep = 1.0f / 60.0f;
-    context.physic.world->step(elapsedTime, k_maxSubSteps, k_fixedStep);
+      context.logic.time += elapsedTime;
 
-    performanceProfiler.stop("1 update physic");
+      performanceProfiler.start("1 update physic");
+
+      constexpr uint32_t k_maxSubSteps = 3;
+      constexpr float k_fixedStep = 1.0f / 60.0f;
+      context.physic.world->step(elapsedTime, k_maxSubSteps, k_fixedStep);
+
+      performanceProfiler.stop("1 update physic");
+    }
   }
 
   performanceProfiler.stop("1 UPDATE");

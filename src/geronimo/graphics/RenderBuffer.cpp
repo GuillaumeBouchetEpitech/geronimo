@@ -29,6 +29,7 @@ GlContext::RenderBuffer::DepthFormat getRawDepthFormat(RenderBuffer::DepthFormat
   case RenderBuffer::DepthFormat::depth32:
     return GlContext::RenderBuffer::DepthFormat::depth32;
   case RenderBuffer::DepthFormat::depth32f:
+  default:
     return GlContext::RenderBuffer::DepthFormat::depth32f;
   }
 }

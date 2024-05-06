@@ -26,7 +26,7 @@ TEST(basic_regexp_parser, getName) {
       ASSERT_EQ(value, "???");
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse name, type=getName, toSearch=\"" << toSearch << "\"")),

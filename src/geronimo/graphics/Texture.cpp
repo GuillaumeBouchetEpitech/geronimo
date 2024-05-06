@@ -237,6 +237,7 @@ GlContext::Texture::DepthFormat getRawDepthFormat(Texture::DepthFormat depthForm
   case Texture::DepthFormat::depth32:
     return GlContext::Texture::DepthFormat::depth32;
   case Texture::DepthFormat::depth32f:
+  default:
     return GlContext::Texture::DepthFormat::depth32f;
   }
 }

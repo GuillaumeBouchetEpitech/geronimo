@@ -30,7 +30,7 @@ TEST(basic_regexp_parser, get4F) {
     try {
       regexpParser.get4F(toSearch, -600, +600);
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse 4F, type=get4F, toSearch=\"" << toSearch << "\"")),
@@ -46,7 +46,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -600, 600);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 4F is too low, type=get4F, toSearch=\""
@@ -64,7 +64,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -600, 600);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 4F is too high, type=get4F, toSearch=\""
@@ -82,7 +82,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -700, 700);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 4F is too low, type=get4F, toSearch=\""
@@ -100,7 +100,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -700, 700);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 4F is too high, type=get4F, toSearch=\""
@@ -118,7 +118,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -800, 800);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.z of 4F is too low, type=get4F, toSearch=\""
@@ -136,7 +136,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -800, 800);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.z of 4F is too high, type=get4F, toSearch=\""
@@ -154,7 +154,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -900, 900);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.w of 4F is too low, type=get4F, toSearch=\""
@@ -172,7 +172,7 @@ TEST(basic_regexp_parser, get4F) {
       regexpParser.get4F(toSearch, -900, 900);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.w of 4F is too high, type=get4F, toSearch=\""

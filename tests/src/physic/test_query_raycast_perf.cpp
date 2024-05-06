@@ -23,8 +23,8 @@ TEST(physic_wrapper_perf, rayCast_closest_static_object) {
   paramsRay.type = gero::physics::RayCaster::RayCastParams::Type::closest;
   paramsRay.toIgnore = nullptr;
 
-  gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
-  paramsSphere.radius = 1.0f;
+  // gero::physics::RayCaster::RayCastParams paramsSphere = paramsRay;
+  // paramsSphere.radius = 1.0f;
 
   // gero::physics::RayCaster::RayCastParams::ResultArray<5> resultRayStack;
   std::vector<gero::physics::RayCaster::RayCastParams::ResultArray<5>> allResultsRayStack;

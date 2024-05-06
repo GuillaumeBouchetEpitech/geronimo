@@ -4,6 +4,7 @@
 namespace gero {
 namespace easing {
 
+float easeClamp(float t);
 float easePinPong(float t);
 
 float easeInSine(float t);

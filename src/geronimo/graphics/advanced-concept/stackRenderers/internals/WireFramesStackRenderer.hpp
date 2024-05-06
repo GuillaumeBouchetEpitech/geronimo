@@ -65,7 +65,7 @@ private:
     glm::vec3 position;
     glm::vec4 color;
 
-    Vertex(const glm::vec3& position, const glm::vec4& color) : position(position), color(color) {}
+    Vertex(const glm::vec3& in_position, const glm::vec4& in_color) : position(in_position), color(in_color) {}
   };
   using Vertices = std::vector<Vertex>;
 

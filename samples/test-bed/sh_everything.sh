@@ -94,9 +94,31 @@ func_build_wasm_loader_webapp() {
   yes)
     echo "building web-wasm-loader"
     cd ./web-wasm-loader
-    npm install
-    npm run build
+
+    if [ -d "./node_modules" ]
+    then
+      echo " ===> up to date dependencies"
+      echo " =====> skip install"
+    else
+      echo " ===> missing dependencies"
+      echo " =====> installing"
+
+      npm install
+    fi
+
+    if [ -f "./js/bundle.js" ]
+    then
+      echo " ===> up to date bundle.js"
+      echo " =====> skip bundling"
+    else
+      echo " ===> outdated bundle.js"
+      echo " =====> bundling"
+
+      npm run release
+    fi
+
     npm run update-dist
+
     cd $DIR_ROOT
     ;;
   esac

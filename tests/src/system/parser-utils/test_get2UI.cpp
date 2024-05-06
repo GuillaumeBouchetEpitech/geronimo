@@ -26,7 +26,7 @@ TEST(basic_regexp_parser, get2UI) {
     try {
       regexpParser.get2UI(toSearch, 600);
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse 2UI, type=get2UI, toSearch=\"" << toSearch << "\"")),
@@ -42,7 +42,7 @@ TEST(basic_regexp_parser, get2UI) {
       regexpParser.get2UI(toSearch, 600);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 2UI is too high, type=get2UI, toSearch=\""
@@ -60,7 +60,7 @@ TEST(basic_regexp_parser, get2UI) {
       regexpParser.get2UI(toSearch, 700);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 2UI is too high, type=get2UI, toSearch=\""

@@ -52,7 +52,7 @@ void HistoricalTimeData::pushNewValue(int32_t inDuration) {
 
     for (int32_t value : _historicData)
       _averageDuration += value;
-    _averageDuration /= _historicData.size();
+    _averageDuration /= int32_t(_historicData.size());
   } else {
     _historicData.push_back(_latestDuration);
   }

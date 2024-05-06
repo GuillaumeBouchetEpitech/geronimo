@@ -71,11 +71,35 @@ bool collisionLineCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2
     norm = -norm; // must be [0..x]
   }
 
-  const float denom = sqrtf(u.x * u.x + u.y * u.y);
+  const float denom = std::sqrt(u.x * u.x + u.y * u.y);
   const float CI = norm / denom;
 
   return (CI < radius);
 }
+
+// std::pair<float, float> rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius) {
+//   if (collisionLineCircle(A, B, C, radius) == false) {
+//     return std::make_pair(-1.0f, -1.0f);
+//   }
+
+//   const glm::vec2 AB = B - A;
+//   const glm::vec2 AC = C - A;
+//   const glm::vec2 BC = C - B;
+
+//   const float scalarProdA = AB.x * AC.x + AB.y * AC.y;
+//   const float scalarProdB = (-AB.x) * BC.x + (-AB.y) * BC.y;
+
+//   return std::make_pair(scalarProdA, scalarProdB);
+
+//   // if (scalarProdA >= 0 && scalarProdB >= 0) {
+//   // return {-1.0f, -1.0f};
+//   // }
+
+//   // return std::nullopt;
+
+//   // // A/B can still be inside the circle
+//   // return (collisionPointCircle(A, C, radius) || collisionPointCircle(B, C, radius));
+// }
 
 bool collisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius) {
   if (collisionLineCircle(A, B, C, radius) == false) {

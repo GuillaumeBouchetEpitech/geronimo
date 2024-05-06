@@ -58,10 +58,10 @@ OBJ=		$(patsubst %.cpp, $(DIR_OBJ)/%.o, $(SRC))
 
 BUILD_FLAG= -g3
 
-CXX=clang++
+CXX=g++
 
 CXXFLAGS += $(BUILD_FLAG)
-CXXFLAGS += -std=c++17
+CXXFLAGS += -std=c++20
 CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src

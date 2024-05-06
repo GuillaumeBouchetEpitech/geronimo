@@ -288,12 +288,12 @@ void TrianglesStackRenderer::pushThickTriangle3dLine(const glm::vec3& posA,
   for (glm::vec3& pos : sideB)
     pos = posA + glm::vec3(transform * glm::vec4(pos, 0.0f));
 
-  struct Vertex {
+  struct TmpVertex {
     const glm::vec3& position;
     const glm::vec4& color;
   };
 
-  std::array<std::array<Vertex, 4>, 4> allQuads{{
+  std::array<std::array<TmpVertex, 4>, 4> allQuads{{
     {{{sideA.at(0), colorA}, {sideA.at(1), colorA}, {sideB.at(0), colorB}, {sideB.at(1), colorB}}},
     {{{sideA.at(1), colorA}, {sideA.at(2), colorA}, {sideB.at(1), colorB}, {sideB.at(2), colorB}}},
     {{{sideA.at(2), colorA}, {sideA.at(3), colorA}, {sideB.at(2), colorB}, {sideB.at(3), colorB}}},

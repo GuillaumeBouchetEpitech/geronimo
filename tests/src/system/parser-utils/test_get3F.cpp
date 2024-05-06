@@ -28,7 +28,7 @@ TEST(basic_regexp_parser, get3F) {
     try {
       regexpParser.get3F(toSearch, -600, +600);
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("cannot parse 3F, type=get3F, toSearch=\"" << toSearch << "\"")),
@@ -44,7 +44,7 @@ TEST(basic_regexp_parser, get3F) {
       regexpParser.get3F(toSearch, -600, 600);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 3F is too low, type=get3F, toSearch=\""
@@ -62,7 +62,7 @@ TEST(basic_regexp_parser, get3F) {
       regexpParser.get3F(toSearch, -600, 600);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 3F is too high, type=get3F, toSearch=\""
@@ -80,7 +80,7 @@ TEST(basic_regexp_parser, get3F) {
       regexpParser.get3F(toSearch, -700, 700);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 3F is too low, type=get3F, toSearch=\""
@@ -98,7 +98,7 @@ TEST(basic_regexp_parser, get3F) {
       regexpParser.get3F(toSearch, -700, 700);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 3F is too high, type=get3F, toSearch=\""
@@ -116,7 +116,7 @@ TEST(basic_regexp_parser, get3F) {
       regexpParser.get3F(toSearch, -800, 800);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.z of 3F is too low, type=get3F, toSearch=\""
@@ -134,7 +134,7 @@ TEST(basic_regexp_parser, get3F) {
       regexpParser.get3F(toSearch, -800, 800);
 
       throw std::runtime_error("unreachable");
-    } catch (std::runtime_error err) {
+    } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.z of 3F is too high, type=get3F, toSearch=\""

@@ -173,7 +173,7 @@ CXXFLAGS_COMMON_BULLET_PHYSICS += -DSIMD_FORCE_INLINE=inline
 # CXXFLAGS_COMMON_BULLET_PHYSICS += -DBT_USE_DOUBLE_PRECISION
 
 COMMON_FLAGS += $(BUILD_FLAG)
-COMMON_FLAGS += -std=c++17
+COMMON_FLAGS += -std=c++20
 COMMON_FLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 COMMON_FLAGS += -I$(DIR_SRC)
 COMMON_FLAGS += -I$(DIR_THIRDPARTY)
@@ -182,7 +182,8 @@ COMMON_FLAGS += $(CXXFLAGS_COMMON_BULLET_PHYSICS)
 
 ifeq ($(build_platform),native)
 
-CXX=clang++
+# CXX=clang++
+CXX=g++
 AR=ar
 
 DEPENDENCIES_LIST += sdl2

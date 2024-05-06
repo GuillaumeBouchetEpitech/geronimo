@@ -10,13 +10,15 @@
 //
 //
 
-// #define D_ASSERT_RAD_ANGLE(in_angle, in_dst_angle, epsilon) \
-// { \
-//   if (tmpVal > in_dst_angle - 0.3f && tmpVal < in_dst_angle + 0.3f) \
-//     ASSERT_NEAR(in_angle, in_dst_angle, epsilon); \
-//   else \
-//     ASSERT_NEAR(in_angle - gero::math::pi2, in_dst_angle, epsilon); \
-// }
+/**
+#define D_ASSERT_RAD_ANGLE(in_angle, in_dst_angle, epsilon) \
+  { \
+    if (tmpVal > in_dst_angle - 0.3f && tmpVal < in_dst_angle + 0.3f) \
+      ASSERT_NEAR(in_angle, in_dst_angle, epsilon); \
+    else \
+      ASSERT_NEAR(in_angle - gero::math::pi2, in_dst_angle, epsilon); \
+  }
+*/
 
 #define D_ASSERT_RAD_ANGLE(in_angle, in_dst_angle, epsilon)                                                            \
   {                                                                                                                    \

@@ -8,31 +8,19 @@ build_mode=release
 #
 
 ifeq ($(build_platform),native)
-
 # $(info build_platform is valid, value=$(build_platform))
-
 else ifeq ($(build_platform),web-wasm)
-
 # $(info build_platform is valid, value=$(build_platform))
-
 else
-
 $(error unsupported value for "build_platform", value=$(build_platform))
-
 endif
 
 ifeq ($(build_platform),native)
-
 # $(info build_platform is valid, value=$(build_platform))
-
 else ifeq ($(build_platform),web-wasm)
-
 # $(info build_platform is valid, value=$(build_platform))
-
 else
-
 $(error unsupported value for "build_platform", value=$(build_platform))
-
 endif
 
 LOG_INFO= '[$(build_mode)] [$(build_platform)]'
@@ -153,7 +141,7 @@ endif
 LIBRARIES += sdl2 glesv2 openal
 
 CXXFLAGS += $(BUILD_FLAG)
-CXXFLAGS += -std=c++17
+CXXFLAGS += -std=c++20
 CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src

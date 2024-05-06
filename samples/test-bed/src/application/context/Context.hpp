@@ -99,6 +99,7 @@ public:
     float time;
 
     bool debugMode = false;
+    bool pauseMode = false;
 
   } logic;
 };

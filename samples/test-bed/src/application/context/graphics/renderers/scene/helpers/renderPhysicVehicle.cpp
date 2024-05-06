@@ -41,6 +41,7 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
       instance.orientation = glm::quat(1, 0, 0, 0);
       instance.scale = glm::vec3(radius);
       instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+      instance.light = 0.0f;
 
       if (frustumCulling.sphereInFrustum(instance.position, radius)) {
         geometriesStackRenderer.pushAlias(1112, instance);
@@ -65,6 +66,7 @@ void renderPhysicVehicle(const gero::physics::AbstractPhysicVehicle& inVehicle) 
     GeometriesStackRenderer::GeometryInstance instance;
     instance.scale = glm::vec3(1, 1, 1);
     instance.color = glm::vec4(1, 1, 1, 1);
+    instance.light = 1.0f;
 
     for (int32_t wheelIndex = 0; wheelIndex < inVehicle.getNumWheels(); ++wheelIndex) {
 

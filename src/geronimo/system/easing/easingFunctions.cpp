@@ -6,6 +6,13 @@
 namespace gero {
 namespace easing {
 
+float easeClamp(float t) {
+  if (t > 1.0f) {
+    return t - std::floor(t);
+  }
+  return t;
+}
+
 float easePinPong(float t) {
   t *= 2.0f;
   if (t < 1.0f)

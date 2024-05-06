@@ -69,7 +69,7 @@ void loadObjModel(const std::string& filename, const std::string& mtlDir, ModelV
           normal.y = attrib.normals[normalIndex + 1];
           normal.z = attrib.normals[normalIndex + 2];
         } else {
-          normal.x = normal.y = normal.y = 0;
+          normal.x = normal.y = normal.z = 0.0f;
         }
 
         // tinyobj::real_t tx = attrib.texcoords[2*index.texcoord_index+0];
