@@ -56,16 +56,19 @@ public:
   GenericEasing& push(float coefStep, T value) { return push(coefStep, value, nullptr); }
 
   T get(float coef) const {
-    if (_size < 2)
-      D_THROW(std::runtime_error, "not enought coef steps");
+    if (_size < 2) {
+      D_THROW(std::runtime_error, "not enough coef steps");
+    }
 
     const Step& first = _steps.at(0);
-    if (coef < first.coefStep)
+    if (coef < first.coefStep) {
       return first.value;
+    }
 
     const Step& last = _steps.at(_size - 1);
-    if (coef >= last.coefStep)
+    if (coef >= last.coefStep) {
       return last.value;
+    }
 
     for (std::size_t index = 0; index + 1 < _size; ++index) {
       const Step& currStep = _steps.at(index);

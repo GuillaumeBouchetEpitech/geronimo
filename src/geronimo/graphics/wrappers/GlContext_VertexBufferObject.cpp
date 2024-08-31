@@ -81,8 +81,17 @@ void drawArrays(Primitives primitive, uint32_t primitiveStart, uint32_t primitiv
   case Primitives::line_strip:
     rawPrimitive = GL_LINE_STRIP;
     break;
+  case Primitives::line_loop:
+    rawPrimitive = GL_LINE_LOOP;
+    break;
   case Primitives::triangles:
     rawPrimitive = GL_TRIANGLES;
+    break;
+  case Primitives::triangles_strip:
+    rawPrimitive = GL_TRIANGLE_STRIP;
+    break;
+  case Primitives::triangles_fan:
+    rawPrimitive = GL_TRIANGLE_FAN;
     break;
   default:
     D_THROW(std::runtime_error, "unknown primitive");
@@ -103,8 +112,17 @@ void drawInstancedArrays(Primitives primitive,
   case Primitives::line_strip:
     rawPrimitive = GL_LINE_STRIP;
     break;
+  case Primitives::line_loop:
+    rawPrimitive = GL_LINE_LOOP;
+    break;
   case Primitives::triangles:
     rawPrimitive = GL_TRIANGLES;
+    break;
+  case Primitives::triangles_strip:
+    rawPrimitive = GL_TRIANGLE_STRIP;
+    break;
+  case Primitives::triangles_fan:
+    rawPrimitive = GL_TRIANGLE_FAN;
     break;
   default:
     D_THROW(std::runtime_error, "unknown primitive");

@@ -290,6 +290,12 @@ void Geometry::render() const {
     primitive = GlContext::VBO::Primitives::triangles;
   else if (_primitiveType == PrimitiveType::line_strip)
     primitive = GlContext::VBO::Primitives::line_strip;
+  else if (_primitiveType == PrimitiveType::line_loop)
+    primitive = GlContext::VBO::Primitives::line_loop;
+  else if (_primitiveType == PrimitiveType::triangles_strip)
+    primitive = GlContext::VBO::Primitives::triangles_strip;
+  else if (_primitiveType == PrimitiveType::triangles_fan)
+    primitive = GlContext::VBO::Primitives::triangles_fan;
 
   if (_isInstanced)
     GlContext::VBO::drawInstancedArrays(primitive, _primitiveStart, _primitiveCount, _instanceCount);

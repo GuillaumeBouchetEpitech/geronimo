@@ -40,10 +40,10 @@ public:
   bool initialize(const Definition& def, bool throwException = true);
   void dispose();
 
-private:
-  void _attachColorTexture(uint32_t index, const Texture& colorTexture);
-  void _attachDepthTexture(const Texture& depthTexture);
-  void _attachDepthRenderBuffer(const RenderBuffer& buffer);
+public:
+  void attachColorTexture(uint32_t index, const Texture& colorTexture);
+  void attachDepthTexture(const Texture& depthTexture);
+  void attachDepthRenderBuffer(const RenderBuffer& buffer);
 
 public:
   void bind() const;

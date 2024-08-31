@@ -2,11 +2,11 @@
 #pragma once
 
 #include <cmath>
-#include <numbers>
+// #include <numbers>
 
 namespace gero {
 namespace math {
-constexpr float pi = float(std::numbers::pi);
+constexpr float pi = float(M_PI);
 constexpr float pi2 = pi * 2.0f;
 constexpr float hpi = pi * 0.5f;  // h = half
 constexpr float qpi = hpi * 0.5f; // q = quart

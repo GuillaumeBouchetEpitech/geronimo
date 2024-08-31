@@ -36,8 +36,11 @@ namespace VBO {
 
 enum class Primitives {
   lines,
-  triangles,
   line_strip,
+  line_loop,
+  triangles,
+  triangles_strip,
+  triangles_fan,
 };
 
 void generateMany(uint32_t total, uint32_t* buffers);

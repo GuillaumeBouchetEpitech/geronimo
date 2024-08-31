@@ -46,7 +46,10 @@ public:
   enum class PrimitiveType : uint32_t {
     lines,
     line_strip,
+    line_loop,
     triangles,
+    triangles_strip,
+    triangles_fan,
   };
 
   struct Definition {

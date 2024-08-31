@@ -31,7 +31,7 @@ float easeInQuad(float t) { return t * t; }
 
 float easeOutQuad(float t) { return t * (2.0f - t); }
 
-float easeInOutQuad(float t) { return t < 0.5f ? 2.0f * t * t : t * (4 - 2.0f * t) - 1.0f; }
+float easeInOutQuad(float t) { return t < 0.5f ? 2.0f * t * t : t * (4.0f - 2.0f * t) - 1.0f; }
 
 float easeInCubic(float t) { return t * t * t; }
 

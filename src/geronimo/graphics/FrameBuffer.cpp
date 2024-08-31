@@ -51,13 +51,16 @@ bool FrameBuffer::initialize(const Definition& def, bool throwException /*= true
 
   bind();
 
-  for (const auto& currColorTexture : def.colorTextures)
-    _attachColorTexture(currColorTexture.index, *currColorTexture.texture);
+  for (const auto& currColorTexture : def.colorTextures) {
+    attachColorTexture(currColorTexture.index, *currColorTexture.texture);
+  }
 
-  if (def.depthTexture)
-    _attachDepthTexture(*def.depthTexture);
-  else if (def.renderBuffer)
-    _attachDepthRenderBuffer(*def.renderBuffer);
+  if (def.depthTexture) {
+    attachDepthTexture(*def.depthTexture);
+  }
+  else if (def.renderBuffer) {
+    attachDepthRenderBuffer(*def.renderBuffer);
+  }
 
   if (def.colorTextures.size() > 1) {
 
@@ -84,17 +87,17 @@ void FrameBuffer::dispose() {
   _frameBufferId = 0;
 }
 
-void FrameBuffer::_attachColorTexture(uint32_t index, const Texture& colorTexture) {
+void FrameBuffer::attachColorTexture(uint32_t index, const Texture& colorTexture) {
   colorTexture.bind();
   GlContext::FrameBuffers::attachTexture2D(GlContext::FrameBuffers::getColorAttachment(index), colorTexture._textureId);
 }
 
-void FrameBuffer::_attachDepthTexture(const Texture& depthTexture) {
+void FrameBuffer::attachDepthTexture(const Texture& depthTexture) {
   depthTexture.bind();
   GlContext::FrameBuffers::attachDepthTexture2D(depthTexture._textureId);
 }
 
-void FrameBuffer::_attachDepthRenderBuffer(const RenderBuffer& buffer) {
+void FrameBuffer::attachDepthRenderBuffer(const RenderBuffer& buffer) {
   buffer.bind();
   GlContext::FrameBuffers::attachRenderBuffer(buffer._bufferId);
 }
