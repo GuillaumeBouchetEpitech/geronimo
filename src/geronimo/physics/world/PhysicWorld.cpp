@@ -97,7 +97,6 @@ PhysicWorld::PhysicWorld(std::optional<PhysicWorldOptions> options) : _rayCaster
   _bullet.collisionConfiguration = new btDefaultCollisionConfiguration();
   _bullet.dispatcher = new btCollisionDispatcher(_bullet.collisionConfiguration);
   _bullet.solver = new btSequentialImpulseConstraintSolver;
-  // _bullet.dynamicsWorld = new MyDynamicsWorld(
   _bullet.dynamicsWorld =
     new btDiscreteDynamicsWorld(_bullet.dispatcher, _bullet.broadphase, _bullet.solver, _bullet.collisionConfiguration);
 
@@ -150,8 +149,9 @@ void PhysicWorld::setDebuggerPushLine(const debuggerPushLineCallback& callback) 
   // _debuggerPushLineCallback = callback;
 
   btIDebugDraw* currentDebugDrawer = _bullet.dynamicsWorld->getDebugDrawer();
-  if (currentDebugDrawer)
+  if (currentDebugDrawer) {
     delete currentDebugDrawer;
+  }
 
   MyDebugDrawer* newDebugDrawer = new MyDebugDrawer(callback);
 

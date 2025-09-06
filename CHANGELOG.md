@@ -1,6 +1,12 @@
 
 # Changelog
 
+
+## [0.0.17] - 20??-??-??
+### Changed
+- geometry now support: line-loop, triangle-strip, triangle-fan
+
+
 ## [0.0.16] - 2024-01-18
 ### Changed
 - feat: graphics, stencil operations (limited support)
