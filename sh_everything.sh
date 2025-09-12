@@ -39,7 +39,7 @@ func_handle_third_parties() {
   DIR_THIRDPARTIES=$PWD/thirdparties
   DIR_DEPENDENCIES=$DIR_THIRDPARTIES/dependencies
 
-  mkdir -p $DIR_DEPENDENCIES
+  mkdir -p "$DIR_DEPENDENCIES"
 
   #
   #
@@ -58,7 +58,7 @@ func_handle_third_parties() {
     echo "###"
     echo ""
 
-    EMSDK_VERSION=3.1.44
+    EMSDK_VERSION=3.1.74
 
     if [ -z "${EMSDK}" ]; then
 
@@ -71,14 +71,14 @@ func_handle_third_parties() {
 
 
       sh sh_install_one_git_thirdparty.sh \
-        $DIR_DEPENDENCIES \
+        "$DIR_DEPENDENCIES" \
         "EMSDK" \
         "emsdk" \
         "emscripten-core/emsdk" \
-        $EMSDK_VERSION \
+        "$EMSDK_VERSION" \
         "not-interactive"
 
-      cd $DIR_DEPENDENCIES/emsdk
+      cd "$DIR_DEPENDENCIES/emsdk" || exit 1
 
     else
 
@@ -99,7 +99,7 @@ func_handle_third_parties() {
 
     # em++ --clear-cache
 
-    cd $DIR_ROOT
+    cd "$DIR_ROOT" || exit 1
 
     echo " -> success"
 
@@ -125,7 +125,7 @@ func_handle_third_parties() {
     echo ""
 
     sh sh_install_one_git_thirdparty.sh \
-      $DIR_DEPENDENCIES \
+      "$DIR_DEPENDENCIES" \
       "BULLET_PHYSICS" \
       "bullet3" \
       "bulletphysics/bullet3" \
@@ -133,7 +133,7 @@ func_handle_third_parties() {
       "not-interactive"
 
     sh sh_install_one_git_thirdparty.sh \
-      $DIR_DEPENDENCIES \
+      "$DIR_DEPENDENCIES" \
       "GLM" \
       "glm" \
       "g-truc/glm" \
@@ -141,7 +141,7 @@ func_handle_third_parties() {
       "not-interactive"
 
     sh sh_install_one_git_thirdparty.sh \
-      $DIR_DEPENDENCIES \
+      "$DIR_DEPENDENCIES" \
       "TINY_OBJ_LOADER" \
       "tinyobjloader" \
       "syoyo/tinyobjloader" \
@@ -149,14 +149,14 @@ func_handle_third_parties() {
       "not-interactive"
 
     sh sh_install_one_git_thirdparty.sh \
-      $DIR_DEPENDENCIES \
+      "$DIR_DEPENDENCIES" \
       "STB" \
       "stb" \
       "nothings/stb" \
       "master" \
       "not-interactive"
 
-    tree -L 1 $DIR_DEPENDENCIES
+    tree -L 1 "$DIR_DEPENDENCIES"
 
   }
 
@@ -183,7 +183,7 @@ func_handle_third_parties() {
     echo "# native version"
     echo "#"
 
-    cd ./thirdparties
+    cd ./thirdparties || exit 1
 
     make build_mode="release" build_platform="native" all -j4
 
@@ -193,7 +193,7 @@ func_handle_third_parties() {
 
     make build_mode="release" build_platform="web-wasm" all -j4
 
-    cd $DIR_ROOT
+    cd "$DIR_ROOT" || exit 1
 
   }
 

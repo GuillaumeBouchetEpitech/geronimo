@@ -57,15 +57,15 @@ DIR_APPLICATION=		./dist/wasm
 NAME_APPLICATION=		$(DIR_APPLICATION)/index.js
 
 NAME_LIB_GERONIMO+=	\
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-audio.bc \
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-physics.bc \
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-graphics.bc \
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-system.bc
+	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-audio.a \
+	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-physics.a \
+	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-graphics.a \
+	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-system.a
 
 NAME_LIB_BULLET_PHYSICS+= \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-linearmath.bc \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-collision.bc \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-dynamics.bc
+	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-linearmath.a \
+	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-collision.a \
+	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-dynamics.a
 
 endif
 
@@ -138,8 +138,6 @@ BUILD_FLAG= -g3
 
 endif
 
-LIBRARIES += sdl2 glesv2 openal
-
 CXXFLAGS += $(BUILD_FLAG)
 CXXFLAGS += -std=c++20
 CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
@@ -157,7 +155,7 @@ LDFLAGS += $(BUILD_FLAG)
 LDFLAGS += $(NAME_LIB_GERONIMO)
 LDFLAGS += $(NAME_LIB_BULLET_PHYSICS)
 
-CXXFLAGS += $(shell pkg-config $(LIBRARIES) --cflags)
+LIBRARIES += sdl2 glesv2 openal
 
 LDFLAGS += $(shell pkg-config $(LIBRARIES) --libs)
 
@@ -166,10 +164,14 @@ ifeq ($(build_platform),native)
 CXX=clang++
 AR=ar
 
+CXXFLAGS += $(shell pkg-config $(LIBRARIES) --cflags)
+
 else ifeq ($(build_platform),web-wasm)
 
 CXX=em++
 AR=emar
+
+# CXXFLAGS += $(shell pkg-config $(LIBRARIES) --cflags)
 
 CXXFLAGS += -s USE_SDL=2
 CXXFLAGS += -s USE_PTHREADS=0

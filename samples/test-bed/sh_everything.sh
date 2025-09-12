@@ -93,7 +93,7 @@ func_build_wasm_loader_webapp() {
   case $WEB_WASM_AVAILABLE in
   yes)
     echo "building web-wasm-loader"
-    cd ./web-wasm-loader
+    cd ./web-wasm-loader || exit 1
 
     if [ -d "./node_modules" ]
     then
@@ -119,7 +119,7 @@ func_build_wasm_loader_webapp() {
 
     npm run update-dist
 
-    cd $DIR_ROOT
+    cd "$DIR_ROOT" || exit 1
     ;;
   esac
 

@@ -38,10 +38,10 @@ else ifeq ($(build_platform),web-wasm)
 
 DIR_LIB=		./lib/web-wasm
 
-NAME_GERONIMO_SYSTEM=						$(DIR_LIB)/lib-geronimo-system.bc
-NAME_GERONIMO_GRAPHICS=					$(DIR_LIB)/lib-geronimo-graphics.bc
-NAME_GERONIMO_PHYSICS=					$(DIR_LIB)/lib-geronimo-physics.bc
-NAME_GERONIMO_AUDIO=						$(DIR_LIB)/lib-geronimo-audio.bc
+NAME_GERONIMO_SYSTEM=						$(DIR_LIB)/lib-geronimo-system.a
+NAME_GERONIMO_GRAPHICS=					$(DIR_LIB)/lib-geronimo-graphics.a
+NAME_GERONIMO_PHYSICS=					$(DIR_LIB)/lib-geronimo-physics.a
+NAME_GERONIMO_AUDIO=						$(DIR_LIB)/lib-geronimo-audio.a
 
 endif
 
@@ -198,6 +198,7 @@ CXX=em++
 AR=emar
 
 CXXFLAGS_GERONIMO += $(COMMON_FLAGS)
+CXXFLAGS_GERONIMO += $(DEPENDENCIES_CXXFLAGS)
 CXXFLAGS_GERONIMO += -s USE_SDL=2
 CXXFLAGS_GERONIMO += -s USE_PTHREADS=0
 

@@ -37,9 +37,9 @@ else ifeq ($(build_platform),web-wasm)
 
 DIR_LIB=		./lib/web-wasm
 
-NAME_BULLET_PHYSICS_LINEARMATH=	$(DIR_LIB)/lib-bullet-physics-linearmath.bc
-NAME_BULLET_PHYSICS_COLLISION=	$(DIR_LIB)/lib-bullet-physics-collision.bc
-NAME_BULLET_PHYSICS_DYNAMICS=		$(DIR_LIB)/lib-bullet-physics-dynamics.bc
+NAME_BULLET_PHYSICS_LINEARMATH=	$(DIR_LIB)/lib-bullet-physics-linearmath.a
+NAME_BULLET_PHYSICS_COLLISION=	$(DIR_LIB)/lib-bullet-physics-collision.a
+NAME_BULLET_PHYSICS_DYNAMICS=		$(DIR_LIB)/lib-bullet-physics-dynamics.a
 
 endif
 

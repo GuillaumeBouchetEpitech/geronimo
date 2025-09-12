@@ -2,9 +2,10 @@
 # Changelog
 
 
-## [0.0.17] - 20??-??-??
+## [0.0.17] - 2025-09-12
 ### Changed
 - geometry now support: line-loop, triangle-strip, triangle-fan
+- migrated the emsdk to version 3.1.74
 
 
 ## [0.0.16] - 2024-01-18

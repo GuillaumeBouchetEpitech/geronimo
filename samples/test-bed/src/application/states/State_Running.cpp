@@ -60,6 +60,11 @@ void State_Running::handleEvent(const SDL_Event& event) {
     // SDL_BUTTON_RIGHT
 
     mouse.updateAsPressed(event.button.button);
+
+    if (event.button.button == SDL_BUTTON_LEFT) {
+      context.audio.soundManager->playAbsoluteSound(666, 10, 1);
+    }
+
     break;
   }
   case SDL_MOUSEBUTTONUP: {
