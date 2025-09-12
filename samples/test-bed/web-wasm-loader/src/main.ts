@@ -94,6 +94,23 @@ const onGlobalPageLoad = async () => {
     showErrorText(statusMsg);
   };
 
+  //
+  //
+  //
+
+  // ask the user to click the render area
+  // -> this is to allow the audio context to be created
+  // -> web browsers now block any audio context creation if the user did not interact with the page first
+
+  showErrorText(`Click me <3`);
+  await new Promise<void>((resolve) => {
+    renderArea.addEventListener('click', () => resolve());
+  });
+
+  //
+  //
+  //
+
   const myApp = new WasmApplication(mainCanvas, onProgress, showErrorText);
 
   try {
