@@ -84,7 +84,7 @@ func_handle_third_parties() {
 
       echo " -> already installed"
 
-      cd $EMSDK
+      cd "$EMSDK" || exit 1
     fi
 
     echo " -> ensuring the correct version is installed"

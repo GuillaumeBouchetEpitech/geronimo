@@ -59,6 +59,7 @@ OBJ=		$(patsubst %.cpp, $(DIR_OBJ)/%.o, $(SRC))
 BUILD_FLAG= -g3
 
 CXX=g++
+# CXX=clang++
 
 CXXFLAGS += $(BUILD_FLAG)
 CXXFLAGS += -std=c++20
