@@ -76,7 +76,7 @@ func_handle_third_parties() {
         "emsdk" \
         "emscripten-core/emsdk" \
         "$EMSDK_VERSION" \
-        "not-interactive"
+        "not-interactive" || exit 1
 
       cd "$DIR_DEPENDENCIES/emsdk" || exit 1
 
@@ -130,7 +130,7 @@ func_handle_third_parties() {
       "bullet3" \
       "bulletphysics/bullet3" \
       "2.87" \
-      "not-interactive"
+      "not-interactive" || exit 1
 
     sh sh_install_one_git_thirdparty.sh \
       "$DIR_DEPENDENCIES" \
@@ -138,7 +138,7 @@ func_handle_third_parties() {
       "glm" \
       "g-truc/glm" \
       "0.9.9.2" \
-      "not-interactive"
+      "not-interactive" || exit 1
 
     sh sh_install_one_git_thirdparty.sh \
       "$DIR_DEPENDENCIES" \
@@ -146,7 +146,7 @@ func_handle_third_parties() {
       "tinyobjloader" \
       "syoyo/tinyobjloader" \
       "v1.0.6" \
-      "not-interactive"
+      "not-interactive" || exit 1
 
     sh sh_install_one_git_thirdparty.sh \
       "$DIR_DEPENDENCIES" \
@@ -154,7 +154,7 @@ func_handle_third_parties() {
       "stb" \
       "nothings/stb" \
       "master" \
-      "not-interactive"
+      "not-interactive" || exit 1
 
     tree -L 1 "$DIR_DEPENDENCIES"
 
