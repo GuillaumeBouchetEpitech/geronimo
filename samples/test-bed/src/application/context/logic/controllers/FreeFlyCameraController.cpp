@@ -119,6 +119,8 @@ void FreeFlyCameraController::update(float elapsedTime) {
     const bool moveBackward = keyboard.isPressed(SDLK_s);
     const bool strafeLeft = keyboard.isPressed(SDLK_q, SDLK_a);
     const bool strafeRight = keyboard.isPressed(SDLK_d);
+    const bool moveDown = keyboard.isPressed(SDLK_c);
+    const bool moveUp = keyboard.isPressed(SDLK_SPACE);
     const bool accelerated = keyboard.isPressed(SDLK_LSHIFT);
 
     const float speed = 16.0f * (accelerated ? 4.0f : 1.0f);
@@ -133,6 +135,11 @@ void FreeFlyCameraController::update(float elapsedTime) {
       acceleration -= _leftMovement * elapsedTime * speed;
     else if (strafeRight)
       acceleration += _leftMovement * elapsedTime * speed;
+
+    if (moveUp)
+      acceleration -= _upAxis * elapsedTime * speed;
+    else if (moveDown)
+      acceleration += _upAxis * elapsedTime * speed;
 
     _position += acceleration;
 
@@ -260,6 +267,11 @@ void FreeFlyCameraController::update(float elapsedTime) {
 }
 
 //
+
+void FreeFlyCameraController::setPosition(const glm::vec3& pos)
+{
+  _position = pos;
+}
 
 // const glm::vec3& FreeFlyCameraController::getTarget() const
 // {

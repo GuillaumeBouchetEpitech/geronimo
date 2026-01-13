@@ -6,8 +6,13 @@
 #include <cstdint>
 #include <string>
 
+#if defined __EMSCRIPTEN__
 struct ALCdevice_struct;
 struct ALCcontext_struct;
+#else
+struct ALCdevice;
+struct ALCcontext;
+#endif
 
 namespace gero {
 namespace audio {
@@ -15,8 +20,15 @@ namespace audio {
 class OpenAlContext {
 public:
   struct Context {
+    // ALCdevice* device;
+    // ALCcontext* context;
+#if defined __EMSCRIPTEN__
     ALCdevice_struct* device;
     ALCcontext_struct* context;
+#else
+    ALCdevice* device;
+    ALCcontext* context;
+#endif
   };
 
 public:

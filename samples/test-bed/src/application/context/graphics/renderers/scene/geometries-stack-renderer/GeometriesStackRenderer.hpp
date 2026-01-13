@@ -35,10 +35,12 @@ public:
   virtual void deleteAlias(int32_t alias) = 0;
   virtual void clearAlias(int32_t alias) = 0;
   virtual void pushAlias(int32_t alias, const GeometryInstance& newInstance) = 0;
+  virtual void sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera) = 0;
+  virtual void preAllocateAlias(int32_t alias, std::size_t newSize) = 0;
 
 public:
   virtual void clearAll() = 0;
-  virtual void renderAll() = 0;
+  virtual void renderAll(bool clearAll = true) = 0;
 };
 
 class GeometriesStackRenderer : public IGeometriesStackRenderer, public gero::NonCopyable {
@@ -59,10 +61,12 @@ public:
   void deleteAlias(int32_t alias) override;
   void clearAlias(int32_t alias) override;
   void pushAlias(int32_t alias, const GeometryInstance& newInstance) override;
+  void sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera) override;
+  void preAllocateAlias(int32_t alias, std::size_t newSize) override;
 
 public:
   void clearAll() override;
-  void renderAll() override;
+  void renderAll(bool clearAll = true) override;
 
 private:
   std::shared_ptr<gero::graphics::ShaderProgram> _shader = nullptr;

@@ -29,6 +29,8 @@ public:
 public:
   void update(float elapsed_time);
 
+  void setPosition(const glm::vec3& pos);
+
   // public:
   //   const glm::vec3& getTarget() const;
 };

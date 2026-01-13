@@ -61,7 +61,7 @@ public:
   glm::vec4 get4F(const std::string_view toSearch);
   glm::vec4 get4F(const std::string_view toSearch, float minValue, float maxValue);
 
-  void forEachArgs(const std::string_view toSearch,
+  uint32_t forEachArgs(const std::string_view toSearch,
                    const std::function<void(const std::string_view, const std::string_view)>& callback);
 
 private:

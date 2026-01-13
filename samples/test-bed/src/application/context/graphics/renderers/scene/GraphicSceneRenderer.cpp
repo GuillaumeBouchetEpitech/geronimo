@@ -3,7 +3,7 @@
 
 void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height) {
 
-  _camera.setPerspective(70.0f, 1.0f, 150.0f);
+  _camera.setPerspective(70.0f, 1.0f, 200.0f);
   _camera.setSize(width, height);
 
   _stackRenderers.initialize();
@@ -57,6 +57,7 @@ void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height) {
     gero::graphics::MakeGeometries::makeBox(vertices, 1, 1, 1);
 
     _geometriesStackRenderer.createAlias(2222, vertices);
+    _geometriesStackRenderer.preAllocateAlias(2222, 2048);
   }
 
   {
@@ -101,4 +102,4 @@ gero::graphics::IStackRenderers& GraphicSceneRenderer::getStackRenderers() { ret
 IGeometriesStackRenderer& GraphicSceneRenderer::getGeometriesStackRenderer() { return _geometriesStackRenderer; }
 
 // gero::graphics::IClusteredDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }
-gero::graphics::SlowerDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }
+gero::graphics::DepthDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }

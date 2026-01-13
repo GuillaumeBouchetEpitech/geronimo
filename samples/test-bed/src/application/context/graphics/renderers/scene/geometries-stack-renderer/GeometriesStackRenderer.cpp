@@ -3,6 +3,9 @@
 
 #include "geronimo/graphics/GeometryBuilder.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
+#include "geronimo/graphics/camera/sceneToScreen.hpp"
+
+#include <algorithm> // std::sort
 
 void GeometriesStackRenderer::initialize() {
 
@@ -24,8 +27,6 @@ void GeometriesStackRenderer::initialize() {
     .addAttribute("a_offsetLight")
 
     .addUniform("u_composedMatrix")
-    // .addUniform("u_ambiantCoef")
-    // .addUniform("u_lightPos")
     ;
 
   auto shaderDef = shaderProgramBuilder.getDefinition();
@@ -63,7 +64,7 @@ void GeometriesStackRenderer::createAlias(int32_t alias, const gero::graphics::M
 
   auto newAlias = std::make_shared<AliasedGeometry>();
 
-  newAlias->instanceVertices.reserve(256); // pre-allocate
+  newAlias->instanceVertices.reserve(1024); // pre-allocate
 
   newAlias->geometry.initialize(*_shader, _geomDef);
   newAlias->geometry.allocateBuffer(0, vertices);
@@ -96,15 +97,71 @@ void GeometriesStackRenderer::pushAlias(int32_t alias, const GeometryInstance& n
     _strictMode &&
     tmpData.instanceVertices.size() + 1 >= tmpData.instanceVertices.capacity()
   ) {
-    D_THROW(std::runtime_error, "alias buffer of space, alias: " << alias << ", capacity: " << tmpData.instanceVertices.capacity());
+    // D_THROW(std::runtime_error, "alias buffer out of of space, alias: " << alias << ", capacity: " << tmpData.instanceVertices.capacity());
+    return;
   }
 
   tmpData.instanceVertices.push_back(newInstance);
 }
 
+void GeometriesStackRenderer::sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera)
+{
+  auto it = _aliasedGeometriesMap.find(alias);
+  if (it == _aliasedGeometriesMap.end()) {
+    D_THROW(std::runtime_error, "alias not found, alias: " << alias);
+  }
+
+  auto& tmpData = *it->second;
+
+  std::sort(tmpData.instanceVertices.begin(), tmpData.instanceVertices.end(), [&sceneCamera](
+    const IGeometriesStackRenderer::GeometryInstance& left,
+    const IGeometriesStackRenderer::GeometryInstance& right
+  ) {
+
+    // sort by screen depth
+
+    auto& matricesData = sceneCamera.getMatricesData();
+
+    glm::vec3 leftScreenCoord = glm::vec3(0,0,1);
+    glm::vec3 rightScreenCoord = glm::vec3(0,0,1);
+
+    gero::graphics::sceneToScreen(
+      left.position,
+      matricesData.view,
+      matricesData.projection,
+      glm::vec2(0,0),
+      sceneCamera.getSize(),
+      leftScreenCoord
+    );
+
+    gero::graphics::sceneToScreen(
+      right.position,
+      matricesData.view,
+      matricesData.projection,
+      glm::vec2(0,0),
+      sceneCamera.getSize(),
+      rightScreenCoord
+    );
+
+    return leftScreenCoord.z > rightScreenCoord.z;
+  });
+}
+
+void GeometriesStackRenderer::preAllocateAlias(int32_t alias, std::size_t newSize) {
+  auto it = _aliasedGeometriesMap.find(alias);
+  if (it == _aliasedGeometriesMap.end()) {
+    D_THROW(std::runtime_error, "alias not found, alias: " << alias);
+  }
+
+  auto& tmpData = *it->second;
+
+  tmpData.instanceVertices.reserve(newSize); // pre-allocate
+  tmpData.geometry.preAllocateBufferFromCapacity(1, tmpData.instanceVertices);
+}
+
 void GeometriesStackRenderer::clearAll() { _aliasedGeometriesMap.clear(); }
 
-void GeometriesStackRenderer::renderAll() {
+void GeometriesStackRenderer::renderAll(bool inClearAll /*= true*/) {
   if (!_shader) {
     D_THROW(std::runtime_error, "shader not setup");
   }
@@ -113,9 +170,8 @@ void GeometriesStackRenderer::renderAll() {
     return;
   }
 
-  _shader->preBind([this](gero::graphics::IBoundShaderProgram& boundShader) {
+  _shader->preBind([this, inClearAll](gero::graphics::IBoundShaderProgram& boundShader) {
     boundShader.setUniform("u_composedMatrix", _matricesData.composed);
-    // boundShader.setUniform("u_ambiantCoef", 0.2f);
 
     for (const auto& pair : _aliasedGeometriesMap) {
       auto& tmpData = *pair.second;
@@ -134,7 +190,9 @@ void GeometriesStackRenderer::renderAll() {
       geometry.setInstancedCount(uint32_t(vertices.size()));
       geometry.render();
 
-      vertices.clear();
+      if (inClearAll) {
+        vertices.clear();
+      }
     }
   });
 }

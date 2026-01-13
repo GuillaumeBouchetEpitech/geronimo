@@ -8,42 +8,31 @@ build_mode=release
 #
 
 ifeq ($(build_platform),native)
-
 # $(info build_platform is valid, value=$(build_platform))
-
 else ifeq ($(build_platform),web-wasm)
-
 # $(info build_platform is valid, value=$(build_platform))
-
 else
-
 $(error unsupported value for "build_platform", value=$(build_platform))
-
 endif
 
-LOG_INFO= '[${build_mode}] [${build_platform}]'
+ifeq ($(build_mode),release)
+# $(info build_mode is valid, value=$(build_mode))
+else ifeq ($(build_mode),debug)
+# $(info build_mode is valid, value=$(build_mode))
+else
+$(error unsupported value for "build_mode", value=$(build_mode))
+endif
+
+LOG_INFO= '[${build_platform}] [${build_mode}]'
 
 #
 
-ifeq ($(build_platform),native)
-
-DIR_LIB=		./lib/native
+DIR_LIB=		./lib/geronimo-$(build_platform)-${build_mode}
 
 NAME_GERONIMO_SYSTEM=						$(DIR_LIB)/lib-geronimo-system.a
 NAME_GERONIMO_GRAPHICS=					$(DIR_LIB)/lib-geronimo-graphics.a
 NAME_GERONIMO_PHYSICS=					$(DIR_LIB)/lib-geronimo-physics.a
 NAME_GERONIMO_AUDIO=						$(DIR_LIB)/lib-geronimo-audio.a
-
-else ifeq ($(build_platform),web-wasm)
-
-DIR_LIB=		./lib/web-wasm
-
-NAME_GERONIMO_SYSTEM=						$(DIR_LIB)/lib-geronimo-system.a
-NAME_GERONIMO_GRAPHICS=					$(DIR_LIB)/lib-geronimo-graphics.a
-NAME_GERONIMO_PHYSICS=					$(DIR_LIB)/lib-geronimo-physics.a
-NAME_GERONIMO_AUDIO=						$(DIR_LIB)/lib-geronimo-audio.a
-
-endif
 
 
 
@@ -57,81 +46,61 @@ DIR_BULLET_PHYSICS_SRC=		$(DIR_THIRDPARTY)/dependencies/bullet3/src
 
 
 
-ifeq ($(build_platform),native)
 
-DIR_OBJ=			./obj/native
-
-else ifeq ($(build_platform),web-wasm)
-
-DIR_OBJ=			./obj/web-wasm
-
-endif
-
-DIR_OBJ_GERONIMO=					$(DIR_OBJ)/geronimo
+DIR_OBJ=			./obj/geronimo-$(build_platform)-${build_mode}
 
 
 #### SRC
 
-SRC_GERONIMO_SYSTEM+=	\
-	$(wildcard \
-		$(DIR_SRC)/geronimo/system/*.cpp \
-		$(DIR_SRC)/geronimo/system/compression/*.cpp \
-		$(DIR_SRC)/geronimo/system/containers/*.cpp \
-		$(DIR_SRC)/geronimo/system/easing/*.cpp \
-		$(DIR_SRC)/geronimo/system/file-utils/*.cpp \
-		$(DIR_SRC)/geronimo/system/math/*.cpp \
-		$(DIR_SRC)/geronimo/system/math/2d/collisions/*.cpp \
-		$(DIR_SRC)/geronimo/system/math/2d/convex-polygon/*.cpp \
-		$(DIR_SRC)/geronimo/system/messaging/*.cpp \
-		$(DIR_SRC)/geronimo/system/metrics/*.cpp \
-		$(DIR_SRC)/geronimo/system/multithreading/*.cpp \
-		$(DIR_SRC)/geronimo/system/multithreading/internals/*.cpp \
-		$(DIR_SRC)/geronimo/system/parser-utils/*.cpp \
-		$(DIR_SRC)/geronimo/system/rng/*.cpp \
-		$(DIR_SRC)/geronimo/system/rng/proceduralGeneration/*.cpp \
-		$(DIR_SRC)/geronimo/system/string-utils/*.cpp \
-		$(DIR_SRC)/geronimo/system/trees/*.cpp \
+# search in $(DIR_SRC)/geronimo/system/
+# exclude the pattern "*.tests.cpp"  (unit tests files)
+# include the pattern "*.cpp"        (source files)
+SRC_GERONIMO_SYSTEM += $(shell find $(DIR_SRC)/geronimo/system/ ! -name "*.tests.cpp" -name "*.cpp")
+
+# search in $(DIR_SRC)/geronimo/graphics/
+# exclude the pattern "*.tests.cpp"  (unit tests files)
+# include the pattern "*.cpp"        (source files)
+SRC_GERONIMO_GRAPHICS += $(shell find $(DIR_SRC)/geronimo/graphics/ ! -name "*.tests.cpp" -name "*.cpp")
+# SRC_GERONIMO_GRAPHICS+=	\
+# 	$(wildcard \
+# 		$(DIR_SRC)/geronimo/graphics/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/camera/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/loaders/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/make-geometries/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/sdl/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/input-managers/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/vertexBuffers/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/wrappers/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/internals/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/slowDeferred/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/slowDeferred/internals/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/textRenderer/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/stackRenderers/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/stackRenderers/internals/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/widgets/*.cpp \
+# 		$(DIR_SRC)/geronimo/graphics/advanced-concept/widgets/helpers/*.cpp \
 		)
 
-SRC_GERONIMO_GRAPHICS+=	\
-	$(wildcard \
-		$(DIR_SRC)/geronimo/graphics/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/camera/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/loaders/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/make-geometries/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/sdl/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/input-managers/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/vertexBuffers/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/wrappers/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/clusteredDeferred/internals/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/slowDeferred/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/slowDeferred/internals/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/textRenderer/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/stackRenderers/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/stackRenderers/internals/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/widgets/*.cpp \
-		$(DIR_SRC)/geronimo/graphics/advanced-concept/widgets/helpers/*.cpp \
-		)
-
-SRC_GERONIMO_PHYSICS+=	\
-	$(wildcard \
-		$(DIR_SRC)/geronimo/physics/*.cpp \
-		$(DIR_SRC)/geronimo/physics/world/*.cpp \
-		$(DIR_SRC)/geronimo/physics/body/*.cpp \
-		$(DIR_SRC)/geronimo/physics/body/internals/*.cpp \
-		$(DIR_SRC)/geronimo/physics/helpers/*.cpp \
-		$(DIR_SRC)/geronimo/physics/queries/query-shape/*.cpp \
-		$(DIR_SRC)/geronimo/physics/queries/ray-caster/*.cpp \
-		$(DIR_SRC)/geronimo/physics/queries/ray-caster/internals/*.cpp \
-		$(DIR_SRC)/geronimo/physics/shape/*.cpp \
-		$(DIR_SRC)/geronimo/physics/vehicle/*.cpp \
-		$(DIR_SRC)/geronimo/physics/vehicle/internals/*.cpp \
-		$(DIR_SRC)/geronimo/physics/constraints/hinge/*.cpp \
-		$(DIR_SRC)/geronimo/physics/constraints/hinge/internals/*.cpp \
-		$(DIR_SRC)/geronimo/physics/constraints/six-dof/*.cpp \
-		$(DIR_SRC)/geronimo/physics/constraints/six-dof/internals/*.cpp \
-	)
+SRC_GERONIMO_PHYSICS += $(shell find $(DIR_SRC)/geronimo/physics/ ! -name "*.tests.cpp" -name "*.cpp")
+# SRC_GERONIMO_PHYSICS+=	\
+# 	$(wildcard \
+# 		$(DIR_SRC)/geronimo/physics/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/world/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/body/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/body/internals/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/helpers/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/queries/query-shape/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/queries/ray-caster/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/queries/ray-caster/internals/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/shape/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/vehicle/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/vehicle/internals/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/constraints/hinge/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/constraints/hinge/internals/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/constraints/six-dof/*.cpp \
+# 		$(DIR_SRC)/geronimo/physics/constraints/six-dof/internals/*.cpp \
+# 	)
 
 # not ready (-_-)
 # $(DIR_SRC)/geronimo/physics/constraints/universal/*.cpp \
@@ -139,18 +108,19 @@ SRC_GERONIMO_PHYSICS+=	\
 # $(DIR_SRC)/geronimo/physics/constraints/cone-twist/*.cpp \
 # $(DIR_SRC)/geronimo/physics/constraints/cone-twist/internals/*.cpp \
 
-SRC_GERONIMO_AUDIO+=	\
-	$(wildcard \
-		$(DIR_SRC)/geronimo/audio/*.cpp \
-		$(DIR_SRC)/geronimo/audio/decoders/*.cpp \
-		)
+SRC_GERONIMO_AUDIO += $(shell find $(DIR_SRC)/geronimo/audio/ ! -name "*.tests.cpp" -name "*.cpp")
+# SRC_GERONIMO_AUDIO+=	\
+# 	$(wildcard \
+# 		$(DIR_SRC)/geronimo/audio/*.cpp \
+# 		$(DIR_SRC)/geronimo/audio/decoders/*.cpp \
+# 		)
 
 #
 
-OBJ_GERONIMO_SYSTEM=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_SYSTEM))
-OBJ_GERONIMO_GRAPHICS=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_GRAPHICS))
-OBJ_GERONIMO_PHYSICS=		$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_PHYSICS))
-OBJ_GERONIMO_AUDIO=			$(patsubst %.cpp, $(DIR_OBJ_GERONIMO)/%.o, $(SRC_GERONIMO_AUDIO))
+OBJ_GERONIMO_SYSTEM=				$(patsubst %.cpp, $(DIR_OBJ)/system/%.o, $(SRC_GERONIMO_SYSTEM))
+OBJ_GERONIMO_GRAPHICS=		$(patsubst %.cpp, $(DIR_OBJ)/graphics/%.o, $(SRC_GERONIMO_GRAPHICS))
+OBJ_GERONIMO_PHYSICS=		$(patsubst %.cpp, $(DIR_OBJ)/physics/%.o, $(SRC_GERONIMO_PHYSICS))
+OBJ_GERONIMO_AUDIO=			$(patsubst %.cpp, $(DIR_OBJ)/audio/%.o, $(SRC_GERONIMO_AUDIO))
 
 #
 
@@ -198,11 +168,19 @@ CXX=em++
 AR=emar
 
 CXXFLAGS_GERONIMO += $(COMMON_FLAGS)
-CXXFLAGS_GERONIMO += $(DEPENDENCIES_CXXFLAGS)
+# CXXFLAGS_GERONIMO += $(DEPENDENCIES_CXXFLAGS)
 CXXFLAGS_GERONIMO += -s USE_SDL=2
 CXXFLAGS_GERONIMO += -s USE_PTHREADS=0
 
 endif
+
+
+
+CXXFLAGS_GERONIMO_PHYSICS += $(CXXFLAGS_GERONIMO)
+
+# this disabled all warnings (fix a GImpact issue)
+CXXFLAGS_GERONIMO_PHYSICS += -w
+
 
 
 RM=			rm -rf
@@ -252,18 +230,46 @@ geronimo_audio:	ensure_folders $(OBJ_GERONIMO_AUDIO)
 # => ensure the "obj" folder(s)
 # => compile in a ".o" file
 
-$(DIR_OBJ_GERONIMO)/%.o: %.cpp
+# $(DIR_OBJ)/%.o: %.cpp
+# 	@mkdir -p $(dir $@)
+# 	@echo ' --> processing $(LOG_INFO):' $<
+# 	@$(CXX) -c $(CXXFLAGS_GERONIMO) -MMD -MT "$@" -MF "$@.dep" -o "$@" $<
+
+# include $(shell test -d $(DIR_OBJ) && find $(DIR_OBJ) -name "*.dep")
+
+$(DIR_OBJ)/system/%.o: %.cpp
 	@mkdir -p $(dir $@)
-	@echo ' --> processing $(LOG_INFO):' $<
+	@echo ' --> system-processing $(LOG_INFO):' $<
 	@$(CXX) -c $(CXXFLAGS_GERONIMO) -MMD -MT "$@" -MF "$@.dep" -o "$@" $<
 
-include $(shell test -d $(DIR_OBJ_GERONIMO) && find $(DIR_OBJ_GERONIMO) -name "*.dep")
+include $(shell test -d $(DIR_OBJ)/system && find $(DIR_OBJ)/system -name "*.dep")
+
+$(DIR_OBJ)/graphics/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@echo ' --> graphics-processing $(LOG_INFO):' $<
+	@$(CXX) -c $(CXXFLAGS_GERONIMO) -MMD -MT "$@" -MF "$@.dep" -o "$@" $<
+
+include $(shell test -d $(DIR_OBJ)/graphics && find $(DIR_OBJ)/graphics -name "*.dep")
+
+$(DIR_OBJ)/physics/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@echo ' --> physics-processing $(LOG_INFO):' $<
+	@$(CXX) -c $(CXXFLAGS_GERONIMO_PHYSICS) -MMD -MT "$@" -MF "$@.dep" -o "$@" $<
+
+include $(shell test -d $(DIR_OBJ)/physics && find $(DIR_OBJ)/physics -name "*.dep")
+
+$(DIR_OBJ)/audio/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@echo ' --> audio-processing $(LOG_INFO):' $<
+	@$(CXX) -c $(CXXFLAGS_GERONIMO) -MMD -MT "$@" -MF "$@.dep" -o "$@" $<
+
+include $(shell test -d $(DIR_OBJ)/audio && find $(DIR_OBJ)/audio -name "*.dep")
 
 #
 
 clean:
 	@echo ' -> cleaning $(LOG_INFO): geronimo library build file(s)'
-	@$(RM) $(DIR_OBJ_GERONIMO)
+	@$(RM) $(DIR_OBJ)
 	@echo '   -> cleaned $(LOG_INFO): geronimo library build file(s)'
 
 fclean: clean

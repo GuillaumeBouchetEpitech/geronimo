@@ -7,6 +7,7 @@
 
 #include "logic/HeightField.hpp"
 #include "logic/controllers/FreeFlyCameraController.hpp"
+#include "logic/flocking/AbstractFlockingManager.hpp"
 
 #include "geronimo/audio/OpenALSoundManager.hpp"
 
@@ -95,11 +96,13 @@ public:
     } controllers;
 
     HeightField heightField;
+    std::unique_ptr<AbstractFlockingManager> flockingManager;
 
     float time;
 
     bool debugMode = false;
     bool pauseMode = false;
+    int32_t framesLeftToPlay = 0;
 
   } logic;
 };

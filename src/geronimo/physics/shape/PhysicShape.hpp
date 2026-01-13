@@ -7,6 +7,8 @@
 
 class btCollisionShape;
 class btTriangleIndexVertexArray;
+class btGImpactMeshShape;
+class btCompoundShape;
 
 namespace gero {
 namespace physics {
@@ -87,8 +89,13 @@ private:
   std::unique_ptr<int32_t[]> _indicesData{nullptr};
   btTriangleIndexVertexArray* _indexVertexArrays = nullptr;
 
+  btCollisionShape* _dynamicMeshShape = nullptr;
+
 protected:
   StaticMeshShape(const PhysicShapeDef& def, bool isDynamic);
+
+  btCompoundShape* createCompoundFromGimpactShape(const btGImpactMeshShape* gimpactMesh);
+  btCollisionShape* createConvexDecompositionFromGimpactShape(btTriangleIndexVertexArray* indexVertexArrays);
 
 public:
   ~StaticMeshShape();

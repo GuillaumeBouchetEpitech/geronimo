@@ -44,6 +44,8 @@ export const getWebGl2Context = (
     // Boolean that indicates that the drawing buffer has a
     // stencil buffer of at least 8 bits.
     stencil: false,
+
+    desynchronized: true,
   };
 
   const webglCtx = inCanvas.getContext("webgl2", renderingContextAttribs);

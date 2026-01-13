@@ -354,9 +354,10 @@ glm::vec4 BasicRegexParser::get4F(const std::string_view toSearch, float minValu
   return value;
 }
 
-void BasicRegexParser::forEachArgs(
+uint32_t BasicRegexParser::forEachArgs(
   const std::string_view toSearch,
   const std::function<void(const std::string_view, const std::string_view)>& callback) {
+  uint32_t totalArgs = 0;
   string_view_regexp::match match;
   std::string_view::const_iterator searchStart(toSearch.cbegin());
   while (string_view_regexp::regex_search(searchStart, toSearch.cend(), match, _regexps.regexpMain)) {
@@ -364,9 +365,12 @@ void BasicRegexParser::forEachArgs(
     std::string_view value = string_view_regexp::get_string_view(match[2]);
 
     callback(key, value);
+    ++totalArgs;
 
     searchStart = match.suffix().first;
   }
+
+  return totalArgs;
 }
 
 float BasicRegexParser::_getValidFloat(const std::string_view toSearch) {

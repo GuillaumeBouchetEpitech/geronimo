@@ -64,8 +64,9 @@ SphereShape::SphereShape(const PhysicShapeDef& def) : PhysicShape(def) {
 //
 
 StaticMeshShape::StaticMeshShape(const PhysicShapeDef& def, bool isDynamic) : PhysicShape(def) {
-  if (isDynamic)
-    D_THROW(std::runtime_error, "physic staticMesh cannot have non zero mass");
+  // if (isDynamic) {
+  //   // D_THROW(std::runtime_error, "physic staticMesh cannot have non zero mass");
+  // }
 
   const auto& data = def.data.staticMesh;
 
@@ -94,11 +95,34 @@ StaticMeshShape::StaticMeshShape(const PhysicShapeDef& def, bool isDynamic) : Ph
   _indexVertexArrays = new btTriangleIndexVertexArray(
     triangleNumber, indicesDataRaw, indicesStride, totalDecimals, verticesDataRaw, verticesStride);
 
-  constexpr bool useQuantizedAabbCompression = false;
-  _bullet.shape = new btBvhTriangleMeshShape(_indexVertexArrays, useQuantizedAabbCompression);
+  if (isDynamic) {
+    // btGImpactMeshShape* gimpactMesh = new btGImpactMeshShape(_indexVertexArrays);
+
+    // _dynamicMeshShape = gimpactMesh;
+    // _bullet.shape = gimpactMesh;
+
+    // solve a known issue making a btGImpactMeshShape shake when colliding
+    // _bullet.shape = createCompoundFromGimpactShape(gimpactMesh);
+
+    _bullet.shape = createConvexDecompositionFromGimpactShape(_indexVertexArrays);
+  }
+  else {
+    constexpr bool useQuantizedAabbCompression = false;
+    _bullet.shape = new btBvhTriangleMeshShape(_indexVertexArrays, useQuantizedAabbCompression);
+
+  }
 }
 
-StaticMeshShape::~StaticMeshShape() { delete _indexVertexArrays, _indexVertexArrays = nullptr; }
+// btCompoundShape* StaticMeshShape::createCompoundFromGimpactShape(const btGImpactMeshShape* gimpactMesh)
+// {
+//   constexpr btScalar depth = 0;
+//   return btCreateCompoundFromGimpactShape(gimpactMesh, depth);
+// }
+
+StaticMeshShape::~StaticMeshShape() {
+  delete _indexVertexArrays, _indexVertexArrays = nullptr;
+  delete _dynamicMeshShape, _dynamicMeshShape = nullptr;
+}
 
 //
 //

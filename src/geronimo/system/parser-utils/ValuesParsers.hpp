@@ -12,6 +12,16 @@ namespace valuesParsers {
 //
 //
 
+// class Parse {
+
+// public:
+//   static std::optional<int32_t> parseInt(const std::string_view toSearch, int32_t base = 10);
+//   static std::optional<glm::ivec2> parseIntVec2(const std::string_view toSearch, int32_t base = 10);
+// };
+
+//
+//
+
 class IntValueParser {
 private:
   std::regex _regexp;

@@ -1,10 +1,7 @@
 
 #include "PhysicWorld.hpp"
 
-// not ready (-_-)
-// #include "constraints/universal/internals/PhysicUniversalConstraintManager.hpp"
-// #include "constraints/six-dof/internals/PhysicSixDofConstraintManager.hpp"
-// #include "constraints/cone-twist/internals/PhysicConeTwistConstraintManager.hpp"
+#include "CollisionAlgorithm.hpp"
 
 #include "geronimo/helpers/internals/BulletPhysics.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
@@ -87,18 +84,15 @@ PhysicWorld::PhysicWorld(std::optional<PhysicWorldOptions> options) : _rayCaster
   _physicHingeConstraintManager = AbstractPhysicHingeConstraintManager::create(*this, hinge_pre_allocated_size);
   _physicSixDofConstraintManager = AbstractPhysicSixDofConstraintManager::create(*this, six_dof_pre_allocated_size);
 
-  // not ready (-_-)
-  // _physicUniversalConstraintManager = std::make_unique<PhysicUniversalConstraintManager>(*this);
-  // _physicConeTwistConstraintManager = std::make_unique<PhysicConeTwistConstraintManager>(*this);
-
-  // PhysicWorld::self = this;
-
   _bullet.broadphase = new btDbvtBroadphase();
   _bullet.collisionConfiguration = new btDefaultCollisionConfiguration();
   _bullet.dispatcher = new btCollisionDispatcher(_bullet.collisionConfiguration);
   _bullet.solver = new btSequentialImpulseConstraintSolver;
   _bullet.dynamicsWorld =
     new btDiscreteDynamicsWorld(_bullet.dispatcher, _bullet.broadphase, _bullet.solver, _bullet.collisionConfiguration);
+
+  // initialise GImpact (dynamic concave mesh shape)
+	btjsCollisionAlgorithm::registerAlgorithm(_bullet.dispatcher);
 
   setGravity(0, 0, -10);
 

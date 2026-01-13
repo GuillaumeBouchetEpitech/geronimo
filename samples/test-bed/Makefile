@@ -23,51 +23,37 @@ else
 $(error unsupported value for "build_platform", value=$(build_platform))
 endif
 
-LOG_INFO= '[$(build_mode)] [$(build_platform)]'
+LOG_INFO= '[$(build_platform)] [$(build_mode)]'
 
 #
 
-DIR_SRC=		./src
-
-#
-#
-
-DIR_LIB_GERONIMO=								../..
-DIR_LIB_GERONIMO_3RD_PARTY_DIR=	$(DIR_LIB_GERONIMO)/thirdparties
+DIR_SRC=						./src
+DIR_LIB_GERONIMO=		../..
 
 ifeq ($(build_platform),native)
 
 DIR_APPLICATION=		./bin
 NAME_APPLICATION=		$(DIR_APPLICATION)/exec
 
-NAME_LIB_GERONIMO+=	\
-	$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-audio.a \
-	$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-physics.a \
-	$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-graphics.a \
-	$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-system.a
-
-NAME_LIB_BULLET_PHYSICS+=	\
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-dynamics.a \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-collision.a \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/native/lib-bullet-physics-linearmath.a
-
 else ifeq ($(build_platform),web-wasm)
 
 DIR_APPLICATION=		./dist/wasm
 NAME_APPLICATION=		$(DIR_APPLICATION)/index.js
 
-NAME_LIB_GERONIMO+=	\
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-audio.a \
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-physics.a \
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-graphics.a \
-	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-system.a
-
-NAME_LIB_BULLET_PHYSICS+= \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-linearmath.a \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-collision.a \
-	$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-dynamics.a
-
 endif
+
+
+
+NAME_LIB_GERONIMO+=	\
+	$(DIR_LIB_GERONIMO)/lib/geronimo-$(build_platform)-$(build_mode)/lib-geronimo-audio.a \
+	$(DIR_LIB_GERONIMO)/lib/geronimo-$(build_platform)-$(build_mode)/lib-geronimo-physics.a \
+	$(DIR_LIB_GERONIMO)/lib/geronimo-$(build_platform)-$(build_mode)/lib-geronimo-graphics.a \
+	$(DIR_LIB_GERONIMO)/lib/geronimo-$(build_platform)-$(build_mode)/lib-geronimo-system.a
+
+NAME_LIB_BULLET_PHYSICS+=	\
+	$(DIR_LIB_GERONIMO)/lib/bullet-$(build_platform)-$(build_mode)/lib-bullet-physics-dynamics.a \
+	$(DIR_LIB_GERONIMO)/lib/bullet-$(build_platform)-$(build_mode)/lib-bullet-physics-collision.a \
+	$(DIR_LIB_GERONIMO)/lib/bullet-$(build_platform)-$(build_mode)/lib-bullet-physics-linearmath.a
 
 
 
@@ -77,15 +63,7 @@ endif
 
 
 
-ifeq ($(build_platform),native)
-
-DIR_OBJ=	./obj/native
-
-else ifeq ($(build_platform),web-wasm)
-
-DIR_OBJ=	./obj/web-wasm
-
-endif
+DIR_OBJ=	./obj/sample-$(build_platform)-$(build_mode)
 
 
 
@@ -109,6 +87,8 @@ SRC+= \
 		$(DIR_SRC)/application/context/graphics/renderers/scene/scene-stack-renderers/*.cpp \
 		$(DIR_SRC)/application/context/logic/*.cpp \
 		$(DIR_SRC)/application/context/logic/controllers/*.cpp \
+		$(DIR_SRC)/application/context/logic/flocking/*.cpp \
+		$(DIR_SRC)/application/context/logic/flocking/internals/*.cpp \
 		$(DIR_SRC)/application/states/*.cpp \
 	)
 
@@ -144,7 +124,9 @@ CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties
-
+# CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties/dependencies/entt/src
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties/dependencies/entt/src/entt/entity
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties/dependencies/json/include
 
 # CXXFLAGS += -DBT_NO_PROFILE
 # CXXFLAGS += -DSIMD_FORCE_INLINE=inline
@@ -171,8 +153,6 @@ else ifeq ($(build_platform),web-wasm)
 CXX=em++
 AR=emar
 
-# CXXFLAGS += $(shell pkg-config $(LIBRARIES) --cflags)
-
 CXXFLAGS += -s USE_SDL=2
 CXXFLAGS += -s USE_PTHREADS=0
 
@@ -184,8 +164,9 @@ LDFLAGS+=	--preload-file ./assets/
 
 
 # LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/slowDeferred/internals/shaders/resultQuadRenderer
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/slowDeferred/internals/shaders/lightStackRenderer
+LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/resultQuadRenderer
+LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/lightStackRenderer
+LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/fame-merger
 
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/textRenderer/assets
 LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/stackRenderers/shaders

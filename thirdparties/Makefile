@@ -1,213 +1,207 @@
 
-build_platform=native
-# build_platform=web-wasm
+# build_platform=native
+# # build_platform=web-wasm
 
-build_mode=release
-# build_mode=debug
+# build_mode=release
+# # build_mode=debug
 
-#
+# #
 
-ifeq ($(build_platform),native)
+# ifeq ($(build_platform),native)
+# # $(info build_platform is valid, value=$(build_platform))
+# else ifeq ($(build_platform),web-wasm)
+# # $(info build_platform is valid, value=$(build_platform))
+# else
+# $(error unsupported value for "build_platform", value=$(build_platform))
+# endif
 
-# $(info build_platform is valid, value=$(build_platform))
+# LOG_INFO= '[$(build_platform)] [$(build_mode)] '
 
-else ifeq ($(build_platform),web-wasm)
+# #
 
-# $(info build_platform is valid, value=$(build_platform))
+# ifeq ($(build_platform),native)
 
-else
+# DIR_LIB=		./lib/native
 
-$(error unsupported value for "build_platform", value=$(build_platform))
+# NAME_BULLET_PHYSICS_LINEARMATH=	$(DIR_LIB)/lib-bullet-physics-linearmath.a
+# NAME_BULLET_PHYSICS_COLLISION=	$(DIR_LIB)/lib-bullet-physics-collision.a
+# NAME_BULLET_PHYSICS_DYNAMICS=		$(DIR_LIB)/lib-bullet-physics-dynamics.a
 
-endif
+# else ifeq ($(build_platform),web-wasm)
 
-LOG_INFO= '[$(build_mode)] [$(build_platform)]'
+# DIR_LIB=		./lib/web-wasm
 
-#
+# NAME_BULLET_PHYSICS_LINEARMATH=	$(DIR_LIB)/lib-bullet-physics-linearmath.a
+# NAME_BULLET_PHYSICS_COLLISION=	$(DIR_LIB)/lib-bullet-physics-collision.a
+# NAME_BULLET_PHYSICS_DYNAMICS=		$(DIR_LIB)/lib-bullet-physics-dynamics.a
 
-ifeq ($(build_platform),native)
+# endif
 
-DIR_LIB=		./lib/native
 
-NAME_BULLET_PHYSICS_LINEARMATH=	$(DIR_LIB)/lib-bullet-physics-linearmath.a
-NAME_BULLET_PHYSICS_COLLISION=	$(DIR_LIB)/lib-bullet-physics-collision.a
-NAME_BULLET_PHYSICS_DYNAMICS=		$(DIR_LIB)/lib-bullet-physics-dynamics.a
 
-else ifeq ($(build_platform),web-wasm)
+# #### DIRS
 
-DIR_LIB=		./lib/web-wasm
+# DIR_DEPENDENCIES=					./dependencies
+# DIR_BULLET_PHYSICS_SRC=		$(DIR_DEPENDENCIES)/bullet3/src
 
-NAME_BULLET_PHYSICS_LINEARMATH=	$(DIR_LIB)/lib-bullet-physics-linearmath.a
-NAME_BULLET_PHYSICS_COLLISION=	$(DIR_LIB)/lib-bullet-physics-collision.a
-NAME_BULLET_PHYSICS_DYNAMICS=		$(DIR_LIB)/lib-bullet-physics-dynamics.a
+# #### /DIRS
 
-endif
 
 
+# ifeq ($(build_platform),native)
 
-#### DIRS
+# DIR_OBJ=			./obj/native
 
-DIR_DEPENDENCIES=					./dependencies
-DIR_BULLET_PHYSICS_SRC=		$(DIR_DEPENDENCIES)/bullet3/src
+# else ifeq ($(build_platform),web-wasm)
 
-#### /DIRS
+# DIR_OBJ=			./obj/web-wasm
 
+# endif
 
+# DIR_OBJ_GERONIMO=					$(DIR_OBJ)/geronimo
+# DIR_OBJ_BULLET_PHYSICS=		$(DIR_OBJ)/bullet-physics
 
-ifeq ($(build_platform),native)
 
-DIR_OBJ=			./obj/native
+# #### SRC
 
-else ifeq ($(build_platform),web-wasm)
+# SRC_BULLET_PHYSICS_LINEARMATH+= \
+# 	$(wildcard \
+# 		$(DIR_BULLET_PHYSICS_SRC)/LinearMath/*.cpp \
+# 		)
 
-DIR_OBJ=			./obj/web-wasm
+# SRC_BULLET_PHYSICS_COLLISION+= \
+# 	$(wildcard \
+# 		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/BroadphaseCollision/*.cpp \
+# 		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/CollisionShapes/*.cpp \
+# 		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/CollisionDispatch/*.cpp \
+# 		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/NarrowPhaseCollision/*.cpp \
+# 		)
 
-endif
+# # TODO: this will be needed for non-static mesh collider support
+# # SRC_BULLET_PHYSICS_COLLISION+= $(wildcard $(DIR_BULLET_PHYSICS_SRC)/BulletCollision/Gimpact/*.cpp)
 
-DIR_OBJ_GERONIMO=					$(DIR_OBJ)/geronimo
-DIR_OBJ_BULLET_PHYSICS=		$(DIR_OBJ)/bullet-physics
+# SRC_BULLET_PHYSICS_DYNAMICS+= \
+# 	$(wildcard \
+# 		$(DIR_BULLET_PHYSICS_SRC)/BulletDynamics/Dynamics/*.cpp \
+# 		$(DIR_BULLET_PHYSICS_SRC)/BulletDynamics/Vehicle/*.cpp \
+# 		$(DIR_BULLET_PHYSICS_SRC)/BulletDynamics/ConstraintSolver/*.cpp) # TODO: useful?
 
+# #
 
-#### SRC
+# OBJ_BULLET_PHYSICS_LINEARMATH=	$(patsubst %.cpp, $(DIR_OBJ_BULLET_PHYSICS)/%.o, $(SRC_BULLET_PHYSICS_LINEARMATH))
+# OBJ_BULLET_PHYSICS_COLLISION=		$(patsubst %.cpp, $(DIR_OBJ_BULLET_PHYSICS)/%.o, $(SRC_BULLET_PHYSICS_COLLISION))
+# OBJ_BULLET_PHYSICS_DYNAMICS=		$(patsubst %.cpp, $(DIR_OBJ_BULLET_PHYSICS)/%.o, $(SRC_BULLET_PHYSICS_DYNAMICS))
 
-SRC_BULLET_PHYSICS_LINEARMATH+= \
-	$(wildcard \
-		$(DIR_BULLET_PHYSICS_SRC)/LinearMath/*.cpp \
-		)
+# #
 
-SRC_BULLET_PHYSICS_COLLISION+= \
-	$(wildcard \
-		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/BroadphaseCollision/*.cpp \
-		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/CollisionShapes/*.cpp \
-		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/CollisionDispatch/*.cpp \
-		$(DIR_BULLET_PHYSICS_SRC)/BulletCollision/NarrowPhaseCollision/*.cpp \
-		)
+# #######
 
-# TODO: this will be needed for non-static mesh collider support
-# SRC_BULLET_PHYSICS_COLLISION+= $(wildcard $(DIR_BULLET_PHYSICS_SRC)/BulletCollision/Gimpact/*.cpp)
 
-SRC_BULLET_PHYSICS_DYNAMICS+= \
-	$(wildcard \
-		$(DIR_BULLET_PHYSICS_SRC)/BulletDynamics/Dynamics/*.cpp \
-		$(DIR_BULLET_PHYSICS_SRC)/BulletDynamics/Vehicle/*.cpp \
-		$(DIR_BULLET_PHYSICS_SRC)/BulletDynamics/ConstraintSolver/*.cpp) # TODO: useful?
+# ifeq ($(build_mode),release)
 
-#
+# BUILD_FLAG= -O3
 
-OBJ_BULLET_PHYSICS_LINEARMATH=	$(patsubst %.cpp, $(DIR_OBJ_BULLET_PHYSICS)/%.o, $(SRC_BULLET_PHYSICS_LINEARMATH))
-OBJ_BULLET_PHYSICS_COLLISION=		$(patsubst %.cpp, $(DIR_OBJ_BULLET_PHYSICS)/%.o, $(SRC_BULLET_PHYSICS_COLLISION))
-OBJ_BULLET_PHYSICS_DYNAMICS=		$(patsubst %.cpp, $(DIR_OBJ_BULLET_PHYSICS)/%.o, $(SRC_BULLET_PHYSICS_DYNAMICS))
+# else
 
-#
+# BUILD_FLAG= -g3
 
-#######
+# endif
 
 
-ifeq ($(build_mode),release)
+# CXXFLAGS_COMMON_BULLET_PHYSICS += -DBT_NO_PROFILE
+# CXXFLAGS_COMMON_BULLET_PHYSICS += -DSIMD_FORCE_INLINE=inline
+# # CXXFLAGS_COMMON_BULLET_PHYSICS += -DBT_USE_DOUBLE_PRECISION
 
-BUILD_FLAG= -O3
 
-else
+# CXXFLAGS_BULLET_PHYSICS += $(BUILD_FLAG)
+# CXXFLAGS_BULLET_PHYSICS += -std=c++17
+# CXXFLAGS_BULLET_PHYSICS += -I$(DIR_BULLET_PHYSICS_SRC)
+# CXXFLAGS_BULLET_PHYSICS += $(CXXFLAGS_COMMON_BULLET_PHYSICS)
 
-BUILD_FLAG= -g3
+# ifeq ($(build_platform),native)
 
-endif
+# CXX=clang++
+# AR=ar
 
+# else ifeq ($(build_platform),web-wasm)
 
-CXXFLAGS_COMMON_BULLET_PHYSICS += -DBT_NO_PROFILE
-CXXFLAGS_COMMON_BULLET_PHYSICS += -DSIMD_FORCE_INLINE=inline
-# CXXFLAGS_COMMON_BULLET_PHYSICS += -DBT_USE_DOUBLE_PRECISION
+# CXX=em++
+# AR=emar
 
+# endif
 
-CXXFLAGS_BULLET_PHYSICS += $(BUILD_FLAG)
-CXXFLAGS_BULLET_PHYSICS += -std=c++17
-CXXFLAGS_BULLET_PHYSICS += -I$(DIR_BULLET_PHYSICS_SRC)
-CXXFLAGS_BULLET_PHYSICS += $(CXXFLAGS_COMMON_BULLET_PHYSICS)
 
-ifeq ($(build_platform),native)
+# RM=			rm -rf
 
-CXX=clang++
-AR=ar
 
-else ifeq ($(build_platform),web-wasm)
+# #######
 
-CXX=em++
-AR=emar
+# #
+# ## RULE(S)
 
-endif
+# all:	\
+# 	bullet_physics
 
+# ensure_folders:
+# 	@mkdir -p $(DIR_LIB)
 
-RM=			rm -rf
+# bullet_physics: \
+# 	ensure_folders \
+# 	bullet_physics_linearmath \
+# 	bullet_physics_collision \
+# 	bullet_physics_dynamics
 
+# bullet_physics_linearmath: ensure_folders $(OBJ_BULLET_PHYSICS_LINEARMATH)
+# 	@echo ' ---> building $(LOG_INFO): "bullet linear math library"'
+# 	@$(AR) cr $(NAME_BULLET_PHYSICS_LINEARMATH) $(OBJ_BULLET_PHYSICS_LINEARMATH)
+# 	@echo '   --> built $(LOG_INFO): "bullet linear math library"'
 
-#######
+# bullet_physics_collision:	ensure_folders $(OBJ_BULLET_PHYSICS_COLLISION)
+# 	@echo ' ---> building $(LOG_INFO): "bullet collision library"'
+# 	@$(AR) cr $(NAME_BULLET_PHYSICS_COLLISION) $(OBJ_BULLET_PHYSICS_COLLISION)
+# 	@echo '   --> built $(LOG_INFO): "bullet collision library"'
 
-#
-## RULE(S)
+# bullet_physics_dynamics:	ensure_folders $(OBJ_BULLET_PHYSICS_DYNAMICS)
+# 	@echo ' ---> building $(LOG_INFO): "bullet dynamics library"'
+# 	@$(AR) cr $(NAME_BULLET_PHYSICS_DYNAMICS) $(OBJ_BULLET_PHYSICS_DYNAMICS)
+# 	@echo '   --> built $(LOG_INFO): "bullet dynamics library"'
 
-all:	\
-	bullet_physics
+# #
 
-ensure_folders:
-	@mkdir -p $(DIR_LIB)
+# # for every ".cpp" file
+# # => ensure the "obj" folder(s)
+# # => compile in a ".o" file
 
-bullet_physics: \
-	ensure_folders \
-	bullet_physics_linearmath \
-	bullet_physics_collision \
-	bullet_physics_dynamics
+# $(DIR_OBJ_BULLET_PHYSICS)/%.o: %.cpp
+# 	@mkdir -p $(dir $@)
+# 	@echo ' --> processing $(LOG_INFO):' $<
+# 	@$(CXX) $(CXXFLAGS_BULLET_PHYSICS) $< -c -o $@
 
-bullet_physics_linearmath: ensure_folders $(OBJ_BULLET_PHYSICS_LINEARMATH)
-	@echo ' ---> building $(LOG_INFO): "bullet linear math library"'
-	@$(AR) cr $(NAME_BULLET_PHYSICS_LINEARMATH) $(OBJ_BULLET_PHYSICS_LINEARMATH)
-	@echo '   --> built $(LOG_INFO): "bullet linear math library"'
+# #
 
-bullet_physics_collision:	ensure_folders $(OBJ_BULLET_PHYSICS_COLLISION)
-	@echo ' ---> building $(LOG_INFO): "bullet collision library"'
-	@$(AR) cr $(NAME_BULLET_PHYSICS_COLLISION) $(OBJ_BULLET_PHYSICS_COLLISION)
-	@echo '   --> built $(LOG_INFO): "bullet collision library"'
+# clean:
+# 	@echo ' -> cleaning $(LOG_INFO): bullet physics library build file(s)'
+# 	@$(RM) $(DIR_OBJ_BULLET_PHYSICS)
+# 	@echo '   -> cleaned $(LOG_INFO): bullet physics library build file(s)'
 
-bullet_physics_dynamics:	ensure_folders $(OBJ_BULLET_PHYSICS_DYNAMICS)
-	@echo ' ---> building $(LOG_INFO): "bullet dynamics library"'
-	@$(AR) cr $(NAME_BULLET_PHYSICS_DYNAMICS) $(OBJ_BULLET_PHYSICS_DYNAMICS)
-	@echo '   --> built $(LOG_INFO): "bullet dynamics library"'
+# fclean: clean
+# 	@echo ' -> cleaning $(LOG_INFO): bullet physics library file(s)'
+# 	@$(RM) $(NAME_BULLET_PHYSICS_LINEARMATH)
+# 	@$(RM) $(NAME_BULLET_PHYSICS_COLLISION)
+# 	@$(RM) $(NAME_BULLET_PHYSICS_DYNAMICS)
+# 	@echo '   -> cleaned $(LOG_INFO): bullet physics library file(s)'
 
-#
+# re:			fclean all
 
-# for every ".cpp" file
-# => ensure the "obj" folder(s)
-# => compile in a ".o" file
+# .PHONY:	\
+# 		all \
+# 		bullet_physics \
+# 		bullet_physics_linearmath \
+# 		bullet_physics_collision \
+# 		bullet_physics_dynamics \
+# 		clean \
+# 		fclean \
+# 		re
 
-$(DIR_OBJ_BULLET_PHYSICS)/%.o: %.cpp
-	@mkdir -p $(dir $@)
-	@echo ' --> processing $(LOG_INFO):' $<
-	@$(CXX) $(CXXFLAGS_BULLET_PHYSICS) $< -c -o $@
-
-#
-
-clean:
-	@echo ' -> cleaning $(LOG_INFO): bullet physics library build file(s)'
-	@$(RM) $(DIR_OBJ_BULLET_PHYSICS)
-	@echo '   -> cleaned $(LOG_INFO): bullet physics library build file(s)'
-
-fclean: clean
-	@echo ' -> cleaning $(LOG_INFO): bullet physics library file(s)'
-	@$(RM) $(NAME_BULLET_PHYSICS_LINEARMATH)
-	@$(RM) $(NAME_BULLET_PHYSICS_COLLISION)
-	@$(RM) $(NAME_BULLET_PHYSICS_DYNAMICS)
-	@echo '   -> cleaned $(LOG_INFO): bullet physics library file(s)'
-
-re:			fclean all
-
-.PHONY:	\
-		all \
-		bullet_physics \
-		bullet_physics_linearmath \
-		bullet_physics_collision \
-		bullet_physics_dynamics \
-		clean \
-		fclean \
-		re
-
-## RULE(S)
-#
+# ## RULE(S)
+# #

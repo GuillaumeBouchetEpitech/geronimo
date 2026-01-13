@@ -68,8 +68,8 @@ void processCommandLineArgs(Application::Definition& def, int argc, char** argv)
 
 int main(int argc, char** argv) {
   Application::Definition def;
-  def.width = 800;
-  def.height = 600;
+  def.width = 1600;
+  def.height = 900;
 
   processCommandLineArgs(def, argc, argv);
 

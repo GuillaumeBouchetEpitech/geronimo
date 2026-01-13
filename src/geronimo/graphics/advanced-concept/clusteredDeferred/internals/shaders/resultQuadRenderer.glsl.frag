@@ -10,7 +10,7 @@ uniform sampler2D u_clusterDataTexture;
 uniform sampler2D u_lightsDataTexture;
 
 uniform mat4 u_viewMatrix;
-uniform float u_ambiantCoef;
+uniform float u_ambientCoef;
 uniform vec3 u_viewPos;
 uniform vec3 u_sunLightDirection;
 
@@ -105,7 +105,7 @@ void main(void)
 
 
 
-    float bestDiffuseCoef = u_ambiantCoef;
+    float bestDiffuseCoef = u_ambientCoef;
     float bestSpecularCoef = 0.0;
 
     int maxIterations = min(clusterNumLights, u_maxLightsPerCluster);

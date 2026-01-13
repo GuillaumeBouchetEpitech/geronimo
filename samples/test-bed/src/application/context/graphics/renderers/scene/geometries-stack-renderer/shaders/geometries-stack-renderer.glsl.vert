@@ -13,7 +13,7 @@ in vec3 a_offsetScale;
 in vec4 a_offsetColor;
 in float a_offsetLight;
 
-out vec4 v_color;
+flat out vec4 v_color;
 out vec3 v_worldSpacePosition;
 out vec3 v_worldSpaceNormal;
 flat out float v_lightMode;

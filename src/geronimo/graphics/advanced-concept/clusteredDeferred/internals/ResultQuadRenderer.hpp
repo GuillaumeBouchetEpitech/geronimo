@@ -40,7 +40,7 @@ public:
               const gero::graphics::DataTexture& clusterDataTexture,
               const gero::graphics::DataTexture& lightsDataTexture,
               float inZStride,
-              float ambiantLightCoef);
+              float ambientLightCoef);
 
 private:
   glm::ivec2 _frameSize = {0, 0};

@@ -78,11 +78,6 @@ void bind(uint32_t vaoId) { glCheck(glBindVertexArray(vaoId)); }
 //
 //
 
-std::string getVersion() {
-  const uint8_t* msg = glGetString(GL_VERSION);
-  return std::string(reinterpret_cast<const char*>(msg));
-}
-
 void setViewport(int32_t x, int32_t y, uint32_t width, uint32_t height) {
   glCheck(glViewport(x, y, GLsizei(width), GLsizei(height)));
 }
@@ -325,9 +320,15 @@ void clearDepth(float value) { glCheck(glClearDepthf(value)); }
 //   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 // }
 
+std::string getVersion() {
+  const uint8_t* msg = glGetString(GL_VERSION);
+  return std::string(reinterpret_cast<const char*>(msg));
+}
+
 int32_t getMaxTextureSize() {
-  if (s_maxTextureSize < 0)
+  if (s_maxTextureSize < 0) {
     glCheck(glGetIntegerv(GL_MAX_TEXTURE_SIZE, &s_maxTextureSize));
+  }
   return s_maxTextureSize;
 }
 

@@ -30,16 +30,17 @@ SDLWindowWrapper::SDLWindowWrapper(const char* name,
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, asValue(openGlEsVersion));
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-
-  // SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-  // SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+  // SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
   const int32_t posX = SDL_WINDOWPOS_UNDEFINED;
   const int32_t posY = SDL_WINDOWPOS_UNDEFINED;
   uint32_t flags = SDL_WINDOW_OPENGL;
   if (enableResize)
     flags |= SDL_WINDOW_RESIZABLE;
+  // if (isFullscreen)
+  //   flags |= SDL_WINDOW_FULLSCREEN;
 
   _window = SDL_CreateWindow(name, posX, posY, int32_t(width), int32_t(height), flags);
 

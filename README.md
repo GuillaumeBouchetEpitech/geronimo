@@ -27,70 +27,7 @@ https://guillaumebouchetepitech.github.io/geronimo/samples/test-bed/dist/index.h
 
 ## Diagrams
 
-```mermaid
-
-mindmap
-  root((gero))
-    ((system))
-      containers
-        dynamic
-          double<br>linked<br>list
-          heap array
-        static
-          heap<br>grid<br>array
-        weak ref<br>heap array<br>pool
-      utils
-        math
-        string
-        file
-        parser
-      multi threading
-      logger
-    ((graphics))
-      camera
-      sld2
-      obj loader
-      primitive<br>geometries<br>builder
-      OpenGL ES3
-        context
-        image
-        textures
-          color
-          depth
-          data
-        shader
-          program
-          builder
-        geometry
-          instance
-          builder
-        vertex<br>buffer<br>object
-        vertex<br>buffer<br>array
-        frame<br>buffer
-        render<br>buffer
-        resource<br>manager
-    ((physics))
-      bullet<br>physics
-        physic<br>world
-        physic<br>shape
-        physic<br>body
-          instance
-          manager
-        physic<br>vehicle
-          instance
-          manager
-        physic<br>query
-          convex<br>shape
-          ray<br>cast
-          convex<br>cast
-        physic<br>constraints
-          hinge
-          6dof
-    ((audio))
-      OpenAL<br>context
-      ogg loaded
-
-```
+!["./diagrams/mindmap.svg"](./diagrams/mindmap.svg)
 
 
 ```mermaid

@@ -41,7 +41,7 @@ void ResultQuadRenderer::initialize(const std::string& inRootPath, const glm::iv
 
     .addUniform("u_viewMatrix")
 
-    .addUniform("u_ambiantCoef")
+    .addUniform("u_ambientCoef")
     .addUniform("u_viewPos")
     .addUniform("u_sunLightDirection")
 
@@ -114,7 +114,7 @@ void ResultQuadRenderer::render(const glm::vec3& sunLightDirection,
                                 const gero::graphics::DataTexture& clusterDataTexture,
                                 const gero::graphics::DataTexture& lightsDataTexture,
                                 float inZStride,
-                                float ambiantLightCoef) {
+                                float ambientLightCoef) {
 
   if (inSceneCamera.getProjectionType() != Camera::ProjectionType::perspective)
     D_THROW(std::runtime_error, "scene camera is not set with a perspective projection");
@@ -123,7 +123,7 @@ void ResultQuadRenderer::render(const glm::vec3& sunLightDirection,
 
   _quadShader->preBind([&](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", inHudCamera.getMatricesData().composed);
-    bound.setUniform("u_ambiantCoef", ambiantLightCoef);
+    bound.setUniform("u_ambientCoef", ambientLightCoef);
     bound.setUniform("u_viewPos", inSceneCamera.getEye());
     bound.setUniform("u_sunLightDirection", sunLightDirection);
 

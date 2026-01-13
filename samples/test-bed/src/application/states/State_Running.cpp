@@ -48,6 +48,10 @@ void State_Running::handleEvent(const SDL_Event& event) {
     if (keyboard.isPressed(SDLK_h)) {
       context.logic.pauseMode = !context.logic.pauseMode;
     }
+    if (keyboard.isPressed(SDLK_k)) {
+      context.logic.pauseMode = true;
+      context.logic.framesLeftToPlay += 1;
+    }
 
     keyboard.updateAsReleased(event.key.keysym.sym);
 
@@ -132,7 +136,12 @@ void State_Running::update(uint32_t delta) {
     // if (context.inputs.mouse.buttons[SDL_BUTTON_LEFT] == true) {
     // }
 
-    if (context.logic.pauseMode == false) {
+    if (context.logic.pauseMode == false || context.logic.framesLeftToPlay > 0) {
+      if (context.logic.framesLeftToPlay > 0) {
+        context.logic.framesLeftToPlay -= 1;
+      }
+
+      context.logic.flockingManager->update(elapsedTime);
 
       context.logic.time += elapsedTime;
 

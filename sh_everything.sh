@@ -27,6 +27,8 @@ func_ensure_pkg() {
 }
 
 func_ensure_pkg libsdl2-dev
+func_ensure_pkg libgles2
+func_ensure_pkg libopenal-dev
 
 #
 #
@@ -156,6 +158,22 @@ func_handle_third_parties() {
       "master" \
       "not-interactive" || exit 1
 
+    sh sh_install_one_git_thirdparty.sh \
+      "$DIR_DEPENDENCIES" \
+      "ENTT" \
+      "entt" \
+      "skypjack/entt" \
+      "v3.16.0" \
+      "not-interactive" || exit 1
+
+    sh sh_install_one_git_thirdparty.sh \
+      "$DIR_DEPENDENCIES" \
+      "JSON" \
+      "json" \
+      "nlohmann/json" \
+      "v3.11.3" \
+      "not-interactive" || exit 1
+
     tree -L 1 "$DIR_DEPENDENCIES"
 
   }
@@ -224,6 +242,12 @@ func_build_main_application() {
   echo "#"
 
   make build_mode="release" build_platform="native" all -j4
+
+  echo "#"
+  echo "# native version (debug)"
+  echo "#"
+
+  make build_mode="debug" build_platform="native" all -j4
 
   echo "#"
   echo "# web-wasm version"

@@ -1,0 +1,193 @@
+digraph {
+
+  // bgcolor="#aaaaaa"
+  bgcolor="transparent"
+
+  compound=true;
+
+
+  node [
+    shape="box"
+    style=filled
+    fontcolor="#eeeeee"
+    fillcolor="#666644"
+  ]
+
+  edge [
+    fontcolor="#aa0000"
+    color="#aaaaaa"
+
+    penwidth=4.0
+
+    len=0.2
+    // minlen=10.0
+  ]
+
+  gero [label="gero" shape=ellipse]
+
+
+  node [
+    shape="box"
+    style=filled
+    fontcolor="#eeeeee"
+    fillcolor="#666666"
+  ]
+
+  system [label="system"]
+  gero -> system
+    containers [label="containers"]
+    system -> containers
+      dynamic [label="dynamic"]
+      containers -> dynamic
+        linked_list [label="double\nlinked\nlist"]
+        dynamic -> linked_list
+        heap_array [label="heap array"]
+        dynamic -> heap_array
+      static [label="static"]
+      containers -> static
+        heap_grid_array [label="heap grid array"]
+        static -> heap_grid_array
+      weak_ref [label="weak ref\nheap array\npool"]
+      containers -> weak_ref
+    utils [label="utils"]
+    system -> utils
+      math [label="math"]
+      utils -> math
+      string [label="string"]
+      utils -> string
+      file [label="file"]
+      utils -> file
+      parser [label="parser"]
+      utils -> parser
+    multi_threading [label="multi\nthreading"]
+    system -> multi_threading
+    logger [label="logger"]
+    system -> logger
+
+
+
+
+  node [
+    shape="box"
+    style=filled
+    fontcolor="#eeeeee"
+    fillcolor="#664444"
+  ]
+
+  edge [
+    color="#aa0000"
+  ]
+
+  graphics [label="graphics"]
+  gero -> graphics
+
+    camera [label="camera"]
+    graphics -> camera
+    sdl2 [label="sdl2"]
+    graphics -> sdl2
+    obj_loader [label="obj\nloader"]
+    graphics -> obj_loader
+    prim_geo_bldr [label="primitive\ngeometries\nbuilder"]
+    graphics -> prim_geo_bldr
+    openGL_es3 [label="OpenGL\nES3"]
+    graphics -> openGL_es3
+      context [label="context"]
+      openGL_es3 -> context
+      image [label="image"]
+      openGL_es3 -> image
+      textures [label="textures"]
+      openGL_es3 -> textures
+        color [label="color"]
+        textures -> color
+        depth [label="depth"]
+        textures -> depth
+        data [label="data"]
+        textures -> data
+      shader [label="shader"]
+      openGL_es3 -> shader
+        program [label="program"]
+        shader -> program
+        shader_builder [label="shader\nbuilder"]
+        shader -> shader_builder
+      geometry [label="geometry"]
+      openGL_es3 -> geometry
+        instancing [label="instancing"]
+        geometry -> instancing
+        geo_builder [label="geometry\nbuilder"]
+        geometry -> geo_builder
+      vbo [label="vbo"]
+      openGL_es3 -> vbo
+      vao [label="vao"]
+      openGL_es3 -> vao
+      frame_buffer [label="frame\nbuffer"]
+      openGL_es3 -> frame_buffer
+      render_buffer [label="render\nbuffer"]
+      openGL_es3 -> render_buffer
+      resc_mangr [label="resource\nmanager"]
+      openGL_es3 -> resc_mangr
+
+  node [
+    shape="box"
+    style=filled
+    fontcolor="#eeeeee"
+    fillcolor="#446644"
+  ]
+
+  edge [
+    color="#00aa00"
+  ]
+
+  physics [label="physics"]
+  gero -> physics
+    worlds [label="worlds"]
+    physics -> worlds
+    shapes [label="shapes"]
+    physics -> shapes
+    bodies [label="bodies"]
+    physics -> bodies
+      body_instances [label="body\ninstances"]
+      bodies -> body_instances
+      body_manager [label="body\nmanager"]
+      bodies -> body_manager
+    vehicles [label="vehicles"]
+    physics -> vehicles
+      vehcl_instances [label="vehicle\ninstances"]
+      vehicles -> vehcl_instances
+      vehcl_manager [label="vehicle\nmanager"]
+      vehicles -> vehcl_manager
+    queries [label="queries"]
+    physics -> queries
+      ray_cast [label="ray\ncast"]
+      queries -> ray_cast
+      convex_sweep [label="convex\nsweep"]
+      queries -> convex_sweep
+      convex_shape [label="convex\nshape"]
+      queries -> convex_shape
+    constraints [label="constraints"]
+    physics -> constraints
+      hinge [label="hinge"]
+      constraints -> hinge
+      sixdof [label="6dof"]
+      constraints -> sixdof
+
+  node [
+    shape="box"
+    style=filled
+    fontcolor="#eeeeee"
+    fillcolor="#444466"
+  ]
+
+  edge [
+    color="#0000aa"
+  ]
+
+  audio [label="audio"]
+  gero -> audio
+    audio_context [label="audio\ncontext"]
+    audio -> audio_context
+    ogg_loader [label="ogg\nloader"]
+    audio -> ogg_loader
+
+
+
+}

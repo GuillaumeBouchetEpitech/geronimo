@@ -1,0 +1,705 @@
+
+
+{
+  "definitions": {
+
+    "projectiles": [
+      {
+        "id": 1,
+        "speed": 20.0,
+        "max-distance": 30.0
+      }
+    ],
+    "weapons": [
+      {
+        "id": 1,
+        "projectile-id": 1,
+        "reload-cool-down": 0.3,
+        "shot-cool-down": 0.06125,
+        "clip-size": 3,
+        "spread": 0.01
+      },
+      {
+        "id": 2,
+        "projectile-id": 1,
+        "reload-cool-down": 0.3,
+        "shot-cool-down": 0.06125,
+        "clip-size": 100,
+        "spread": 0.02
+      },
+      {
+        "id": 3,
+        // "projectile-id": 1,
+        "ship-id": 3,
+        "reload-cool-down": 8.0,
+        "shot-cool-down": 0.1,
+        "clip-size": 1,
+        "spread": 0.0
+      }
+    ],
+    "turrets": [
+      {
+        "id": 1,
+        "weapon-id": 1,
+        "aiming-speed": 5.0,
+        "aiming-range": 25,
+        "shooting-range": 20,
+        "models": {
+          "basket": "jet-fighter-turret-gun-basket",
+          "mantlet": "jet-fighter-turret-gun-mantlet",
+          "barrel": "jet-fighter-turret-gun-barrel"
+        }
+      },
+      {
+        "id": 2,
+        "weapon-id": 2,
+        "aiming-speed": 4.0,
+        "aiming-range": 35,
+        "shooting-range": 30,
+        "models": {
+          "basket": "capital-ship-turret-gun-basket",
+          "mantlet": "capital-ship-turret-gun-mantlet",
+          "barrel": "capital-ship-turret-gun-barrel"
+        }
+      },
+      {
+        "id": 3,
+        "weapon-id": 3,
+        "aiming-speed": 3.0,
+        "aiming-range": 45,
+        "shooting-range": 40,
+
+        "min-shooting-radial-distance": 0.3,
+
+        "models": {
+          "basket": "missile-turret-gun-basket",
+          "mantlet": "missile-turret-gun-mantlet",
+          "barrel": "missile-turret-gun-barrel"
+        }
+      }
+    ],
+    "ships": [
+      {
+        "id": 1,
+
+        "flocking-type": 1,
+
+        "max-force": 0.1,
+        "max-velocity": 4.0,
+        "turn-speed": 2.0,
+        "wander-ratio": 0.0,
+        "separate-radius": 2.5,
+
+        "blast-radius": 0.8,
+
+        "hull-model": "jet-fighter-hull",
+        "turrets": [
+          {
+            "turret-id": 1,
+            "up-axis-min-dot-val": -0.2,
+            "up-axis-max-dot-val": 0.9,
+            "pos": [0, 0, 0.45]
+          }
+        ]
+      },
+      {
+        "id": 2,
+
+        "flocking-type": 2,
+        "max-force": 0.1,
+        "max-velocity": 1.0,
+        "turn-speed": 1.0,
+        "wander-ratio": 0.0,
+        "separate-radius": 4.0,
+
+        "blast-radius": 1.6,
+
+        "hull-model": "capital-ship-hull",
+
+        "shield-model": "capital-shield-bubble",
+
+        // "shields": [
+
+        //   {
+        //     "pos": [0.0, 0.0, 0.0],
+        //     // "quat": [
+        //     //   { "axis": [1,0,0], "angle": -0.785 }
+        //     // ]
+        //     "scale": [5,3,3],
+        //     "health": 300
+        //   }
+
+        // ],
+
+        "turrets": [
+
+
+          {
+            "turret-id": 2,
+            "up-axis-min-dot-val": -0.15,
+            "up-axis-max-dot-val": 0.9,
+            "forward-axis-min-dot-val": 0.8,
+            "pos": [0.35, 0.49, 0.53],
+            "quat": [
+              { "axis": [1,0,0], "angle": -0.785 }
+            ]
+          },
+          {
+            "turret-id": 2,
+            "up-axis-min-dot-val": -0.15,
+            "up-axis-max-dot-val": 0.9,
+            "forward-axis-min-dot-val": 0.8,
+            "pos": [0.35, -0.49, 0.53],
+            "quat": [
+              { "axis": [1,0,0], "angle": 0.785 }
+            ]
+          },
+          {
+            "turret-id": 2,
+            "up-axis-min-dot-val": -0.15,
+            "up-axis-max-dot-val": 0.9,
+            "forward-axis-min-dot-val": 0.8,
+            "pos": [0.35, 0.49, -0.45],
+            "quat": [
+              { "axis": [1,0,0], "angle": -2.355 }
+            ]
+          },
+          {
+            "turret-id": 2,
+            "up-axis-min-dot-val": -0.15,
+            "up-axis-max-dot-val": 0.9,
+            "forward-axis-min-dot-val": 0.8,
+            "pos": [0.35, -0.49, -0.45],
+            "quat": [
+              { "axis": [1,0,0], "angle": 2.355 }
+            ]
+          },
+
+
+
+
+          {
+            "turret-id": 3,
+            "up-axis-min-dot-val": -0.01,
+            "up-axis-max-dot-val": 0.9,
+            // "forward-axis-min-dot-val": 0.7,
+            "pos": [-0.45, -0.6, 0.05],
+            "quat": [
+              { "axis": [1,0,0], "angle": 1.57 }
+            ]
+          },
+          {
+            "turret-id": 3,
+            "up-axis-min-dot-val": -0.01,
+            "up-axis-max-dot-val": 0.9,
+            // "forward-axis-min-dot-val": 0.7,
+            "pos": [-0.45, 0.6, 0.05],
+            "quat": [
+              { "axis": [1,0,0], "angle": -1.57 }
+            ]
+          }
+
+
+
+
+        ]
+      },
+      {
+        "id": 3,
+
+        "flocking-type": 3,
+        "max-force": 2.0,
+        "max-velocity": 7.0,
+        "turn-speed": 6.0,
+        "wander-ratio": 0.0,
+        "separate-radius": 0.4,
+
+        // for missiles (suicide attack)
+        "proximity-radius": 0.5,
+        // for missiles (fuel limit)
+        "max-time-alive": 7,
+        // "max-time-alive": 70,
+
+        "blast-radius": 0.2,
+
+        "hull-model": "missile-hull"
+      }
+
+    ]
+
+  },
+
+  "voxels": {
+
+    "blueprints": {
+      "entities": [
+
+        ///!MARK: jet fighter
+
+        {
+          "name": "jet-fighter-hull",
+          "pos": [20,22,20],
+          "scale": 0.1,
+          "mesh-pos": [-4.5, -2.5, -2.0],
+          "matrix": {
+            "size": [10,5,4],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // dig turret spot
+              {"type": "data-fill-rect", "value": 0, "min": [2,0,3], "max": [6,5,4]},
+              // dig right edge for the engine
+              {"type": "data-fill-rect", "value": 0, "min": [0,0,0], "max": [9,0,1]},
+              // dig left edge for the engine
+              {"type": "data-fill-rect", "value": 0, "min": [0,4,0], "max": [9,4,1]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [2,2,2], "max": [7,2,2]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+        {
+          "name": "jet-fighter-right-engine",
+          "parent-name": "jet-fighter-hull",
+          "pos": [-4,-3,-1],
+          "quat": [
+            { "axis": [1,0,0], "angle": 0.4 }
+          ],
+          "mesh-pos": [0, -2.5, -1.5],
+          "matrix": {
+            "size": [7,4,3],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // set the engine exhaust voxel (yellow)
+              {"type": "data-fill-set", "value": 14, "pos": [0,2,1]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [1,2,1], "max": [5,2,1]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+        {
+          "name": "jet-fighter-left-engine",
+          "parent-name": "jet-fighter-hull",
+          "pos": [-4,3,-1],
+          "quat": [
+            { "axis": [1,0,0], "angle": -0.4 }
+          ],
+          "mesh-pos": [0, -1.5, -1.5],
+          "matrix": {
+            "size": [7,4,3],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // set the engine exhaust voxel (yellow)
+              {"type": "data-fill-set", "value": 14, "pos": [0,1,1]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [1,1,1], "max": [5,1,1]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+
+
+        ///!MARK: jet fighter turret
+
+
+        {
+          "name": "jet-fighter-turret-gun-barrel",
+          "pos": [20, 22, 20.45],
+          "mesh-pos": [-2.5, -1.5, -0.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [7,3,1],
+            "operations": [
+              // center part
+              {"type": "data-fill-rect", "value": 3, "min": [0,1,0], "max": [2,1,0]},
+              // right part
+              {"type": "data-fill-rect", "value": 3, "min": [1,0,0], "max": [6,0,0]},
+              // left part
+              {"type": "data-fill-rect", "value": 3, "min": [1,2,0], "max": [6,2,0]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [2,0,0], "max": [2,2,2]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+        {
+          "name": "jet-fighter-turret-gun-mantlet",
+          "pos": [20, 22, 20.45],
+          "mesh-pos": [-1.5, -2.5, -3.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [3,5,4],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // dig center part
+              {"type": "data-fill-rect", "value": 0, "min": [0,1,2], "max": [5,3,3]},
+              // dig center lower part
+              {"type": "data-fill-rect", "value": 0, "min": [0,2,1], "max": [5,2,1]},
+              // dig left lowest part
+              {"type": "data-fill-rect", "value": 0, "min": [0,0,0], "max": [5,0,0]},
+              {"type": "data-fill-rect", "value": 0, "min": [0,4,0], "max": [5,4,0]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [1,0,0], "max": [1,5,4]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+        {
+          "name": "jet-fighter-turret-gun-basket",
+          "pos": [20, 22, 20.45],
+          "mesh-pos": [-2.5, -2.5, -3.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [5,5,1],
+            "operations": [
+              // start with an empty shape
+              {"type": "data-fill-all", "value": 0},
+              // plate 1
+              {"type": "data-fill-rect", "value": 3, "min": [1,0,0], "max": [3,5,0]},
+              // plate 2
+              {"type": "data-fill-rect", "value": 3, "min": [0,1,0], "max": [5,3,0]},
+              // dig center
+              {"type": "data-fill-rect", "value": 0, "min": [1,1,0], "max": [3,3,0]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+
+        ///!MARK: missile
+
+        {
+          "name": "missile-hull",
+          "pos": [20,10,20],
+          "scale": 0.1,
+          "mesh-pos": [-1.5, -1.5, -1.5],
+          "matrix": {
+            "size": [5,3,3],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 0},
+              // thick horizontal slab
+              {"type": "data-fill-rect", "value": 4, "min": [0,0,1], "max": [0,2,1]},
+              // thin vertical slab
+              {"type": "data-fill-rect", "value": 4, "min": [0,1,0], "max": [0,1,2]},
+              // thick center pillar
+              {"type": "data-fill-rect", "value": 4, "min": [0,1,1], "max": [4,1,1]},
+              // engine exhaust
+              {"type": "data-fill-rect", "value": 14, "min": [0,1,1], "max": [0,1,1]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [2,1,1], "max": [2,1,1]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+        ///!MARK: capital ship
+
+        {
+          "name": "capital-ship-hull",
+          "pos": [20,15,20],
+          "scale": 0.1,
+          "mesh-pos": [-10.0, -2.5, -2.5],
+          "matrix": {
+            "size": [20,5,6],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 0},
+              // thick horizontal slab
+              {"type": "data-fill-rect", "value": 4, "min": [0,0,2], "max": [20,5,3]},
+              // thin vertical slab
+              {"type": "data-fill-rect", "value": 4, "min": [0,2,0], "max": [20,2,5]},
+              // thick center pillar
+              {"type": "data-fill-rect", "value": 4, "min": [0,1,1], "max": [20,3,4]},
+              // front armor
+              {"type": "data-fill-rect", "value": 4, "min": [17,0,0], "max": [20,5,6]},
+              // missile turrets thick support
+              {"type": "data-fill-rect", "value": 4, "min": [3,0,0], "max": [7,5,6]},
+              // engine exhaust
+              {"type": "data-fill-rect", "value": 14, "min": [0,2,2], "max": [0,2,3]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [5,2,3], "max": [15,2,3]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 7}
+            ]
+          }
+        },
+
+        {
+          "name": "capital-ship-jacket-hull",
+          "parent-name": "capital-ship-hull",
+          "pos": [0,0,0],
+          "scale": 0.1,
+          "mesh-pos": [0.0, 0.0, -4.5],
+          "mesh-quat": [
+            { "axis": [1,0,0], "angle": 0.785 }
+          ],
+          "matrix": {
+            "size": [7,7,7],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // dig center
+              {"type": "data-fill-rect", "value": 0, "min": [0,1,1], "max": [7,5,5]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 7}
+            ]
+          }
+        },
+
+
+        ///!MARK: capital-shield-bubble
+
+        {
+          "name": "capital-shield-bubble",
+          "pos": [0,0,0],
+          "scale": 0.1,
+          "mesh-pos": [-22.5, -19.5, -19.5],
+          "matrix": {
+            "size": [50,40,40],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 0},
+
+              {"type": "data-fill-ellipsoid", "center": [24,19,19], "radius": [24,19,19], "value": 13 },
+              {"type": "data-fill-ellipsoid", "center": [24,19,19], "radius": [22,17,17], "value": 0 },
+              // // thick horizontal slab
+              // {"type": "data-fill-rect", "value": 4, "min": [0,0,2], "max": [20,5,3]},
+              // // thin vertical slab
+              // {"type": "data-fill-rect", "value": 4, "min": [0,2,0], "max": [20,2,5]},
+              // // thick center pillar
+              // {"type": "data-fill-rect", "value": 4, "min": [0,1,1], "max": [20,3,4]},
+              // // front armor
+              // {"type": "data-fill-rect", "value": 4, "min": [17,0,0], "max": [20,5,6]},
+              // // missile turrets thick support
+              // {"type": "data-fill-rect", "value": 4, "min": [3,0,0], "max": [7,5,6]},
+              // // engine exhaust
+              // {"type": "data-fill-rect", "value": 14, "min": [0,2,2], "max": [0,2,3]},
+              // // core part
+              // {"type": "data-swap-rect", "value": 15, "min": [5,2,3], "max": [15,2,3]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+
+        ///!MARK: capital ship turret
+
+        {
+          "name": "capital-ship-turret-gun-barrel",
+          "pos": [20.35, 15.49, 20.535],
+          "quat": [
+            { "axis": [1,0,0], "angle": -0.785 }
+          ],
+          "mesh-pos": [-2.5, -2.5, -2.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [7,4,4],
+            "operations": [
+              // center part
+              {"type": "data-fill-rect", "value": 3, "min": [0,2,2], "max": [2,2,2]},
+              // horizontal part
+              {"type": "data-fill-rect", "value": 3, "min": [1,1,2], "max": [2,3,2]},
+              // bottom part
+              {"type": "data-fill-rect", "value": 3, "min": [1,2,1], "max": [6,2,1]},
+              // up part
+              {"type": "data-fill-rect", "value": 3, "min": [1,2,3], "max": [6,2,3]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [2,0,1], "max": [2,2,1]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 7}
+            ]
+          }
+        },
+
+        {
+          "name": "capital-ship-turret-gun-mantlet",
+          "pos": [20.35, 15.49, 20.535],
+          "quat": [
+            { "axis": [1,0,0], "angle": -0.785 }
+          ],
+          "mesh-pos": [-1.5, -2.5, -3.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [3,5,4],
+            // "size": [5,5,6],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // dig center part
+              {"type": "data-fill-rect", "value": 0, "min": [0,1,2], "max": [5,3,3]},
+              // dig center lower part
+              {"type": "data-fill-rect", "value": 0, "min": [0,2,1], "max": [5,2,1]},
+              // dig left lowest part
+              {"type": "data-fill-rect", "value": 0, "min": [0,0,0], "max": [5,0,0]},
+              {"type": "data-fill-rect", "value": 0, "min": [0,4,0], "max": [5,4,0]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [1,0,0], "max": [1,5,4]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 7}
+            ]
+          }
+        },
+        {
+          "name": "capital-ship-turret-gun-mantlet-frontal-armor",
+          "parent-name": "capital-ship-turret-gun-mantlet",
+          "pos": [1.6, 0.0, 0.8],
+          "quat": [
+            { "axis": [0,1,0], "angle": -0.4 }
+          ],
+          "mesh-pos": [-3.5, -3.5, -3.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [4,7,5],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // dig center part
+              {"type": "data-fill-rect", "value": 0, "min": [0,3,0], "max": [3,3,4]},
+              // dig interior part
+              {"type": "data-fill-rect", "value": 0, "min": [0,1,0], "max": [2,5,3]},
+              // dig top back part
+              {"type": "data-fill-rect", "value": 0, "min": [0,0,4], "max": [0,6,4]},
+              // dig bottom middle part
+              {"type": "data-fill-rect", "value": 0, "min": [0,0,0], "max": [2,6,0]},
+              // dig bottom back part
+              {"type": "data-fill-rect", "value": 0, "min": [0,0,0], "max": [0,6,1]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 7}
+            ]
+          }
+        },
+
+        {
+          "name": "capital-ship-turret-gun-basket",
+          "pos": [20.35, 15.49, 20.535],
+          "quat": [
+            { "axis": [1,0,0], "angle": -0.785 }
+          ],
+          "mesh-pos": [-3.5, -3.5, -3.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [7,7,1],
+            "operations": [
+              // start with an empty shape
+              {"type": "data-fill-all", "value": 0},
+              // plate 1
+              {"type": "data-fill-rect", "value": 3, "min": [1,0,0], "max": [5,6,0]},
+              // plate 2
+              {"type": "data-fill-rect", "value": 3, "min": [0,1,0], "max": [6,5,0]},
+              // dig center
+              {"type": "data-fill-rect", "value": 0, "min": [2,2,0], "max": [4,4,0]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 7}
+            ]
+          }
+        },
+
+
+
+        ///!MARK: missile turret
+
+
+        {
+          "name": "missile-turret-gun-barrel",
+          "pos": [18, 22, 20.45],
+          "mesh-pos": [-2.5, -1.5, -1.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [7,3,4],
+            "operations": [
+              // center part
+              {"type": "data-fill-rect", "value": 3, "min": [0,1,1], "max": [2,1,1]},
+              // right part
+              {"type": "data-fill-rect", "value": 3, "min": [1,0,1], "max": [6,0,1]},
+              // left part
+              {"type": "data-fill-rect", "value": 3, "min": [1,2,1], "max": [6,2,1]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [2,0,0], "max": [2,2,2]},
+
+              // center part
+              {"type": "data-fill-rect", "value": 3, "min": [0,1,2], "max": [2,1,2]},
+              // bottom part
+              {"type": "data-fill-rect", "value": 3, "min": [1,1,0], "max": [6,1,0]},
+              // right part
+              {"type": "data-fill-rect", "value": 3, "min": [1,0,2], "max": [6,0,2]},
+              // left part
+              {"type": "data-fill-rect", "value": 3, "min": [1,2,2], "max": [6,2,2]},
+              // top part
+              {"type": "data-fill-rect", "value": 3, "min": [1,1,3], "max": [6,1,3]},
+
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+        {
+          "name": "missile-turret-gun-mantlet",
+          "pos": [18, 22, 20.45],
+          "mesh-pos": [-1.5, -2.5, -3.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [3,5,4],
+            "operations": [
+              // start with a filled shape
+              {"type": "data-fill-all", "value": 4},
+              // dig center part
+              {"type": "data-fill-rect", "value": 0, "min": [0,1,2], "max": [5,3,3]},
+              // dig center lower part
+              {"type": "data-fill-rect", "value": 0, "min": [0,2,1], "max": [5,2,1]},
+              // dig left lowest part
+              {"type": "data-fill-rect", "value": 0, "min": [0,0,0], "max": [5,0,0]},
+              {"type": "data-fill-rect", "value": 0, "min": [0,4,0], "max": [5,4,0]},
+              // core part
+              {"type": "data-swap-rect", "value": 15, "min": [1,0,0], "max": [1,5,4]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        },
+
+        {
+          "name": "missile-turret-gun-basket",
+          "pos": [18, 22, 20.45],
+          "mesh-pos": [-2.5, -2.5, -3.5],
+          "scale": 0.1,
+          "matrix": {
+            "size": [5,5,2],
+            "operations": [
+              // start with an empty shape
+              {"type": "data-fill-all", "value": 0},
+              // plate 1
+              {"type": "data-fill-rect", "value": 3, "min": [1,0,0], "max": [3,5,0]},
+              // plate 2
+              {"type": "data-fill-rect", "value": 3, "min": [0,1,0], "max": [5,3,0]},
+              // dig center
+              {"type": "data-fill-rect", "value": 0, "min": [1,1,0], "max": [3,3,0]},
+              // all voxels at X health point
+              {"type": "health-fill-all", "value": 1}
+            ]
+          }
+        }
+
+
+      ]
+    }
+
+  }
+}
+

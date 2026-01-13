@@ -6,6 +6,8 @@
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/math/validation-helpers.hpp"
 
+// #include <charconv>
+
 namespace {
 
 std::optional<float> _getValidFloat(const std::string_view toSearch) {
@@ -20,6 +22,28 @@ std::optional<float> _getValidFloat(const std::string_view toSearch) {
 
 namespace gero {
 namespace valuesParsers {
+
+//
+//
+//
+
+// std::optional<int32_t> Parse::parseInt(const std::string_view toSearch, int32_t base /*= 10*/)
+// {
+//   int32_t value = 0;
+//   if (std::from_chars(toSearch.data(), toSearch.data() + toSearch.size(), value, base).ec == std::errc{}) {
+//     return value;
+//   }
+//   return std::nullopt;
+// }
+
+// std::optional<glm::ivec2> parseIntVec2(const std::string_view toSearch, int32_t base = 10)
+// {
+//   int32_t value = 0;
+//   if (std::from_chars(toSearch.data(), toSearch.data() + toSearch.size(), value, base).ec == std::errc{}) {
+//     return value;
+//   }
+//   return std::nullopt;
+// }
 
 //
 //

@@ -20,3 +20,5 @@
 #include "dependencies/bullet3/src/BulletCollision/CollisionDispatch/btGhostObject.h"
 
 #include "dependencies/bullet3/src/BulletCollision/NarrowPhaseCollision/btRaycastCallback.h"
+
+#include "dependencies/bullet3/src/BulletCollision/Gimpact/btGImpactShape.h"
