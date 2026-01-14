@@ -1,0 +1,102 @@
+digraph {
+
+  // bgcolor="#aaaaaa"
+  bgcolor="transparent"
+
+  rankdir="LR"
+
+  compound=true;
+
+
+  node [
+    shape="box"
+    style=filled
+    fontcolor="#eeeeee"
+    fillcolor="#666644"
+  ]
+
+  edge [
+    fontcolor="#aa0000"
+    color="#aaaaaa"
+
+    penwidth=4.0
+
+    len=0.2
+    // minlen=10.0
+  ]
+
+  gero [label="gero" shape=ellipse]
+
+
+  node [
+    shape="box"
+    style=filled
+    fontcolor="#eeeeee"
+    fillcolor="#666666"
+  ]
+
+  subgraph system_graph {
+    cluster=true
+    bgcolor="#666666"
+    label="system"
+
+    system [label="system"]
+
+    glm [label="glm"]
+    system -> glm
+    entt [label="entt"]
+    system -> entt
+    json [label="json"]
+    system -> json
+  }
+
+  gero -> system
+
+  subgraph graphics_graph {
+    cluster=true
+    bgcolor="#664444"
+    label="graphics"
+
+    graphics [label="graphics"]
+
+    sdl2 [label="SDL2"]
+    graphics -> sdl2
+    opengles3 [label="OpenGL ES3"]
+    graphics -> opengles3
+    tinyObj [label="TinyObj"]
+    graphics -> tinyObj
+    stb_image [label="stb::stb_image"]
+    graphics -> stb_image
+  }
+
+  system -> graphics
+
+  subgraph physics_graph {
+    cluster=true
+    bgcolor="#446644"
+    label="physics"
+
+    physics [label="physics"]
+
+    bullet3 [label="bullet3"]
+    physics -> bullet3
+  }
+
+  system -> physics
+
+  subgraph audio_graph {
+    cluster=true
+    bgcolor="#444466"
+    label="audio"
+
+    audio [label="audio"]
+
+    OpenAL [label="OpenAL"]
+    audio -> OpenAL
+    stb_vorbis [label="stb::stb_vorbis"]
+    audio -> stb_vorbis
+  }
+
+  system -> audio
+
+}

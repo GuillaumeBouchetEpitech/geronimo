@@ -28,70 +28,7 @@ https://guillaumebouchetepitech.github.io/geronimo/samples/test-bed/dist/index.h
 ## Diagrams
 
 !["./diagrams/mindmap.svg"](./diagrams/mindmap.svg)
-
-
-```mermaid
-
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-      'primaryColor': '#242424',
-      'primaryTextColor': '#DDD',
-      'primaryBorderColor': '#000',
-      'lineColor': '#A0A0A0',
-      'secondaryColor': '#454545',
-      'tertiaryColor': '#353535'
-    }
-  }
-}%%
-
-  flowchart RL
-
-    subgraph system
-      direction LR
-      SYSTEM((system))
-      GLM[[glm]]
-    end
-
-    subgraph graphics
-      direction LR
-      GRAPHICS((graphics))
-      SDL2[[sdl2]]
-      TINY_OBJ_LOADER[[Tiny OBJ<br>Loader]]
-      STB_IMAGE[[std_image]]
-    end
-
-    subgraph audio
-      direction LR
-      AUDIO((audio))
-      OPENAL[[OpenAL]]
-      STB_VORBIS[[stb_vorbis]]
-    end
-
-    subgraph physics
-      direction LR
-      PHYSICS((physics))
-      BULLET_PHYSICS[[bullet<br>physics]]
-    end
-
-    SYSTEM -..-> GLM
-
-    GRAPHICS -..-> SDL2
-    GRAPHICS -..-> TINY_OBJ_LOADER
-    GRAPHICS -..-> STB_IMAGE
-
-    AUDIO -..-> OPENAL
-    AUDIO -..-> STB_VORBIS
-
-    PHYSICS -..-> BULLET_PHYSICS
-
-    graphics --dependency--> system
-    audio --dependency--> system
-    physics --dependency--> system
-
-```
-
+!["./diagrams/dependencies.svg"](./diagrams/dependencies.svg)
 
 # Dependencies
 
