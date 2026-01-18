@@ -5,6 +5,8 @@ digraph {
 
   compound=true;
 
+  rankdir="LR"
+
 
   node [
     shape="box"
@@ -63,6 +65,13 @@ digraph {
     system -> multi_threading
     logger [label="logger"]
     system -> logger
+
+    trees [label="trees"]
+    system -> trees
+      kdtree [label="KdTree"]
+      trees -> kdtree
+      bvhtree [label="BVH"]
+      trees -> bvhtree
 
 
 

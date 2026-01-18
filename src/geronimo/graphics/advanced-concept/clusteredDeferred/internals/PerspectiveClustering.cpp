@@ -44,7 +44,7 @@ void PerspectiveClustering::computeCluster(const ICamera& inCamera, const std::v
     D_THROW(std::runtime_error, "cluster not initialized");
 
   if (inCamera.getProjectionType() != Camera::ProjectionType::perspective)
-    D_THROW(std::runtime_error, "cluster not used with a perspective camera");
+    D_THROW(std::runtime_error, "cluster must be used with a perspective camera");
 
   const Camera::MatricesData& matricesData = inCamera.getMatricesData();
 

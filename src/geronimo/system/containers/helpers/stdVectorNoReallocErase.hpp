@@ -2,6 +2,8 @@
 #include <functional>
 #include <vector>
 
+namespace gero {
+
 template <typename T>
 bool
 stdVectorNoReallocEraseByValue(std::vector<T>& container, const T& value) {
@@ -46,3 +48,22 @@ stdVectorNoReallocEraseByIterator(std::vector<T, _Alloc>& container, typename st
   container.pop_back();
   return true;
 }
+
+
+template <typename T, typename _Alloc = std::allocator<T>>
+std::size_t
+stdVectorNoReallocEraseAllByCallback(std::vector<T, _Alloc>& container, const std::function<bool(const T&)>& toEraseCallback) {
+  std::size_t totalErased = 0;
+  for (auto it = container.begin(); it != container.end(); )
+  {
+    if (toEraseCallback(*it)) {
+      stdVectorNoReallocEraseByIterator(container, it);
+      ++totalErased;
+    } else {
+      ++it;
+    }
+  }
+  return totalErased;
+}
+
+};
