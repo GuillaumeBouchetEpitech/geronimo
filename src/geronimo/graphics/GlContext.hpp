@@ -37,6 +37,7 @@ void downloadPixels(uint32_t posX, uint32_t posY, uint32_t width, uint32_t heigh
 namespace VBO {
 
 enum class Primitives {
+  points,
   lines,
   line_strip,
   line_loop,

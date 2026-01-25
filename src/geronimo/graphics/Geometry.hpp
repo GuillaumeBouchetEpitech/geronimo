@@ -44,6 +44,7 @@ public:
   };
 
   enum class PrimitiveType : uint32_t {
+    points,
     lines,
     line_strip,
     line_loop,

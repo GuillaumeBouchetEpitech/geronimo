@@ -286,7 +286,9 @@ void Geometry::render() const {
   _vao.bind();
 
   GlContext::VBO::Primitives primitive = GlContext::VBO::Primitives::lines;
-  if (_primitiveType == PrimitiveType::triangles)
+  if (_primitiveType == PrimitiveType::points)
+    primitive = GlContext::VBO::Primitives::points;
+  else if (_primitiveType == PrimitiveType::triangles)
     primitive = GlContext::VBO::Primitives::triangles;
   else if (_primitiveType == PrimitiveType::line_strip)
     primitive = GlContext::VBO::Primitives::line_strip;

@@ -75,6 +75,9 @@ void uploadBuffer(const void* data, uint32_t dataSize) {
 void drawArrays(Primitives primitive, uint32_t primitiveStart, uint32_t primitiveCount) {
   int32_t rawPrimitive = GL_LINES;
   switch (primitive) {
+  case Primitives::points:
+    rawPrimitive = GL_POINT;
+    break;
   case Primitives::lines:
     rawPrimitive = GL_LINES;
     break;
@@ -106,6 +109,9 @@ void drawInstancedArrays(Primitives primitive,
                          uint32_t instanceCount) {
   int32_t rawPrimitive = GL_LINES;
   switch (primitive) {
+  case Primitives::points:
+    rawPrimitive = GL_POINTS;
+    break;
   case Primitives::lines:
     rawPrimitive = GL_LINES;
     break;
