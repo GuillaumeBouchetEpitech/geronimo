@@ -7,6 +7,7 @@
 #include <limits> // std::numeric_limits<float>::min/max()
 #include <memory> // std::unique_ptr
 #include <vector> // std::vector
+#include <functional>
 // #include <iostream> // for debug logs
 
 namespace gero::trees {
