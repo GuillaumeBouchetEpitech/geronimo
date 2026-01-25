@@ -36,9 +36,7 @@ void StackRenderers::initialize(const gero::graphics::ShaderProgram::Definition&
 
 void StackRenderers::initialize(const std::string& inRootPath) {
 
-  std::string currSrcFolder = __FILE__;
-  currSrcFolder = currSrcFolder.substr(0, currSrcFolder.rfind("src/") + 4);
-  const std::string k_rootPath = inRootPath + "/geronimo/graphics/advanced-concept/stackRenderers/shaders/";
+  const std::string k_rootPath = inRootPath + "/shaders/";
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()

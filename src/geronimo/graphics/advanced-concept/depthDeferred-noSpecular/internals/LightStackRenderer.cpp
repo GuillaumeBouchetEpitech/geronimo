@@ -97,8 +97,7 @@ void LightStackRenderer::initialize(const std::string& inRootPath, const glm::iv
   //
   //
 
-  const std::string k_rootPath =
-    inRootPath + "/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/internals/shaders/lightStackRenderer/";
+  const std::string k_rootPath = inRootPath + "/lightStackRenderer/shaders/";
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
 

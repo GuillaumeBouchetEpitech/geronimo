@@ -20,8 +20,7 @@ void ResultQuadRenderer::initialize(const std::string& inRootPath, const glm::iv
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   gero::graphics::GeometryBuilder geometryBuilder;
 
-  const std::string k_rootPath =
-    inRootPath + "/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/internals/shaders/resultQuadRenderer/";
+  const std::string k_rootPath = inRootPath + "/resultQuadRenderer/shaders/";
 
   shaderProgramBuilder.reset()
     .setVertexFilename(k_rootPath + "resultQuadRenderer.glsl.vert")

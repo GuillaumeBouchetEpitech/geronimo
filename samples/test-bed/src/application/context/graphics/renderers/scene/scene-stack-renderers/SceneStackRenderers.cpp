@@ -7,7 +7,7 @@
 void SceneStackRenderers::initialize() {
 
   // const std::string basePath = "./assets/graphics/shaders/scene/";
-  const std::string basePath = "./src/application/context/graphics/renderers/scene/scene-stack-renderers/shaders/";
+  const std::string basePath = "./assets/graphics/scene/advanced-concept-sub-assets/stackRenderers/shaders/";
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()

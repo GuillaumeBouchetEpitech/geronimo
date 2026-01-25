@@ -27,8 +27,7 @@ void FrameMerger::initialize(const std::string& inRootPath, const glm::ivec2& in
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   gero::graphics::GeometryBuilder geometryBuilder;
 
-  const std::string k_rootPath =
-    inRootPath + "/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/internals/shaders/fame-merger/";
+  const std::string k_rootPath = inRootPath + "/fame-merger/shaders/";
 
   shaderProgramBuilder.reset()
     .setVertexFilename(k_rootPath + "frameMerger.glsl.vert")

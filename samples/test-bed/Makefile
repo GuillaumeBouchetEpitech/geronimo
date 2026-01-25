@@ -163,15 +163,15 @@ LDFLAGS+=	-s WASM=1
 LDFLAGS+=	--preload-file ./assets/
 
 
-# LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/resultQuadRenderer
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/lightStackRenderer
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/fame-merger
+# # LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/shaders
+# LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/resultQuadRenderer
+# LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/lightStackRenderer
+# LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/depthDeferred/internals/shaders/fame-merger
 
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/textRenderer/assets
-LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/stackRenderers/shaders
-LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/geometries-stack-renderer/shaders
-LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/scene-stack-renderers/shaders
+# LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/textRenderer/assets
+# LDFLAGS+=	--preload-file $(DIR_LIB_GERONIMO)/src/geronimo/graphics/advanced-concept/stackRenderers/shaders
+# LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/geometries-stack-renderer/shaders
+# LDFLAGS+=	--preload-file $(DIR_SRC)/application/context/graphics/renderers/scene/scene-stack-renderers/shaders
 
 LDFLAGS += -s EXPORT_NAME="testBedApp"
 LDFLAGS += -s MODULARIZE=1

@@ -24,14 +24,12 @@ void TextRenderer::initialize(const std::string& inRootPath) {
   _logic.allLinesWidth.reserve(64);
   _logic.latestMessageRectangles.reserve(64);
 
-  std::string currSrcFolder = __FILE__;
-  currSrcFolder = currSrcFolder.substr(0, currSrcFolder.rfind("src/") + 4);
-  const std::string k_rootPath = inRootPath + "/geronimo/graphics/advanced-concept/textRenderer/assets/";
+  const std::string k_rootPath = inRootPath + "/shaders/";
 
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()
-    .setVertexFilename(k_rootPath + "shaders/textRenderer.glsl.vert")
-    .setFragmentFilename(k_rootPath + "shaders/textRenderer.glsl.frag")
+    .setVertexFilename(k_rootPath + "textRenderer.glsl.vert")
+    .setFragmentFilename(k_rootPath + "textRenderer.glsl.frag")
     .addAttribute("a_position")
     .addAttribute("a_texCoord")
     .addAttribute("a_offsetPosition")
@@ -44,7 +42,7 @@ void TextRenderer::initialize(const std::string& inRootPath) {
   _graphic.shader = std::make_shared<gero::graphics::ShaderProgram>(shaderProgramBuilder.getDefinition());
 
   gero::graphics::Image tmpImg;
-  tmpImg.loadFromFile(k_rootPath + "textures/ascii_font.png");
+  tmpImg.loadFromFile(inRootPath + "/textures/ascii_font.png");
 
   _graphic.texture = std::make_shared<gero::graphics::Texture>();
   _graphic.texture->setFromImage(
