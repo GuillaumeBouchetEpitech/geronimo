@@ -126,7 +126,7 @@ export class WasmApplication {
     const fetchStartTime = Date.now();
 
     // this will globally expose the function selfDriving3dCars()
-    await scriptLoadingUtility(`./${wasmFolder}/index.js`);
+    await scriptLoadingUtility(`./${wasmFolder}/test-bed.js`);
 
     const fetchStopTime = Date.now();
     const fetchElapsedTime = ((fetchStopTime - fetchStartTime) / 1000).toFixed(3);
