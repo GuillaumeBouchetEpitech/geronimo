@@ -7,7 +7,7 @@
 - [Online Demo Link](#online-demo-link)
   - [Diagrams](#diagrams)
 - [Dependencies](#dependencies)
-  - [Dependency: Emscripten 3.1.44 (for web-wasm build)](#dependency-emscripten-3144-for-web-wasm-build)
+  - [Dependency: Emscripten 3.1.74 (for web-wasm build)](#dependency-emscripten-3174-for-web-wasm-build)
   - [Dependency: SDL2 (for native build)](#dependency-sdl2-for-native-build)
   - [Dependency: bullet3, glm, tinyobjloader, stb](#dependency-bullet3-glm-tinyobjloader-stb)
 - [How to Build (Quick)](#how-to-build-quick)
@@ -32,18 +32,9 @@ https://guillaumebouchetepitech.github.io/geronimo/samples/test-bed/dist/index.h
 
 # Dependencies
 
-## Dependency: Emscripten 3.1.44 (for web-wasm build)
+## Dependency: Emscripten 3.1.74 (for web-wasm build)
 ```bash
-git clone https://github.com/emscripten-core/emsdk.git
-
-cd emsdk
-
-./emsdk install 3.1.44
-./emsdk activate --embedded 3.1.44
-
-. ./emsdk_env.sh
-
-em++ --clear-cache
+sh ./scripts/sh_ensure_wasm_compiler.sh
 ```
 
 ## Dependency: SDL2 (for native build)

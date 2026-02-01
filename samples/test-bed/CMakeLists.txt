@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.24)
 
 project(test-bed)
 
+set(GERONIMO_DIR "${PROJECT_SOURCE_DIR}/../..")
+
 add_executable(${PROJECT_NAME}
     ./src/main.cpp
     ./src/application/context/logic/controllers/FreeFlyCameraController.cpp
@@ -27,82 +29,71 @@ add_executable(${PROJECT_NAME}
     ./src/application/states/State_Paused.cpp
 )
 
-# target_include_directories(${PROJECT_NAME} PRIVATE
-#     ../../../network-wrapper/src/
-# )
-
 target_include_directories(${PROJECT_NAME} PRIVATE
     ./src
-    ../../src/geronimo/system/src
-    ../../src/geronimo/graphics/src
-    ../../src/geronimo/physics/src
-    ../../src/geronimo/audio/src
-    ../../src/geronimo/helpers/src
-    ../../thirdparties
-    ../../thirdparties/dependencies
-    ../../thirdparties/dependencies/bullet3/src
-    ../../thirdparties/dependencies/entt/src/entt/entity
-    ../../thirdparties/dependencies/json/include
+    ${GERONIMO_DIR}/src/geronimo/system/src
+    ${GERONIMO_DIR}/src/geronimo/graphics/src
+    ${GERONIMO_DIR}/src/geronimo/physics/src
+    ${GERONIMO_DIR}/src/geronimo/audio/src
+    ${GERONIMO_DIR}/src/geronimo/helpers/src
+    ${GERONIMO_DIR}/thirdparties
+    ${GERONIMO_DIR}/thirdparties/dependencies
+    ${GERONIMO_DIR}/thirdparties/dependencies/bullet3/src
+    ${GERONIMO_DIR}/thirdparties/dependencies/entt/src/entt/entity
+    ${GERONIMO_DIR}/thirdparties/dependencies/json/include
 )
 
 add_compile_definitions(BT_NO_PROFILE)
 add_compile_definitions(SIMD_FORCE_INLINE=inline)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    lib-bullet-dynamics
-    lib-bullet-collision
-    lib-bullet-linearmath
-    lib-geronimo-audio
-    lib-geronimo-physics
-    lib-geronimo-graphics
-    lib-geronimo-system
-)
+if (DEFINED EMSCRIPTEN)
 
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        ${GERONIMO_DIR}/lib/wasm/libgeronimo-audio.a
+        ${GERONIMO_DIR}/lib/wasm/libgeronimo-physics.a
+        ${GERONIMO_DIR}/lib/wasm/libgeronimo-graphics.a
+        ${GERONIMO_DIR}/lib/wasm/libgeronimo-system.a
+        ${GERONIMO_DIR}/lib/wasm/libbullet-dynamics.a
+        ${GERONIMO_DIR}/lib/wasm/libbullet-collision.a
+        ${GERONIMO_DIR}/lib/wasm/libbullet-linearmath.a
+    )
 
+else()
 
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        ${GERONIMO_DIR}/lib/native/libgeronimo-audio.a
+        ${GERONIMO_DIR}/lib/native/libgeronimo-physics.a
+        ${GERONIMO_DIR}/lib/native/libgeronimo-graphics.a
+        ${GERONIMO_DIR}/lib/native/libgeronimo-system.a
+        ${GERONIMO_DIR}/lib/native/libbullet-dynamics.a
+        ${GERONIMO_DIR}/lib/native/libbullet-collision.a
+        ${GERONIMO_DIR}/lib/native/libbullet-linearmath.a
+    )
 
-
-# # sdl2 glesv2 openal
-# target_link_libraries(${PROJECT_NAME} PRIVATE -lSDL2 -lGLESv2 -lopenal)
-
-# find_package(PkgConfig REQUIRED)
-
-# pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET GLOBAL sdl2)
-# # pkg_check_modules(YOUR_PKG REQUIRED IMPORTED_TARGET GLOBAL ya-package)
-
-# target_link_libraries(${PROJECT_NAME} PUBLIC
-#     PkgConfig::SDL2
-#     # PkgConfig::YOUR_PKG
-# )
-
-# pkg_check_modules(SDL2 REQUIRED sdl2)
-# target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
-# target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
-# target_compile_options(${PROJECT_NAME} PUBLIC ${SDL2_CFLAGS_OTHER})
-
-# pkg_check_modules(GLES REQUIRED glesv2)
-# target_link_libraries(${PROJECT_NAME} ${GLES_LIBRARIES})
-# target_include_directories(${PROJECT_NAME} PUBLIC ${GLES_INCLUDE_DIRS})
-# target_compile_options(${PROJECT_NAME} PUBLIC ${GLES_CFLAGS_OTHER})
-
-# pkg_check_modules(OPEN_AL REQUIRED openal)
-# target_link_libraries(${PROJECT_NAME} ${OPEN_AL_LIBRARIES})
-# target_include_directories(${PROJECT_NAME} PUBLIC ${OPEN_AL__INCLUDE_DIRS})
-# target_compile_options(${PROJECT_NAME} PUBLIC ${OPEN_AL__CFLAGS_OTHER})
-
-
-
-
+endif()
+#
+#
+#
 
 if (DEFINED EMSCRIPTEN)
+
+    # # this makes sure the --preload-file flag find the assets folder
+    # add_custom_command(
+    #     TARGET ${PROJECT_NAME}  # Tie the command to the "MyApp" target
+    #     PRE_BUILD    # Run before the target is built
+    #     COMMAND ${CMAKE_COMMAND} -E copy_directory  # CMake's cross-platform copy command
+    #         ${CMAKE_SOURCE_DIR}/samples/test-bed/assets     # Source directory
+    #         ${CMAKE_CURRENT_BINARY_DIR}/assets              # Destination directory
+    #     COMMENT "Copying assets files to build directory"  # Optional: Log message
+    # )
 
     # this makes sure the --preload-file flag find the assets folder
     add_custom_command(
         TARGET ${PROJECT_NAME}  # Tie the command to the "MyApp" target
         PRE_BUILD    # Run before the target is built
         COMMAND ${CMAKE_COMMAND} -E copy_directory  # CMake's cross-platform copy command
-            ${CMAKE_SOURCE_DIR}/samples/test-bed/assets     # Source directory
-            ${CMAKE_CURRENT_BINARY_DIR}/assets              # Destination directory
+            ${CMAKE_SOURCE_DIR}/assets          # Source directory
+            ${CMAKE_CURRENT_BINARY_DIR}/assets  # Destination directory
         COMMENT "Copying assets files to build directory"  # Optional: Log message
     )
 

@@ -1,55 +1,80 @@
 
 cmake_minimum_required(VERSION 3.24)
 
-project(geronimo)
+set(CHECK_CLANG_TIDY FALSE CACHE BOOL "Some user-specified option")
 
-# message("CMAKE_CXX_FLAGS_DEBUG 1: ${CMAKE_CXX_FLAGS_DEBUG}")
-
-#
-#
-#
-
-# if (NOT DEFINED EMSCRIPTEN)
-
-#     find_program(CLANG_TIDY_EXE "clang-tidy")
-
-#     if (CLANG_TIDY_EXE)
-
-#         # file generated at ./build.release.native/compile_commands.json
-
-#         message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
-#         set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-#         set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE})
-
-#     else()
-
-#         message(WARNING "clang-tidy not found!")
-
-#     endif()
-
-# endif()
+project(geronimo-wrappers)
 
 #
+# ensure dependencies
 #
+
+execute_process(
+    COMMAND sh ./scripts/sh_ensure_dependencies.sh
+    WORKING_DIRECTORY .
+)
+
+#
+# ensure wasm compiler (if needed)
 #
 
-# if (DEFINED EMSCRIPTEN)
+if (DEFINED EMSCRIPTEN)
 
-#     execute_process (COMMAND sh ./scripts/sh_ensure_wasm_compiler.sh WORKING_DIRECTORY .)
+    execute_process(
+        COMMAND sh ./scripts/sh_ensure_wasm_compiler.sh
+        WORKING_DIRECTORY .
+    )
 
-# endif()
+endif()
 
-add_subdirectory(thirdparties/lib-bullet/linearmath)
-add_subdirectory(thirdparties/lib-bullet/collision)
-add_subdirectory(thirdparties/lib-bullet/dynamics)
+#
+# ensure bullet physics
+#
 
-add_subdirectory(src/geronimo/system)
-add_subdirectory(src/geronimo/graphics)
-add_subdirectory(src/geronimo/physics)
-add_subdirectory(src/geronimo/audio)
+add_subdirectory(./src/bullet-physics)
 
-add_subdirectory(samples/test-bed)
+#
+# check for clang-tidy linter
+# -> this is setup here on purpose
+# ---> we want to avoid linting bullet physics code
+#
 
-# add_subdirectory(./samples/basic-client-server)
-# add_subdirectory(./tests)
+message(STATUS "CHECK_CLANG_TIDY -> ${CHECK_CLANG_TIDY}")
+
+if (NOT DEFINED EMSCRIPTEN AND CHECK_CLANG_TIDY)
+
+    message(STATUS "clang-tidy will be attempted")
+
+    find_program(CLANG_TIDY_EXE "clang-tidy")
+
+    if (CLANG_TIDY_EXE)
+
+        # file generated at ./build.release.native/compile_commands.json
+
+        message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
+        set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE})
+
+    else()
+
+        message(WARNING "clang-tidy not found!")
+
+    endif()
+
+else()
+    message(STATUS "clang-tidy will be ignored")
+endif()
+
+#
+# ensure geronimo wrappers
+#
+
+add_subdirectory(./src/geronimo)
+
+#
+# build the test-bed
+#
+
+# add_subdirectory(./samples/test-bed)
+
 

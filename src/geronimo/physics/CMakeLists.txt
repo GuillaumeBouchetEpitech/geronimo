@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.24)
-project(lib-geronimo-physics)
+
+project(geronimo-physics)
 
 set(CMAKE_CXX_STANDARD 20)
+
+set(GERONIMO_DIR "${PROJECT_SOURCE_DIR}/../../..")
+set(THIRD_PARTIES_DIR ${GERONIMO_DIR}/thirdparties)
 
 set(SOURCE_FILES
     ./src/geronimo/physics/body/AbstractPhysicBodyManager.cpp
@@ -33,36 +37,34 @@ add_compile_definitions(SIMD_FORCE_INLINE=inline)
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
+target_link_libraries(${PROJECT_NAME} PRIVATE geronimo-system)
+
 target_include_directories(${PROJECT_NAME} PRIVATE
     ./src
     ../helpers/src
     ../system/src
-    ../../../thirdparties
-    ../../../thirdparties/dependencies/bullet3/src
+    ${THIRD_PARTIES_DIR}
+    ${THIRD_PARTIES_DIR}/dependencies/bullet3/src
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    lib-bullet-dynamics
-    lib-bullet-collision
-    lib-bullet-linearmath
+    bullet-dynamics
+    bullet-collision
+    bullet-linearmath
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3")
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-O3")
 
 if (DEFINED EMSCRIPTEN)
 
-    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3")
-
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS " -O3 -s WASM=1 -s BINARYEN_IGNORE_IMPLICIT_TRAPS=1 ")
 
-    set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib/wasm")
+    set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${GERONIMO_DIR}/lib/wasm")
 
 else()
 
-    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3")
-
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-O3")
-
-    set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib/native")
+    set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${GERONIMO_DIR}/lib/native")
 
 endif()
 
