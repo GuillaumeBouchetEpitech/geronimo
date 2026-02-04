@@ -12,8 +12,8 @@ namespace {
 
 class CustomVehicleRayCaster : public btDefaultVehicleRaycaster {
 private:
-  // must keep it as btDefaultVehicleRaycaster::m_dynamicsWorld is private
-  // => that a design flaw from bullet3, kind of sad (;_;)
+  // must keep it since btDefaultVehicleRaycaster::m_dynamicsWorld is private
+  // => that's a design flaw from bullet3, kind of sad (;_;)
   btDynamicsWorld& _dynamicsWorld;
 
   short _group;
@@ -26,7 +26,7 @@ public:
   virtual void* castRay(const btVector3& from, const btVector3& to, btVehicleRaycasterResult& result) override {
     btCollisionWorld::ClosestRayResultCallback rayCallback(from, to);
 
-    // added value => we can specify the group/mask
+    // the only added value => we can specify the raycast filter group/mask
     rayCallback.m_collisionFilterGroup = _group;
     rayCallback.m_collisionFilterMask = _mask;
 
