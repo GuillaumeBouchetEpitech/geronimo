@@ -39,7 +39,7 @@ private:
   gero::graphics::FrameBuffer _frameBufferGeometries;
 };
 
-} // namespace depthDeferred
+} // namespace depthDeferredNoSpecular
 
 } // namespace graphics
 } // namespace gero

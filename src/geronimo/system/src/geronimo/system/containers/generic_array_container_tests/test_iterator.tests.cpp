@@ -50,87 +50,89 @@ TEST_F(system_generic_array_container, can_be_const_iterator_looped_and_set_and_
 
     {
 
-      {int index = 100;
-    for (auto it = mySaticArray.begin(); it != mySaticArray.end(); ++it) {
-      (*it).value = index++;
-      (*it).my_string = "test";
+      {
+        int index = 100;
+        for (auto it = mySaticArray.begin(); it != mySaticArray.end(); ++it) {
+          (*it).value = index++;
+          (*it).my_string = "test";
+        }
+      }
+
+      {
+        int index = 100;
+        const auto& cmySaticArray = mySaticArray;
+        for (auto it = cmySaticArray.begin(); it != cmySaticArray.end(); ++it) {
+          ASSERT_EQ((*it).value, index++);
+          ASSERT_EQ((*it).my_string, "test");
+        }
+      }
+    }
+
+    {
+
+      {
+        int index = 100;
+        for (auto it = mySaticArray.begin(); it != mySaticArray.end(); ++it) {
+          (*it).value = index++;
+          (*it).my_string = "test";
+        }
+      }
+
+      {
+        int index = 100;
+        const auto& cmySaticArray = mySaticArray;
+        for (auto it = cmySaticArray.begin(); it != cmySaticArray.end(); ++it) {
+          ASSERT_EQ((*it).value, index++);
+          ASSERT_EQ((*it).my_string, "test");
+        }
+      }
     }
   }
 
   {
-    int index = 100;
-    const auto& cmySaticArray = mySaticArray;
-    for (auto it = cmySaticArray.begin(); it != cmySaticArray.end(); ++it) {
-      ASSERT_EQ((*it).value, index++);
-      ASSERT_EQ((*it).my_string, "test");
+    shorthand_dynamic_heap_array<5> mySizedDynamicArray;
+    mySizedDynamicArray.ensure_size(5);
+
+    {
+
+      {
+        int index = 100;
+        for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
+          (*it).value = index++;
+          (*it).my_string = "test";
+        }
+      }
+
+      {
+        int index = 100;
+        const auto& cmySizedDynamicArray = mySizedDynamicArray;
+        for (auto it = cmySizedDynamicArray.begin(); it != cmySizedDynamicArray.end(); ++it) {
+          ASSERT_EQ((*it).value, index++);
+          ASSERT_EQ((*it).my_string, "test");
+        }
+      }
+    }
+
+    {
+
+      {
+        int index = 100;
+        for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
+          (*it).value = index++;
+          (*it).my_string = "test";
+        }
+      }
+
+      {
+        int index = 100;
+        const auto& cmySizedDynamicArray = mySizedDynamicArray;
+        for (auto it = cmySizedDynamicArray.begin(); it != cmySizedDynamicArray.end(); ++it) {
+          ASSERT_EQ((*it).value, index++);
+          ASSERT_EQ((*it).my_string, "test");
+        }
+      }
     }
   }
-}
-
-{
-
-  {
-    int index = 100;
-    for (auto it = mySaticArray.begin(); it != mySaticArray.end(); ++it) {
-      (*it).value = index++;
-      (*it).my_string = "test";
-    }
-  }
-
-  {
-    int index = 100;
-    const auto& cmySaticArray = mySaticArray;
-    for (auto it = cmySaticArray.begin(); it != cmySaticArray.end(); ++it) {
-      ASSERT_EQ((*it).value, index++);
-      ASSERT_EQ((*it).my_string, "test");
-    }
-  }
-}
-}
-
-{
-  shorthand_dynamic_heap_array<5> mySizedDynamicArray;
-  mySizedDynamicArray.ensure_size(5);
-
-  {
-
-    {int index = 100;
-  for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
-    (*it).value = index++;
-    (*it).my_string = "test";
-  }
-}
-
-{
-  int index = 100;
-  const auto& cmySizedDynamicArray = mySizedDynamicArray;
-  for (auto it = cmySizedDynamicArray.begin(); it != cmySizedDynamicArray.end(); ++it) {
-    ASSERT_EQ((*it).value, index++);
-    ASSERT_EQ((*it).my_string, "test");
-  }
-}
-}
-
-{
-
-  {
-    int index = 100;
-    for (auto it = mySizedDynamicArray.begin(); it != mySizedDynamicArray.end(); ++it) {
-      (*it).value = index++;
-      (*it).my_string = "test";
-    }
-  }
-
-  {
-    int index = 100;
-    const auto& cmySizedDynamicArray = mySizedDynamicArray;
-    for (auto it = cmySizedDynamicArray.begin(); it != cmySizedDynamicArray.end(); ++it) {
-      ASSERT_EQ((*it).value, index++);
-      ASSERT_EQ((*it).my_string, "test");
-    }
-  }
-}
-}
 }
 
 TEST_F(system_generic_array_container, can_be_iterator_incremented_and_set_and_then_get_values_afterward) {

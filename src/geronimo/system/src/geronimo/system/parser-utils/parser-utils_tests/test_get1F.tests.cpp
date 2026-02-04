@@ -44,8 +44,7 @@ TEST(basic_regexp_parser, get1F) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value of 1F is too low, type=get1F, toSearch=\""
-                                         << toSearch << "\""
-                                         << ", value=-666.00, minValue=-601.00")),
+                                         << toSearch << "\"" << ", value=-666.00, minValue=-601.00")),
                 std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }
@@ -62,8 +61,7 @@ TEST(basic_regexp_parser, get1F) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value of 1F is too high, type=get1F, toSearch=\""
-                                         << toSearch << "\""
-                                         << ", value=666.00, maxValue=602.00")),
+                                         << toSearch << "\"" << ", value=666.00, maxValue=602.00")),
                 std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }

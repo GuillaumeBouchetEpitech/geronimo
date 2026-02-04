@@ -15,20 +15,23 @@
  * => gContactStartedCallback
  * => gContactEndedCallback
  */
-class btjsCollisionAlgorithm
-	: public btGImpactCollisionAlgorithm
-{
+class btjsCollisionAlgorithm : public btGImpactCollisionAlgorithm {
 public:
-	struct CreateFunc
-		: public btCollisionAlgorithmCreateFunc
-	{
-		virtual	btCollisionAlgorithm* CreateCollisionAlgorithm(btCollisionAlgorithmConstructionInfo& ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap) override;
-	};
+  struct CreateFunc : public btCollisionAlgorithmCreateFunc {
+    virtual btCollisionAlgorithm* CreateCollisionAlgorithm(btCollisionAlgorithmConstructionInfo& ci,
+                                                           const btCollisionObjectWrapper* body0Wrap,
+                                                           const btCollisionObjectWrapper* body1Wrap) override;
+  };
 
 public:
-	static void registerAlgorithm(btCollisionDispatcher* pDispatcher);
+  static void registerAlgorithm(btCollisionDispatcher* pDispatcher);
 
 public:
-	btjsCollisionAlgorithm(const btCollisionAlgorithmConstructionInfo& ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap);
-	virtual void processCollision(const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, const btDispatcherInfo& dispatchInfo, btManifoldResult* resultOut) override;
+  btjsCollisionAlgorithm(const btCollisionAlgorithmConstructionInfo& ci,
+                         const btCollisionObjectWrapper* body0Wrap,
+                         const btCollisionObjectWrapper* body1Wrap);
+  virtual void processCollision(const btCollisionObjectWrapper* body0Wrap,
+                                const btCollisionObjectWrapper* body1Wrap,
+                                const btDispatcherInfo& dispatchInfo,
+                                btManifoldResult* resultOut) override;
 };

@@ -43,10 +43,9 @@ TEST(basic_regexp_parser, get1UI) {
     } catch (std::runtime_error& err) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
-      ASSERT_NE(
-        exceptionMsg.find(D_SSTR("value of 1UI is too high, type=get1UI, toSearch=\"" << toSearch << "\""
-                                                                                      << ", value=666, maxValue=600")),
-        std::string_view::npos)
+      ASSERT_NE(exceptionMsg.find(D_SSTR("value of 1UI is too high, type=get1UI, toSearch=\""
+                                         << toSearch << "\"" << ", value=666, maxValue=600")),
+                std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }
   }

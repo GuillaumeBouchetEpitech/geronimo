@@ -4,10 +4,10 @@
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <algorithm> // std::nth_element
+#include <functional>
 #include <limits> // std::numeric_limits<float>::min/max()
 #include <memory> // std::unique_ptr
 #include <vector> // std::vector
-#include <functional>
 // #include <iostream> // for debug logs
 
 namespace gero::trees {
@@ -18,19 +18,12 @@ struct /*alignas(32)*/ IndexedVec {
   std::size_t entryIndex;
 
   IndexedVec(const glm::vec3& inAabbMin, const glm::vec3& inAabbMax, std::size_t inEntryIndex)
-    : aabbMin(inAabbMin), aabbMax(inAabbMax), entryIndex(inEntryIndex)
-  {}
+    : aabbMin(inAabbMin), aabbMax(inAabbMax), entryIndex(inEntryIndex) {}
 };
 
 inline bool intersectAabb(const glm::vec3& minA, const glm::vec3& maxA, const glm::vec3& minB, const glm::vec3& maxB) {
-  const bool isSeparated = (
-    maxA.x < minB.x ||
-    minA.x > maxB.x ||
-    maxA.y < minB.y ||
-    minA.y > maxB.y ||
-    maxA.z < minB.z ||
-    minA.z > maxB.z
-  );
+  const bool isSeparated =
+    (maxA.x < minB.x || minA.x > maxB.x || maxA.y < minB.y || minA.y > maxB.y || maxA.z < minB.z || minA.z > maxB.z);
   return !isSeparated;
 }
 
@@ -44,16 +37,12 @@ public:
   IndexedVec* leftLeaf = nullptr;
   IndexedVec* rightLeaf = nullptr;
 
-  BvhNode(const glm::vec3& inAabbMin, const glm::vec3& inAabbMax)
-    : aabbMin(inAabbMin), aabbMax(inAabbMax)
-  {}
+  BvhNode(const glm::vec3& inAabbMin, const glm::vec3& inAabbMax) : aabbMin(inAabbMin), aabbMax(inAabbMax) {}
 
-  void traverse(
-    const glm::vec3& queryMin,
-    const glm::vec3& queryMax,
-    std::vector<T>& entries,
-    std::vector<T*>& results
-  ) const {
+  void traverse(const glm::vec3& queryMin,
+                const glm::vec3& queryMax,
+                std::vector<T>& entries,
+                std::vector<T*>& results) const {
     if (!intersectAabb(queryMin, queryMax, aabbMin, aabbMax)) {
       return;
     }
@@ -73,11 +62,7 @@ public:
     }
   }
 
-  void traverse(
-    const glm::vec3& queryMin,
-    const glm::vec3& queryMax,
-    std::vector<std::size_t>& outResults
-  ) const {
+  void traverse(const glm::vec3& queryMin, const glm::vec3& queryMax, std::vector<std::size_t>& outResults) const {
     if (!intersectAabb(queryMin, queryMax, aabbMin, aabbMax)) {
       return;
     }
@@ -98,16 +83,12 @@ public:
   }
 
   //
-
-
 };
 
 template <typename T> class BvhTree {
 
 public:
-  void reset() {
-    _cachedNodes.clear();
-  }
+  void reset() { _cachedNodes.clear(); }
 
   void synchronize(const std::vector<T>& entries) {
     _cachedNodes.clear();
@@ -152,12 +133,7 @@ public:
     _buildNode(_indexedEntries.begin(), _indexedEntries.end(), _indexedEntries.size() /*, 0*/);
   }
 
-  void searchByRadius(
-    const glm::vec3& pos,
-    float radius,
-    std::vector<T>& entries,
-    std::vector<T*>& outResults
-  ) const {
+  void searchByRadius(const glm::vec3& pos, float radius, std::vector<T>& entries, std::vector<T*>& outResults) const {
     if (_cachedNodes.empty()) {
       return;
     }
@@ -167,11 +143,7 @@ public:
     _cachedNodes.at(0).traverse(queryMin, queryMax, entries, outResults);
   }
 
-  void searchByAabb(
-    const glm::vec3& queryMin,
-    const glm::vec3& queryMax,
-    std::vector<std::size_t>& outResults
-  ) const {
+  void searchByAabb(const glm::vec3& queryMin, const glm::vec3& queryMax, std::vector<std::size_t>& outResults) const {
     if (_cachedNodes.empty()) {
       return;
     }
@@ -187,11 +159,10 @@ private:
   // -> allow to avoid modification of the original entries container
   std::vector<IndexedVec> _indexedEntries;
 
-  BvhNode<T>* _buildNode(
-    const std::vector<IndexedVec>::iterator& entriesBeginIt,
-    const std::vector<IndexedVec>::iterator& entriesEndIt,
-    std::size_t inLength //,
-    // int inLevel
+  BvhNode<T>* _buildNode(const std::vector<IndexedVec>::iterator& entriesBeginIt,
+                         const std::vector<IndexedVec>::iterator& entriesEndIt,
+                         std::size_t inLength //,
+                         // int inLevel
   ) {
 
     // std::cerr << "_buildNode[" << inLevel << "] -> " << inLength << std::endl;

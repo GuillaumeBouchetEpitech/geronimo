@@ -1,14 +1,11 @@
 
 
-
 #include "FrameMerger.hpp"
-
 
 #include "geronimo/graphics/GlContext.hpp"
 #include "geronimo/graphics/ShaderProgramBuilder.hpp"
 
 #include "geronimo/graphics/make-geometries/MakeGeometries.hpp"
-
 
 namespace gero {
 namespace graphics {
@@ -21,9 +18,7 @@ using DepthFormat = gero::graphics::Texture::DepthFormat;
 using DepthType = gero::graphics::Texture::DepthType;
 using namespace gero::graphics::GlContext;
 
-
-void FrameMerger::initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize)
-{
+void FrameMerger::initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize) {
   gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
   gero::graphics::GeometryBuilder geometryBuilder;
 
@@ -56,10 +51,7 @@ void FrameMerger::initialize(const std::string& inRootPath, const glm::ivec2& in
   resize(inFrameSize);
 }
 
-
-
-void FrameMerger::resize(const glm::ivec2& inFrameSize)
-{
+void FrameMerger::resize(const glm::ivec2& inFrameSize) {
   if (frameSize == inFrameSize) {
     return;
   }
@@ -72,10 +64,11 @@ void FrameMerger::resize(const glm::ivec2& inFrameSize)
       glm::vec2 uv;
     };
 
-    const std::array<Vertex, 4> vertices = {{{{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {0.0f, 0.0f}},
-                                            {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {1.0f, 0.0f}},
-                                            {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {1.0f, 1.0f}},
-                                            {{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {0.0f, 1.0f}}}};
+    const std::array<Vertex, 4> vertices = {
+      {{{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {0.0f, 0.0f}},
+       {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {1.0f, 0.0f}},
+       {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {1.0f, 1.0f}},
+       {{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {0.0f, 1.0f}}}};
 
     const std::array<uint32_t, 6> indices = {{0, 1, 2, 2, 3, 0}};
 
@@ -133,12 +126,9 @@ void FrameMerger::startRecordingOpaque() {
   // GlContext::disable(States::blend);
 
   // GlContext::enable(States::cullFace);
-
 }
 
-void FrameMerger::stopRecordingOpaque() {
-  FrameBuffer::unbind();
-}
+void FrameMerger::stopRecordingOpaque() { FrameBuffer::unbind(); }
 
 //
 //
@@ -157,7 +147,6 @@ void FrameMerger::startRecordingTransparency() {
 
   // GlContext::enable(States::blend);
   // GlContext::setBlendFunc(BlendFuncs::srcAlpha, BlendFuncs::oneMinusSrcAlpha);
-
 }
 
 void FrameMerger::stopRecordingTransparency() {
@@ -174,8 +163,7 @@ void FrameMerger::stopRecordingTransparency() {
 //
 //
 
-void FrameMerger::render(const glm::mat4& composedMatrix)
-{
+void FrameMerger::render(const glm::mat4& composedMatrix) {
   quadShader->preBind([&](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", composedMatrix);
 
@@ -205,7 +193,6 @@ void FrameMerger::render(const glm::mat4& composedMatrix)
   });
 }
 
-
-} // namespace depthDeferred
+} // namespace depthDeferredNoSpecular
 } // namespace graphics
 } // namespace gero

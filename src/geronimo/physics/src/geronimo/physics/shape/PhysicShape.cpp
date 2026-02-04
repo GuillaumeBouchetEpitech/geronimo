@@ -105,11 +105,9 @@ StaticMeshShape::StaticMeshShape(const PhysicShapeDef& def, bool isDynamic) : Ph
     // _bullet.shape = createCompoundFromGimpactShape(gimpactMesh);
 
     _bullet.shape = createConvexDecompositionFromGimpactShape(_indexVertexArrays);
-  }
-  else {
+  } else {
     constexpr bool useQuantizedAabbCompression = false;
     _bullet.shape = new btBvhTriangleMeshShape(_indexVertexArrays, useQuantizedAabbCompression);
-
   }
 }
 

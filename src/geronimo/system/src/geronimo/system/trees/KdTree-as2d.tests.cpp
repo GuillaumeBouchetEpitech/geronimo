@@ -32,8 +32,8 @@ void _validateTest(const myTestDataList& inDataPoints,
   }
 
   ASSERT_EQ(confirmedValues.size(), inExpectedSize)
-    << "the number of expected result is incorrect"
-    << ", expect: " << inExpectedSize << ", got: " << confirmedValues.size();
+    << "the number of expected result is incorrect" << ", expect: " << inExpectedSize
+    << ", got: " << confirmedValues.size();
 
   myKdTree myKDTree;
   myKDTree.build(inDataPoints);
@@ -45,8 +45,7 @@ void _validateTest(const myTestDataList& inDataPoints,
   myKDTree.searchWithRadius(inSearchPos, inSearchRadius, found);
 
   ASSERT_EQ(found.size(), confirmedValues.size())
-    << "the number of found result is incorrect"
-    << ", expect: " << confirmedValues.size() << ", got: " << found.size();
+    << "the number of found result is incorrect" << ", expect: " << confirmedValues.size() << ", got: " << found.size();
 
   // ASSERT_EQ(found.size(), 8);
 
@@ -56,10 +55,8 @@ void _validateTest(const myTestDataList& inDataPoints,
   for (std::size_t ii = 0; ii < found.size(); ++ii) {
 
     ASSERT_GT(confirmedValues.count(found.at(ii).index), 0)
-      << "data point was not found"
-      << ", index"
-      << ": " << found.at(ii).index << ", position"
-      << ": " << found.at(ii).position.x << ", " << found.at(ii).position.y;
+      << "data point was not found" << ", index" << ": " << found.at(ii).index << ", position" << ": "
+      << found.at(ii).position.x << ", " << found.at(ii).position.y;
   }
 };
 

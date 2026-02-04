@@ -46,12 +46,8 @@ void DepthDeferred::setAmbientLightRatio(float ambientLightRatio) { _ambientLigh
 void DepthDeferred::startRecording() { _screenRecorder.startRecording(); }
 void DepthDeferred::stopRecording() { _screenRecorder.stopRecording(); }
 
-void DepthDeferred::startRecordingTransparency() {
-  _screenRecorder_transparency.startRecording();
-}
-void DepthDeferred::stopRecordingTransparency() {
-  _screenRecorder_transparency.stopRecording();
-}
+void DepthDeferred::startRecordingTransparency() { _screenRecorder_transparency.startRecording(); }
+void DepthDeferred::stopRecordingTransparency() { _screenRecorder_transparency.stopRecording(); }
 
 void DepthDeferred::pushSpotLight(const glm::vec3& inPosition, const glm::vec3& inColor, float inRadius) {
   _lightStackRenderer.pushSpotLight(inPosition, inColor, inRadius);
@@ -68,10 +64,8 @@ void DepthDeferred::pushSpotLight(const glm::vec3& inPosition, const glm::vec3& 
 //   }
 // }
 
-void DepthDeferred::renderHudQuad(
-  const gero::graphics::ICamera& inSceneCamera,
-  const gero::graphics::ICamera& inHudCamera
-) {
+void DepthDeferred::renderHudQuad(const gero::graphics::ICamera& inSceneCamera,
+                                  const gero::graphics::ICamera& inHudCamera) {
 
   _lightStackRenderer.flush(_eyePos,
                             inSceneCamera.getMatricesData().composed,

@@ -16,8 +16,7 @@ namespace gero {
 namespace graphics {
 namespace depthDeferredNoSpecular {
 
-class FrameMerger
-{
+class FrameMerger {
 public:
   void initialize(const std::string& inRootPath, const glm::ivec2& inFrameSize);
 
@@ -46,10 +45,8 @@ public:
   // merge transparent texture into opaque texture
   std::shared_ptr<gero::graphics::ShaderProgram> quadShader;
   gero::graphics::Geometry quadGeometry;
-
-
 };
 
-} // namespace depthDeferred
+} // namespace depthDeferredNoSpecular
 } // namespace graphics
 } // namespace gero

@@ -69,10 +69,11 @@ void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
     glm::vec2 uv;
   };
 
-  const std::array<Vertex, 4> vertices = {{{{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {0.0f, 0.0f}},
-                                           {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {1.0f, 0.0f}},
-                                           {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {1.0f, 1.0f}},
-                                           {{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {0.0f, 1.0f}}}};
+  const std::array<Vertex, 4> vertices = {
+    {{{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {0.0f, 0.0f}},
+     {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {1.0f, 0.0f}},
+     {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {1.0f, 1.0f}},
+     {{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {0.0f, 1.0f}}}};
 
   const std::array<uint32_t, 6> indices = {{0, 1, 2, 2, 3, 0}};
 
@@ -86,16 +87,16 @@ void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
   _quadGeometry.setPrimitiveCount(uint32_t(buffer.size()));
 }
 
-void ResultQuadRenderer::render(//const glm::vec3& eyePos,
-                                const glm::vec4& sunLight,
-                                const glm::mat4& composedMatrix,
-                                const gero::graphics::Texture& colorTexture,
-                                const gero::graphics::Texture& positionTexture,
-                                const gero::graphics::Texture& normalTexture,
-                                const gero::graphics::Texture& depthTexture,
-                                const gero::graphics::Texture& diffuseColorTexture,
-                                // const gero::graphics::Texture& specularColorTexture,
-                                float ambientLightCoef) {
+void ResultQuadRenderer::render( // const glm::vec3& eyePos,
+  const glm::vec4& sunLight,
+  const glm::mat4& composedMatrix,
+  const gero::graphics::Texture& colorTexture,
+  const gero::graphics::Texture& positionTexture,
+  const gero::graphics::Texture& normalTexture,
+  const gero::graphics::Texture& depthTexture,
+  const gero::graphics::Texture& diffuseColorTexture,
+  // const gero::graphics::Texture& specularColorTexture,
+  float ambientLightCoef) {
 
   _quadShader->preBind([&](IBoundShaderProgram& bound) {
     bound.setUniform("u_composedMatrix", composedMatrix);
@@ -117,7 +118,6 @@ void ResultQuadRenderer::render(//const glm::vec3& eyePos,
       // {"u_specularColorTexture", specularColorTexture},
     }};
 
-
     for (std::size_t index = 0; index < allTextures.size(); ++index) {
       const TextureData& currData = allTextures.at(index);
       GlContext::Texture::active(uint32_t(index));
@@ -132,6 +132,6 @@ void ResultQuadRenderer::render(//const glm::vec3& eyePos,
   });
 }
 
-} // namespace depthDeferred
+} // namespace depthDeferredNoSpecular
 } // namespace graphics
 } // namespace gero

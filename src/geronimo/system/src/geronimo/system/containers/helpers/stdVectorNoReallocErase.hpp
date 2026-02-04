@@ -4,9 +4,7 @@
 
 namespace gero {
 
-template <typename T>
-bool
-stdVectorNoReallocEraseByValue(std::vector<T>& container, const T& value) {
+template <typename T> bool stdVectorNoReallocEraseByValue(std::vector<T>& container, const T& value) {
   auto it = std::find(container.begin(), container.end(), value);
   if (it == container.end()) {
     return false;
@@ -16,8 +14,7 @@ stdVectorNoReallocEraseByValue(std::vector<T>& container, const T& value) {
 }
 
 template <typename T>
-bool
-stdVectorNoReallocEraseByCallback(std::vector<T>& container, const std::function<bool(const T&)>& findCallback) {
+bool stdVectorNoReallocEraseByCallback(std::vector<T>& container, const std::function<bool(const T&)>& findCallback) {
   auto it = std::find_if(container.begin(), container.end(), findCallback);
   if (it == container.end()) {
     return false;
@@ -27,8 +24,8 @@ stdVectorNoReallocEraseByCallback(std::vector<T>& container, const std::function
 }
 
 template <typename T, typename _Alloc = std::allocator<T>>
-bool
-stdVectorNoReallocEraseByIterator(std::vector<T, _Alloc>& container, typename std::vector<T, _Alloc>::iterator& it) {
+bool stdVectorNoReallocEraseByIterator(std::vector<T, _Alloc>& container,
+                                       typename std::vector<T, _Alloc>::iterator& it) {
   if (it == container.end()) {
     return false;
   }
@@ -49,13 +46,11 @@ stdVectorNoReallocEraseByIterator(std::vector<T, _Alloc>& container, typename st
   return true;
 }
 
-
 template <typename T, typename _Alloc = std::allocator<T>>
-std::size_t
-stdVectorNoReallocEraseAllByCallback(std::vector<T, _Alloc>& container, const std::function<bool(const T&)>& toEraseCallback) {
+std::size_t stdVectorNoReallocEraseAllByCallback(std::vector<T, _Alloc>& container,
+                                                 const std::function<bool(const T&)>& toEraseCallback) {
   std::size_t totalErased = 0;
-  for (auto it = container.begin(); it != container.end(); )
-  {
+  for (auto it = container.begin(); it != container.end();) {
     if (toEraseCallback(*it)) {
       stdVectorNoReallocEraseByIterator(container, it);
       ++totalErased;
@@ -66,4 +61,4 @@ stdVectorNoReallocEraseAllByCallback(std::vector<T, _Alloc>& container, const st
   return totalErased;
 }
 
-};
+}; // namespace gero

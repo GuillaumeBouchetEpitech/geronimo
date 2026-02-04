@@ -51,7 +51,8 @@ TEST(audio_general_test, load_ogg_file) {
       const float angle = float(ii) * k_fstep;
       const glm::vec3 currDir = glm::vec3(10 * std::cos(angle), 10 * std::sin(angle), 0);
 
-      D_MYLOG("four times higher pitch, 3d sound, angle: " << angle << " (" << int32_t(angle / gero::math::pi * 180.0f) << " degrees)");
+      D_MYLOG("four times higher pitch, 3d sound, angle: " << angle << " (" << int32_t(angle / gero::math::pi * 180.0f)
+                                                           << " degrees)");
       soundManager.playSound(666, centerPos + currDir, 2.0f, 8.0f);
       std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }

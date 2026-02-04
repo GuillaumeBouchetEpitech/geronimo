@@ -1,10 +1,10 @@
 
 #pragma once
 
+#include "internals/FrameMerger.hpp"
 #include "internals/LightStackRenderer.hpp"
 #include "internals/ResultQuadRenderer.hpp"
 #include "internals/ScreenRecorder.hpp"
-#include "internals/FrameMerger.hpp"
 
 #include "geronimo/graphics/FrameBuffer.hpp"
 #include "geronimo/graphics/Texture.hpp"

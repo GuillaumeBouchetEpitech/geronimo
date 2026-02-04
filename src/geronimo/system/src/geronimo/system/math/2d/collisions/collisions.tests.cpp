@@ -1,6 +1,6 @@
 
-#include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/math/2d/collisions/collisions.hpp"
+#include "geronimo/system/TraceLogger.hpp"
 
 #include "gtest/gtest.h"
 
@@ -277,12 +277,11 @@ TEST(system_collisions, collisionLineCircle) {
   }
 }
 
-// std::pair<float, float> rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius);
+// std::pair<float, float> rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float
+// radius);
 
-
-
-// std::pair<float, float> _rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius) {
-
+// std::pair<float, float> _rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float
+// radius) {
 
 //   glm::vec2 d = B - A; // ( Direction vector of ray, from start to end )
 //   glm::vec2 f = C - radius; // ( Vector from center sphere to ray start )
@@ -349,7 +348,6 @@ TEST(system_collisions, collisionLineCircle) {
 //   }
 
 // }
-
 
 // TEST(system_collisions, rawCollisionSegmentCircle) {
 

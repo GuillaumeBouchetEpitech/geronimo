@@ -77,7 +77,8 @@ bool collisionLineCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2
   return (CI < radius);
 }
 
-// std::pair<float, float> rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius) {
+// std::pair<float, float> rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float
+// radius) {
 //   if (collisionLineCircle(A, B, C, radius) == false) {
 //     return std::make_pair(-1.0f, -1.0f);
 //   }

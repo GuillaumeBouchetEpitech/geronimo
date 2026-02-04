@@ -13,4 +13,3 @@ struct RayCastResult {
 
 } // namespace math
 } // namespace gero
-

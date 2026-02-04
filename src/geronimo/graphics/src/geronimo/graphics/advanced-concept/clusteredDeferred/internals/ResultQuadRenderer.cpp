@@ -85,10 +85,11 @@ void ResultQuadRenderer::resize(const glm::ivec2& inFrameSize) {
     glm::vec2 uv;
   };
 
-  const std::array<Vertex, 4> vertices = {{{{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {0.0f, 0.0f}},
-                                           {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {1.0f, 0.0f}},
-                                           {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {1.0f, 1.0f}},
-                                           {{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {0.0f, 1.0f}}}};
+  const std::array<Vertex, 4> vertices = {
+    {{{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {0.0f, 0.0f}},
+     {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 0.0f, -0.5f}, {1.0f, 0.0f}},
+     {{float(inFrameSize.x) * 1.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {1.0f, 1.0f}},
+     {{float(inFrameSize.x) * 0.0f, float(inFrameSize.y) * 1.0f, -0.5f}, {0.0f, 1.0f}}}};
 
   const std::array<uint32_t, 6> indices = {{0, 1, 2, 2, 3, 0}};
 

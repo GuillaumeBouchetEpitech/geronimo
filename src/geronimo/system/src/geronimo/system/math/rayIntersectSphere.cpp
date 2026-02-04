@@ -6,13 +6,11 @@
 namespace gero {
 namespace math {
 
-bool intersectSphere(
-  const glm::vec3& ray_origin,
-  const glm::vec3& ray_direction,
-  const glm::vec3& center,
-  float radius,
-  RayCastResult& outData
-) {
+bool intersectSphere(const glm::vec3& ray_origin,
+                     const glm::vec3& ray_direction,
+                     const glm::vec3& center,
+                     float radius,
+                     RayCastResult& outData) {
   glm::vec3 m = ray_origin - center;
   float b = glm::dot(m, ray_direction);
   float c = glm::dot(m, m) - radius * radius;

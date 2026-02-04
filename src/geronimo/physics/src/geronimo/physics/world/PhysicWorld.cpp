@@ -92,7 +92,7 @@ PhysicWorld::PhysicWorld(std::optional<PhysicWorldOptions> options) : _rayCaster
     new btDiscreteDynamicsWorld(_bullet.dispatcher, _bullet.broadphase, _bullet.solver, _bullet.collisionConfiguration);
 
   // initialise GImpact (dynamic concave mesh shape)
-	btjsCollisionAlgorithm::registerAlgorithm(_bullet.dispatcher);
+  btjsCollisionAlgorithm::registerAlgorithm(_bullet.dispatcher);
 
   setGravity(0, 0, -10);
 

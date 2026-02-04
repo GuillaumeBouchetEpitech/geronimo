@@ -135,8 +135,7 @@ void PhysicVehicle::applyEngineForce(int32_t index, float force) {
 
   if (index < 0 || index >= getNumWheels()) {
     D_THROW(std::runtime_error,
-            "physic vehicle, wrong wheel index"
-              << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
+            "physic vehicle, wrong wheel index" << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
   }
 
   _bullet.vehicle->applyEngineForce(force, index);
@@ -146,8 +145,7 @@ void PhysicVehicle::applyBrake(int32_t index, float force) {
 
   if (index < 0 || index >= getNumWheels()) {
     D_THROW(std::runtime_error,
-            "physic vehicle, wrong wheel index"
-              << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
+            "physic vehicle, wrong wheel index" << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
   }
 
   _bullet.vehicle->setBrake(force, index);
@@ -157,8 +155,7 @@ void PhysicVehicle::setSteeringValue(int32_t index, float steering) {
 
   if (index < 0 || index >= getNumWheels()) {
     D_THROW(std::runtime_error,
-            "physic vehicle, wrong wheel index"
-              << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
+            "physic vehicle, wrong wheel index" << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
   }
 
   _bullet.vehicle->setSteeringValue(steering, index);
@@ -186,8 +183,7 @@ const glm::mat4& PhysicVehicle::getWheelTransform(int32_t index, glm::mat4& mat4
 
   if (index < 0 || index >= getNumWheels()) {
     D_THROW(std::runtime_error,
-            "physic vehicle, wrong wheel index"
-              << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
+            "physic vehicle, wrong wheel index" << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
   }
 
   // _bullet.vehicle->getWheelTransformWS(index).getOpenGLMatrix(glm::value_ptr(mat4x4));
@@ -202,8 +198,7 @@ glm::vec3 PhysicVehicle::getWheelPosition(int32_t index) const {
 
   if (index < 0 || index >= getNumWheels()) {
     D_THROW(std::runtime_error,
-            "physic vehicle, wrong wheel index"
-              << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
+            "physic vehicle, wrong wheel index" << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
   }
 
   auto transform = _bullet.vehicle->getWheelTransformWS(index);
@@ -215,8 +210,7 @@ glm::quat PhysicVehicle::getWheelOrientation(int32_t index) const {
 
   if (index < 0 || index >= getNumWheels()) {
     D_THROW(std::runtime_error,
-            "physic vehicle, wrong wheel index"
-              << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
+            "physic vehicle, wrong wheel index" << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
   }
 
   auto transform = _bullet.vehicle->getWheelTransformWS(index);
@@ -227,8 +221,7 @@ glm::quat PhysicVehicle::getWheelOrientation(int32_t index) const {
 bool PhysicVehicle::getWheelIsTouchingGround(int32_t index) const {
   if (index < 0 || index >= getNumWheels()) {
     D_THROW(std::runtime_error,
-            "physic vehicle, wrong wheel index"
-              << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
+            "physic vehicle, wrong wheel index" << " (index=" << index << ",  numWheels=" << getNumWheels() << ")");
   }
 
   const auto& wheelInfo = _bullet.vehicle->getWheelInfo(index);

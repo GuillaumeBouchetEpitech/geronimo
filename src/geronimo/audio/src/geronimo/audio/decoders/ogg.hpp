@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include <string>
 #include <cstdint>
+#include <string>
 
 namespace gero {
 namespace audio {

@@ -46,10 +46,10 @@ public:
   void pushSpotLight(const glm::vec3& inPosition, const glm::vec3& inColor, float inRadius);
 
 public:
-  void flush(//const glm::vec3& eyePos,
-             const glm::mat4& composedMatrix,
-             const gero::graphics::Texture& positionTexture,
-             const gero::graphics::Texture& normalTexture);
+  void flush( // const glm::vec3& eyePos,
+    const glm::mat4& composedMatrix,
+    const gero::graphics::Texture& positionTexture,
+    const gero::graphics::Texture& normalTexture);
 
   void reset();
 
@@ -85,6 +85,6 @@ private:
   std::vector<Instance> _vertices;
 };
 
-} // namespace depthDeferred
+} // namespace depthDeferredNoSpecular
 } // namespace graphics
 } // namespace gero

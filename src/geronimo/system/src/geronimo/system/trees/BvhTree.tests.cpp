@@ -12,20 +12,19 @@
 //
 
 namespace {
-  struct TmpUserData {
-    glm::vec3 pos;
-    int32_t id;
+struct TmpUserData {
+  glm::vec3 pos;
+  int32_t id;
 
-    glm::vec3 aabbMin;
-    glm::vec3 aabbMax;
+  glm::vec3 aabbMin;
+  glm::vec3 aabbMax;
 
-    TmpUserData(const glm::vec3& inPos, int32_t inId): pos(inPos), id(inId) {
-      aabbMin = pos - 1.0f;
-      aabbMax = pos + 1.0f;
-    }
-
-  };
+  TmpUserData(const glm::vec3& inPos, int32_t inId) : pos(inPos), id(inId) {
+    aabbMin = pos - 1.0f;
+    aabbMax = pos + 1.0f;
+  }
 };
+}; // namespace
 
 TEST(trees_bvh, basic_test__get_1) {
 

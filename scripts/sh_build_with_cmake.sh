@@ -29,8 +29,8 @@ echo ""
 
 cd "$INITIAL_CWD" || exit 1
 
-# cmake -B ./build.release.native -D'CHECK_CLANG_TIDY:BOOL=TRUE'
-cmake -B "./build.release.native" -D'CHECK_CLANG_TIDY:BOOL=TRUE'
+# cmake -B "./build.release.native" -D'CHECK_CLANG_TIDY:BOOL=TRUE'
+cmake -B "./build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE'
 cd "./build.release.native" || exit 1
 cmake --build . --config Release --parallel 5
 

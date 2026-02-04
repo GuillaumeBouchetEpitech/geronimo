@@ -17,18 +17,6 @@ using DepthFormat = gero::graphics::Texture::DepthFormat;
 using DepthType = gero::graphics::Texture::DepthType;
 using namespace gero::graphics::GlContext;
 
-
-
-
-
-
-
-
-
-
-
-
-
 // !MARK: PostProcessData
 
 void PostProcessData::initialize(const glm::ivec2& inFrameSize,
@@ -57,17 +45,6 @@ void PostProcessData::resize(const glm::ivec2& inFrameSize) {
   def.colorTextures.push_back({0, &colorTexture});
   frameBuffer.initialize(def);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 // !MARK: LightStackRenderer
 

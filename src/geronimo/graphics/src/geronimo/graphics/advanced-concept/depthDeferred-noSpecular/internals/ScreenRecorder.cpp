@@ -52,7 +52,7 @@ const gero::graphics::Texture& ScreenRecorder::getNormalTexture() const { return
 
 const gero::graphics::Texture& ScreenRecorder::getDepthTexture() const { return _depthTexture; }
 
-} // namespace depthDeferred
+} // namespace depthDeferredNoSpecular
 
 } // namespace graphics
 } // namespace gero

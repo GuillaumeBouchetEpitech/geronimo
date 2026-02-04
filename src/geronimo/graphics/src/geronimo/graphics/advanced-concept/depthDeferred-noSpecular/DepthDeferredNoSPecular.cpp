@@ -5,8 +5,8 @@ namespace gero {
 namespace graphics {
 
 void DepthDeferredNoSPecular::initialize(const std::string& inRootPath,
-                               const glm::ivec2& inFrameSize,
-                               float inResolutionScaling /*= 1.0f*/) {
+                                         const glm::ivec2& inFrameSize,
+                                         float inResolutionScaling /*= 1.0f*/) {
 
   _sunLight = glm::vec4(glm::normalize(glm::vec3(_sunLight)), 0.0f);
 
@@ -46,18 +46,15 @@ void DepthDeferredNoSPecular::setAmbientLightRatio(float ambientLightRatio) { _a
 void DepthDeferredNoSPecular::startRecording() { _screenRecorder.startRecording(); }
 void DepthDeferredNoSPecular::stopRecording() { _screenRecorder.stopRecording(); }
 
-void DepthDeferredNoSPecular::startRecordingTransparency() {
-  _screenRecorder_transparency.startRecording();
-}
-void DepthDeferredNoSPecular::stopRecordingTransparency() {
-  _screenRecorder_transparency.stopRecording();
-}
+void DepthDeferredNoSPecular::startRecordingTransparency() { _screenRecorder_transparency.startRecording(); }
+void DepthDeferredNoSPecular::stopRecordingTransparency() { _screenRecorder_transparency.stopRecording(); }
 
 void DepthDeferredNoSPecular::pushSpotLight(const glm::vec3& inPosition, const glm::vec3& inColor, float inRadius) {
   _lightStackRenderer.pushSpotLight(inPosition, inColor, inRadius);
 }
 
-// void DepthDeferredNoSPecular::applySpotLights(const gero::graphics::ICamera& inSceneCamera, bool resetLightStack /*= true*/) {
+// void DepthDeferredNoSPecular::applySpotLights(const gero::graphics::ICamera& inSceneCamera, bool resetLightStack /*=
+// true*/) {
 //   _lightStackRenderer.flush(_eyePos,
 //                             inSceneCamera.getMatricesData().composed,
 //                             _screenRecorder.getPositionTexture(),
@@ -68,47 +65,45 @@ void DepthDeferredNoSPecular::pushSpotLight(const glm::vec3& inPosition, const g
 //   }
 // }
 
-void DepthDeferredNoSPecular::renderHudQuad(
-  const gero::graphics::ICamera& inSceneCamera,
-  const gero::graphics::ICamera& inHudCamera
-) {
+void DepthDeferredNoSPecular::renderHudQuad(const gero::graphics::ICamera& inSceneCamera,
+                                            const gero::graphics::ICamera& inHudCamera) {
 
-  _lightStackRenderer.flush(//_eyePos,
-                            inSceneCamera.getMatricesData().composed,
-                            _screenRecorder.getPositionTexture(),
-                            _screenRecorder.getNormalTexture());
+  _lightStackRenderer.flush( //_eyePos,
+    inSceneCamera.getMatricesData().composed,
+    _screenRecorder.getPositionTexture(),
+    _screenRecorder.getNormalTexture());
 
   // TODO: capture this in a texture (color+depth)
   _frameMerger.startRecordingOpaque();
-  _resultQuadRenderer.render(//_eyePos,
-                             _sunLight,
-                             inHudCamera.getMatricesData().composed,
-                             _screenRecorder.getColorTexture(),
-                             _screenRecorder.getPositionTexture(),
-                             _screenRecorder.getNormalTexture(),
-                             _screenRecorder.getDepthTexture(),
-                             _lightStackRenderer.getDiffuseColorTexture(),
-                            //  _lightStackRenderer.getSpecularColorTexture(),
-                             _ambientLightRatio);
+  _resultQuadRenderer.render( //_eyePos,
+    _sunLight,
+    inHudCamera.getMatricesData().composed,
+    _screenRecorder.getColorTexture(),
+    _screenRecorder.getPositionTexture(),
+    _screenRecorder.getNormalTexture(),
+    _screenRecorder.getDepthTexture(),
+    _lightStackRenderer.getDiffuseColorTexture(),
+    //  _lightStackRenderer.getSpecularColorTexture(),
+    _ambientLightRatio);
   _frameMerger.stopRecordingOpaque();
 
-  _lightStackRenderer.flush(//_eyePos,
-                            inSceneCamera.getMatricesData().composed,
-                            _screenRecorder_transparency.getPositionTexture(),
-                            _screenRecorder_transparency.getNormalTexture());
+  _lightStackRenderer.flush( //_eyePos,
+    inSceneCamera.getMatricesData().composed,
+    _screenRecorder_transparency.getPositionTexture(),
+    _screenRecorder_transparency.getNormalTexture());
 
   // // TODO: capture this in a texture (color+depth)
   _frameMerger.startRecordingTransparency();
-  _resultQuadRenderer.render(//_eyePos,
-                             _sunLight,
-                             inHudCamera.getMatricesData().composed,
-                             _screenRecorder_transparency.getColorTexture(),
-                             _screenRecorder_transparency.getPositionTexture(),
-                             _screenRecorder_transparency.getNormalTexture(),
-                             _screenRecorder_transparency.getDepthTexture(),
-                             _lightStackRenderer.getDiffuseColorTexture(),
-                            //  _lightStackRenderer.getSpecularColorTexture(),
-                             _ambientLightRatio);
+  _resultQuadRenderer.render( //_eyePos,
+    _sunLight,
+    inHudCamera.getMatricesData().composed,
+    _screenRecorder_transparency.getColorTexture(),
+    _screenRecorder_transparency.getPositionTexture(),
+    _screenRecorder_transparency.getNormalTexture(),
+    _screenRecorder_transparency.getDepthTexture(),
+    _lightStackRenderer.getDiffuseColorTexture(),
+    //  _lightStackRenderer.getSpecularColorTexture(),
+    _ambientLightRatio);
   _frameMerger.stopRecordingTransparency();
 
   // TODO: merge the 2 captured textures -> color/depth x2 (opaque/transparent)

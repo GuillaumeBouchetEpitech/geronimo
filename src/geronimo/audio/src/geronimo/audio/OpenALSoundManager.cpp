@@ -107,8 +107,7 @@ void OpenALSoundManager::loadOggFromMemory(uint32_t alias, const std::string& co
     format = OpenAlContext::BufferFormat::stereo16;
   else
     D_THROW(std::runtime_error,
-            "ERROR: unrecognised ogg format"
-              << ", channels=" << channels << ", bitsPerSample=" << bitsPerSample);
+            "ERROR: unrecognised ogg format" << ", channels=" << channels << ", bitsPerSample=" << bitsPerSample);
 
   // D_MYLOG("channels " << channels);
   // D_MYLOG("bitsPerSample " << bitsPerSample);

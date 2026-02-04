@@ -48,8 +48,7 @@ TEST(basic_regexp_parser, get3UI) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 3UI is too high, type=get3UI, toSearch=\""
-                                         << toSearch << "\""
-                                         << ", value.x=666, maxValue=600")),
+                                         << toSearch << "\"" << ", value.x=666, maxValue=600")),
                 std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }
@@ -66,8 +65,7 @@ TEST(basic_regexp_parser, get3UI) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 3UI is too high, type=get3UI, toSearch=\""
-                                         << toSearch << "\""
-                                         << ", value.y=777, maxValue=700")),
+                                         << toSearch << "\"" << ", value.y=777, maxValue=700")),
                 std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }
@@ -84,8 +82,7 @@ TEST(basic_regexp_parser, get3UI) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.z of 3UI is too high, type=get3UI, toSearch=\""
-                                         << toSearch << "\""
-                                         << ", value.z=888, maxValue=800")),
+                                         << toSearch << "\"" << ", value.z=888, maxValue=800")),
                 std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }

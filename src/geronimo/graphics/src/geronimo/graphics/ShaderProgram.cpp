@@ -94,22 +94,21 @@ ShaderProgram::ShaderProgram(const Definition& inDef, const fileUtils::LoadCallb
     GlContext::Shader::deleteProgram(_programId);
 
     D_THROW(std::runtime_error,
-            "fail to link a shader"
-              << ", vertex=" << inDef.filenames.vertex << ", fragment=" << inDef.filenames.fragment);
+            "fail to link a shader" << ", vertex=" << inDef.filenames.vertex
+                                    << ", fragment=" << inDef.filenames.fragment);
   }
 
   for (const auto& attribute : inDef.attributes) {
     if (_attributesMap.count(attribute) > 0)
       D_THROW(std::runtime_error,
-              "duplicate attribute"
-                << ", input=" << attribute << ", vertex=" << inDef.filenames.vertex);
+              "duplicate attribute" << ", input=" << attribute << ", vertex=" << inDef.filenames.vertex);
 
     const int32_t location = GlContext::Shader::getAttribLocation(_programId, attribute.c_str());
 
     if (location == -1)
       D_THROW(std::runtime_error,
-              "fail to find an attribute location (missing or unused)"
-                << ", input=" << attribute << ", vertex=" << inDef.filenames.vertex);
+              "fail to find an attribute location (missing or unused)" << ", input=" << attribute
+                                                                       << ", vertex=" << inDef.filenames.vertex);
 
     _attributesMap[attribute] = location;
   }
@@ -117,17 +116,16 @@ ShaderProgram::ShaderProgram(const Definition& inDef, const fileUtils::LoadCallb
   for (const auto& uniform : inDef.uniforms) {
     if (_uniformsMap.count(uniform) > 0)
       D_THROW(std::runtime_error,
-              "duplicate uniform"
-                << ", input=" << uniform << ", vertex=" << inDef.filenames.vertex
-                << ", fragment=" << inDef.filenames.fragment);
+              "duplicate uniform" << ", input=" << uniform << ", vertex=" << inDef.filenames.vertex
+                                  << ", fragment=" << inDef.filenames.fragment);
 
     const int32_t location = GlContext::Shader::getUniformLocation(_programId, uniform.c_str());
 
     if (location == -1)
       D_THROW(std::runtime_error,
-              "fail to find an uniform location (missing or unused)"
-                << ", input=" << uniform << ", vertex=" << inDef.filenames.vertex
-                << ", fragment=" << inDef.filenames.fragment);
+              "fail to find an uniform location (missing or unused)" << ", input=" << uniform
+                                                                     << ", vertex=" << inDef.filenames.vertex
+                                                                     << ", fragment=" << inDef.filenames.fragment);
 
     _uniformsMap[uniform] = location;
   }

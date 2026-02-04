@@ -15,7 +15,7 @@ namespace graphics {
 
 namespace GlContext {
 
-//MARK: FrameBuffers
+// MARK: FrameBuffers
 namespace FrameBuffers {
 
 void generateMany(uint32_t total, uint32_t* buffers);
@@ -33,7 +33,7 @@ void downloadPixels(uint32_t posX, uint32_t posY, uint32_t width, uint32_t heigh
 
 } // namespace FrameBuffers
 
-//MARK: VBO
+// MARK: VBO
 namespace VBO {
 
 enum class Primitives {
@@ -74,7 +74,7 @@ void drawInstancedArrays(Primitives primitive,
 
 } // namespace VBO
 
-//MARK: RenderBuffer
+// MARK: RenderBuffer
 namespace RenderBuffer {
 
 enum class DepthFormat {
@@ -91,7 +91,7 @@ void setSize(uint32_t width, uint32_t height, DepthFormat depthFormat);
 
 } // namespace RenderBuffer
 
-//MARK: Shader
+// MARK: Shader
 namespace Shader {
 
 uint32_t loadVertexShader(const std::string& filename, const std::string& source);
@@ -115,7 +115,7 @@ void setUniform(int32_t location, const glm::mat4& matrix);
 
 } // namespace Shader
 
-//MARK: Texture
+// MARK: Texture
 namespace Texture {
 
 enum class DepthFormat {
@@ -179,7 +179,7 @@ void setPixelUnpackAlignment(uint32_t inValueInBytes);
 
 } // namespace Texture
 
-//MARK: VAO
+// MARK: VAO
 namespace VAO {
 
 void generateMany(uint32_t total, uint32_t* buffers);
@@ -187,11 +187,11 @@ void deleteMany(uint32_t total, const uint32_t* buffers);
 void bind(uint32_t vaoId);
 } // namespace VAO
 
-//MARK: Viewport/scissor
+// MARK: Viewport/scissor
 void setViewport(int32_t x, int32_t y, uint32_t width, uint32_t height);
 void setScissor(int32_t x, int32_t y, uint32_t width, uint32_t height);
 
-//MARK: Depth
+// MARK: Depth
 enum class DepthFuncs {
   never,
   less,
@@ -207,7 +207,7 @@ void setDepthMask(bool isEnabled);
 
 void setColorMask(bool red, bool green, bool blue, bool alpha);
 
-//MARK: Blending
+// MARK: Blending
 enum class BlendFuncs {
   one,
   srcAlpha,
@@ -215,7 +215,7 @@ enum class BlendFuncs {
 };
 void setBlendFunc(BlendFuncs srcFactor, BlendFuncs destFactor);
 
-//MARK: Stencil
+// MARK: Stencil
 enum class StencilFuncs {
   // gl.NEVER: Never pass.
   never,
@@ -263,7 +263,7 @@ void setStencilOp(StencilOps fail, StencilOps zFail, StencilOps zPass);
 //
 //
 
-//MARK: enable/disable
+// MARK: enable/disable
 enum class States {
   cullFace,
   depthTest,
@@ -295,7 +295,7 @@ template <typename... Args> void disables(Args... args) {
 //
 //
 
-//MARK: face culling
+// MARK: face culling
 enum class BackFaceCullingDirection {
   clockWise,
   counterClockWise,
@@ -306,7 +306,7 @@ void setBackFaceCullingDirection(BackFaceCullingDirection direction);
 //
 //
 
-//MARK: clear
+// MARK: clear
 enum class Buffers : int32_t {
   color = 1 << 0,
   depth = 1 << 1,
@@ -338,7 +338,7 @@ void clearDepth(float value);
 // static void polygonModeAsLine();
 // static void polygonModeAsFill();
 
-//MARK: misc
+// MARK: misc
 std::string getVersion();
 int32_t getMaxTextureSize();
 

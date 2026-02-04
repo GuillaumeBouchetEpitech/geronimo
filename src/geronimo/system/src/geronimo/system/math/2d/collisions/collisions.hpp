@@ -16,7 +16,8 @@ bool collisionPointIsLeftOfLine(const glm::vec2& a, const glm::vec2& b, const gl
 
 bool collisionPointCircle(const glm::vec2& P, const glm::vec2& C, float radius);
 bool collisionLineCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius);
-// std::pair<float, float> rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius);
+// std::pair<float, float> rawCollisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float
+// radius);
 bool collisionSegmentCircle(const glm::vec2& A, const glm::vec2& B, const glm::vec2& C, float radius);
 
 } // namespace math

@@ -57,8 +57,7 @@ bool FrameBuffer::initialize(const Definition& def, bool throwException /*= true
 
   if (def.depthTexture) {
     attachDepthTexture(*def.depthTexture);
-  }
-  else if (def.renderBuffer) {
+  } else if (def.renderBuffer) {
     attachDepthRenderBuffer(*def.renderBuffer);
   }
 

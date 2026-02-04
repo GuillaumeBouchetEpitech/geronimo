@@ -46,8 +46,7 @@ TEST(basic_regexp_parser, get2UI) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.x of 2UI is too high, type=get2UI, toSearch=\""
-                                         << toSearch << "\""
-                                         << ", value.x=666, maxValue=600")),
+                                         << toSearch << "\"" << ", value.x=666, maxValue=600")),
                 std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }
@@ -64,8 +63,7 @@ TEST(basic_regexp_parser, get2UI) {
       const std::string_view exceptionMsg = err.what();
       ASSERT_NE(exceptionMsg, "unreachable") << "exceptionMsg=" << exceptionMsg;
       ASSERT_NE(exceptionMsg.find(D_SSTR("value.y of 2UI is too high, type=get2UI, toSearch=\""
-                                         << toSearch << "\""
-                                         << ", value.y=777, maxValue=700")),
+                                         << toSearch << "\"" << ", value.y=777, maxValue=700")),
                 std::string_view::npos)
         << "exceptionMsg=" << exceptionMsg;
     }

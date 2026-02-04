@@ -27,16 +27,16 @@ public:
 public:
   void resize(const glm::ivec2& inFrameSize);
 
-  void render(//const glm::vec3& eyePos,
-              const glm::vec4& sunLightDirection,
-              const glm::mat4& composedMatrix,
-              const gero::graphics::Texture& colorTexture,
-              const gero::graphics::Texture& positionTexture,
-              const gero::graphics::Texture& normalTexture,
-              const gero::graphics::Texture& depthTexture,
-              const gero::graphics::Texture& diffuseCoefTexture,
-              // const gero::graphics::Texture& specularCoefTexture,
-              float ambientLightCoef);
+  void render( // const glm::vec3& eyePos,
+    const glm::vec4& sunLightDirection,
+    const glm::mat4& composedMatrix,
+    const gero::graphics::Texture& colorTexture,
+    const gero::graphics::Texture& positionTexture,
+    const gero::graphics::Texture& normalTexture,
+    const gero::graphics::Texture& depthTexture,
+    const gero::graphics::Texture& diffuseCoefTexture,
+    // const gero::graphics::Texture& specularCoefTexture,
+    float ambientLightCoef);
 
 private:
   glm::ivec2 _frameSize = {0, 0};
@@ -45,6 +45,6 @@ private:
   gero::graphics::Geometry _quadGeometry;
 };
 
-} // namespace depthDeferred
+} // namespace depthDeferredNoSpecular
 } // namespace graphics
 } // namespace gero

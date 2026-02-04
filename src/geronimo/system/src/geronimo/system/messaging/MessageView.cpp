@@ -24,9 +24,8 @@ MessageView& MessageView::read(void* dataPointer, uint32_t dataSize) {
   // verify size left
   if (_readIndex + dataSize > _dataSize)
     D_THROW(std::runtime_error,
-            "can't read, not enough size left"
-              << ", current index=" << _readIndex << ", next index=" << (_readIndex + dataSize)
-              << ", data size=" << _dataSize);
+            "can't read, not enough size left" << ", current index=" << _readIndex << ", next index="
+                                               << (_readIndex + dataSize) << ", data size=" << _dataSize);
 
   std::memcpy(dataPointer, _dataPointer + _readIndex, dataSize);
   _readIndex += dataSize;

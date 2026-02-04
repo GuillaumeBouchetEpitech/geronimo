@@ -7,8 +7,7 @@ TEST_F(system_generic_array_container, can_be_sorted) {
   {
     gero::static_array<common::TestStructure, 5> mySaticArray;
 
-    for (std::size_t ii = 0; ii < mySaticArray.size(); ++ii)
-    {
+    for (std::size_t ii = 0; ii < mySaticArray.size(); ++ii) {
       mySaticArray[int(ii)].my_string = "test_" + std::to_string(ii);
       mySaticArray[int(ii)].value = int(ii);
     }
@@ -41,5 +40,4 @@ TEST_F(system_generic_array_container, can_be_sorted) {
     //   }
     // }
   }
-
 }

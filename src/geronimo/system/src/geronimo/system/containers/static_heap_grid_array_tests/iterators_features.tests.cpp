@@ -88,51 +88,53 @@ TEST(system_static_heap_grid_array, iterators_increment_decrement_operator) {
     for (int xx = 0; xx < int(staticGrid.width()); ++xx)
       staticGrid(yy, xx).value = 1 + yy * int(k_width) + xx;
 
-  {{auto itFirstColumn = staticGrid.beginColumns();
-
-  ASSERT_EQ((itFirstColumn + 0)->value, 1);
-  ASSERT_EQ((itFirstColumn + 1)->value, 2);
-  ASSERT_EQ((itFirstColumn + 2)->value, 3);
-  ASSERT_EQ((itFirstColumn + 3)->value, 4);
-  ASSERT_EQ((itFirstColumn + 4)->value, 5);
-  ASSERT_EQ((itFirstColumn + 5)->value, 6);
-}
-
-{
-  auto itLastColumn = staticGrid.endColumns(k_height - 1);
-
-  ASSERT_EQ((itLastColumn + 0)->value, k_width * (k_height - 1) + 1 + 0);
-  ASSERT_EQ((itLastColumn + 1)->value, k_width * (k_height - 1) + 1 + 1);
-  ASSERT_EQ((itLastColumn + 2)->value, k_width * (k_height - 1) + 1 + 2);
-  ASSERT_EQ((itLastColumn + 3)->value, k_width * (k_height - 1) + 1 + 3);
-  ASSERT_EQ((itLastColumn + 4)->value, k_width * (k_height - 1) + 1 + 4);
-  ASSERT_EQ((itLastColumn + 5)->value, k_width * (k_height - 1) + 1 + 5);
-}
-}
-
-{
-  const auto& cstaticGrid = staticGrid;
-
   {
-    auto itFirstColumn = cstaticGrid.beginColumns();
+    {
+      auto itFirstColumn = staticGrid.beginColumns();
 
-    ASSERT_EQ((itFirstColumn + 0)->value, 1);
-    ASSERT_EQ((itFirstColumn + 1)->value, 2);
-    ASSERT_EQ((itFirstColumn + 2)->value, 3);
-    ASSERT_EQ((itFirstColumn + 3)->value, 4);
-    ASSERT_EQ((itFirstColumn + 4)->value, 5);
-    ASSERT_EQ((itFirstColumn + 5)->value, 6);
+      ASSERT_EQ((itFirstColumn + 0)->value, 1);
+      ASSERT_EQ((itFirstColumn + 1)->value, 2);
+      ASSERT_EQ((itFirstColumn + 2)->value, 3);
+      ASSERT_EQ((itFirstColumn + 3)->value, 4);
+      ASSERT_EQ((itFirstColumn + 4)->value, 5);
+      ASSERT_EQ((itFirstColumn + 5)->value, 6);
+    }
+
+    {
+      auto itLastColumn = staticGrid.endColumns(k_height - 1);
+
+      ASSERT_EQ((itLastColumn + 0)->value, k_width * (k_height - 1) + 1 + 0);
+      ASSERT_EQ((itLastColumn + 1)->value, k_width * (k_height - 1) + 1 + 1);
+      ASSERT_EQ((itLastColumn + 2)->value, k_width * (k_height - 1) + 1 + 2);
+      ASSERT_EQ((itLastColumn + 3)->value, k_width * (k_height - 1) + 1 + 3);
+      ASSERT_EQ((itLastColumn + 4)->value, k_width * (k_height - 1) + 1 + 4);
+      ASSERT_EQ((itLastColumn + 5)->value, k_width * (k_height - 1) + 1 + 5);
+    }
   }
 
   {
-    auto itLastColumn = cstaticGrid.endColumns(k_height - 1);
+    const auto& cstaticGrid = staticGrid;
 
-    ASSERT_EQ((itLastColumn + 0)->value, k_width * (k_height - 1) + 1 + 0);
-    ASSERT_EQ((itLastColumn + 1)->value, k_width * (k_height - 1) + 1 + 1);
-    ASSERT_EQ((itLastColumn + 2)->value, k_width * (k_height - 1) + 1 + 2);
-    ASSERT_EQ((itLastColumn + 3)->value, k_width * (k_height - 1) + 1 + 3);
-    ASSERT_EQ((itLastColumn + 4)->value, k_width * (k_height - 1) + 1 + 4);
-    ASSERT_EQ((itLastColumn + 5)->value, k_width * (k_height - 1) + 1 + 5);
+    {
+      auto itFirstColumn = cstaticGrid.beginColumns();
+
+      ASSERT_EQ((itFirstColumn + 0)->value, 1);
+      ASSERT_EQ((itFirstColumn + 1)->value, 2);
+      ASSERT_EQ((itFirstColumn + 2)->value, 3);
+      ASSERT_EQ((itFirstColumn + 3)->value, 4);
+      ASSERT_EQ((itFirstColumn + 4)->value, 5);
+      ASSERT_EQ((itFirstColumn + 5)->value, 6);
+    }
+
+    {
+      auto itLastColumn = cstaticGrid.endColumns(k_height - 1);
+
+      ASSERT_EQ((itLastColumn + 0)->value, k_width * (k_height - 1) + 1 + 0);
+      ASSERT_EQ((itLastColumn + 1)->value, k_width * (k_height - 1) + 1 + 1);
+      ASSERT_EQ((itLastColumn + 2)->value, k_width * (k_height - 1) + 1 + 2);
+      ASSERT_EQ((itLastColumn + 3)->value, k_width * (k_height - 1) + 1 + 3);
+      ASSERT_EQ((itLastColumn + 4)->value, k_width * (k_height - 1) + 1 + 4);
+      ASSERT_EQ((itLastColumn + 5)->value, k_width * (k_height - 1) + 1 + 5);
+    }
   }
-}
 }
