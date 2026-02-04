@@ -14,7 +14,6 @@ void GraphicHudRenderer::initialize(uint32_t width, uint32_t height) {
   _textRenderer.initialize("./assets/graphics/hud/advanced-concept-sub-assets/textRenderer");
 
   // samples/test-bed/assets/graphics/advanced-concept-sub-assets/depthDeferred
-
 }
 
 void GraphicHudRenderer::resize(uint32_t width, uint32_t height) { _camera.setSize(width, height); }

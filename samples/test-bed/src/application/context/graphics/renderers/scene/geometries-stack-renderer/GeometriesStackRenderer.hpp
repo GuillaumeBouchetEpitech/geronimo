@@ -82,5 +82,4 @@ private:
   std::unordered_map<int32_t, std::shared_ptr<AliasedGeometry>> _aliasedGeometriesMap;
 
   bool _strictMode = true;
-
 };

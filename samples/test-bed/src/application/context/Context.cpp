@@ -10,9 +10,9 @@
 
 #include "geronimo/helpers/Json.hpp"
 
+#include <fstream>
 #include <iomanip>
 #include <sstream>
-#include <fstream>
 
 //
 //
@@ -20,9 +20,7 @@
 
 Context* Context::_instance = nullptr;
 
-Context::~Context() {
-  delete audio.soundManager;
-}
+Context::~Context() { delete audio.soundManager; }
 
 void Context::initialize(uint32_t width, uint32_t height) {
 

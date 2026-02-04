@@ -3,8 +3,8 @@
 
 #include "geronimo/helpers/GLMath.hpp"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 class AbstractBoid {
 public:

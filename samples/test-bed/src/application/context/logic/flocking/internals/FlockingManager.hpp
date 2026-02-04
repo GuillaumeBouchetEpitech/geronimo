@@ -3,8 +3,8 @@
 
 #include "./Boid.hpp"
 
-#include "geronimo/system/trees/SpatialIndexer.hpp"
 #include "geronimo/system/trees/BvhTree.hpp"
+#include "geronimo/system/trees/SpatialIndexer.hpp"
 
 class FlockingManager : public AbstractFlockingManager {
 public:

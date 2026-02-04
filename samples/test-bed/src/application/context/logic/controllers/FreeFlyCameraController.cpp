@@ -268,10 +268,7 @@ void FreeFlyCameraController::update(float elapsedTime) {
 
 //
 
-void FreeFlyCameraController::setPosition(const glm::vec3& pos)
-{
-  _position = pos;
-}
+void FreeFlyCameraController::setPosition(const glm::vec3& pos) { _position = pos; }
 
 // const glm::vec3& FreeFlyCameraController::getTarget() const
 // {

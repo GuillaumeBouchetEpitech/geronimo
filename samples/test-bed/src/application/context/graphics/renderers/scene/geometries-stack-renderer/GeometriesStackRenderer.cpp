@@ -26,8 +26,7 @@ void GeometriesStackRenderer::initialize() {
     .addAttribute("a_offsetColor")
     .addAttribute("a_offsetLight")
 
-    .addUniform("u_composedMatrix")
-    ;
+    .addUniform("u_composedMatrix");
 
   auto shaderDef = shaderProgramBuilder.getDefinition();
 
@@ -93,19 +92,16 @@ void GeometriesStackRenderer::pushAlias(int32_t alias, const GeometryInstance& n
 
   auto& tmpData = *it->second;
 
-  if (
-    _strictMode &&
-    tmpData.instanceVertices.size() + 1 >= tmpData.instanceVertices.capacity()
-  ) {
-    // D_THROW(std::runtime_error, "alias buffer out of of space, alias: " << alias << ", capacity: " << tmpData.instanceVertices.capacity());
+  if (_strictMode && tmpData.instanceVertices.size() + 1 >= tmpData.instanceVertices.capacity()) {
+    // D_THROW(std::runtime_error, "alias buffer out of of space, alias: " << alias << ", capacity: " <<
+    // tmpData.instanceVertices.capacity());
     return;
   }
 
   tmpData.instanceVertices.push_back(newInstance);
 }
 
-void GeometriesStackRenderer::sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera)
-{
+void GeometriesStackRenderer::sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera) {
   auto it = _aliasedGeometriesMap.find(alias);
   if (it == _aliasedGeometriesMap.end()) {
     D_THROW(std::runtime_error, "alias not found, alias: " << alias);
@@ -113,38 +109,33 @@ void GeometriesStackRenderer::sortAlias(int32_t alias, const gero::graphics::ICa
 
   auto& tmpData = *it->second;
 
-  std::sort(tmpData.instanceVertices.begin(), tmpData.instanceVertices.end(), [&sceneCamera](
-    const IGeometriesStackRenderer::GeometryInstance& left,
-    const IGeometriesStackRenderer::GeometryInstance& right
-  ) {
+  std::sort(tmpData.instanceVertices.begin(),
+            tmpData.instanceVertices.end(),
+            [&sceneCamera](const IGeometriesStackRenderer::GeometryInstance& left,
+                           const IGeometriesStackRenderer::GeometryInstance& right) {
+              // sort by screen depth
 
-    // sort by screen depth
+              auto& matricesData = sceneCamera.getMatricesData();
 
-    auto& matricesData = sceneCamera.getMatricesData();
+              glm::vec3 leftScreenCoord = glm::vec3(0, 0, 1);
+              glm::vec3 rightScreenCoord = glm::vec3(0, 0, 1);
 
-    glm::vec3 leftScreenCoord = glm::vec3(0,0,1);
-    glm::vec3 rightScreenCoord = glm::vec3(0,0,1);
+              gero::graphics::sceneToScreen(left.position,
+                                            matricesData.view,
+                                            matricesData.projection,
+                                            glm::vec2(0, 0),
+                                            sceneCamera.getSize(),
+                                            leftScreenCoord);
 
-    gero::graphics::sceneToScreen(
-      left.position,
-      matricesData.view,
-      matricesData.projection,
-      glm::vec2(0,0),
-      sceneCamera.getSize(),
-      leftScreenCoord
-    );
+              gero::graphics::sceneToScreen(right.position,
+                                            matricesData.view,
+                                            matricesData.projection,
+                                            glm::vec2(0, 0),
+                                            sceneCamera.getSize(),
+                                            rightScreenCoord);
 
-    gero::graphics::sceneToScreen(
-      right.position,
-      matricesData.view,
-      matricesData.projection,
-      glm::vec2(0,0),
-      sceneCamera.getSize(),
-      rightScreenCoord
-    );
-
-    return leftScreenCoord.z > rightScreenCoord.z;
-  });
+              return leftScreenCoord.z > rightScreenCoord.z;
+            });
 }
 
 void GeometriesStackRenderer::preAllocateAlias(int32_t alias, std::size_t newSize) {

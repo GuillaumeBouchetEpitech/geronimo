@@ -16,20 +16,15 @@ Boid::Boid() {
   }
 }
 
-void
-Boid::seek(const glm::vec3& target, float coef) {
+void Boid::seek(const glm::vec3& target, float coef) {
   glm::vec3 currentDirection = target - position;
   gero::math::safeNormalize(currentDirection);
   acceleration += currentDirection * coef;
 }
 
-void
-Boid::flee(const glm::vec3& target, float coef) {
-  return seek(target, -coef);
-}
+void Boid::flee(const glm::vec3& target, float coef) { return seek(target, -coef); }
 
-void
-Boid::separate(const std::vector<Boid*>& boids, float coef) {
+void Boid::separate(const std::vector<Boid*>& boids, float coef) {
   glm::vec3 accumulatedDirections = {0, 0, 0};
   for (const Boid* other : boids) {
     if (this == other)
@@ -48,8 +43,7 @@ Boid::separate(const std::vector<Boid*>& boids, float coef) {
   acceleration += accumulatedDirections * coef;
 }
 
-void
-Boid::strafe(const glm::vec3& target, float inHorizontalAngle, float inVerticalAngle, float coef) {
+void Boid::strafe(const glm::vec3& target, float inHorizontalAngle, float inVerticalAngle, float coef) {
   glm::vec3 currentDirection = target - position;
   const float magnitude = gero::math::safeNormalize(currentDirection);
   if (magnitude == 0.0f)
@@ -74,15 +68,13 @@ Boid::strafe(const glm::vec3& target, float inHorizontalAngle, float inVerticalA
   acceleration += newLeftAxis * coef + newUpAxis * coef;
 }
 
-void
-Boid::wander(float coef) {
+void Boid::wander(float coef) {
   acceleration.x += gero::rng::RNG::getRangedValue(-coef, +coef);
   acceleration.y += gero::rng::RNG::getRangedValue(-coef, +coef);
   acceleration.z += gero::rng::RNG::getRangedValue(-coef, +coef);
 }
 
-void
-Boid::updateTrail() {
+void Boid::updateTrail() {
   for (std::size_t ii = trail.size() - 1; ii > 0; --ii)
     trail.at(ii) = trail.at(ii - 1);
   trail.at(0).position = position;
@@ -116,14 +108,12 @@ Boid::updateTrail() {
   }
 }
 
-void
-Boid::computeAabb() {
+void Boid::computeAabb() {
   aabbMin = position - 0.5f;
   aabbMax = position + 0.5f;
 }
 
-void
-Boid::applyAcceleration(float maxAcceleration, float maxVelocity, float elapsedTime) {
+void Boid::applyAcceleration(float maxAcceleration, float maxVelocity, float elapsedTime) {
   // limitate acc
   const float accMagnitude = glm::length(acceleration);
   if (accMagnitude > maxAcceleration)
@@ -137,12 +127,6 @@ Boid::applyAcceleration(float maxAcceleration, float maxVelocity, float elapsedT
   position += velocity * 25.0f * elapsedTime;
 }
 
-bool
-Boid::operator==(const Boid& other) const {
-  return this == &other;
-}
+bool Boid::operator==(const Boid& other) const { return this == &other; }
 
-const glm::vec3&
-Boid::getPosition() const {
-  return position;
-}
+const glm::vec3& Boid::getPosition() const { return position; }

@@ -34,8 +34,7 @@ FlockingManager::FlockingManager() {
   }
 }
 
-void
-FlockingManager::update(float elapsedTime) {
+void FlockingManager::update(float elapsedTime) {
 
   glm::vec3 target = glm::vec3(80, -40, 30);
 
@@ -104,8 +103,7 @@ FlockingManager::update(float elapsedTime) {
   }
 }
 
-void
-FlockingManager::render() {
+void FlockingManager::render() {
 
   if (_allBoids.empty())
     return;
@@ -135,7 +133,6 @@ FlockingManager::render() {
       // // stackRenderer.pushBox(instance);
       // stackRenderer.getWireFramesStack().pushCross(currData.center, k_color, 0.25f);
 
-
       // GeometriesStackRenderer::GeometryInstance instance;
       // instance.position = inPosition;
       // instance.orientation = inOrientation;
@@ -144,20 +141,10 @@ FlockingManager::render() {
       // instance.light = 0.5f;
 
       geometriesStackRenderer.pushAlias(2222, instance);
-
     }
   }
 }
 
-const AbstractBoid&
-FlockingManager::getBoid(std::size_t index) const {
-  return _allBoids.at(index);
-}
+const AbstractBoid& FlockingManager::getBoid(std::size_t index) const { return _allBoids.at(index); }
 
-std::size_t
-FlockingManager::getTotalBoids() const {
-  return _allBoids.size();
-}
-
-
-
+std::size_t FlockingManager::getTotalBoids() const { return _allBoids.size(); }

@@ -165,7 +165,6 @@ void Scene::_renderScene() {
             }
           }
         }
-
       }
     }
 
@@ -225,7 +224,6 @@ void Scene::_renderScene() {
       //   stackRenderers.getTrianglesStack().pushThickTriangle3dLine(
       //     allPos.at(ii + 0), allPos.at(ii + 1), 0.5f, glm::vec4(1, 1, 1, 1));
       // }
-
     }
 
     {
@@ -255,13 +253,13 @@ void Scene::_renderScene() {
       auto& frustumCulling = camInstance.getFrustumCulling();
 
       std::array<glm::vec3, 7> k_colors = {{
-        { 1.0f, 1.0f, 1.0f },
-        { 1.0f, 0.0f, 0.0f },
-        { 0.0f, 1.0f, 0.0f },
-        { 0.0f, 0.0f, 1.0f },
-        { 1.0f, 1.0f, 0.0f },
-        { 0.0f, 1.0f, 1.0f },
-        { 1.0f, 0.0f, 1.0f },
+        {1.0f, 1.0f, 1.0f},
+        {1.0f, 0.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f},
+        {0.0f, 0.0f, 1.0f},
+        {1.0f, 1.0f, 0.0f},
+        {0.0f, 1.0f, 1.0f},
+        {1.0f, 0.0f, 1.0f},
       }};
 
       for (int xx = -2; xx <= 1; ++xx)
@@ -325,22 +323,22 @@ void Scene::_renderScene() {
     instance.scale = glm::vec3(1.0f);
 
     instance.light = 0.0f; // no-light (emissive)
-    instance.position = glm::vec3(20,30,0);
+    instance.position = glm::vec3(20, 30, 0);
     instance.color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
     scene.getGeometriesStackRenderer().pushAlias(1111, instance);
-    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0,0,1.5f), glm::vec3(1), 3);
+    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0, 0, 1.5f), glm::vec3(1), 3);
 
     instance.light = 0.5f; // diffuse light only (no specular)
-    instance.position = glm::vec3(24,30,0);
+    instance.position = glm::vec3(24, 30, 0);
     instance.color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
     scene.getGeometriesStackRenderer().pushAlias(1111, instance);
-    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0,0,1.5f), glm::vec3(1), 3);
+    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0, 0, 1.5f), glm::vec3(1), 3);
 
     instance.light = 1.0f; // diffuse and specular lights
-    instance.position = glm::vec3(28,30,0);
+    instance.position = glm::vec3(28, 30, 0);
     instance.color = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
     scene.getGeometriesStackRenderer().pushAlias(1111, instance);
-    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0,0,1.5f), glm::vec3(1), 3);
+    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0, 0, 1.5f), glm::vec3(1), 3);
 
     scene.getGeometriesStackRenderer().renderAll();
 
@@ -367,22 +365,22 @@ void Scene::_renderScene() {
     instance.scale = glm::vec3(1.0f);
 
     instance.light = 0.0f; // no light (emissive)
-    instance.position = glm::vec3(20,34,0);
+    instance.position = glm::vec3(20, 34, 0);
     instance.color = glm::vec4(1.0f, 0.0f, 0.0f, 0.8f);
     scene.getGeometriesStackRenderer().pushAlias(1111, instance);
-    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0,0,1.5f), glm::vec3(1,0,0), 3);
+    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0, 0, 1.5f), glm::vec3(1, 0, 0), 3);
 
     instance.light = 0.5f;
-    instance.position = glm::vec3(24,34,0);
+    instance.position = glm::vec3(24, 34, 0);
     instance.color = glm::vec4(0.0f, 1.0f, 0.0f, 0.8f);
     scene.getGeometriesStackRenderer().pushAlias(1111, instance);
-    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0,0,1.5f), glm::vec3(0,1,0), 3);
+    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0, 0, 1.5f), glm::vec3(0, 1, 0), 3);
 
     instance.light = 1.0f;
-    instance.position = glm::vec3(28,34,0);
+    instance.position = glm::vec3(28, 34, 0);
     instance.color = glm::vec4(0.0f, 0.0f, 1.0f, 0.8f);
     scene.getGeometriesStackRenderer().pushAlias(1111, instance);
-    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0,0,1.5f), glm::vec3(0,0,1), 3);
+    scene.getDeferred().pushSpotLight(instance.position + glm::vec3(0, 0, 1.5f), glm::vec3(0, 0, 1), 3);
 
     //
 
@@ -428,7 +426,6 @@ void Scene::_renderHud() {
   // clear the depth buffer again -> we want to write over the "quad scene"
   GlContext::clears(Buffers::depth);
   // GlContext::disable(States::depthTest);
-
 
   {
 

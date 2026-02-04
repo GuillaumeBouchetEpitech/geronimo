@@ -61,5 +61,4 @@ struct Boid : public AbstractBoid {
   bool operator==(const Boid& other) const;
 
   const glm::vec3& getPosition() const override;
-
 };

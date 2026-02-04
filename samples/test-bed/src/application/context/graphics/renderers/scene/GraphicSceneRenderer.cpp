@@ -19,7 +19,8 @@ void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height) {
 
     // _deferred.initialize("../../src", clusterDef, _camera.getSize());
     // _deferred.initialize("../../src", glm::ivec2(width, height), 1.0f);
-    _deferred.initialize("./assets/graphics/scene/advanced-concept-sub-assets/depthDeferred", glm::ivec2(width, height), 1.0f);
+    _deferred.initialize(
+      "./assets/graphics/scene/advanced-concept-sub-assets/depthDeferred", glm::ivec2(width, height), 1.0f);
   }
 
   {
