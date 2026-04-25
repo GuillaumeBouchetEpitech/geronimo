@@ -11,6 +11,10 @@ add_executable(${PROJECT_NAME}
     ./src/application/context/logic/flocking/internals/Boid.cpp
     ./src/application/context/logic/flocking/internals/FlockingManager.cpp
     ./src/application/context/logic/flocking/AbstractFlockingManager.cpp
+    ./src/application/context/logic/voxel-sim/internals/parsing-utils/jsonUtils.cpp
+    ./src/application/context/logic/voxel-sim/internals/VoxelSimImpl.cpp
+    ./src/application/context/logic/voxel-sim/internals/VoxelSimImpl_loadJsonFile.cpp
+    ./src/application/context/logic/voxel-sim/AbstractVoxelSim.cpp
     ./src/application/context/logic/HeightField.cpp
     ./src/application/context/Context_experimentalPhysicVehicle.cpp
     ./src/application/context/Context.cpp

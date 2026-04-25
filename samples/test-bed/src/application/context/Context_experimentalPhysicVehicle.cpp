@@ -8,6 +8,7 @@
 void Context::experimentalPhysicVehicle() {
 
   {
+    // MARK: vehicle body
     gero::physics::PhysicBodyDef bodyDef;
 
     // const glm::vec3 chassisSize = { 1.0f, 2.0f, 0.5f };
@@ -204,7 +205,8 @@ void Context::experimentalPhysicVehicle() {
     body->setGravity(0, 0, +10);
   }
 
-  { // vehicle floor
+  {
+    // MARK: vehicle floor
 
     {
 

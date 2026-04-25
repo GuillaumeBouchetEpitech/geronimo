@@ -1,0 +1,529 @@
+{
+  "hello": "world",
+
+  // MARK: shapes
+  "shapes": {
+
+    // MARK: cube
+    "cube": {
+      "alias": 1,
+      "extrusion-axis": [1,1,1], // for the future
+      "vertices": [
+        { "pos": [-0.5,-0.5,-0.5] },
+        { "pos": [0.5,-0.5,-0.5] },
+        { "pos": [-0.5,0.5,-0.5] },
+        { "pos": [0.5,0.5,-0.5] },
+        { "pos": [-0.5,-0.5,0.5] },
+        { "pos": [0.5,-0.5,0.5] },
+        { "pos": [-0.5,0.5,0.5] },
+        { "pos": [0.5,0.5,0.5] }
+      ],
+      // "normals": [
+      //   { "norm": [1,0,0] }, // 0
+      //   { "norm": [-1,0,0] }, // 1
+      //   { "norm": [0,1,0] }, // 2
+      //   { "norm": [0,-1,0] }, // 3
+      //   { "norm": [0,0,1] }, // 4
+      //   { "norm": [0,0,-1] } // 5
+      // ],
+      "indices": [
+
+        // quad triangle -Z
+        { "tri": [0,2,1] /*, "n": 4*/ },
+        // quad triangle -Z
+        { "tri": [2,3,1] /*, "n": 4*/ },
+
+        // quad triangle +Z
+        { "tri": [4,5,6] /*, "n": 5*/ },
+        // quad triangle +Z
+        { "tri": [6,5,7] /*, "n": 5*/ },
+
+        // quad triangle +X
+        { "tri": [1,3,5] /*, "n": 1*/ },
+        // quad triangle +X
+        { "tri": [5,3,7] /*, "n": 1*/ },
+
+        // quad triangle -X
+        { "tri": [0,4,2] /*, "n": 0*/ },
+        // quad triangle -X
+        { "tri": [4,6,2] /*, "n": 0*/ },
+
+        // quad triangle +Y
+        { "tri": [2,6,3] /*, "n": 3*/ },
+        // quad triangle +Y
+        { "tri": [6,7,3] /*, "n": 3*/ },
+
+        // quad triangle -Y
+        { "tri": [0,1,4] /*, "n": 2*/ },
+        // quad triangle -Y
+        { "tri": [4,1,5] /*, "n": 2*/ }
+
+      ]
+    },
+
+
+
+    // MARK: half-cube 1
+    "half-cube-pos-x-neg-z": {
+      "alias": 11,
+      "extrusion-axis": [0,1,0], // for the future
+      "vertices": [
+        { "pos": [-0.5,-0.5,-0.5] }, // 0
+        { "pos": [0.5,-0.5,-0.5] }, // 1
+        { "pos": [-0.5,0.5,-0.5] }, // 2
+        { "pos": [0.5,0.5,-0.5] }, // 3
+        { "pos": [-0.5,-0.5,0.5] }, // 4
+        { "pos": [0.5,-0.5,0.5] }, // 5 -> unused
+        { "pos": [-0.5,0.5,0.5] }, // 6
+        { "pos": [0.5,0.5,0.5] }  // 7 -> unused
+      ],
+      "indices": [
+
+        // quad triangle -Z
+        { "tri": [0,2,1] /*, "n": 4*/ },
+        // quad triangle -Z
+        { "tri": [2,3,1] /*, "n": 4*/ },
+
+        // // quad triangle +Z
+        // { "tri": [4,5,6] /*, "n": 5*/ },
+        // // quad triangle +Z
+        // { "tri": [6,5,7] /*, "n": 5*/ },
+
+        // // quad triangle +X
+        // { "tri": [1,3,5] /*, "n": 1*/ },
+        // // quad triangle +X
+        // { "tri": [5,3,7] /*, "n": 1*/ },
+
+        // quad triangle -X
+        { "tri": [0,4,2] /*, "n": 0*/ },
+        // quad triangle -X
+        { "tri": [4,6,2] /*, "n": 0*/ },
+
+        // quad triangle +Y
+        { "tri": [2,6,3] /*, "n": 3*/ },
+        // // quad triangle +Y
+        // { "tri": [6,7,3] /*, "n": 3*/ },
+
+        // quad triangle -Y
+        { "tri": [0,1,4] /*, "n": 2*/ },
+        // // quad triangle -Y
+        // { "tri": [4,1,5] /*, "n": 2*/ }
+
+        // quad triangle slice
+        { "tri": [4,3,6] /*, "n": 2*/ },
+        { "tri": [1,3,4] /*, "n": 2*/ }
+
+      ]
+    },
+
+    "half-cube-pos-y-neg-z": {
+      "alias": 12,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [1,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-neg-x-neg-z": {
+      "alias": 13,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [0,1,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-neg-y-neg-z": {
+      "alias": 14,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [1,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": -90 },
+        { "type": "apply" }
+      ]
+    },
+
+    // MARK: half-cube 2
+    "half-cube-pos-x-pos-z": {
+      "alias": 21,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [0,1,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 },
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-neg-x-pos-z": {
+      "alias": 22,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [1,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": -90 },
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-neg-y-pos-z": {
+      "alias": 23,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [0,1,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-pos-y-pos-z": {
+      "alias": 24,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [1,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle":  90 },
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    // MARK: half-cube 3
+    "half-cube-neg-x-neg-y": {
+      "alias": 31,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [0,0,1], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [1,0,0], "angle": -90 },
+        // { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-pos-x-neg-y": {
+      "alias": 32,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [0,0,1], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [1,0,0], "angle": -90 },
+        { "type": "rotate", "axis": [0,1,0], "angle": -90 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-pos-x-pos-y": {
+      "alias": 33,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [0,0,1], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [1,0,0], "angle": -90 },
+        { "type": "rotate", "axis": [0,1,0], "angle": -180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "half-cube-neg-x-pos-y": {
+      "alias": 34,
+      "ref": "half-cube-pos-x-neg-z",
+      "extrusion-axis": [0,0,1], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [1,0,0], "angle": -90 },
+        { "type": "rotate", "axis": [0,1,0], "angle": -270 },
+        { "type": "apply" }
+      ]
+    },
+
+    // MARK: corners 1
+    "corner-neg-x-neg-y-neg-z": {
+      "alias": 41,
+      "extrusion-axis": [0,0,0], // for the future
+      "vertices": [
+        { "pos": [-0.5,-0.5,-0.5] }, // 0
+        { "pos": [0.5,-0.5,-0.5] }, // 1
+        { "pos": [-0.5,0.5,-0.5] }, // 2
+        { "pos": [0.5,0.5,-0.5] }, // 3 -> unused
+        { "pos": [-0.5,-0.5,0.5] } // 4
+      ],
+      "indices": [
+        { "tri": [0,2,1] /*, "n": 4*/ },
+        { "tri": [0,4,2] /*, "n": 0*/ },
+        { "tri": [0,1,4] /*, "n": 2*/ },
+        { "tri": [1,2,4] /*, "n": 2*/ }
+      ]
+    },
+
+    "corner-neg-x-pos-y-neg-z": {
+      "alias": 42,
+      "ref": "corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
+        { "type": "apply" }
+      ]
+    },
+
+    "corner-pos-x-pos-y-neg-z": {
+      "alias": 43,
+      "ref": "corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "corner-pos-x-neg-y-neg-z": {
+      "alias": 44,
+      "ref": "corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 270 },
+        { "type": "apply" }
+      ]
+    },
+
+    // MARK: corners 2
+    "corner-neg-x-neg-y-pos-z": {
+      "alias": 51,
+      "ref": "corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "rotate", "axis": [0,0,1], "angle": -90 },
+        { "type": "apply" }
+      ]
+    },
+
+    "corner-pos-x-neg-y-pos-z": {
+      "alias": 52,
+      "ref": "corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "rotate", "axis": [0,0,1], "angle": -180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "corner-pos-x-pos-y-pos-z": {
+      "alias": 53,
+      "ref": "corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "rotate", "axis": [0,0,1], "angle": -270 },
+        { "type": "apply" }
+      ]
+    },
+
+    "corner-neg-x-pos-y-pos-z": {
+      "alias": 54,
+      "ref": "corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        // { "type": "rotate", "axis": [0,0,1], "angle": 0 },
+        { "type": "apply" }
+      ]
+    },
+
+
+
+
+    // MARK: reverse corners 1
+    "rev-corner-neg-x-neg-y-neg-z": {
+      "alias": 61,
+      "extrusion-axis": [0,0,0], // for the future
+      "vertices": [
+        { "pos": [-0.5,-0.5,-0.5] },
+        { "pos": [0.5,-0.5,-0.5] },
+        { "pos": [-0.5,0.5,-0.5] },
+        { "pos": [0.5,0.5,-0.5] },
+        { "pos": [-0.5,-0.5,0.5] },
+        { "pos": [0.5,-0.5,0.5] },
+        { "pos": [-0.5,0.5,0.5] },
+        { "pos": [0.5,0.5,0.5] }
+      ],
+      "indices": [
+
+        // quad triangle -Z
+        { "tri": [0,2,1] /*, "n": 4*/ },
+        // quad triangle -Z
+        { "tri": [2,3,1] /*, "n": 4*/ },
+
+        // quad triangle +Z
+        { "tri": [4,5,6] /*, "n": 5*/ },
+        // quad triangle +Z
+        // { "tri": [6,5,7] /*, "n": 5*/ },
+
+        // quad triangle +X
+        { "tri": [1,3,5] /*, "n": 1*/ },
+        // quad triangle +X
+        // { "tri": [5,3,7] /*, "n": 1*/ },
+
+        // quad triangle -X
+        { "tri": [0,4,2] /*, "n": 0*/ },
+        // quad triangle -X
+        { "tri": [4,6,2] /*, "n": 0*/ },
+
+        // quad triangle +Y
+        { "tri": [2,6,3] /*, "n": 3*/ },
+        // quad triangle +Y
+        // { "tri": [6,7,3] /*, "n": 3*/ },
+
+        // quad triangle -Y
+        { "tri": [0,1,4] /*, "n": 2*/ },
+        // quad triangle -Y
+        { "tri": [4,1,5] /*, "n": 2*/ },
+
+        // bonus triangle
+        { "tri": [6,5,3] /*, "n": 2*/ }
+     ]
+    },
+
+    "rev-corner-neg-x-pos-y-neg-z": {
+      "alias": 62,
+      "ref": "rev-corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
+        { "type": "apply" }
+      ]
+    },
+
+    "rev-corner-pos-x-pos-y-neg-z": {
+      "alias": 63,
+      "ref": "rev-corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "rev-corner-pos-x-neg-y-neg-z": {
+      "alias": 64,
+      "ref": "rev-corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,0,1], "angle": 270 },
+        { "type": "apply" }
+      ]
+    },
+
+    // MARK: reverse corners 2
+    "rev-corner-neg-x-neg-y-pos-z": {
+      "alias": 71,
+      "ref": "rev-corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
+        { "type": "apply" }
+      ]
+    },
+
+    "rev-corner-neg-x-pos-y-pos-z": {
+      "alias": 72,
+      "ref": "rev-corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        // { "type": "rotate", "axis": [0,0,1], "angle": 180 },
+        { "type": "apply" }
+      ]
+    },
+
+    "rev-corner-pos-x-pos-y-pos-z": {
+      "alias": 73,
+      "ref": "rev-corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "rotate", "axis": [0,0,1], "angle": -90 },
+        { "type": "apply" }
+      ]
+    },
+
+    "rev-corner-pos-x-neg-y-pos-z": {
+      "alias": 74,
+      "ref": "rev-corner-neg-x-neg-y-neg-z",
+      "extrusion-axis": [0,0,0], // for the future
+      "transforms": [
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
+        { "type": "rotate", "axis": [0,0,1], "angle": -180 },
+        { "type": "apply" }
+      ]
+    }
+
+
+
+  },
+
+
+  // MARK: models
+  "models": {
+
+    "basic-model": {
+      "pos": [10,10,10],
+      // "quat": [
+      //   { "axis": [0,0,1], "angle": 0 }
+      // ],
+      "data-matrix": {
+        "size": [15,15,15],
+        "operations": [
+
+          // { "type": "set-matrix", "value": 1, "pos": [0,1,1], "scale": [2,0,0] },
+          // { "type": "set-matrix", "value": 11, "pos": [3,0,0], "scale": [1,2,2] },
+
+          // disk part
+          { "type": "set-matrix", "value": 1, "pos": [4,4,2], "scale": [4,4,0] },
+          { "type": "set-matrix", "value": 31, "pos": [8,8,2] },
+          { "type": "set-matrix", "value": 32, "pos": [4,8,2], "scale": [0,0,3] },
+          { "type": "set-matrix", "value": 33, "pos": [4,4,2], "scale": [0,0,3] },
+          { "type": "set-matrix", "value": 34, "pos": [8,4,2] },
+
+          { "type": "set-matrix", "value": 1, "pos": [4,5,2], "scale": [0,2,4] }, // elevate side
+          { "type": "set-matrix", "value": 43, "pos": [4,4,6] }, // corner
+          { "type": "set-matrix", "value": 42, "pos": [4,8,6] }, // corner
+          { "type": "set-matrix", "value": 63, "pos": [4,5,6] },
+          { "type": "set-matrix", "value": 62, "pos": [4,7,6] },
+
+          // barrel (right side)
+          { "type": "set-matrix", "value": 23, "pos": [6,3,4], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 23, "pos": [5,3,5], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 11, "pos": [6,3,5], "scale": [0,4,0] },
+
+          { "type": "set-matrix", "value": 13, "pos": [5,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 21, "pos": [6,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 13, "pos": [6,3,8], "scale": [0,4,0] },
+
+          // barrel (left side)
+          { "type": "set-matrix", "value": 21, "pos": [8,3,4], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 21, "pos": [9,3,5], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 13, "pos": [8,3,5], "scale": [0,4,0] },
+
+          { "type": "set-matrix", "value": 11, "pos": [9,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 23, "pos": [8,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 11, "pos": [8,3,8], "scale": [0,4,0] },
+
+          { "type": "set-matrix", "value": 1, "pos": [5,3,6], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 1, "pos": [9,3,6], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 1, "pos": [7,3,8], "scale": [0,4,0] },
+          { "type": "set-matrix", "value": 1, "pos": [7,3,4], "scale": [0,4,0] }
+
+          // for the future
+          // { "force": true } <- is to ignore "extrusion-axis" and forcefully repeat the shape
+          //{"type": "data-set-rect", "value": 1, "pos": [0,0,0], "scale": [3,1,1], "force": true}
+        ]
+      }
+    }
+
+  }
+
+
+
+
+}

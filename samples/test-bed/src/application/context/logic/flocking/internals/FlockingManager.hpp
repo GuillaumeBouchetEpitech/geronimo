@@ -3,8 +3,8 @@
 
 #include "./Boid.hpp"
 
-#include "geronimo/system/trees/BvhTree.hpp"
-#include "geronimo/system/trees/SpatialIndexer.hpp"
+#include "geronimo/system/trees/bvh/BvhTree.hpp"
+// #include "geronimo/system/trees/kd/SpatialIndexer.hpp"
 
 class FlockingManager : public AbstractFlockingManager {
 public:
@@ -24,6 +24,6 @@ private:
 
   float _timeUntilTrailUpdate = 0.0f;
 
-  gero::trees::Spatial3dIndexer<Boid*> _spatialIndexer;
+  // gero::trees::Spatial3dIndexer<Boid*> _spatialIndexer;
   gero::trees::BvhTree<Boid> _bvhTree;
 };

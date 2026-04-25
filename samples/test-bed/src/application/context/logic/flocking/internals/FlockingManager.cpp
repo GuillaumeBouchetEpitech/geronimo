@@ -38,7 +38,8 @@ void FlockingManager::update(float elapsedTime) {
 
   glm::vec3 target = glm::vec3(80, -40, 30);
 
-  constexpr float k_timePerTrailUpdate = 1.0f / 60.0f;
+  // constexpr float k_timePerTrailUpdate = 1.0f / 60.0f;
+  constexpr float k_timePerTrailUpdate = 0.0f; // no wait
 
   bool needTrailUpdate = false;
   if (_timeUntilTrailUpdate > 0.0f)
@@ -52,11 +53,11 @@ void FlockingManager::update(float elapsedTime) {
   constexpr float maxAcc = 0.05f * 1.0f;
   constexpr float maxVel = 2.0f * 1.0f;
 
-  _spatialIndexer.clear();
-  _spatialIndexer.pre_allocate(_allBoids.size());
-  for (Boid& currBoid : _allBoids)
-    _spatialIndexer.push(currBoid.position, &currBoid);
-  _spatialIndexer.sync();
+  // _spatialIndexer.clear();
+  // _spatialIndexer.pre_allocate(_allBoids.size());
+  // for (Boid& currBoid : _allBoids)
+  //   _spatialIndexer.push(currBoid.position, &currBoid);
+  // _spatialIndexer.sync();
 
   for (Boid& currBoid : _allBoids)
     currBoid.computeAabb();

@@ -12,6 +12,7 @@
 
 namespace gero::trees {
 
+// MARK: IndexedVec
 struct /*alignas(32)*/ IndexedVec {
   glm::vec3 aabbMin{0.0f};
   glm::vec3 aabbMax{0.0f};
@@ -27,6 +28,7 @@ inline bool intersectAabb(const glm::vec3& minA, const glm::vec3& maxA, const gl
   return !isSeparated;
 }
 
+// MARK: BvhNode
 template <typename T> class BvhNode {
 public:
   glm::vec3 aabbMin{0.0f};
@@ -85,10 +87,16 @@ public:
   //
 };
 
+
+// MARK: BvhTree
 template <typename T> class BvhTree {
 
 public:
   void reset() { _cachedNodes.clear(); }
+
+  void preAllocateNodes(std::size_t size) {
+    _cachedNodes.reserve(size);
+  }
 
   void synchronize(const std::vector<T>& entries) {
     _cachedNodes.clear();
@@ -138,17 +146,17 @@ public:
       return;
     }
 
-    const glm::vec3 queryMin = pos - glm::vec3(radius);
-    const glm::vec3 queryMax = pos + glm::vec3(radius);
-    _cachedNodes.at(0).traverse(queryMin, queryMax, entries, outResults);
+    const glm::vec3 queryAabbMin = pos - glm::vec3(radius);
+    const glm::vec3 queryAabbMax = pos + glm::vec3(radius);
+    _cachedNodes.at(0).traverse(queryAabbMin, queryAabbMax, entries, outResults);
   }
 
-  void searchByAabb(const glm::vec3& queryMin, const glm::vec3& queryMax, std::vector<std::size_t>& outResults) const {
+  void searchByAabb(const glm::vec3& queryAabbMin, const glm::vec3& queryAabbMax, std::vector<std::size_t>& outResults) const {
     if (_cachedNodes.empty()) {
       return;
     }
 
-    _cachedNodes.at(0).traverse(queryMin, queryMax, outResults);
+    _cachedNodes.at(0).traverse(queryAabbMin, queryAabbMax, outResults);
   }
 
 private:
@@ -192,12 +200,16 @@ private:
       return &newNode;
     }
 
+    //
+    // naive split
+    //
+
     const glm::vec3 delta = maxVal - minVal;
-    int axis = 0;
+    int axis = 0; // x
     if (delta.y > delta.x && delta.y >= delta.z) {
-      axis = 1;
+      axis = 1; // y
     } else if (delta.z > delta.x && delta.z >= delta.y) {
-      axis = 2;
+      axis = 2; // z
     }
 
     auto middleIt = entriesBeginIt + std::distance(entriesBeginIt, entriesEndIt) / 2;
@@ -206,6 +218,10 @@ private:
       const float centerB = (b.aabbMin[axis] + b.aabbMax[axis]) * 0.5f;
       return centerA < centerB;
     };
+
+    //
+    // sub-divide
+    //
 
     // partial sorting
     std::nth_element(entriesBeginIt, middleIt, entriesEndIt, lessCallback);

@@ -173,7 +173,18 @@ void Scene::_renderScene() {
       // flocking
       //
 
+      auto& stackRenderers = scene.getStackRenderers();
+      stackRenderers.flush();
+
       context.logic.flockingManager->render();
+
+      stackRenderers.flush();
+
+      scene.getStackRenderers().safeMode([&context]() {
+        context.logic.voxelSim->render();
+      });
+
+
 
       // if (context.logic.flockingManager->getTotalBoids() > 0) {
 
@@ -224,6 +235,7 @@ void Scene::_renderScene() {
       //   stackRenderers.getTrianglesStack().pushThickTriangle3dLine(
       //     allPos.at(ii + 0), allPos.at(ii + 1), 0.5f, glm::vec4(1, 1, 1, 1));
       // }
+
     }
 
     {

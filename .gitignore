@@ -4,4 +4,4 @@ lib
 obj
 thirdparties/dependencies
 
-build.*
+cmake-build.*

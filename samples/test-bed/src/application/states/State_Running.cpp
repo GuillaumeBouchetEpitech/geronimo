@@ -142,6 +142,7 @@ void State_Running::update(uint32_t delta) {
       }
 
       context.logic.flockingManager->update(elapsedTime);
+      context.logic.voxelSim->update(elapsedTime);
 
       context.logic.time += elapsedTime;
 

@@ -8,7 +8,7 @@
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
-#include "geronimo/helpers/Json.hpp"
+// #include "geronimo/helpers/Json.hpp"
 
 #include <fstream>
 #include <iomanip>
@@ -41,6 +41,8 @@ void Context::initialize(uint32_t width, uint32_t height) {
   experimentalPhysicVehicle();
 
   logic.flockingManager = AbstractFlockingManager::create();
+  logic.voxelSim = AbstractVoxelSim::create();
+
 }
 
 //

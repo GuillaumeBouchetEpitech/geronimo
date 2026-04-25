@@ -14,8 +14,8 @@ echo ""
 
 cd "$INITIAL_CWD" || exit 1
 
-emcmake cmake -B "./build.release.wasm"
-cd "./build.release.wasm" || exit 1
+emcmake cmake -B "./cmake-build.release.wasm"
+cd "./cmake-build.release.wasm" || exit 1
 cmake --build . --config Release --parallel 5
 
 #
@@ -29,9 +29,9 @@ echo ""
 
 cd "$INITIAL_CWD" || exit 1
 
-# cmake -B "./build.release.native" -D'CHECK_CLANG_TIDY:BOOL=TRUE'
-cmake -B "./build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE'
-cd "./build.release.native" || exit 1
+# cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=TRUE'
+cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE'
+cd "./cmake-build.release.native" || exit 1
 cmake --build . --config Release --parallel 5
 
 #
@@ -45,8 +45,8 @@ echo ""
 
 cd "$INITIAL_CWD/samples/test-bed" || exit 1
 
-emcmake cmake -B "./build.release.wasm"
-cd "./build.release.wasm" || exit 1
+emcmake cmake -B "./cmake-build.release.wasm"
+cd "./cmake-build.release.wasm" || exit 1
 cmake --build . --config Release --parallel 5
 
 #
@@ -60,8 +60,8 @@ echo ""
 
 cd "$INITIAL_CWD/samples/test-bed" || exit 1
 
-cmake -B "./build.release.native"
-cd "./build.release.native" || exit 1
+cmake -B "./cmake-build.release.native"
+cd "./cmake-build.release.native" || exit 1
 cmake --build . --config Release --parallel 5
 
 #

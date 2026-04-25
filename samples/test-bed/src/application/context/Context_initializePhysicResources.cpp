@@ -12,6 +12,7 @@
 void Context::initializePhysicResources() {
 
   {
+    // MARK: heightField
     logic.heightField.generate(32, 1.5f, 20.0f);
 
     const uint32_t fieldSize = logic.heightField.getFieldSize();
@@ -102,6 +103,7 @@ void Context::initializePhysicResources() {
   }
 
   {
+    // MARK: box
 
     gero::physics::PhysicBodyDef def;
     def.shape.type = gero::physics::PhysicShapeDef::Type::box;
@@ -114,6 +116,7 @@ void Context::initializePhysicResources() {
   }
 
   {
+    // MARK: sphere
 
     gero::physics::PhysicBodyDef def;
     def.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -126,6 +129,7 @@ void Context::initializePhysicResources() {
   }
 
   {
+    // MARK: sphere
 
     gero::physics::PhysicBodyDef def;
     def.shape.type = gero::physics::PhysicShapeDef::Type::sphere;
@@ -138,6 +142,7 @@ void Context::initializePhysicResources() {
   }
 
   {
+    // MARK: box
 
     gero::physics::PhysicBodyDef def;
     def.shape.type = gero::physics::PhysicShapeDef::Type::box;
@@ -150,6 +155,7 @@ void Context::initializePhysicResources() {
   }
 
   {
+    // MARK: capsule
 
     gero::physics::PhysicBodyDef def;
     def.shape.type = gero::physics::PhysicShapeDef::Type::capsule;
@@ -163,6 +169,7 @@ void Context::initializePhysicResources() {
   }
 
   {
+    // MARK: capsule
 
     gero::physics::PhysicBodyDef def;
     def.shape.type = gero::physics::PhysicShapeDef::Type::capsule;
@@ -176,6 +183,7 @@ void Context::initializePhysicResources() {
   }
 
   {
+    // MARK: constraint
 
     gero::physics::PhysicBodyDef defA;
     defA.shape.type = gero::physics::PhysicShapeDef::Type::box;
@@ -321,6 +329,7 @@ void Context::initializePhysicResources() {
   //   }
 
   {
+    // MARK: constraint
 
     const glm::vec3 k_anchor = glm::vec3(5, -15, 10);
 

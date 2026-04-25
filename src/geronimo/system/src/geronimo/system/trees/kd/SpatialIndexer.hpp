@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "geronimo/system/trees/KdTree.hpp"
+#include "./KdTree.hpp"
 
 namespace gero {
 
