@@ -14,9 +14,9 @@ echo ""
 
 cd "$INITIAL_CWD" || exit 1
 
-emcmake cmake -B "./cmake-build.release.wasm"
+emcmake cmake -B "./cmake-build.release.wasm" -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache
 cd "./cmake-build.release.wasm" || exit 1
-cmake --build . --config Release --parallel 5
+mold -run cmake --build . --config Release --parallel 5
 
 #
 #
@@ -29,10 +29,10 @@ echo ""
 
 cd "$INITIAL_CWD" || exit 1
 
-# cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=TRUE'
-cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE'
+# cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=TRUE' -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache
+cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE' -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache
 cd "./cmake-build.release.native" || exit 1
-cmake --build . --config Release --parallel 5
+mold -run cmake --build . --config Release --parallel 5
 
 #
 #
@@ -45,9 +45,9 @@ echo ""
 
 cd "$INITIAL_CWD/samples/test-bed" || exit 1
 
-emcmake cmake -B "./cmake-build.release.wasm"
+emcmake cmake -B "./cmake-build.release.wasm" -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache
 cd "./cmake-build.release.wasm" || exit 1
-cmake --build . --config Release --parallel 5
+mold -run cmake --build . --config Release --parallel 5
 
 #
 #
@@ -60,9 +60,9 @@ echo ""
 
 cd "$INITIAL_CWD/samples/test-bed" || exit 1
 
-cmake -B "./cmake-build.release.native"
+cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE' -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache
 cd "./cmake-build.release.native" || exit 1
-cmake --build . --config Release --parallel 5
+mold -run cmake --build . --config Release --parallel 5
 
 #
 #

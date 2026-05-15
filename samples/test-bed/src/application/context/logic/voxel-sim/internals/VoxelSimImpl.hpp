@@ -30,14 +30,25 @@ struct VoxelShape {
 
   std::vector<TrimeshVertex> vertices;
 
-  void render(const glm::vec3& position);
+  void render(const glm::vec3& position) const;
 };
 
-struct VoxelMatrix {
+struct VoxelModelMatrix {
   glm::uvec3 gridSize = glm::uvec3(1,1,1);
   std::vector<uint32_t> values;
 
-  void render(const VoxelSimImpl& voxelSimImpl);
+  uint32_t getValue(int32_t x, int32_t y, int32_t z) const;
+  uint32_t getValue(const glm::ivec3& cursor) const;
+
+  void render(const VoxelSimImpl& voxelSimImpl) const;
+};
+
+struct VoxelModelGeometry {
+
+  std::vector<TrimeshVertex> vertices;
+
+  void build(const VoxelSimImpl& inVoxelSimImpl, const VoxelModelMatrix& inMatrix);
+  void render(const glm::vec3& position) const;
 };
 
 class VoxelSimImpl : public AbstractVoxelSim {
@@ -61,8 +72,10 @@ public:
   shapesData;
 
   struct ModelsData {
-    std::vector<std::shared_ptr<VoxelMatrix>> allVoxelMatrices;
-    std::unordered_map<std::string, std::shared_ptr<VoxelMatrix>> voxelMatricesMap;
+    std::vector<std::shared_ptr<VoxelModelMatrix>> allVoxelMatrices;
+    std::unordered_map<std::string, std::shared_ptr<VoxelModelMatrix>> voxelMatricesMap;
+
+    std::vector<std::shared_ptr<VoxelModelGeometry>> allVoxelGeometries;
   }
   modelsData;
 

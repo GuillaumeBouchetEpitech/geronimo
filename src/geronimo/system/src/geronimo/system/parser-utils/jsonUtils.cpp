@@ -1,10 +1,6 @@
 
 #include "jsonUtils.hpp"
 
-// #include "geronimo/system/ErrorHandler.hpp"
-// #include "geronimo/helpers/Json.hpp"
-// #include "geronimo/helpers/GLMath.hpp"
-
 namespace jsonUtils {
 
   // MARK:common
@@ -125,6 +121,64 @@ namespace jsonUtils {
     }
   }
 
+  // MARK:fvec2
+  namespace fvec2 {
+    bool is(const json& inJson)
+    {
+      return (
+        inJson.is_array() &&
+        inJson.size() == 2 &&
+        inJson[0].is_number() &&
+        inJson[1].is_number()
+      );
+    }
+
+    void get(const json& inJson, glm::vec2& outVec2)
+    {
+      if (!is(inJson)) {
+        D_THROW(std::invalid_argument, "not a vec2");
+      }
+      inJson[0].get_to(outVec2.x);
+      inJson[1].get_to(outVec2.y);
+    }
+
+    void tryGet(const json& inJson, glm::vec2& outVec2)
+    {
+      if (is(inJson)) {
+        inJson[0].get_to(outVec2.x);
+        inJson[1].get_to(outVec2.y);
+      }
+    }
+
+    bool is(const json& inJson, std::string_view inKey)
+    {
+      return (
+        inJson.contains(inKey) &&
+        inJson[inKey].is_array() &&
+        inJson[inKey].size() == 2 &&
+        inJson[inKey][0].is_number() &&
+        inJson[inKey][1].is_number()
+      );
+    }
+
+    void get(const json& inJson, std::string_view inKey, glm::vec2& outVec2)
+    {
+      if (!is(inJson, inKey)) {
+        D_THROW(std::invalid_argument, "not a vec2 -> " << inKey);
+      }
+      inJson[inKey][0].get_to(outVec2.x);
+      inJson[inKey][1].get_to(outVec2.y);
+    }
+
+    void tryGet(const json& inJson, std::string_view inKey, glm::vec2& outVec2)
+    {
+      if (is(inJson, inKey)) {
+        inJson[inKey][0].get_to(outVec2.x);
+        inJson[inKey][1].get_to(outVec2.y);
+      }
+    }
+  }
+
   // MARK:fvec3
   namespace fvec3 {
     bool is(const json& inJson, std::string_view inKey)
@@ -155,6 +209,76 @@ namespace jsonUtils {
         inJson[inKey][0].get_to(outVec3.x);
         inJson[inKey][1].get_to(outVec3.y);
         inJson[inKey][2].get_to(outVec3.z);
+      }
+    }
+  }
+
+  // MARK:fvec4
+  namespace fvec4 {
+    bool is(const json& inJson)
+    {
+      return (
+        inJson.is_array() &&
+        inJson.size() == 4 &&
+        inJson[0].is_number() &&
+        inJson[1].is_number() &&
+        inJson[2].is_number() &&
+        inJson[3].is_number()
+      );
+    }
+
+    void get(const json& inJson, glm::vec4& outVec4)
+    {
+      if (!is(inJson)) {
+        D_THROW(std::invalid_argument, "not a vec4");
+      }
+      inJson[0].get_to(outVec4.x);
+      inJson[1].get_to(outVec4.y);
+      inJson[2].get_to(outVec4.z);
+      inJson[3].get_to(outVec4.w);
+    }
+
+    void tryGet(const json& inJson, glm::vec4& outVec4)
+    {
+      if (is(inJson)) {
+        inJson[0].get_to(outVec4.x);
+        inJson[1].get_to(outVec4.y);
+        inJson[2].get_to(outVec4.z);
+        inJson[3].get_to(outVec4.w);
+      }
+    }
+
+    bool is(const json& inJson, std::string_view inKey)
+    {
+      return (
+        inJson.contains(inKey) &&
+        inJson[inKey].is_array() &&
+        inJson[inKey].size() == 4 &&
+        inJson[inKey][0].is_number() &&
+        inJson[inKey][1].is_number() &&
+        inJson[inKey][2].is_number() &&
+        inJson[inKey][3].is_number()
+      );
+    }
+
+    void get(const json& inJson, std::string_view inKey, glm::vec4& outVec4)
+    {
+      if (!is(inJson, inKey)) {
+        D_THROW(std::invalid_argument, "not a vec4 -> " << inKey);
+      }
+      inJson[inKey][0].get_to(outVec4.x);
+      inJson[inKey][1].get_to(outVec4.y);
+      inJson[inKey][2].get_to(outVec4.z);
+      inJson[inKey][3].get_to(outVec4.w);
+    }
+
+    void tryGet(const json& inJson, std::string_view inKey, glm::vec4& outVec4)
+    {
+      if (is(inJson, inKey)) {
+        inJson[inKey][0].get_to(outVec4.x);
+        inJson[inKey][1].get_to(outVec4.y);
+        inJson[inKey][2].get_to(outVec4.z);
+        inJson[inKey][3].get_to(outVec4.w);
       }
     }
   }

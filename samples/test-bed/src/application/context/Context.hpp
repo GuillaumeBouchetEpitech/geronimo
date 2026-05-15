@@ -9,6 +9,7 @@
 #include "logic/controllers/FreeFlyCameraController.hpp"
 #include "logic/flocking/AbstractFlockingManager.hpp"
 #include "logic/voxel-sim/AbstractVoxelSim.hpp"
+#include "logic/artificial-stupidity-sim/AbstractArtificialStupiditySim.hpp"
 
 #include "geronimo/audio/OpenALSoundManager.hpp"
 
@@ -99,6 +100,7 @@ public:
     HeightField heightField;
     std::unique_ptr<AbstractFlockingManager> flockingManager;
     std::unique_ptr<AbstractVoxelSim> voxelSim;
+    std::unique_ptr<AbstractArtificialStupiditySim> artificialStupiditySim;
 
     float time;
 

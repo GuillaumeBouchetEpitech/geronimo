@@ -30,9 +30,12 @@ echo ""
 cd "$INITIAL_CWD" || exit 1
 
 # cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=TRUE'
-cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE' || exit 1
+cmake -B "./cmake-build.release.native" -D'CHECK_CLANG_TIDY:BOOL=FALSE' -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache || exit 1
 cd "./cmake-build.release.native" || exit 1
-cmake --build . --config Release --parallel 5 || exit 1
+mold -run cmake --build . --config Release --parallel 5 || exit 1
+
+
+
 
 #
 #

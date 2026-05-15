@@ -13,6 +13,7 @@ set(SOURCE_FILES
     ./src/geronimo/system/rng/RandomNumberGenerator.cpp
     ./src/geronimo/system/rng/proceduralGeneration/SimplexNoise.cpp
     ./src/geronimo/system/TraceLogger.cpp
+    ./src/geronimo/system/parser-utils/jsonUtils.cpp
     ./src/geronimo/system/parser-utils/BasicRegexParser.cpp
     ./src/geronimo/system/parser-utils/string_view_regexp.cpp
     ./src/geronimo/system/parser-utils/ValuesParsers.cpp
@@ -55,6 +56,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ./src
     ../helpers/src
     ${THIRD_PARTIES_DIR}
+    ${THIRD_PARTIES_DIR}/dependencies/json/include
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3")

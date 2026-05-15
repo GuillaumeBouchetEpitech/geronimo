@@ -3,8 +3,7 @@
 
 // #include "application/context/Context.hpp"
 
-#include "./parsing-utils/jsonUtils.hpp"
-
+#include "geronimo/system/parser-utils/jsonUtils.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
@@ -38,6 +37,7 @@ void _loadShapes(VoxelSimImpl& voxelSim, const json& inJsonData)
 
   voxelSim.shapesData._allVoxelShapes.reserve(64);
 
+  // MARK: has-no-ref
   for (auto pair : shapes.items()) {
 
     const std::string shapeKey = pair.key();
@@ -121,6 +121,7 @@ void _loadShapes(VoxelSimImpl& voxelSim, const json& inJsonData)
     }
   }
 
+  // MARK: has-ref
   for (auto pair : shapes.items()) {
 
     const std::string shapeKey = pair.key();
@@ -247,7 +248,7 @@ void _loadModels(VoxelSimImpl& voxelSim, const json& inJsonData)
       D_THROW(std::invalid_argument, "operations not an array");
     }
 
-    auto newMatrix = std::make_shared<VoxelMatrix>();
+    auto newMatrix = std::make_shared<VoxelModelMatrix>();
     voxelSim.modelsData.allVoxelMatrices.push_back(newMatrix);
     voxelSim.modelsData.voxelMatricesMap[modelKey] = newMatrix;
 
@@ -292,14 +293,17 @@ void _loadModels(VoxelSimImpl& voxelSim, const json& inJsonData)
         {
           newMatrix->values.at(zz * iGridSize.x * iGridSize.y + yy * iGridSize.x + xx) = value;
         }
-
-
       }
       else {
         D_THROW(std::invalid_argument, "unknown operation type -> " << opType);
       }
 
     }
+
+
+    auto newGeometry = std::make_shared<VoxelModelGeometry>();
+    newGeometry->build(voxelSim, *newMatrix);
+    voxelSim.modelsData.allVoxelGeometries.push_back(newGeometry);
 
   }
 }

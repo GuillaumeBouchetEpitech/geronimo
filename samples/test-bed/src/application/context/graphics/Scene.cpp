@@ -184,6 +184,7 @@ void Scene::_renderScene() {
         context.logic.voxelSim->render();
       });
 
+      context.logic.artificialStupiditySim->renderScene();
 
 
       // if (context.logic.flockingManager->getTotalBoids() > 0) {
@@ -441,6 +442,13 @@ void Scene::_renderHud() {
 
   {
 
+    {
+
+      if (!context.logic.controllers.freeFly.isEnabled()) {
+        context.logic.artificialStupiditySim->renderHUD();
+      }
+    }
+
     // {
     //   constexpr float k_textDepth = -0.5f;
 
@@ -516,6 +524,10 @@ void Scene::_renderHud() {
 
       const glm::vec2 textPos = glm::vec2(5, vSize.y - 5);
       const std::string str = sstr.str();
+
+      textRenderer.setMainColor(glm::vec4(1, 1, 1, 1));
+      textRenderer.setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1));
+      textRenderer.setScale(16.0f);
 
       textRenderer.setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left);
       textRenderer.setVerticalTextAlign(TextRenderer::VerticalTextAlign::top);
@@ -725,22 +737,22 @@ void Scene::_renderHud() {
   }
 
   {
-    auto& stackRenderers = hud.getStackRenderers();
+    // auto& stackRenderers = hud.getStackRenderers();
 
-    {
-      auto& wireFrames = stackRenderers.getWireFramesStack();
-      wireFrames.pushRectangle(glm::vec2(100, 20), glm::vec2(50, 20), glm::vec3(1, 1, 1));
-    }
+    // {
+    //   auto& wireFrames = stackRenderers.getWireFramesStack();
+    //   wireFrames.pushRectangle(glm::vec2(100, 20), glm::vec2(50, 20), glm::vec3(1, 1, 1));
+    // }
 
-    {
-      auto& triangles = stackRenderers.getTrianglesStack();
+    // {
+    //   auto& triangles = stackRenderers.getTrianglesStack();
 
-      const glm::vec2 vSize = glm::vec2(hud.getCamera().getSize());
-      const glm::vec3 k_pos = glm::vec3(vSize.x - 15, vSize.y * 0.5f, 0);
-      triangles.pushCircle(k_pos, 10.0f, glm::vec4(1, 1, 1, 0.5));
-    }
+    //   const glm::vec2 vSize = glm::vec2(hud.getCamera().getSize());
+    //   const glm::vec3 k_pos = glm::vec3(vSize.x - 15, vSize.y * 0.5f, 0);
+    //   triangles.pushCircle(k_pos, 10.0f, glm::vec4(1, 1, 1, 0.5));
+    // }
 
-    stackRenderers.flush();
+    // stackRenderers.flush();
   }
 
   const auto& performanceProfiler = context.logic.performanceProfiler;

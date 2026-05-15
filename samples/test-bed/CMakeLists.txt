@@ -11,10 +11,29 @@ add_executable(${PROJECT_NAME}
     ./src/application/context/logic/flocking/internals/Boid.cpp
     ./src/application/context/logic/flocking/internals/FlockingManager.cpp
     ./src/application/context/logic/flocking/AbstractFlockingManager.cpp
-    ./src/application/context/logic/voxel-sim/internals/parsing-utils/jsonUtils.cpp
     ./src/application/context/logic/voxel-sim/internals/VoxelSimImpl.cpp
     ./src/application/context/logic/voxel-sim/internals/VoxelSimImpl_loadJsonFile.cpp
     ./src/application/context/logic/voxel-sim/AbstractVoxelSim.cpp
+
+
+
+    # find ./src/application/context/logic/artificial-stupidity-sim -name *.cpp >> CMakeLists.txt
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/KeyframesManager.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/KeyframesManager_loadJsonFile.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/machine-learning/DiscriminatorController.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/machine-learning/extended-recursive-least-square/ExtenderRecursiveLeastSquareMatrix.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/machine-learning/extended-recursive-least-square/ExtenderRecursiveLeastSquareTrainer.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/machine-learning/extended-recursive-least-square/NeuralNetwork.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/machine-learning/ActorCriticController.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/PlatformerDuel.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/graphics/textures-manager/TexturesManager.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/graphics/sprite-stack-renderer/SpriteStackRenderer.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/game-logic/PlatformerCharacter.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/internals/ArtificialStupiditySimImpl.cpp
+    ./src/application/context/logic/artificial-stupidity-sim/AbstractArtificialStupiditySim.cpp
+
+
+
     ./src/application/context/logic/HeightField.cpp
     ./src/application/context/Context_experimentalPhysicVehicle.cpp
     ./src/application/context/Context.cpp
@@ -93,7 +112,7 @@ if (DEFINED EMSCRIPTEN)
 
     # this makes sure the --preload-file flag find the assets folder
     add_custom_command(
-        TARGET ${PROJECT_NAME}  # Tie the command to the "MyApp" target
+        TARGET ${PROJECT_NAME}  # Tie the command to a target
         PRE_BUILD    # Run before the target is built
         COMMAND ${CMAKE_COMMAND} -E copy_directory  # CMake's cross-platform copy command
             ${CMAKE_SOURCE_DIR}/assets          # Source directory
@@ -152,5 +171,3 @@ else()
     set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
 endif()
-
-

@@ -114,11 +114,14 @@ void State_Running::handleEvent(const SDL_Event& event) {
   }
 }
 
-void State_Running::update(uint32_t delta) {
+void State_Running::update(uint32_t deltaTimeMSec) {
 
-  const float elapsedTime = float(delta) / 1000.0f;
+  const float deltaTimeSec = float(deltaTimeMSec) / 1000.0f;
 
   auto& context = Context::get();
+
+  auto& renderer = context.graphic.renderer;
+  auto& sceneRenderer = renderer.getSceneRenderer();
 
   auto& performanceProfiler = context.logic.performanceProfiler;
   performanceProfiler.stop("FRAME");
@@ -126,10 +129,46 @@ void State_Running::update(uint32_t delta) {
 
   performanceProfiler.start("1 UPDATE");
 
-  {
-    context.logic.controllers.freeFly.update(elapsedTime);
+  auto& freeFly = context.logic.controllers.freeFly;
 
-    auto& currCamera = context.graphic.renderer.getSceneRenderer().getCamera();
+  {
+    auto& keyboard = KeyboardManager::get();
+
+    if (freeFly.isEnabled()) {
+      if (keyboard.isPressed(SDLK_RETURN)) {
+        freeFly.disable();
+      }
+    } else {
+      if (keyboard.isPressed(SDLK_BACKSPACE)) {
+        freeFly.enable();
+      }
+    }
+
+    if (freeFly.isEnabled()) {
+      // apply the freefly controller logic
+      freeFly.update(deltaTimeSec);
+    }
+    else {
+
+      // set the freefly controller values
+      const glm::vec3 k_origin = glm::vec3(5,50,0);
+      const glm::vec3 k_arenaOrigin = k_origin + glm::vec3(25,25,0) + glm::vec3(0,5,0);
+
+      freeFly.setPosition(k_arenaOrigin + glm::vec3(0,0,20.0f));
+      freeFly.setForwardAxis(glm::normalize(glm::vec3(0,0.1f,-1.0f)));
+      freeFly.setUpAxis(glm::vec3(0,1,0));
+      freeFly.setTarget(freeFly.getPosition() + freeFly.getForwardAxis());
+    }
+
+    auto& mouse = MouseManager::get();
+    mouse.resetDelta();
+
+    // sync the scene camera with freefly controller latest values
+    sceneRenderer.lookAt(freeFly.getPosition(), freeFly.getTarget(), glm::vec3(0,0,1));
+  }
+
+  {
+    auto& currCamera = sceneRenderer.getCamera();
 
     context.audio.soundManager->setListener(currCamera.getEye(), currCamera.getForwardAxis(), glm::vec3(0, 0, 1));
 
@@ -141,16 +180,20 @@ void State_Running::update(uint32_t delta) {
         context.logic.framesLeftToPlay -= 1;
       }
 
-      context.logic.flockingManager->update(elapsedTime);
-      context.logic.voxelSim->update(elapsedTime);
+      if (freeFly.isEnabled()) {
+        context.logic.flockingManager->update(deltaTimeSec);
+        context.logic.voxelSim->update(deltaTimeSec);
+      } else {
+        context.logic.artificialStupiditySim->update(deltaTimeSec);
+      }
 
-      context.logic.time += elapsedTime;
+      context.logic.time += deltaTimeSec;
 
       performanceProfiler.start("1 update physic");
 
       constexpr uint32_t k_maxSubSteps = 3;
       constexpr float k_fixedStep = 1.0f / 60.0f;
-      context.physic.world->step(elapsedTime, k_maxSubSteps, k_fixedStep);
+      context.physic.world->step(deltaTimeSec, k_maxSubSteps, k_fixedStep);
 
       performanceProfiler.stop("1 update physic");
     }

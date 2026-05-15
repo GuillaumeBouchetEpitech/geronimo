@@ -68,7 +68,6 @@ void FreeFlyCameraController::update(float elapsedTime) {
         _horizontalAngle -= float(mouse.getDelta().x) / 5.f;
         _verticalAngle -= float(mouse.getDelta().y) / 5.f;
       }
-      mouse.resetDelta();
 
     } else {
       _forceForward = false;
@@ -105,7 +104,8 @@ void FreeFlyCameraController::update(float elapsedTime) {
     _leftMovement.y = _upAxis.z * _forwardAxis.x - _upAxis.x * _forwardAxis.z;
     _leftMovement.z = _upAxis.x * _forwardAxis.y - _upAxis.y * _forwardAxis.x;
 
-    context.graphic.renderer.getSceneRenderer().lookAt(_position, _position + _forwardAxis, glm::vec3(0, 0, 1));
+    // this->_target = this->_position + this->_forwardAxis;
+    // context.graphic.renderer.getSceneRenderer().lookAt(this->_position, this->_target, glm::vec3(0, 0, 1));
 
   } // mouse
 
@@ -144,6 +144,9 @@ void FreeFlyCameraController::update(float elapsedTime) {
     _position += acceleration;
 
   } // keyboard
+
+  // sync the target value
+  this->_target = this->_position + this->_forwardAxis;
 
   { // death rayCast
 
@@ -268,7 +271,19 @@ void FreeFlyCameraController::update(float elapsedTime) {
 
 //
 
-void FreeFlyCameraController::setPosition(const glm::vec3& pos) { _position = pos; }
+void FreeFlyCameraController::setPosition(const glm::vec3& inValue) {
+  this->_position = inValue;
+}
+void FreeFlyCameraController::setForwardAxis(const glm::vec3& inValue) {
+  this->_forwardAxis = inValue;
+}
+void FreeFlyCameraController::setUpAxis(const glm::vec3& inValue) {
+  this->_upAxis = inValue;
+}
+void FreeFlyCameraController::setTarget(const glm::vec3& inValue) {
+  this->_target = inValue;
+}
+
 
 // const glm::vec3& FreeFlyCameraController::getTarget() const
 // {

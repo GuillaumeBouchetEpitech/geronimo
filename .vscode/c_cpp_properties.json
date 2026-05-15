@@ -1,26 +1,41 @@
 {
-    "configurations": [
-        {
-            "name": "Linux",
-            "includePath": [
-                "${workspaceFolder}/src/**",
-                "${workspaceFolder}/thirdparties/**",
-                "${workspaceFolder}/samples/test-bed/src/**",
-                "${workspaceFolder}/thirdparties/dependencies/entt/src/**",
-                "${workspaceFolder}/thirdparties/dependencies/entt/src/entt/entity/**",
-                "${workspaceFolder}/thirdparties/dependencies/json/include/**",
-                "/usr/include/SDL2/",
-                "${EMSDK}/upstream/emscripten/system/include/**"
-            ],
-            "defines": [
-                "__GNUC__=3",
-                "Py_BUILD_CORE"
-            ],
-            "compilerPath": "/usr/bin/g++",
-            "cStandard": "c17",
-            "cppStandard": "c++20",
-            "intelliSenseMode": "gcc-x64"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        //
+        // geronimo libraries
+        //
+        "${workspaceFolder}/src/geronimo/system/src/**",
+        "${workspaceFolder}/src/geronimo/graphics/src/**",
+        "${workspaceFolder}/src/geronimo/physics/src/**",
+        "${workspaceFolder}/src/geronimo/audio/src/**",
+        "${workspaceFolder}/src/geronimo/helpers/src/**",
+        //
+        // geronimo third parties
+        //
+        // geronimo third parties: bullet3, glm, stb, tinyobjloader
+        "${workspaceFolder}/thirdparties/**",
+        // geronimo third party: entt
+        "${workspaceFolder}/thirdparties/dependencies/entt/src/**",
+        "${workspaceFolder}/thirdparties/dependencies/entt/src/entt/entity/**",
+        // geronimo third party: json
+        "${workspaceFolder}/thirdparties/dependencies/json/include/**",
+        // geronimo third party: native
+        "/usr/include/SDL2/",
+        // geronimo third party: wasm
+        "${EMSDK}/upstream/emscripten/system/include/**",
+        //
+        // samples: test-bed
+        //
+        "${workspaceFolder}/samples/test-bed/src/**",
+      ],
+      "defines": ["__GNUC__=3", "Py_BUILD_CORE"],
+      "compilerPath": "/usr/bin/g++",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "gcc-x64",
+    },
+  ],
+  "version": 4,
 }

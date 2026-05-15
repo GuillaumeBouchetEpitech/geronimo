@@ -42,6 +42,7 @@ void Context::initialize(uint32_t width, uint32_t height) {
 
   logic.flockingManager = AbstractFlockingManager::create();
   logic.voxelSim = AbstractVoxelSim::create();
+  logic.artificialStupiditySim = AbstractArtificialStupiditySim::create();
 
 }
 

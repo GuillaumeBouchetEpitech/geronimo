@@ -173,9 +173,10 @@ void TrianglesStackRenderer::pushThickTriangle2dLine(const glm::vec2& posA,
     {posB.x + stepB.x, posB.y + stepB.y, z},
   }};
 
-  pushTriangle(vertices.at(0), vertices.at(3), vertices.at(2), colorA, colorB, colorB);
-
-  pushTriangle(vertices.at(0), vertices.at(1), vertices.at(3), colorA, colorA, colorB);
+  // pushTriangle(vertices.at(0), vertices.at(3), vertices.at(2), colorA, colorB, colorB);
+  // pushTriangle(vertices.at(0), vertices.at(1), vertices.at(3), colorA, colorA, colorB);
+  pushTriangle(vertices.at(0), vertices.at(2), vertices.at(3), colorA, colorB, colorB);
+  pushTriangle(vertices.at(0), vertices.at(3), vertices.at(1), colorA, colorA, colorB);
 }
 
 void TrianglesStackRenderer::pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec4& color, float z) {
