@@ -11,8 +11,18 @@ add_executable(${PROJECT_NAME}
     ./src/application/context/logic/flocking/internals/Boid.cpp
     ./src/application/context/logic/flocking/internals/FlockingManager.cpp
     ./src/application/context/logic/flocking/AbstractFlockingManager.cpp
-    ./src/application/context/logic/voxel-sim/internals/VoxelSimImpl.cpp
+
+
+
+    # find ./src/application/context/logic/voxel-sim -name *.cpp >> CMakeLists.txt
     ./src/application/context/logic/voxel-sim/internals/VoxelSimImpl_loadJsonFile.cpp
+    ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/VoxelShape.cpp
+    ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/VoxelModelGeometry.cpp
+    ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/VoxelModelMatrix.cpp
+    ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/VoxelModelGeometry_build.cpp
+    ./src/application/context/logic/voxel-sim/internals/voxel-manager/VoxelManager_loadJsonFile.cpp
+    ./src/application/context/logic/voxel-sim/internals/voxel-manager/VoxelManager.cpp
+    ./src/application/context/logic/voxel-sim/internals/VoxelSimImpl.cpp
     ./src/application/context/logic/voxel-sim/AbstractVoxelSim.cpp
 
 
