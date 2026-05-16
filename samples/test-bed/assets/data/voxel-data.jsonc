@@ -462,6 +462,13 @@
 
   },
 
+  // MARK: materials
+  "materials": {
+    "basic-material": {
+      "alias": 1,
+      "color": [255,255,255]
+    }
+  },
 
   // MARK: models
   "models": {
@@ -475,48 +482,48 @@
         "size": [15,15,15],
         "operations": [
 
-          // { "type": "set-matrix", "value": 1, "pos": [0,1,1], "scale": [2,0,0] },
-          // { "type": "set-matrix", "value": 11, "pos": [3,0,0], "scale": [1,2,2] },
+          // { "type": "set-matrix", "material": 1, "value": 1, "pos": [0,1,1], "scale": [2,0,0] },
+          // { "type": "set-matrix", "material": 1, "value": 11, "pos": [3,0,0], "scale": [1,2,2] },
 
           // disk part
-          { "type": "set-matrix", "value": 1, "pos": [4,4,2], "scale": [4,4,0] },
-          { "type": "set-matrix", "value": 31, "pos": [8,8,2] },
-          { "type": "set-matrix", "value": 32, "pos": [4,8,2], "scale": [0,0,3] },
-          { "type": "set-matrix", "value": 33, "pos": [4,4,2], "scale": [0,0,3] },
-          { "type": "set-matrix", "value": 34, "pos": [8,4,2] },
+          { "type": "set-matrix", "material": 1, "value": 1, "pos": [4,4,2], "scale": [4,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 31, "pos": [8,8,2] },
+          { "type": "set-matrix", "material": 1, "value": 32, "pos": [4,8,2], "scale": [0,0,3] },
+          { "type": "set-matrix", "material": 1, "value": 33, "pos": [4,4,2], "scale": [0,0,3] },
+          { "type": "set-matrix", "material": 1, "value": 34, "pos": [8,4,2] },
 
-          { "type": "set-matrix", "value": 1, "pos": [4,5,2], "scale": [0,2,4] }, // elevate side
-          { "type": "set-matrix", "value": 43, "pos": [4,4,6] }, // corner
-          { "type": "set-matrix", "value": 42, "pos": [4,8,6] }, // corner
-          { "type": "set-matrix", "value": 63, "pos": [4,5,6] },
-          { "type": "set-matrix", "value": 62, "pos": [4,7,6] },
+          { "type": "set-matrix", "material": 1, "value": 1, "pos": [4,5,2], "scale": [0,2,4] }, // elevate side
+          { "type": "set-matrix", "material": 1, "value": 43, "pos": [4,4,6] }, // corner
+          { "type": "set-matrix", "material": 1, "value": 42, "pos": [4,8,6] }, // corner
+          { "type": "set-matrix", "material": 1, "value": 63, "pos": [4,5,6] },
+          { "type": "set-matrix", "material": 1, "value": 62, "pos": [4,7,6] },
 
           // barrel (right side)
-          { "type": "set-matrix", "value": 23, "pos": [6,3,4], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 23, "pos": [5,3,5], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 11, "pos": [6,3,5], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 23, "pos": [6,3,4], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 23, "pos": [5,3,5], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 11, "pos": [6,3,5], "scale": [0,4,0] },
 
-          { "type": "set-matrix", "value": 13, "pos": [5,3,7], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 21, "pos": [6,3,7], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 13, "pos": [6,3,8], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 13, "pos": [5,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 21, "pos": [6,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 13, "pos": [6,3,8], "scale": [0,4,0] },
 
           // barrel (left side)
-          { "type": "set-matrix", "value": 21, "pos": [8,3,4], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 21, "pos": [9,3,5], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 13, "pos": [8,3,5], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 21, "pos": [8,3,4], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 21, "pos": [9,3,5], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 13, "pos": [8,3,5], "scale": [0,4,0] },
 
-          { "type": "set-matrix", "value": 11, "pos": [9,3,7], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 23, "pos": [8,3,7], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 11, "pos": [8,3,8], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 11, "pos": [9,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 23, "pos": [8,3,7], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 11, "pos": [8,3,8], "scale": [0,4,0] },
 
-          { "type": "set-matrix", "value": 1, "pos": [5,3,6], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 1, "pos": [9,3,6], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 1, "pos": [7,3,8], "scale": [0,4,0] },
-          { "type": "set-matrix", "value": 1, "pos": [7,3,4], "scale": [0,4,0] }
+          { "type": "set-matrix", "material": 1, "value": 1, "pos": [5,3,6], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 1, "pos": [9,3,6], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 1, "pos": [7,3,8], "scale": [0,4,0] },
+          { "type": "set-matrix", "material": 1, "value": 1, "pos": [7,3,4], "scale": [0,4,0] }
 
           // for the future
           // { "force": true } <- is to ignore "extrusion-axis" and forcefully repeat the shape
-          //{"type": "data-set-rect", "value": 1, "pos": [0,0,0], "scale": [3,1,1], "force": true}
+          //{"type": "data-set-rect", "material": 1, "value": 1, "pos": [0,0,0], "scale": [3,1,1], "force": true}
         ]
       }
     }

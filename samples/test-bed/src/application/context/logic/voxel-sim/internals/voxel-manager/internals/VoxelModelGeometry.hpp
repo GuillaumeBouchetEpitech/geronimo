@@ -18,10 +18,10 @@ public:
   void build(const VoxelManager& inVoxelManager, const VoxelModelMatrix& inMatrix);
 
 public:
-  float intersect(const glm::vec3& inFrom, const glm::vec3& inTo, gero::math::RayCastResult& outRayCastResult) const;
+  bool intersect(const glm::vec3& inFrom, const glm::vec3& inTo, gero::math::RayCastResult& outRayCastResult) const;
 
 public:
-  void render(const glm::vec3& position) const;
+  void debugRender(const glm::vec3& position) const;
 
 public:
   std::vector<TrimeshVertex> vertices;

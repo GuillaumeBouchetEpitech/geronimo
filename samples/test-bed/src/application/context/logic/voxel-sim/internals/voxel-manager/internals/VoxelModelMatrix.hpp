@@ -8,12 +8,17 @@
 // forward declaration
 class VoxelManager;
 
+struct VoxelModelMatrixCell {
+  uint16_t colorAlias = 0U;
+  uint16_t shapeAlias = 0U;
+};
+
 struct VoxelModelMatrix {
   glm::uvec3 gridSize = glm::uvec3(1,1,1);
-  std::vector<uint32_t> values;
+  std::vector<VoxelModelMatrixCell> values;
 
-  uint32_t getValue(int32_t x, int32_t y, int32_t z) const;
-  uint32_t getValue(const glm::ivec3& cursor) const;
+  VoxelModelMatrixCell getValue(int32_t x, int32_t y, int32_t z) const;
+  VoxelModelMatrixCell getValue(const glm::ivec3& cursor) const;
 
-  void render(const VoxelManager& inVoxelManager) const;
+  void debugRender(const VoxelManager& inVoxelManager) const;
 };

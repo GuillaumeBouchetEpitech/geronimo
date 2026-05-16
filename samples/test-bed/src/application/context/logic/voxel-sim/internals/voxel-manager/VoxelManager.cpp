@@ -9,18 +9,10 @@
 #include <array>
 #include <algorithm>
 
-// VoxelManager::VoxelManager() {
-
-//   {
-//     const std::string_view tmpFilename = "./assets/data/voxel-data.jsonc";
-//     this->_loadJsonFile(tmpFilename);
-//   }
-
-
-// }
-
-// void VoxelManager::update(float elapsedTime) {
-// }
+void VoxelManager::initialize()
+{
+  this->voxelGeometriesStackRenderer.initialize();
+}
 
 void VoxelManager::render() {
 
@@ -60,23 +52,59 @@ void VoxelManager::render() {
     tmpOrigin.y += currY * 2.0f;
     // tmpOrigin.y += float(ii) * 2.0f;
 
-    currShape->render(tmpOrigin);
+    currShape->debugRender(tmpOrigin);
   }
 
-  // debug
-  if (!this->modelsData.allVoxelGeometries.empty()) {
-    this->modelsData.allVoxelGeometries.at(0)->render(k_origin + glm::vec3(5,5,5));
+  // // debug
+  // if (!this->modelsData.allVoxelGeometries.empty()) {
+  //   this->modelsData.allVoxelGeometries.at(0)->render(k_origin + glm::vec3(5,5,5));
+
+  //   const glm::vec3 from = sceneCamera.getEye();
+  //   const glm::vec3 to = sceneCamera.getEye() + sceneCamera.getForwardAxis() * 50.0f;
+  //   gero::math::RayCastResult outRayCastResult;
+  //   this->modelsData.allVoxelGeometries.at(0)->intersect(from, to, outRayCastResult);
+
+  //   // D_MYERR("outRayCastResult.distance: " << outRayCastResult.distance);
+
+  //   if (outRayCastResult.distance >= 0.0f) {
+  //     wireFramesStack.pushCross(from + (to - from) * outRayCastResult.distance, glm::vec3(1,0,1), 0.5f);
+  //   }
+  // }
+
+  if (this->geometriesData.allVoxelGeometryInstances.empty() == false) {
+    this->geometriesData.allVoxelGeometryInstances.at(0)->debugRender();
+
 
     const glm::vec3 from = sceneCamera.getEye();
     const glm::vec3 to = sceneCamera.getEye() + sceneCamera.getForwardAxis() * 50.0f;
     gero::math::RayCastResult outRayCastResult;
-    this->modelsData.allVoxelGeometries.at(0)->intersect(from, to, outRayCastResult);
+    this->geometriesData.allVoxelGeometryInstances.at(0)->intersect(from, to, outRayCastResult);
 
     // D_MYERR("outRayCastResult.distance: " << outRayCastResult.distance);
 
     if (outRayCastResult.distance >= 0.0f) {
-      wireFramesStack.pushCross(from + (to - from) * outRayCastResult.distance, glm::vec3(1,0,1), 0.5f);
+      const glm::vec3 impactPos = from + (to - from) * outRayCastResult.distance;
+      const glm::vec3 impactNorm = impactPos - outRayCastResult.normal;
+      wireFramesStack.pushCross(impactPos, glm::vec3(0,1,0), 0.5f);
+
+      wireFramesStack.pushLine(impactPos, impactNorm, glm::vec3(1,1,1));
     }
+
+
+    {
+      VoxelGeometriesStackRenderer::GeometryInstance newInstance;
+      newInstance.position = glm::vec3(10,10,10);
+      newInstance.orientation = glm::identity<glm::quat>();
+      newInstance.light = true;
+      newInstance.scale = glm::vec3(1,1,1);
+      newInstance.color = glm::vec4(1,1,1,1);
+      this->voxelGeometriesStackRenderer.clearAlias(1);
+      this->voxelGeometriesStackRenderer.pushAlias(1, newInstance);
+      this->voxelGeometriesStackRenderer.setMatricesData(sceneCamera.getMatricesData());
+      this->voxelGeometriesStackRenderer.renderAll();
+    }
+
+
   }
 
   stackRenderer.flush();

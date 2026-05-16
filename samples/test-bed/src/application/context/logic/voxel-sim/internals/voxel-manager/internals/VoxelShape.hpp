@@ -18,6 +18,6 @@ struct VoxelShape {
 
   std::vector<TrimeshVertex> vertices;
 
-  void render(const glm::vec3& position) const;
+  void debugRender(const glm::vec3& position) const;
 };
 

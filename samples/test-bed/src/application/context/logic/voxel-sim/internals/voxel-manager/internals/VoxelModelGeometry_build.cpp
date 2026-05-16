@@ -12,6 +12,7 @@
 
 namespace /*anonymous*/ {
 
+  // MARK: MyAABB
   struct MyAABB {
     glm::vec3 _min;
     glm::vec3 _max;
@@ -44,6 +45,7 @@ namespace /*anonymous*/ {
     }
   };
 
+  // MARK: _removeDuplicatedTriangles
   void _removeDuplicatedTriangles(
     std::vector<TrimeshVertex>& tmpVertices,
     const std::vector<TrimeshVertex>& tmpSideVertices,
@@ -90,6 +92,7 @@ namespace /*anonymous*/ {
 
   }
 
+  // MARK: _handleDuplicatedTriangles
   bool _handleDuplicatedTriangles(
     bool reverse,
     std::vector<TrimeshVertex>& tmpVertices,
@@ -177,22 +180,30 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
   for (int32_t xx = 0; xx < inMatrix.gridSize.x; ++xx)
   {
     const glm::ivec3 currCursor = glm::ivec3(xx, yy, zz);
-    const uint32_t currVal = inMatrix.getValue(currCursor);
-    if (currVal == 0) {
+    const VoxelModelMatrixCell& currVal = inMatrix.getValue(currCursor);
+    if (currVal.shapeAlias == 0) {
       continue;
     }
 
-    auto currIt = inVoxelManager.shapesData._voxelShapesAliasMap.find(currVal);
-    if (currIt == inVoxelManager.shapesData._voxelShapesAliasMap.end()) {
+    auto currItShape = inVoxelManager.shapesData._voxelShapesAliasMap.find(currVal.shapeAlias);
+    if (currItShape == inVoxelManager.shapesData._voxelShapesAliasMap.end()) {
       continue;
     }
+
+    auto currItMaterial = inVoxelManager.materialsData.voxelMaterialsAliasMap.find(currVal.colorAlias);
+    if (currItMaterial == inVoxelManager.materialsData.voxelMaterialsAliasMap.end()) {
+      continue;
+    }
+
+    const glm::vec3& materialColor = currItMaterial->second->color;
 
     // copy the current shape's vertices
     tmpVertices.clear();
-    for (const auto& currVertex : currIt->second->vertices)
+    for (const auto& currVertex : currItShape->second->vertices)
     {
       TrimeshVertex newVertex;
       newVertex.pos = currVertex.pos + glm::vec3(currCursor);
+      newVertex.color = materialColor;
       newVertex.norm = currVertex.norm;
       tmpVertices.push_back(newVertex);
     }
@@ -214,12 +225,12 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
     for (const glm::ivec3 sideOffset : sideOffsets)
     {
       const glm::ivec3 sideCursor = currCursor + sideOffset;
-      const uint32_t sideVal = inMatrix.getValue(sideCursor);
-      if (sideVal == 0) {
+      const VoxelModelMatrixCell& sideValShape = inMatrix.getValue(sideCursor);
+      if (sideValShape.shapeAlias == 0) {
         continue;
       }
 
-      auto sideIt = inVoxelManager.shapesData._voxelShapesAliasMap.find(sideVal);
+      auto sideIt = inVoxelManager.shapesData._voxelShapesAliasMap.find(sideValShape.shapeAlias);
       if (sideIt == inVoxelManager.shapesData._voxelShapesAliasMap.end()) {
         continue;
       }

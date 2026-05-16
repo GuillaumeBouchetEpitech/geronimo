@@ -9,7 +9,7 @@
 // #include <array>
 // #include <algorithm>
 
-void VoxelShape::render(const glm::vec3& inPosition) const
+void VoxelShape::debugRender(const glm::vec3& inPosition) const
 {
   auto& context = Context::get();
   auto& stackRenderer = context.graphic.renderer.getSceneRenderer().getStackRenderers();

@@ -7,6 +7,9 @@
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
+#include "geronimo/system/math/constants.hpp"
+#include "geronimo/system/math/safe-normalize.hpp"
+
 // #include "geronimo/graphics/make-geometries/MakeGeometries.hpp"
 // #include "geronimo/system/asValue.hpp"
 // #include "geronimo/system/easing/easingFunctions.hpp"
@@ -14,7 +17,6 @@
 // #include "geronimo/system/math/clamp.hpp"
 // #include "geronimo/system/math/constants.hpp"
 // #include "geronimo/system/math/lerp.hpp"
-// #include "geronimo/system/math/safe-normalize.hpp"
 // // #include "geronimo/system/rng/RandomNumberGenerator.hpp"
 // #include "geronimo/system/rng/DeterministicRng.hpp"
 
@@ -82,7 +84,7 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
       uint32_t alias;
       jsonUtils::uint32::get(shapeVal, "alias", alias);
       if (manager.shapesData._voxelShapesAliasMap.count(alias)) {
-        D_THROW(std::invalid_argument, "duplicated alias -> " << alias);
+        D_THROW(std::invalid_argument, "duplicated shape alias -> " << alias);
       }
 
       auto newShape = std::make_shared<VoxelShape>();
@@ -114,9 +116,9 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
         }
         D_MYLOG("normal -> " << normal);
 
-        newShape->vertices.push_back({ v0, normal });
-        newShape->vertices.push_back({ v1, normal });
-        newShape->vertices.push_back({ v2, normal });
+        newShape->vertices.push_back({ v0, glm::vec3(1,1,1), normal });
+        newShape->vertices.push_back({ v1, glm::vec3(1,1,1), normal });
+        newShape->vertices.push_back({ v2, glm::vec3(1,1,1), normal });
       }
     }
   }
@@ -150,7 +152,7 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
       uint32_t alias;
       jsonUtils::uint32::get(shapeVal, "alias", alias);
       if (manager.shapesData._voxelShapesAliasMap.count(alias)) {
-        D_THROW(std::invalid_argument, "duplicated alias -> " << alias);
+        D_THROW(std::invalid_argument, "duplicated shape alias -> " << alias);
       }
 
       auto newShape = std::make_shared<VoxelShape>();
@@ -209,6 +211,47 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
 
 }
 
+// MARK: _loadMaterials
+void _loadMaterials(VoxelManager& manager, const json& inJsonData)
+{
+
+  jsonUtils::common::propertyExist(inJsonData, "materials");
+  const auto materialsVal = inJsonData["materials"];
+
+  manager.materialsData.allVoxelMaterials.reserve(64);
+
+  for (auto pair : materialsVal.items()) {
+
+    const std::string materialKey = pair.key();
+    D_MYLOG(" -> materialKey => " << materialKey);
+
+    const auto materialVal = pair.value();
+
+    jsonUtils::common::propertyExist(materialVal, "alias");
+    jsonUtils::common::propertyExist(materialVal, "color");
+
+    uint32_t alias;
+    jsonUtils::uint32::get(materialVal, "alias", alias);
+    if (manager.materialsData.voxelMaterialsAliasMap.count(alias)) {
+      D_THROW(std::invalid_argument, "duplicated material alias -> " << alias);
+    }
+
+    glm::uvec3 materialColor;
+    jsonUtils::uvec3::get(materialVal, "color", materialColor);
+
+    auto newMaterial = std::make_shared<VoxelModelMaterial>();
+    newMaterial->name = materialKey;
+    newMaterial->alias = alias;
+    newMaterial->color = glm::vec3(materialColor) / 255.0f;
+
+    manager.materialsData.allVoxelMaterials.push_back(newMaterial);
+    manager.materialsData.voxelMaterialsMap[newMaterial->name] = newMaterial;
+    manager.materialsData.voxelMaterialsAliasMap[newMaterial->alias] = newMaterial;
+
+  }
+
+}
+
 // MARK: _loadModels
 void _loadModels(VoxelManager& manager, const json& inJsonData)
 {
@@ -253,7 +296,7 @@ void _loadModels(VoxelManager& manager, const json& inJsonData)
     manager.modelsData.voxelMatricesMap[modelKey] = newMatrix;
 
     newMatrix->gridSize = glm::max(newMatrix->gridSize, matrixSize);
-    newMatrix->values.resize(newMatrix->gridSize.x * newMatrix->gridSize.y * newMatrix->gridSize.z, 0);
+    newMatrix->values.resize(newMatrix->gridSize.x * newMatrix->gridSize.y * newMatrix->gridSize.z, VoxelModelMatrixCell());
 
 
     for (auto currOpval : operationsVal)
@@ -262,6 +305,14 @@ void _loadModels(VoxelManager& manager, const json& inJsonData)
       jsonUtils::str::get(currOpval, "type", opType);
 
       if (opType == "set-matrix") {
+
+        uint32_t material;
+        jsonUtils::uint32::get(currOpval, "material", material);
+
+        auto itMaterial = manager.materialsData.voxelMaterialsAliasMap.find(material);
+        if (itMaterial == manager.materialsData.voxelMaterialsAliasMap.end()) {
+          D_THROW(std::invalid_argument, "unknown data-matrix material -> " << material);
+        }
 
         uint32_t value;
         jsonUtils::uint32::get(currOpval, "value", value);
@@ -287,11 +338,15 @@ void _loadModels(VoxelManager& manager, const json& inJsonData)
         const glm::ivec3 tmpMin = glm::clamp(glm::min(pos, tmpDst), glm::ivec3(0,0,0), iGridSize - 1);
         const glm::ivec3 tmpMax = glm::clamp(glm::max(pos, tmpDst), glm::ivec3(0,0,0), iGridSize - 1);
 
+        VoxelModelMatrixCell newCell;
+        newCell.shapeAlias = value;
+        newCell.colorAlias = material;
+
         for (int32_t zz = tmpMin.z; zz <= tmpMax.z; ++zz)
         for (int32_t yy = tmpMin.y; yy <= tmpMax.y; ++yy)
         for (int32_t xx = tmpMin.x; xx <= tmpMax.x; ++xx)
         {
-          newMatrix->values.at(zz * iGridSize.x * iGridSize.y + yy * iGridSize.x + xx) = value;
+          newMatrix->values.at(zz * iGridSize.x * iGridSize.y + yy * iGridSize.x + xx) = newCell;
         }
       }
       else {
@@ -303,8 +358,21 @@ void _loadModels(VoxelManager& manager, const json& inJsonData)
 
     auto newGeometry = std::make_shared<VoxelModelGeometry>();
     newGeometry->build(manager, *newMatrix);
-    manager.modelsData.allVoxelGeometries.push_back(newGeometry);
+    manager.geometriesData.allVoxelGeometries.push_back(newGeometry);
 
+
+
+    auto newInstance = std::make_shared<VoxelModelGeometryInstance>();
+    newInstance->modelGeometry = newGeometry;
+    newInstance->position.x = 35.0f;
+    newInstance->position.y = 35.0f;
+    newInstance->position.z = 35.0f;
+
+    glm::vec3 quatAxis = glm::vec3(1.0f,1.0f,1.0f);
+    gero::math::safeNormalize(quatAxis);
+    newInstance->orientation = glm::angleAxis(gero::math::qpi, quatAxis);
+
+    manager.geometriesData.allVoxelGeometryInstances.push_back(newInstance);
   }
 }
 
@@ -328,7 +396,15 @@ void VoxelManager::loadJsonFile(const std::string_view inFilepath)
   D_MYLOG(" -> data[\"hello\"] => " << data["hello"]);
 
   _loadShapes(*this, data);
+  _loadMaterials(*this, data);
   _loadModels(*this, data);
+
+  if (this->geometriesData.allVoxelGeometries.empty() == false)
+  {
+    const auto& currGeometry = this->geometriesData.allVoxelGeometries.at(0);
+
+    this->voxelGeometriesStackRenderer.createAlias(1, currGeometry->vertices);
+  }
 
   // generate geometry
   // optimized geometry

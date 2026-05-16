@@ -8,7 +8,7 @@
 #include <array>
 #include <algorithm>
 
-uint32_t VoxelModelMatrix::getValue(int32_t x, int32_t y, int32_t z) const
+VoxelModelMatrixCell VoxelModelMatrix::getValue(int32_t x, int32_t y, int32_t z) const
 {
   if (
     z < 0 || z >= this->gridSize.z ||
@@ -16,19 +16,19 @@ uint32_t VoxelModelMatrix::getValue(int32_t x, int32_t y, int32_t z) const
     x < 0 || x >= this->gridSize.x
   ) {
     // out of range -> return empty shape's alias value
-    return 0;
+    return VoxelModelMatrixCell();
   }
 
   // in range -> return stored shape's alias value
   return this->values.at(z * this->gridSize.x * this->gridSize.y + y * this->gridSize.x + x);
 }
 
-uint32_t VoxelModelMatrix::getValue(const glm::ivec3& cursor) const
+VoxelModelMatrixCell VoxelModelMatrix::getValue(const glm::ivec3& cursor) const
 {
   return this->getValue(cursor.x, cursor.y, cursor.z);
 }
 
-void VoxelModelMatrix::render(const VoxelManager& inVoxelManager) const
+void VoxelModelMatrix::debugRender(const VoxelManager& inVoxelManager) const
 {
   const glm::vec3 k_origin = glm::vec3(35,35,35);
   {
@@ -73,17 +73,17 @@ void VoxelModelMatrix::render(const VoxelManager& inVoxelManager) const
   for (int32_t yy = 0; yy < this->gridSize.y; ++yy)
   for (int32_t xx = 0; xx < this->gridSize.x; ++xx)
   {
-    const uint32_t currVal = this->getValue(xx, yy, zz);
+    const VoxelModelMatrixCell& currVal = this->getValue(xx, yy, zz);
 
-    auto it = inVoxelManager.shapesData._voxelShapesAliasMap.find(currVal);
-    if (it == inVoxelManager.shapesData._voxelShapesAliasMap.end()) {
+    auto itShape = inVoxelManager.shapesData._voxelShapesAliasMap.find(currVal.shapeAlias);
+    if (itShape == inVoxelManager.shapesData._voxelShapesAliasMap.end()) {
       continue;
     }
 
     glm::vec3 tmpOrigin = k_origin;
     tmpOrigin += glm::vec3(xx, yy, zz);
 
-    it->second->render(tmpOrigin);
+    itShape->second->debugRender(tmpOrigin);
 
     // (currVal)
   }
