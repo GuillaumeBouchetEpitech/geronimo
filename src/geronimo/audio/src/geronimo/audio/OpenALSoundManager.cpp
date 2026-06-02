@@ -120,14 +120,14 @@ void OpenALSoundManager::loadOggFromMemory(uint32_t alias, const std::string& co
   _bufferSoundsMap[alias] = {newBuffer};
 }
 
-void OpenALSoundManager::playSound(uint32_t inAlias,
+void OpenALSoundManager::playRelativeSound(uint32_t inAlias,
                                    const glm::vec3& inPosition,
                                    float inVolume,
                                    float inPitch,
                                    uint32_t inPriority /*= 0*/,
                                    int32_t inUserAlias /*= 0*/,
                                    int32_t inMaxAlias /*= 1000*/) {
-  _playSound(inAlias, inPosition, inVolume, inPitch, false, inPriority, inUserAlias, inMaxAlias);
+  _doPlaySound(inAlias, inPosition, inVolume, inPitch, false, inPriority, inUserAlias, inMaxAlias);
 }
 
 void OpenALSoundManager::playAbsoluteSound(uint32_t inAlias,
@@ -136,43 +136,50 @@ void OpenALSoundManager::playAbsoluteSound(uint32_t inAlias,
                                            uint32_t inPriority /*= 0*/,
                                            int32_t inUserAlias /*= 0*/,
                                            int32_t inMaxAlias /*= 1000*/) {
-  _playSound(inAlias, glm::vec3(0, 0, 0), inVolume, inPitch, true, inPriority, inUserAlias, inMaxAlias);
+  _doPlaySound(inAlias, glm::vec3(0, 0, 0), inVolume, inPitch, true, inPriority, inUserAlias, inMaxAlias);
 }
 
-void OpenALSoundManager::_playSound(uint32_t inAlias,
+void OpenALSoundManager::_doPlaySound(uint32_t inAlias,
                                     const glm::vec3& inPosition,
                                     float inVolume,
                                     float inPitch,
-                                    bool inAbsolute,
+                                    bool inIsAbsoluteSound,
                                     uint32_t inPriority,
                                     int32_t inUserAlias,
                                     int32_t inMaxAlias) {
 
-  if (!_enabled)
+  if (!_enabled) {
     return;
+  }
 
   auto it = _bufferSoundsMap.find(inAlias);
-  if (it == _bufferSoundsMap.end())
+  if (it == _bufferSoundsMap.end()) {
     D_THROW(std::runtime_error, "Buffer sound not found, alias: " << inAlias);
+  }
 
   // D_MYLOG("playing \"" << filename << "\"");
 
   const uint32_t currBuffer = it->second.id;
 
   // synchronize data
-  for (SoundSource& tmpSource : _sources) {
-    if (tmpSource.playing == false)
-      continue;
+  // for (SoundSource& tmpSource : _sources) {
+  //   if (tmpSource.isPlaying == false) {
+  //     continue;
+  //   }
 
-    if (OpenAlContext::getSourceState(tmpSource.id) != OpenAlContext::SourceStates::playing)
-      tmpSource.playing = false;
-  }
+  //   if (OpenAlContext::getSourceState(tmpSource.id) != OpenAlContext::SourceStates::playing) {
+  //     tmpSource.isPlaying = false;
+  //   }
+  // }
+  this->_synchronizeExistingSounds();
 
   int32_t totalUserAlias = 0;
 
-  for (SoundSource& tmpSource : _sources)
-    if (tmpSource.playing == true && tmpSource.userAlias == inUserAlias)
+  for (SoundSource& tmpSource : _sources) {
+    if (tmpSource.isPlaying == true && tmpSource.userAlias == inUserAlias) {
       ++totalUserAlias;
+    }
+  }
 
   const bool maxUsageReached = (totalUserAlias >= inMaxAlias);
 
@@ -183,18 +190,20 @@ void OpenALSoundManager::_playSound(uint32_t inAlias,
     float bestDistance = 999999999.0f;
 
     for (SoundSource& tmpSource : _sources) {
-      if (!tmpSource.playing) {
+      if (!tmpSource.isPlaying) {
         bestSource = &tmpSource;
         break;
       }
 
-      if (tmpSource.absolute || inPriority < tmpSource.priority)
+      if (tmpSource.isAbsoluteSound || inPriority < tmpSource.priority) {
         continue;
+      }
 
-      if (inAbsolute == false) {
+      if (inIsAbsoluteSound == false) {
         const float distance = glm::distance(tmpSource.position, _listenerPos);
-        if (distance > bestDistance)
+        if (distance > bestDistance) {
           continue;
+        }
 
         bestDistance = distance;
       }
@@ -203,22 +212,26 @@ void OpenALSoundManager::_playSound(uint32_t inAlias,
       break;
     }
 
-  } else {
+  }
+  else {
 
     float bestDistance = 0.0f;
 
     // replace already playing sounds
     for (SoundSource& tmpSource : _sources) {
-      if (tmpSource.playing == false || tmpSource.userAlias != inUserAlias)
+      if (tmpSource.isPlaying == false || tmpSource.userAlias != inUserAlias) {
         continue;
+      }
 
-      if (tmpSource.absolute || inPriority < tmpSource.priority)
+      if (tmpSource.isAbsoluteSound || inPriority < tmpSource.priority) {
         continue;
+      }
 
-      if (inAbsolute == false) {
+      if (inIsAbsoluteSound == false) {
         const float distance = glm::distance(tmpSource.position, _listenerPos);
-        if (distance < bestDistance)
+        if (distance < bestDistance) {
           continue;
+        }
 
         bestDistance = distance;
       }
@@ -241,8 +254,8 @@ void OpenALSoundManager::_playSound(uint32_t inAlias,
   }
 
   currSource.position = inPosition;
-  currSource.playing = true;
-  currSource.absolute = inAbsolute;
+  currSource.isPlaying = true;
+  currSource.isAbsoluteSound = inIsAbsoluteSound;
   currSource.priority = inPriority;
 
   OpenAlContext::setSourcePitch(currSource.id, math::clamp(inPitch, 0.0f, 100.0f));
@@ -258,27 +271,49 @@ void OpenALSoundManager::_playSound(uint32_t inAlias,
   OpenAlContext::playSource(currSource.id);
 }
 
+void OpenALSoundManager::_synchronizeExistingSounds()
+{
+  for (SoundSource& tmpSource : _sources) {
+    if (tmpSource.isPlaying == false) {
+      continue; // no playing -> skip
+    }
+
+    // is playing -> check
+
+    if (OpenAlContext::getSourceState(tmpSource.id) != OpenAlContext::SourceStates::playing) {
+      tmpSource.isPlaying = false; // stopped playing -> update
+    }
+  }
+
+}
+
 //
 //
 //
 
 void OpenALSoundManager::setVolume(float level) { OpenAlContext::setListenerVolume(math::clamp(level, 0.0f, 1.0f)); }
 
-void OpenALSoundManager::setListener(const glm::vec3& pos, const glm::vec3& front, const glm::vec3& up) {
+void OpenALSoundManager::setListener(const glm::vec3& inPos, const glm::vec3& inFrontAxis, const glm::vec3& inUpAxis) {
 
-  _listenerPos = pos;
+  if (_listenerPos == inPos) {
+    return; // no changes -> skip
+  }
 
-  OpenAlContext::setListenerPosition(pos.x, pos.y, pos.z);
-  OpenAlContext::setListenerOrientation(front, up);
+  _listenerPos = inPos;
+
+  OpenAlContext::setListenerPosition(inPos.x, inPos.y, inPos.z);
+  OpenAlContext::setListenerOrientation(inFrontAxis, inUpAxis);
+
+  this->_synchronizeExistingSounds();
 
   for (SoundSource& currSource : _sources) {
-    if (currSource.absolute && currSource.playing) {
-      OpenAlContext::SourceStates state = OpenAlContext::getSourceState(currSource.id);
-      if (state != OpenAlContext::SourceStates::playing) {
-        currSource.playing = false;
-      } else {
-        OpenAlContext::setSourcePosition(currSource.id, pos.x, pos.y, pos.z);
-      }
+    if (currSource.isAbsoluteSound && currSource.isPlaying) {
+      // OpenAlContext::SourceStates state = OpenAlContext::getSourceState(currSource.id);
+      // if (state != OpenAlContext::SourceStates::playing) {
+      //   currSource.isPlaying = false;
+      // } else {
+        OpenAlContext::setSourcePosition(currSource.id, inPos.x, inPos.y, inPos.z);
+      // }
     }
   }
 }

@@ -369,7 +369,7 @@ PlatformerCharacterStates PlatformerCharacter::simulate(
 }
 
 //MARK:renderDebug
-void PlatformerCharacter::renderDebug(gero::graphics::IStackRenderers& stackRenderers, const glm::vec3& inOrigin) const
+void PlatformerCharacter::renderDebug(gero::graphics::opengl::advanced::IStackRenderers& stackRenderers, const glm::vec3& inOrigin) const
 {
   auto& wireFrames = stackRenderers.getWireFramesStack();
 

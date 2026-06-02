@@ -1,10 +1,10 @@
 
 #include "GraphicsRenderer.hpp"
 
-#include "geronimo/graphics/GlContext.hpp"
+#include "geronimo/graphics/opengl/GlContext.hpp"
 
 void GraphicsRenderer::initialize(uint32_t width, uint32_t height) {
-  D_MYLOG("MaxTextureSize: " << gero::graphics::GlContext::getMaxTextureSize());
+  D_MYLOG("MaxTextureSize: " << gero::graphics::opengl::GlContext::getMaxTextureSize());
 
   _sceneRenderer.initialize(width, height);
   _hudRenderer.initialize(width, height);

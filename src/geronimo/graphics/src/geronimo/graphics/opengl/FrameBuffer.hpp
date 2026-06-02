@@ -1,0 +1,66 @@
+
+#pragma once
+
+#include "RenderBuffer.hpp"
+#include "Texture.hpp"
+
+#include "geronimo/helpers/GLMath.hpp"
+
+#include <cstdint>
+#include <vector>
+
+namespace gero {
+namespace graphics {
+
+  class Image;
+
+namespace opengl {
+
+class FrameBuffer {
+public:
+  struct Definition {
+    struct ColorTexture {
+      uint32_t index = 0;
+      Texture* texture = nullptr;
+    };
+
+    std::vector<ColorTexture> colorTextures;
+
+    RenderBuffer* renderBuffer = nullptr;
+    Texture* depthTexture = nullptr;
+  };
+
+private:
+  uint32_t _frameBufferId = 0;
+  bool _isLinked = false;
+
+public:
+  FrameBuffer() = default;
+  ~FrameBuffer();
+
+public:
+  bool initialize(const Definition& def, bool throwException = true);
+  void dispose();
+
+public:
+  void attachColorTexture(uint32_t index, const Texture& colorTexture);
+  void attachDepthTexture(const Texture& depthTexture);
+  void attachDepthRenderBuffer(const RenderBuffer& buffer);
+
+public:
+  void bind() const;
+
+public:
+  static void unbind();
+
+public:
+  bool isValid() const;
+  bool isLinked() const;
+
+public:
+  void getAsImage(gero::graphics::Image& image, uint32_t posX, uint32_t posY, uint32_t width, uint32_t height) const;
+};
+
+} // namespace opengl
+} // namespace graphics
+} // namespace gero

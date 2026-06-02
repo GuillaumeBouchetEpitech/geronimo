@@ -66,5 +66,46 @@ else()
 
     set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${GERONIMO_DIR}/lib/native")
 
+
+    # UNIT TESTS
+    # UNIT TESTS
+    # UNIT TESTS
+
+    add_executable(unit_test__physics
+        ./src/geronimo/physics/AbstractPhysicWorld_tests/test_query_raycast_perf.tests.cpp
+        ./src/geronimo/physics/AbstractPhysicWorld_tests/test_collisions.tests.cpp
+        ./src/geronimo/physics/AbstractPhysicWorld_tests/test_all_physic_shapes.tests.cpp
+        ./src/geronimo/physics/AbstractPhysicWorld_tests/test_consistence.tests.cpp
+        ./src/geronimo/physics/AbstractPhysicWorld_tests/test_query_shape.tests.cpp
+        ./src/geronimo/physics/AbstractPhysicWorld_tests/test_query_raycast.tests.cpp
+    )
+    add_dependencies(unit_test__physics ${PROJECT_NAME})
+    target_link_libraries(unit_test__physics
+        ${PROJECT_NAME}
+        geronimo-system
+        bullet-dynamics
+        bullet-collision
+        bullet-linearmath
+        gtest_main
+        gtest
+        pthread
+    )
+
+    target_include_directories(unit_test__physics PRIVATE
+        ./src
+        ../helpers/src
+        ../system/src
+        ${THIRD_PARTIES_DIR}
+    )
+
+    set_target_properties(unit_test__physics PROPERTIES COMPILE_FLAGS "-O3")
+    set_target_properties(unit_test__physics PROPERTIES LINK_FLAGS "-O3")
+    set_target_properties(unit_test__physics PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+
+    # UNIT TESTS
+    # UNIT TESTS
+    # UNIT TESTS
+
+
 endif()
 

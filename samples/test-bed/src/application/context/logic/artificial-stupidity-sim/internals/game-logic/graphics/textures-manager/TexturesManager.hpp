@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "geronimo/graphics/Texture.hpp"
+#include "geronimo/graphics/opengl/Texture.hpp"
 
 #include "geronimo/system/NonCopyable.hpp"
 
@@ -15,11 +15,11 @@ public:
   ~TexturesManager() = default;
 
 public:
-  std::weak_ptr<gero::graphics::Texture> loadFromFile(const std::string& filepath);
-  std::weak_ptr<gero::graphics::Texture> getTexture(const std::string& filepath) const;
+  std::weak_ptr<gero::graphics::opengl::Texture> loadFromFile(const std::string& filepath);
+  std::weak_ptr<gero::graphics::opengl::Texture> getTexture(const std::string& filepath) const;
 
 private:
-  using TextureUniquePtr = std::shared_ptr<gero::graphics::Texture>;
+  using TextureUniquePtr = std::shared_ptr<gero::graphics::opengl::Texture>;
   std::unordered_map<std::string, TextureUniquePtr> _texturesMap;
 
 };

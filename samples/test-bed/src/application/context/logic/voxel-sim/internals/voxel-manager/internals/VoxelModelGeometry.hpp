@@ -3,6 +3,7 @@
 
 #include "./TrimeshVertex.hpp"
 #include "./VoxelModelMatrix.hpp"
+#include "./GenericAABB.hpp"
 
 #include "geronimo/system/math/RayCastResult.hpp"
 #include "geronimo/helpers/GLMath.hpp"
@@ -25,5 +26,6 @@ public:
 
 public:
   std::vector<TrimeshVertex> vertices;
+  GenericAABB aabb;
 
 };

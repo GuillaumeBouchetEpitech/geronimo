@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "geronimo/graphics/Geometry.hpp"
-#include "geronimo/graphics/ShaderProgram.hpp"
+#include "geronimo/graphics/opengl/Geometry.hpp"
+#include "geronimo/graphics/opengl/ShaderProgram.hpp"
 #include "geronimo/graphics/camera/Camera.hpp"
 #include "geronimo/graphics/make-geometries/MakeGeometries.hpp"
 
@@ -69,13 +69,13 @@ public:
   void renderAll(bool clearAll = true) override;
 
 private:
-  std::shared_ptr<gero::graphics::ShaderProgram> _shader = nullptr;
-  gero::graphics::Geometry::Definition _geomDef;
+  std::shared_ptr<gero::graphics::opengl::ShaderProgram> _shader = nullptr;
+  gero::graphics::opengl::Geometry::Definition _geomDef;
   gero::graphics::Camera::MatricesData _matricesData;
 
 private:
   struct AliasedGeometry {
-    gero::graphics::Geometry geometry;
+    gero::graphics::opengl::Geometry geometry;
     InstanceVertices instanceVertices;
   };
 

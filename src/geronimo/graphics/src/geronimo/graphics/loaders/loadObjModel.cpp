@@ -8,7 +8,7 @@
 namespace gero {
 namespace graphics {
 
-namespace loader {
+namespace loaders {
 
 void loadObjModel(const std::string& filename, const std::string& mtlDir, ModelVertices& vertices) {
   vertices.reserve(8 * 1024);

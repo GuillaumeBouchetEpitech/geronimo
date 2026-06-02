@@ -37,6 +37,39 @@ else()
 
     set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${GERONIMO_DIR}/lib/native")
 
+
+    # UNIT TESTS
+    # UNIT TESTS
+    # UNIT TESTS
+
+    add_executable(unit_test__audio
+        ./src/geronimo/audio/OpenALSoundManager_tests/load_ogg_file.tests.cpp
+    )
+    add_dependencies(unit_test__audio ${PROJECT_NAME})
+    target_link_libraries(unit_test__audio
+        ${PROJECT_NAME}
+        gtest_main
+        gtest
+        openal
+        pthread
+    )
+
+    target_include_directories(unit_test__audio PRIVATE
+        ./src
+        ../helpers/src
+        ../system/src
+        ${THIRD_PARTIES_DIR}
+    )
+
+    set_target_properties(unit_test__audio PROPERTIES COMPILE_FLAGS "-O3")
+    set_target_properties(unit_test__audio PROPERTIES LINK_FLAGS "-O3")
+    set_target_properties(unit_test__audio PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+
+    # UNIT TESTS
+    # UNIT TESTS
+    # UNIT TESTS
+
+
 endif()
 
 

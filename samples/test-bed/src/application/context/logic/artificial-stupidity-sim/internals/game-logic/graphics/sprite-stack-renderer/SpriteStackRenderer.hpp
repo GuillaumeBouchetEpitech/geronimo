@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "geronimo/graphics/Geometry.hpp"
-#include "geronimo/graphics/ShaderProgram.hpp"
+#include "geronimo/graphics/opengl/Geometry.hpp"
+#include "geronimo/graphics/opengl/ShaderProgram.hpp"
 #include "geronimo/graphics/camera/Camera.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
@@ -43,8 +43,8 @@ public:
   void clear();
 
 private:
-  std::shared_ptr<gero::graphics::ShaderProgram> _shader = nullptr;
-  gero::graphics::Geometry _geometry;
+  std::shared_ptr<gero::graphics::opengl::ShaderProgram> _shader = nullptr;
+  gero::graphics::opengl::Geometry _geometry;
   gero::graphics::Camera::MatricesData _matricesData;
 
   std::vector<StackElement> _stack;

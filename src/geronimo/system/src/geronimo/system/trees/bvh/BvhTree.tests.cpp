@@ -1,7 +1,7 @@
 
 #include "./BvhTree.hpp"
 
-#include "../TraceLogger.hpp"
+#include "../../TraceLogger.hpp"
 
 #include "gtest/gtest.h"
 

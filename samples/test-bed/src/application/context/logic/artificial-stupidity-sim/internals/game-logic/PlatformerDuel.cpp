@@ -230,8 +230,8 @@ void PlatformerDuel::renderScene()
 void PlatformerDuel::renderHUD()
 {
 
-  using namespace gero::graphics;
-  using namespace gero::graphics::GlContext;
+  using namespace gero::graphics::opengl;
+  using namespace gero::graphics::opengl::GlContext;
 
   auto& context = Context::get();
   auto& renderer = context.graphic.renderer;
@@ -261,8 +261,8 @@ void PlatformerDuel::renderHUD()
 
     {
 
-      using namespace gero::graphics;
-      using namespace gero::graphics::GlContext;
+      using namespace gero::graphics::opengl;
+      using namespace gero::graphics::opengl::GlContext;
 
       auto& context = Context::get();
       auto& renderer = context.graphic.renderer;
@@ -279,8 +279,8 @@ void PlatformerDuel::renderHUD()
         .setDepth(k_textDepth)
         // .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
         // .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
-        .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
-        .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
+        .setVerticalTextAlign(advanced::TextRenderer::VerticalTextAlign::center)
+        .setHorizontalTextAlign(advanced::TextRenderer::HorizontalTextAlign::center)
         ;
 
       std::stringstream sstr;
@@ -306,8 +306,8 @@ void PlatformerDuel::renderHUD()
       .setDepth(k_textDepth)
       // .setVerticalTextAlign(TextRenderer::VerticalTextAlign::top)
       // .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left)
-      .setVerticalTextAlign(TextRenderer::VerticalTextAlign::center)
-      .setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::center)
+      .setVerticalTextAlign(advanced::TextRenderer::VerticalTextAlign::center)
+      .setHorizontalTextAlign(advanced::TextRenderer::HorizontalTextAlign::center)
       ;
 
     std::stringstream sstr;

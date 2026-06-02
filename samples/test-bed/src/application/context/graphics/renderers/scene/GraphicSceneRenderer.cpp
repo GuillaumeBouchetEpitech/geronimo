@@ -99,9 +99,9 @@ void GraphicSceneRenderer::lookAt(const glm::vec3& eye, const glm::vec3& target,
 
 gero::graphics::ICamera& GraphicSceneRenderer::getCamera() { return _camera; }
 
-gero::graphics::IStackRenderers& GraphicSceneRenderer::getStackRenderers() { return _stackRenderers; }
+gero::graphics::opengl::advanced::IStackRenderers& GraphicSceneRenderer::getStackRenderers() { return _stackRenderers; }
 
 IGeometriesStackRenderer& GraphicSceneRenderer::getGeometriesStackRenderer() { return _geometriesStackRenderer; }
 
 // gero::graphics::IClusteredDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }
-gero::graphics::DepthDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }
+gero::graphics::opengl::advanced::DepthDeferred& GraphicSceneRenderer::getDeferred() { return _deferred; }

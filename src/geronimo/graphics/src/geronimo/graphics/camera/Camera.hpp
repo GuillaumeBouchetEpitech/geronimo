@@ -7,6 +7,7 @@
 
 namespace gero {
 namespace graphics {
+namespace camera {
 
 class ICamera {
 public:
@@ -115,5 +116,6 @@ private:
   FrustumCulling _frustumCulling;
 };
 
+} // namespace camera
 } // namespace graphics
 } // namespace gero

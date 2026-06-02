@@ -5,8 +5,8 @@
 
 #include "geronimo/graphics/camera/Camera.hpp"
 
-#include "geronimo/graphics/Geometry.hpp"
-#include "geronimo/graphics/ShaderProgram.hpp"
+// #include "geronimo/graphics/opengl/Geometry.hpp"
+// #include "geronimo/graphics/opengl/ShaderProgram.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 

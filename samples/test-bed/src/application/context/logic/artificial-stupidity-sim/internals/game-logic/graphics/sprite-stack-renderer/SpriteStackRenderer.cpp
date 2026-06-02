@@ -2,8 +2,8 @@
 #include "SpriteStackRenderer.hpp"
 
 
-#include "geronimo/graphics/GeometryBuilder.hpp"
-#include "geronimo/graphics/ShaderProgramBuilder.hpp"
+#include "geronimo/graphics/opengl/GeometryBuilder.hpp"
+#include "geronimo/graphics/opengl/ShaderProgramBuilder.hpp"
 
 
 SpriteStackRenderer::SpriteStackRenderer()
@@ -24,7 +24,7 @@ void SpriteStackRenderer::initialize() {
   // const std::string basePath = "./src/application/context/graphics/renderers/scene/sprite-stack-renderer/shaders/";
   const std::string basePath = "./assets/graphics/scene/sprite-stack-renderer/shaders/";
 
-  gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
+  gero::graphics::opengl::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()
     .setVertexFilename(basePath + "sprite.glsl.vert")
     .setFragmentFilename(basePath + "sprite.glsl.frag")
@@ -37,17 +37,17 @@ void SpriteStackRenderer::initialize() {
 
   auto shaderDef = shaderProgramBuilder.getDefinition();
 
-  _shader = std::make_shared<gero::graphics::ShaderProgram>(shaderDef);
+  _shader = std::make_shared<gero::graphics::opengl::ShaderProgram>(shaderDef);
 
-  gero::graphics::GeometryBuilder geometryBuilder;
+  gero::graphics::opengl::GeometryBuilder geometryBuilder;
   geometryBuilder.reset()
     .setShader(*_shader)
-    .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles)
+    .setPrimitiveType(gero::graphics::opengl::Geometry::PrimitiveType::triangles)
     .addVbo()
     .setVboAsDynamic()
-    .addVboAttribute("a_vertexPosition", gero::graphics::Geometry::AttrType::Vec3f)
-    .addVboAttribute("a_vertexTexCoord", gero::graphics::Geometry::AttrType::Vec2f)
-    .addVboAttribute("a_vertexColor", gero::graphics::Geometry::AttrType::Vec3f)
+    .addVboAttribute("a_vertexPosition", gero::graphics::opengl::Geometry::AttrType::Vec3f)
+    .addVboAttribute("a_vertexTexCoord", gero::graphics::opengl::Geometry::AttrType::Vec2f)
+    .addVboAttribute("a_vertexColor", gero::graphics::opengl::Geometry::AttrType::Vec3f)
     ;
 
   _geometry.initialize(*_shader, geometryBuilder.getDefinition());
@@ -106,7 +106,7 @@ void SpriteStackRenderer::render()
     return;
   }
 
-  _shader->preBind([this](gero::graphics::IBoundShaderProgram& boundShader) {
+  _shader->preBind([this](gero::graphics::opengl::IBoundShaderProgram& boundShader) {
     boundShader.setUniform("u_texture", 0);
     boundShader.setUniform("u_composedMatrix", _matricesData.composed);
 

@@ -5,7 +5,7 @@
 #include "graphics/textures-manager/TexturesManager.hpp"
 #include "graphics/sprite-stack-renderer/SpriteStackRenderer.hpp"
 
-#include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
+#include "geronimo/graphics/opengl/advanced/stackRenderers/StackRenderers.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <string>
@@ -20,7 +20,7 @@ struct RectData {
 
   RectData flipX(float originX) const;
   bool testOverlap(const RectData& other) const;
-  void render(float thickness, float depth, const glm::vec4& color, gero::graphics::IStackRenderers &stackRenderer) const;
+  void render(float thickness, float depth, const glm::vec4& color, gero::graphics::opengl::advanced::IStackRenderers &stackRenderer) const;
 };
 
 struct KeyframeData {

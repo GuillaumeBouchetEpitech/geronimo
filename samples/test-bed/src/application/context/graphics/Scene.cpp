@@ -6,11 +6,11 @@
 
 #include "application/states/StateManager.hpp"
 
-#include "geronimo/graphics/GlContext.hpp"
-#include "geronimo/graphics/ShaderProgram.hpp"
-#include "geronimo/graphics/advanced-concept/widgets/helpers/renderTextBackground.hpp"
-#include "geronimo/graphics/advanced-concept/widgets/helpers/writeTime.hpp"
-#include "geronimo/graphics/advanced-concept/widgets/renderHistoricalTimeData.hpp"
+#include "geronimo/graphics/opengl/GlContext.hpp"
+#include "geronimo/graphics/opengl/ShaderProgram.hpp"
+#include "geronimo/graphics/opengl/advanced/widgets/helpers/renderTextBackground.hpp"
+#include "geronimo/graphics/opengl/advanced/widgets/helpers/writeTime.hpp"
+#include "geronimo/graphics/opengl/advanced/widgets/renderHistoricalTimeData.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/math/angles.hpp"
@@ -19,8 +19,8 @@
 
 #include <iomanip>
 
-using namespace gero::graphics;
-using namespace gero::graphics::GlContext;
+using namespace gero::graphics::opengl;
+using namespace gero::graphics::opengl::GlContext;
 
 void Scene::initialize() {
   GlContext::enable(States::depthTest);
@@ -411,7 +411,7 @@ void Scene::_renderScene() {
   //
   //
 
-  gero::graphics::ShaderProgram::unbind();
+  gero::graphics::opengl::ShaderProgram::unbind();
 }
 
 // !MARK: _renderHud
@@ -477,10 +477,10 @@ void Scene::_renderHud() {
 
       const auto& timeDataMap = context.logic.performanceProfiler.getHistoricalTimeDataMap();
 
-      const gero::graphics::TextRenderer::State state0 = {glm::vec4(1.0f, 1.0f, 1.0f, 1), glm::vec4(0, 0, 0, 1)};
-      const gero::graphics::TextRenderer::State state1 = {glm::vec4(1.0f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
-      const gero::graphics::TextRenderer::State state2 = {glm::vec4(0.5f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
-      const gero::graphics::TextRenderer::State state3 = {glm::vec4(1.0f, 0.5f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::opengl::advanced::TextRenderer::State state0 = {glm::vec4(1.0f, 1.0f, 1.0f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::opengl::advanced::TextRenderer::State state1 = {glm::vec4(1.0f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::opengl::advanced::TextRenderer::State state2 = {glm::vec4(0.5f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::opengl::advanced::TextRenderer::State state3 = {glm::vec4(1.0f, 0.5f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
 
       std::stringstream sstr;
       for (const auto& timeData : timeDataMap) {
@@ -529,8 +529,8 @@ void Scene::_renderHud() {
       textRenderer.setOutlineColor(glm::vec4(0.3f, 0.3f, 0.3f, 1));
       textRenderer.setScale(16.0f);
 
-      textRenderer.setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left);
-      textRenderer.setVerticalTextAlign(TextRenderer::VerticalTextAlign::top);
+      textRenderer.setHorizontalTextAlign(advanced::TextRenderer::HorizontalTextAlign::left);
+      textRenderer.setVerticalTextAlign(advanced::TextRenderer::VerticalTextAlign::top);
 
       textRenderer.pushText(textPos, str, state0, state1, state2, state3);
     }
@@ -764,12 +764,12 @@ void Scene::_renderHud() {
     const glm::vec2 k_size = glm::vec2(150, 50);
     const glm::vec3 k_pos = glm::vec3(vSize.x - k_size.x - 120, vSize.y - k_size.y - 10 - 30, 0);
 
-    gero::graphics::widgets::renderHistoricalTimeData(
+    gero::graphics::opengl::advanced::widgets::renderHistoricalTimeData(
       k_pos, k_size, true, timeData, hud.getStackRenderers(), hud.getTextRenderer());
 
     hud.getStackRenderers().flush();
     hud.getTextRenderer().render();
   }
 
-  gero::graphics::ShaderProgram::unbind();
+  gero::graphics::opengl::ShaderProgram::unbind();
 }

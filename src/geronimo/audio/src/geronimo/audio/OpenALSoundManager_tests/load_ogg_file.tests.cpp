@@ -8,7 +8,7 @@ TEST(audio_general_test, load_ogg_file) {
 
   // soundManager.loadOggFromFile(666, "./tests/src/audio/assets/Cannon_3.ogg");
   // soundManager.loadOggFromFile(666, "./src/audio/assets/Cannon_3.ogg");
-  soundManager.loadOggFromFile(666, "./src/geronimo/audio/OpenALSoundManager_tests/assets/Cannon_3.ogg");
+  soundManager.loadOggFromFile(666, "./src/geronimo/audio/src/geronimo/audio/OpenALSoundManager_tests/assets/Cannon_3.ogg");
 
   const glm::vec3 centerPos = {100, 100, 0};
 
@@ -18,19 +18,19 @@ TEST(audio_general_test, load_ogg_file) {
 
   {
     D_MYLOG("normal pitch");
-    soundManager.playSound(666, centerPos, 1.0f, 1.0f);
+    soundManager.playRelativeSound(666, centerPos, 1.0f, 1.0f);
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
 
   {
     D_MYLOG("twice higher pitch");
-    soundManager.playSound(666, centerPos, 1.0f, 2.0f);
+    soundManager.playRelativeSound(666, centerPos, 1.0f, 2.0f);
     std::this_thread::sleep_for(std::chrono::milliseconds(750));
   }
 
   {
     D_MYLOG("twice lower pitch");
-    soundManager.playSound(666, centerPos, 1.0f, 0.5f);
+    soundManager.playRelativeSound(666, centerPos, 1.0f, 0.5f);
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
   }
 
@@ -53,7 +53,7 @@ TEST(audio_general_test, load_ogg_file) {
 
       D_MYLOG("four times higher pitch, 3d sound, angle: " << angle << " (" << int32_t(angle / gero::math::pi * 180.0f)
                                                            << " degrees)");
-      soundManager.playSound(666, centerPos + currDir, 2.0f, 8.0f);
+      soundManager.playRelativeSound(666, centerPos + currDir, 2.0f, 8.0f);
       std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }
 
@@ -72,7 +72,7 @@ TEST(audio_general_test, load_ogg_file) {
 
     // for (const SoundDirection& data : allSoundDirections) {
     //   D_MYLOG("four times higher pitch, 3d sound " << data.name);
-    //   soundManager.playSound(666, centerPos + data.dir, 2.0f, 8.0f);
+    //   soundManager.playRelativeSound(666, centerPos + data.dir, 2.0f, 8.0f);
     //   std::this_thread::sleep_for(std::chrono::milliseconds(150));
     // }
   }

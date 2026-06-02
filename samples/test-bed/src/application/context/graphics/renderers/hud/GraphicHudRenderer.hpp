@@ -1,14 +1,14 @@
 
 #pragma once
 
-#include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
-#include "geronimo/graphics/advanced-concept/textRenderer/TextRenderer.hpp"
+#include "geronimo/graphics/opengl/advanced/stackRenderers/StackRenderers.hpp"
+#include "geronimo/graphics/opengl/advanced/textRenderer/TextRenderer.hpp"
 
 class IGraphicHudRenderer {
 public:
   virtual gero::graphics::ICamera& getCamera() = 0;
-  virtual gero::graphics::IStackRenderers& getStackRenderers() = 0;
-  virtual gero::graphics::ITextRenderer& getTextRenderer() = 0;
+  virtual gero::graphics::opengl::advanced::IStackRenderers& getStackRenderers() = 0;
+  virtual gero::graphics::opengl::advanced::ITextRenderer& getTextRenderer() = 0;
 };
 
 class GraphicHudRenderer : public IGraphicHudRenderer {
@@ -23,12 +23,12 @@ public:
 
 public:
   gero::graphics::ICamera& getCamera() override;
-  gero::graphics::IStackRenderers& getStackRenderers() override;
-  gero::graphics::ITextRenderer& getTextRenderer() override;
+  gero::graphics::opengl::advanced::IStackRenderers& getStackRenderers() override;
+  gero::graphics::opengl::advanced::ITextRenderer& getTextRenderer() override;
 
 private:
   gero::graphics::Camera _camera;
 
-  gero::graphics::StackRenderers _stackRenderers;
-  gero::graphics::TextRenderer _textRenderer;
+  gero::graphics::opengl::advanced::StackRenderers _stackRenderers;
+  gero::graphics::opengl::advanced::TextRenderer _textRenderer;
 };

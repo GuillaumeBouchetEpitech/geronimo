@@ -5,6 +5,7 @@
 
 namespace gero {
 namespace graphics {
+namespace camera {
 
 bool sceneToScreen(const glm::vec3& obj,
                    const glm::mat4& modelView,
@@ -13,5 +14,6 @@ bool sceneToScreen(const glm::vec3& obj,
                    const glm::vec2& viewportSize,
                    glm::vec3& screenCoord);
 
-}
+} // namespace camera
+} // namespace graphics
 } // namespace gero

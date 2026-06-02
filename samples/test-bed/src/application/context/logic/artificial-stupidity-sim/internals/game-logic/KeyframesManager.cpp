@@ -47,7 +47,7 @@ bool RectData::testOverlap(const RectData& other) const
 }
 
 // MARK: Rect_render
-void RectData::render(float thickness, float depth, const glm::vec4& inColor, gero::graphics::IStackRenderers &stackRenderer) const
+void RectData::render(float thickness, float depth, const glm::vec4& inColor, gero::graphics::opengl::advanced::IStackRenderers &stackRenderer) const
 {
   auto& wireFramesStack = stackRenderer.getWireFramesStack();
   auto& trianglesStack = stackRenderer.getTrianglesStack();
@@ -122,7 +122,7 @@ void KeyframesManager::renderSpriteSheet(const glm::vec3& inOrigin)
     const float scale = height / float(texSize.y);
 
     {
-      gero::graphics::GlContext::Texture::active(0);
+      gero::graphics::opengl::GlContext::Texture::active(0);
 
 
       texture->bind();
@@ -356,7 +356,7 @@ void KeyframesManager::renderFrame(const FrameElement& inFrameElem)
 
   const auto& matricesData = context.graphic.renderer.getSceneRenderer().getCamera().getMatricesData();
 
-  gero::graphics::GlContext::Texture::active(0);
+  gero::graphics::opengl::GlContext::Texture::active(0);
 
   texture->bind();
 

@@ -26,8 +26,8 @@ private:
   struct SoundSource {
     uint32_t id;
     glm::vec3 position = {0, 0, 0};
-    bool playing = false;
-    bool absolute = false;
+    bool isPlaying = false;
+    bool isAbsoluteSound = false;
     uint32_t priority = 0;
     int32_t userAlias = 0;
   };
@@ -55,7 +55,7 @@ public:
   void loadOggFromMemory(uint32_t alias, const std::string& content);
 
 public:
-  void playSound(uint32_t inAlias,
+  void playRelativeSound(uint32_t inAlias,
                  const glm::vec3& inPosition,
                  float inVolume,
                  float inPitch,
@@ -70,7 +70,7 @@ public:
                          int32_t inMaxAlias = 1000);
 
 private:
-  void _playSound(uint32_t inAlias,
+  void _doPlaySound(uint32_t inAlias,
                   const glm::vec3& inPosition,
                   float inVolume,
                   float inPitch,
@@ -78,6 +78,8 @@ private:
                   uint32_t inPriority,
                   int32_t inUserAlias,
                   int32_t inMaxAlias);
+
+  void _synchronizeExistingSounds();
 
 public:
   void setVolume(float level);

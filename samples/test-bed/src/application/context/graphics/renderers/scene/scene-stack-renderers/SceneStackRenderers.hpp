@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
+#include "geronimo/graphics/opengl/advanced/stackRenderers/StackRenderers.hpp"
 
-class SceneStackRenderers : public gero::graphics::StackRenderers {
+class SceneStackRenderers : public gero::graphics::opengl::advanced::StackRenderers {
 public:
   SceneStackRenderers() = default;
   ~SceneStackRenderers() = default;

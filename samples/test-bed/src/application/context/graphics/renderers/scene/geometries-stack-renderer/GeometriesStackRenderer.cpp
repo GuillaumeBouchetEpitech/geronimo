@@ -1,8 +1,8 @@
 
 #include "GeometriesStackRenderer.hpp"
 
-#include "geronimo/graphics/GeometryBuilder.hpp"
-#include "geronimo/graphics/ShaderProgramBuilder.hpp"
+#include "geronimo/graphics/opengl/GeometryBuilder.hpp"
+#include "geronimo/graphics/opengl/ShaderProgramBuilder.hpp"
 #include "geronimo/graphics/camera/sceneToScreen.hpp"
 
 #include <algorithm> // std::sort
@@ -12,7 +12,7 @@ void GeometriesStackRenderer::initialize() {
   // const std::string basePath = "./assets/graphics/shaders/scene/";
   const std::string basePath = "./assets/graphics/scene/geometriesStackRenderer/shaders/";
 
-  gero::graphics::ShaderProgramBuilder shaderProgramBuilder;
+  gero::graphics::opengl::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()
     .setVertexFilename(basePath + "geometries-stack-renderer.glsl.vert")
     .setFragmentFilename(basePath + "geometries-stack-renderer.glsl.frag")
@@ -30,23 +30,23 @@ void GeometriesStackRenderer::initialize() {
 
   auto shaderDef = shaderProgramBuilder.getDefinition();
 
-  _shader = std::make_shared<gero::graphics::ShaderProgram>(shaderDef);
+  _shader = std::make_shared<gero::graphics::opengl::ShaderProgram>(shaderDef);
 
-  gero::graphics::GeometryBuilder geometryBuilder;
+  gero::graphics::opengl::GeometryBuilder geometryBuilder;
   geometryBuilder.reset()
     .setShader(*_shader)
-    .setPrimitiveType(gero::graphics::Geometry::PrimitiveType::triangles)
+    .setPrimitiveType(gero::graphics::opengl::Geometry::PrimitiveType::triangles)
     .addVbo()
-    .addVboAttribute("a_vertexPosition", gero::graphics::Geometry::AttrType::Vec3f)
-    .addVboAttribute("a_vertexNormal", gero::graphics::Geometry::AttrType::Vec3f)
+    .addVboAttribute("a_vertexPosition", gero::graphics::opengl::Geometry::AttrType::Vec3f)
+    .addVboAttribute("a_vertexNormal", gero::graphics::opengl::Geometry::AttrType::Vec3f)
     .addVbo()
     .setVboAsInstanced()
     .setVboAsDynamic()
-    .addVboAttribute("a_offsetPosition", gero::graphics::Geometry::AttrType::Vec3f)
-    .addVboAttribute("a_offsetOrientation", gero::graphics::Geometry::AttrType::Vec4f)
-    .addVboAttribute("a_offsetScale", gero::graphics::Geometry::AttrType::Vec3f)
-    .addVboAttribute("a_offsetColor", gero::graphics::Geometry::AttrType::Vec4f)
-    .addVboAttribute("a_offsetLight", gero::graphics::Geometry::AttrType::Float);
+    .addVboAttribute("a_offsetPosition", gero::graphics::opengl::Geometry::AttrType::Vec3f)
+    .addVboAttribute("a_offsetOrientation", gero::graphics::opengl::Geometry::AttrType::Vec4f)
+    .addVboAttribute("a_offsetScale", gero::graphics::opengl::Geometry::AttrType::Vec3f)
+    .addVboAttribute("a_offsetColor", gero::graphics::opengl::Geometry::AttrType::Vec4f)
+    .addVboAttribute("a_offsetLight", gero::graphics::opengl::Geometry::AttrType::Float);
 
   _geomDef = geometryBuilder.getDefinition();
 }
@@ -161,7 +161,7 @@ void GeometriesStackRenderer::renderAll(bool inClearAll /*= true*/) {
     return;
   }
 
-  _shader->preBind([this, inClearAll](gero::graphics::IBoundShaderProgram& boundShader) {
+  _shader->preBind([this, inClearAll](gero::graphics::opengl::IBoundShaderProgram& boundShader) {
     boundShader.setUniform("u_composedMatrix", _matricesData.composed);
 
     for (const auto& pair : _aliasedGeometriesMap) {

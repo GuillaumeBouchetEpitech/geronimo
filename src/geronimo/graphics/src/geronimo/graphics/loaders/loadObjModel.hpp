@@ -9,7 +9,7 @@
 namespace gero {
 namespace graphics {
 
-namespace loader {
+namespace loaders {
 
 struct ModelVertex {
   glm::vec3 position;

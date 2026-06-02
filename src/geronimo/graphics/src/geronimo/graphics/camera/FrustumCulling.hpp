@@ -8,6 +8,7 @@
 
 namespace gero {
 namespace graphics {
+namespace camera {
 
 class IFrustumCulling {
 public:
@@ -40,5 +41,6 @@ private:
   std::array<glm::vec4, 6> _planes;
 };
 
+} // namespace camera
 } // namespace graphics
 } // namespace gero

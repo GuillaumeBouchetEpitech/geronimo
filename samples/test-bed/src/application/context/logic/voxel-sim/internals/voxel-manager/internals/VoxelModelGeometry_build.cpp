@@ -3,6 +3,8 @@
 
 #include "../VoxelManager.hpp"
 
+#include "./GenericAABB.hpp"
+
 // #include "application/context/Context.hpp"
 
 #include "geronimo/system/math/constants.hpp"
@@ -11,39 +13,6 @@
 #include <array>
 
 namespace /*anonymous*/ {
-
-  // MARK: MyAABB
-  struct MyAABB {
-    glm::vec3 _min;
-    glm::vec3 _max;
-
-    MyAABB() {
-      this->reset();
-    }
-    void reset() {
-      this->_min = glm::vec3(+999999999.0f,+999999999.0f,+999999999.0f);
-      this->_max = glm::vec3(-999999999.0f,-999999999.0f,-999999999.0f);
-    }
-    void expand(const glm::vec3& inValue) {
-      this->_min = glm::min(this->_min, inValue);
-      this->_max = glm::max(this->_max, inValue);
-    }
-    void grow(float inValue) {
-      this->_min -= inValue;
-      this->_max += inValue;
-    }
-    bool contains(const glm::vec3& inValue) const
-    {
-      return (!(
-        inValue.x < this->_min.x ||
-        inValue.y < this->_min.y ||
-        inValue.z < this->_min.z ||
-        inValue.x > this->_max.x ||
-        inValue.y > this->_max.y ||
-        inValue.z > this->_max.z
-      ));
-    }
-  };
 
   // MARK: _removeDuplicatedTriangles
   void _removeDuplicatedTriangles(
@@ -97,7 +66,7 @@ namespace /*anonymous*/ {
     bool reverse,
     std::vector<TrimeshVertex>& tmpVertices,
     std::vector<TrimeshVertex>& tmpSideVertices,
-    const MyAABB& myAABB,
+    const GenericAABB& tmpAABB,
     const glm::ivec3& currCursor,
     std::vector<std::size_t>& triangleIndices,
     std::vector<std::size_t>& toErase
@@ -112,9 +81,9 @@ namespace /*anonymous*/ {
       const glm::vec3 curr_v2 = currVertices.at(ii + 2).pos;
 
       if (
-        !myAABB.contains(curr_v0) ||
-        !myAABB.contains(curr_v1) ||
-        !myAABB.contains(curr_v2)
+        !tmpAABB.contains(curr_v0) ||
+        !tmpAABB.contains(curr_v1) ||
+        !tmpAABB.contains(curr_v2)
       ) {
         // outside the aabb -> skip
         continue;
@@ -153,6 +122,7 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
 {
   this->vertices.clear();
   this->vertices.reserve(1024 * 2);
+  this->aabb.reset();
 
   std::vector<TrimeshVertex> tmpVertices;
   std::vector<TrimeshVertex> tmpSideVertices;
@@ -173,7 +143,7 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
   triangleIndices.reserve(16);
   std::vector<std::size_t> toErase;
   toErase.reserve(16);
-  MyAABB myAABB;
+  GenericAABB tmpAABB;
 
   for (int32_t zz = 0; zz < inMatrix.gridSize.z; ++zz)
   for (int32_t yy = 0; yy < inMatrix.gridSize.y; ++yy)
@@ -272,10 +242,10 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
 
       // we're likely facing a case of "crossing triangles hypotenuses"
 
-      myAABB.reset();
+      tmpAABB.reset();
       for (auto& currVertex : commonVerticesSet)
-        myAABB.expand(currVertex);
-      myAABB.grow(0.1f);
+        tmpAABB.expand(currVertex);
+      tmpAABB.grow(0.1f);
 
       // rotate the "current quad" 90 degree on its normal
       // -> this will potentially make the triangles match
@@ -283,7 +253,7 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
         false, // reverse
         tmpVertices,
         tmpSideVertices,
-        myAABB,
+        tmpAABB,
         currCursor,
         triangleIndices,
         toErase
@@ -298,7 +268,7 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
           true, // reverse
           tmpVertices,
           tmpSideVertices,
-          myAABB,
+          tmpAABB,
           currCursor,
           triangleIndices,
           toErase
@@ -315,6 +285,7 @@ void VoxelModelGeometry::build(const VoxelManager& inVoxelManager, const VoxelMo
     // accumulate the vertices kept after the optimisation pass
     for (const auto& currVertex : tmpVertices) {
       this->vertices.push_back(currVertex);
+      this->aabb.expand(currVertex.pos);
     }
   }
 

@@ -5,6 +5,7 @@
 
 namespace gero {
 namespace graphics {
+namespace camera {
 
 void Camera::lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up) {
   if (_eye != eye || _target != target) {
@@ -114,5 +115,6 @@ const ICamera::ProjectionData& Camera::getProjectionData() const { return _proje
 
 const ICamera::MatricesData& Camera::getMatricesData() const { return _matricesData; }
 
+} // namespace camera
 } // namespace graphics
 } // namespace gero

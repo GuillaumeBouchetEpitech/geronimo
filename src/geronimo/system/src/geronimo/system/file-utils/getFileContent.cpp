@@ -10,8 +10,9 @@ namespace fileUtils {
 bool getFileContent(const std::string& filename, std::string& outFileContent) {
   std::ifstream istr(filename);
 
-  if (istr.fail())
+  if (istr.fail()) {
     return false;
+  }
 
   std::stringstream sstr;
   sstr << istr.rdbuf();

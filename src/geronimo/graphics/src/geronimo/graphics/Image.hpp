@@ -11,10 +11,12 @@
 namespace gero {
 namespace graphics {
 
-class FrameBuffer;
+namespace opengl {
+  class FrameBuffer;
+}
 
 class Image {
-  friend FrameBuffer;
+  friend opengl::FrameBuffer;
 
 private:
   glm::uvec2 _size = {0, 0};

@@ -3,7 +3,7 @@
 
 #include "geronimo/graphics/Image.hpp"
 
-std::weak_ptr<gero::graphics::Texture> TexturesManager::loadFromFile(const std::string& filepath)
+std::weak_ptr<gero::graphics::opengl::Texture> TexturesManager::loadFromFile(const std::string& filepath)
 {
   auto it = _texturesMap.find(filepath);
   if (it != _texturesMap.end())
@@ -16,7 +16,7 @@ std::weak_ptr<gero::graphics::Texture> TexturesManager::loadFromFile(const std::
   img.loadFromFile(filepath);
 
 
-  auto newTexture = std::make_shared<gero::graphics::Texture>();
+  auto newTexture = std::make_shared<gero::graphics::opengl::Texture>();
   newTexture->setFromImage(img);
 
   _texturesMap[filepath] = newTexture;
@@ -24,7 +24,7 @@ std::weak_ptr<gero::graphics::Texture> TexturesManager::loadFromFile(const std::
   return newTexture;
 }
 
-std::weak_ptr<gero::graphics::Texture> TexturesManager::getTexture(const std::string& filepath) const
+std::weak_ptr<gero::graphics::opengl::Texture> TexturesManager::getTexture(const std::string& filepath) const
 {
   auto it = _texturesMap.find(filepath);
   if (it == _texturesMap.end())

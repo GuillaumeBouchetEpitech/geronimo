@@ -197,25 +197,16 @@ void OpenAlContext::deleteBuffers(uint32_t total, const uint32_t* buffers) {
 }
 
 void OpenAlContext::setBufferData(
-  uint32_t buffer, BufferFormat format, const char* soundData, uint32_t size, std::int32_t sampleRate) {
-  switch (format) {
-  case BufferFormat::mono8: {
-    alBufferData(buffer, AL_FORMAT_MONO8, soundData, (ALsizei)size, sampleRate);
-    break;
+  uint32_t inBuffer, BufferFormat inFormat, const char* inSoundData, uint32_t inSize, std::int32_t inSampleRate) {
+
+  ALenum actualFormat = AL_FORMAT_MONO8;
+  switch (inFormat) {
+  case BufferFormat::mono8: { actualFormat = AL_FORMAT_MONO8; break; }
+  case BufferFormat::mono16: { actualFormat = AL_FORMAT_MONO16; break; }
+  case BufferFormat::stereo8: { actualFormat = AL_FORMAT_STEREO8; break; }
+  case BufferFormat::stereo16: { actualFormat = AL_FORMAT_STEREO16; break; }
   }
-  case BufferFormat::mono16: {
-    alBufferData(buffer, AL_FORMAT_MONO16, soundData, (ALsizei)size, sampleRate);
-    break;
-  }
-  case BufferFormat::stereo8: {
-    alBufferData(buffer, AL_FORMAT_STEREO8, soundData, (ALsizei)size, sampleRate);
-    break;
-  }
-  case BufferFormat::stereo16: {
-    alBufferData(buffer, AL_FORMAT_STEREO16, soundData, (ALsizei)size, sampleRate);
-    break;
-  }
-  }
+  alBufferData(inBuffer, actualFormat, inSoundData, (ALsizei)inSize, inSampleRate);
 
   D_CHECK_AL_ERRORS();
 }

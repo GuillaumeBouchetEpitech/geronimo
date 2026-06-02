@@ -21,6 +21,7 @@ add_executable(${PROJECT_NAME}
     ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/VoxelModelMaterial.cpp
     ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/VoxelModelMatrix.cpp
     ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/VoxelModelGeometry_build.cpp
+    ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/GenericAABB.cpp
     ./src/application/context/logic/voxel-sim/internals/voxel-manager/internals/graphics/voxel-geometries-stack-renderer/VoxelGeometriesStackRenderer.cpp
     ./src/application/context/logic/voxel-sim/internals/voxel-manager/VoxelManager_loadJsonFile.cpp
     ./src/application/context/logic/voxel-sim/internals/voxel-manager/VoxelManager.cpp

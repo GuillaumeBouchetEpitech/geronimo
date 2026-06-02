@@ -11,14 +11,17 @@
 
 namespace gero {
 
+// forward declaration
 template <typename PublicBaseType> struct data_pool_weak_ref;
 
+//MARK: interface_internal_data
 struct interface_internal_data {
   virtual ~interface_internal_data() = default;
   virtual basic_double_linked_list& get_weak_ref_list() = 0;
   virtual bool is_active() = 0;
 };
 
+//MARK: data_pool_weak_ref_interface_weak_ref_data_pool
 template <typename PublicBaseType> struct data_pool_weak_ref_interface_weak_ref_data_pool {
 
   friend data_pool_weak_ref<PublicBaseType>;
@@ -46,6 +49,7 @@ protected:
 // public:
 // };
 
+//MARK: data_pool_weak_ref
 template <typename PublicBaseType> struct data_pool_weak_ref {
 
   using pool_type = data_pool_weak_ref_interface_weak_ref_data_pool<PublicBaseType>;
@@ -265,6 +269,7 @@ public:
   const value_type& operator*() const { return *get(); }
 };
 
+//MARK: interface_weak_ref_data_pool
 /**
  * interface_weak_ref_data_pool
  *
@@ -332,6 +337,7 @@ public:
   virtual weak_ref find_if(std::function<bool(const weak_ref)> callback) const = 0;
 };
 
+//MARK: weak_ref_data_pool
 /**
  * weak_ref_data_pool
  *
@@ -792,6 +798,8 @@ public:
   }
 };
 
+
+//MARK:weak_ref_data_pool_base_class
 class weak_ref_data_pool_base_class {
 public:
   weak_ref_data_pool_base_class() = default;
@@ -804,6 +812,7 @@ public:
   virtual ~weak_ref_data_pool_base_class() = default;
 };
 
+//MARK:safe_weak_ref_data_pool
 template <typename InternalBaseType,
           typename PublicBaseType = InternalBaseType,
           std::size_t initial_size = 256,

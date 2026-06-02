@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "geronimo/graphics/sdl/SDLWindowWrapper.hpp"
+#include "geronimo/graphics/opengl/sdl2/SDLWindowWrapper.hpp"
 
 #include <cstdint>
 
-class Application : public gero::graphics::SDLWindowWrapper {
+class Application : public gero::graphics::opengl::sdl2::SDLWindowWrapper {
 public:
   struct Definition {
     uint32_t width;

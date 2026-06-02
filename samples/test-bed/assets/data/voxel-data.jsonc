@@ -121,8 +121,8 @@
       "ref": "half-cube-pos-x-neg-z",
       "extrusion-axis": [1,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -131,8 +131,8 @@
       "ref": "half-cube-pos-x-neg-z",
       "extrusion-axis": [0,1,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -141,8 +141,8 @@
       "ref": "half-cube-pos-x-neg-z",
       "extrusion-axis": [1,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": -90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": -90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -153,8 +153,8 @@
       "extrusion-axis": [0,1,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,0,1], "angle": 180 },
-        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -164,8 +164,8 @@
       "extrusion-axis": [1,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,0,1], "angle": -90 },
-        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -174,8 +174,8 @@
       "ref": "half-cube-pos-x-neg-z",
       "extrusion-axis": [0,1,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -185,8 +185,8 @@
       "extrusion-axis": [1,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,0,1], "angle":  90 },
-        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -196,9 +196,9 @@
       "ref": "half-cube-pos-x-neg-z",
       "extrusion-axis": [0,0,1], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [1,0,0], "angle": -90 },
-        // { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [1,0,0], "angle": -90 }//,
+        // { "type": "rotate", "axis": [0,1,0], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -208,8 +208,8 @@
       "extrusion-axis": [0,0,1], // for the future
       "transforms": [
         { "type": "rotate", "axis": [1,0,0], "angle": -90 },
-        { "type": "rotate", "axis": [0,1,0], "angle": -90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": -90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -219,8 +219,8 @@
       "extrusion-axis": [0,0,1], // for the future
       "transforms": [
         { "type": "rotate", "axis": [1,0,0], "angle": -90 },
-        { "type": "rotate", "axis": [0,1,0], "angle": -180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": -180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -230,8 +230,8 @@
       "extrusion-axis": [0,0,1], // for the future
       "transforms": [
         { "type": "rotate", "axis": [1,0,0], "angle": -90 },
-        { "type": "rotate", "axis": [0,1,0], "angle": -270 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": -270 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -259,8 +259,8 @@
       "ref": "corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -269,8 +269,8 @@
       "ref": "corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -279,8 +279,8 @@
       "ref": "corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 270 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 270 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -291,8 +291,8 @@
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "rotate", "axis": [0,0,1], "angle": -90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": -90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -302,8 +302,8 @@
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "rotate", "axis": [0,0,1], "angle": -180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": -180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -313,8 +313,8 @@
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "rotate", "axis": [0,0,1], "angle": -270 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": -270 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -323,16 +323,16 @@
       "ref": "corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        // { "type": "rotate", "axis": [0,0,1], "angle": 0 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 }//,
+        // { "type": "rotate", "axis": [0,0,1], "angle": 0 }//,
+        //{ "type": "apply" }
       ]
     },
 
 
 
 
-    // MARK: reverse corners 1
+    // MARK: rev corners 1
     "rev-corner-neg-x-neg-y-neg-z": {
       "alias": 61,
       "extrusion-axis": [0,0,0], // for the future
@@ -388,8 +388,8 @@
       "ref": "rev-corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -398,8 +398,8 @@
       "ref": "rev-corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -408,20 +408,20 @@
       "ref": "rev-corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,0,1], "angle": 270 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 270 }//,
+        //{ "type": "apply" }
       ]
     },
 
-    // MARK: reverse corners 2
+    // MARK: rev corners 2
     "rev-corner-neg-x-neg-y-pos-z": {
       "alias": 71,
       "ref": "rev-corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "rotate", "axis": [0,0,1], "angle": 90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": 90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -430,9 +430,9 @@
       "ref": "rev-corner-neg-x-neg-y-neg-z",
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
-        { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        // { "type": "rotate", "axis": [0,0,1], "angle": 180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,1,0], "angle": 180 }//,
+        // { "type": "rotate", "axis": [0,0,1], "angle": 180 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -442,8 +442,8 @@
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "rotate", "axis": [0,0,1], "angle": -90 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": -90 }//,
+        //{ "type": "apply" }
       ]
     },
 
@@ -453,8 +453,8 @@
       "extrusion-axis": [0,0,0], // for the future
       "transforms": [
         { "type": "rotate", "axis": [0,1,0], "angle": 180 },
-        { "type": "rotate", "axis": [0,0,1], "angle": -180 },
-        { "type": "apply" }
+        { "type": "rotate", "axis": [0,0,1], "angle": -180 }//,
+        //{ "type": "apply" }
       ]
     }
 
@@ -464,9 +464,13 @@
 
   // MARK: materials
   "materials": {
-    "basic-material": {
+    "basic-material1": {
       "alias": 1,
       "color": [255,255,255]
+    },
+    "basic-material2": {
+      "alias": 2,
+      "color": [255,255,0]
     }
   },
 
@@ -474,7 +478,13 @@
   "models": {
 
     "basic-model": {
-      "pos": [10,10,10],
+
+      "transforms": [
+        { "type": "translate", "pos": [35,35,35] } //,
+        // { "type": "rotate", "axis": [0,0,1], "angle": 90 }
+      ],
+
+      // "pos": [10,10,10],
       // "quat": [
       //   { "axis": [0,0,1], "angle": 0 }
       // ],
@@ -486,17 +496,17 @@
           // { "type": "set-matrix", "material": 1, "value": 11, "pos": [3,0,0], "scale": [1,2,2] },
 
           // disk part
-          { "type": "set-matrix", "material": 1, "value": 1, "pos": [4,4,2], "scale": [4,4,0] },
-          { "type": "set-matrix", "material": 1, "value": 31, "pos": [8,8,2] },
-          { "type": "set-matrix", "material": 1, "value": 32, "pos": [4,8,2], "scale": [0,0,3] },
-          { "type": "set-matrix", "material": 1, "value": 33, "pos": [4,4,2], "scale": [0,0,3] },
-          { "type": "set-matrix", "material": 1, "value": 34, "pos": [8,4,2] },
+          { "type": "set-matrix", "material": 2, "value": 1, "pos": [4,4,2], "scale": [4,4,0] },
+          { "type": "set-matrix", "material": 2, "value": 31, "pos": [8,8,2] },
+          { "type": "set-matrix", "material": 2, "value": 32, "pos": [4,8,2], "scale": [0,0,3] },
+          { "type": "set-matrix", "material": 2, "value": 33, "pos": [4,4,2], "scale": [0,0,3] },
+          { "type": "set-matrix", "material": 2, "value": 34, "pos": [8,4,2] },
 
-          { "type": "set-matrix", "material": 1, "value": 1, "pos": [4,5,2], "scale": [0,2,4] }, // elevate side
-          { "type": "set-matrix", "material": 1, "value": 43, "pos": [4,4,6] }, // corner
-          { "type": "set-matrix", "material": 1, "value": 42, "pos": [4,8,6] }, // corner
-          { "type": "set-matrix", "material": 1, "value": 63, "pos": [4,5,6] },
-          { "type": "set-matrix", "material": 1, "value": 62, "pos": [4,7,6] },
+          { "type": "set-matrix", "material": 2, "value": 1, "pos": [4,5,2], "scale": [0,2,4] }, // elevate side
+          { "type": "set-matrix", "material": 2, "value": 43, "pos": [4,4,6] }, // corner
+          { "type": "set-matrix", "material": 2, "value": 42, "pos": [4,8,6] }, // corner
+          { "type": "set-matrix", "material": 2, "value": 63, "pos": [4,5,6] },
+          { "type": "set-matrix", "material": 2, "value": 62, "pos": [4,7,6] },
 
           // barrel (right side)
           { "type": "set-matrix", "material": 1, "value": 23, "pos": [6,3,4], "scale": [0,4,0] },
@@ -516,6 +526,7 @@
           { "type": "set-matrix", "material": 1, "value": 23, "pos": [8,3,7], "scale": [0,4,0] },
           { "type": "set-matrix", "material": 1, "value": 11, "pos": [8,3,8], "scale": [0,4,0] },
 
+          // barrel -> up/down/left/right cube parts
           { "type": "set-matrix", "material": 1, "value": 1, "pos": [5,3,6], "scale": [0,4,0] },
           { "type": "set-matrix", "material": 1, "value": 1, "pos": [9,3,6], "scale": [0,4,0] },
           { "type": "set-matrix", "material": 1, "value": 1, "pos": [7,3,8], "scale": [0,4,0] },

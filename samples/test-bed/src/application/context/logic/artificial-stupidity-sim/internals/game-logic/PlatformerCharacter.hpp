@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.hpp"
+#include "geronimo/graphics/opengl/advanced/stackRenderers/StackRenderers.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 
 // forward declaration
@@ -109,7 +109,7 @@ public:
   ) const;
 
 public:
-  void renderDebug(gero::graphics::IStackRenderers& stackRenderers, const glm::vec3& inOrigin) const;
+  void renderDebug(gero::graphics::opengl::advanced::IStackRenderers& stackRenderers, const glm::vec3& inOrigin) const;
   void renderAnimation(IGraphicSceneRenderer& scene, KeyframesManager& keyframesManager, const glm::vec3& inOrigin, bool debugMode) const;
 
 private:

@@ -13,8 +13,8 @@
 namespace gero {
 namespace graphics {
 
-std::shared_ptr<IUnboundShaderProgram> ResourceManager::createShader(int32_t aliasCode,
-                                                                     const ShaderProgram::Definition def,
+std::shared_ptr<opengl::IUnboundShaderProgram> ResourceManager::createShader(int32_t aliasCode,
+                                                                     const opengl::ShaderProgram::Definition def,
                                                                      bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
   sstr << def.filenames.vertex << "-" << def.filenames.fragment;
@@ -38,13 +38,13 @@ std::shared_ptr<IUnboundShaderProgram> ResourceManager::createShader(int32_t ali
   if (_shadersMap.count(aliasCode) > 0)
     D_THROW(std::runtime_error, "resource manager new shader alias is duplicated, aliasCode=" << aliasCode);
 
-  auto newShader = ShaderProgram::buildUnbound(def, _fileManager);
+  auto newShader = opengl::ShaderProgram::buildUnbound(def, _fileManager);
   _shadersMap[aliasCode] = newShader;
   _shaderDefsMap[shaderUniqueName] = aliasCode;
   return newShader;
 }
 
-std::shared_ptr<IUnboundShaderProgram> ResourceManager::getShader(int32_t aliasCode) {
+std::shared_ptr<opengl::IUnboundShaderProgram> ResourceManager::getShader(int32_t aliasCode) {
   auto it = _shadersMap.find(aliasCode);
   if (it == _shadersMap.end())
     D_THROW(std::runtime_error, "resource manager shader does not exist, aliasCode=" << aliasCode);
@@ -56,10 +56,10 @@ std::shared_ptr<IUnboundShaderProgram> ResourceManager::getShader(int32_t aliasC
 //
 //
 
-std::shared_ptr<Texture> ResourceManager::createTexture(int32_t aliasCode,
+std::shared_ptr<opengl::Texture> ResourceManager::createTexture(int32_t aliasCode,
                                                         const std::string& filename,
-                                                        Texture::Quality quality /*= Texture::Quality::pixelated*/,
-                                                        Texture::Pattern pattern /*= Texture::Pattern::clamped*/,
+                                                        opengl::Texture::Quality quality /*= opengl::Texture::Quality::pixelated*/,
+                                                        opengl::Texture::Pattern pattern /*= opengl::Texture::Pattern::clamped*/,
                                                         bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
   sstr << filename << "-quality=" << asValue(quality) << "-repeat=" << asValue(pattern);
@@ -83,7 +83,7 @@ std::shared_ptr<Texture> ResourceManager::createTexture(int32_t aliasCode,
   if (_texturesMap.count(aliasCode) > 0)
     D_THROW(std::runtime_error, "resource manager new texture alias is duplicated, aliasCode=" << aliasCode);
 
-  auto newTexture = std::make_shared<Texture>();
+  auto newTexture = std::make_shared<opengl::Texture>();
 
   Image tmpImg;
   tmpImg.loadFromFile(_fileManager, filename);
@@ -94,7 +94,7 @@ std::shared_ptr<Texture> ResourceManager::createTexture(int32_t aliasCode,
   return newTexture;
 }
 
-std::shared_ptr<Texture> ResourceManager::getTexture(int32_t aliasCode) {
+std::shared_ptr<opengl::Texture> ResourceManager::getTexture(int32_t aliasCode) {
   auto it = _texturesMap.find(aliasCode);
   if (it == _texturesMap.end())
     D_THROW(std::runtime_error, "resource manager texture does not exist, aliasCode=" << aliasCode);
@@ -106,8 +106,8 @@ std::shared_ptr<Texture> ResourceManager::getTexture(int32_t aliasCode) {
 //
 //
 
-const Geometry::Definition& ResourceManager::createGeometryDefinition(int32_t aliasCode,
-                                                                      const Geometry::Definition& def,
+const opengl::Geometry::Definition& ResourceManager::createGeometryDefinition(int32_t aliasCode,
+                                                                      const opengl::Geometry::Definition& def,
                                                                       bool allowDuplicates /*= false*/) {
   std::stringstream sstr;
 
@@ -150,7 +150,7 @@ const Geometry::Definition& ResourceManager::createGeometryDefinition(int32_t al
   return def;
 }
 
-const Geometry::Definition& ResourceManager::getGeometryDefinition(int32_t aliasCode) {
+const opengl::Geometry::Definition& ResourceManager::getGeometryDefinition(int32_t aliasCode) {
   auto it = _geometriesMap.find(aliasCode);
   if (it == _geometriesMap.end())
     D_THROW(std::runtime_error, "resource manager geometry definition does not exist, aliasCode=" << aliasCode);

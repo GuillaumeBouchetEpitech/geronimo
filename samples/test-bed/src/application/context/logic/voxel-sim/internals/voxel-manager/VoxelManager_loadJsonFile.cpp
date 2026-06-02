@@ -29,6 +29,55 @@
 
 namespace /*anonymous*/ {
 
+// MARK: _processTransform
+glm::mat4 _processTransform(const json& inJsonData)
+{
+  glm::mat4 tmpMat = glm::identity<glm::mat4>();
+
+  if (!inJsonData.is_array()) {
+    D_THROW(std::invalid_argument, "transforms not an array");
+  }
+
+  for (auto transformVal : inJsonData) {
+
+    if (!transformVal.is_object()) {
+      D_THROW(std::invalid_argument, "transforms value not an object");
+    }
+
+    std::string transformTypeVal;
+    jsonUtils::str::get(transformVal, "type", transformTypeVal);
+
+    if (transformTypeVal == "translate") {
+      glm::vec3 pos;
+      jsonUtils::fvec3::get(transformVal, "pos", pos);
+      // D_MYLOG(" => pos -> " << pos);
+      tmpMat = glm::translate(tmpMat, pos);
+    }
+    else if (transformTypeVal == "rotate") {
+      glm::vec3 axis;
+      jsonUtils::fvec3::get(transformVal, "axis", axis);
+      // D_MYLOG(" => axis -> " << axis);
+      float angle;
+      jsonUtils::float32::get(transformVal, "angle", angle);
+      // D_MYLOG(" => angle -> " << angle);
+      tmpMat = glm::rotate(tmpMat, glm::radians(angle), axis);
+    }
+    // else if (transformTypeVal == "apply") {
+    //   for (auto& vertex : newShape->vertices) {
+    //     vertex.pos = tmpMat * glm::vec4(vertex.pos, 1.0f);
+    //     vertex.norm = tmpMat * glm::vec4(vertex.norm, 0.0f);
+    //   }
+    // }
+    // else if (transformTypeVal == "reset") {
+    //   tmpMat = glm::identity<glm::mat4>();
+    // }
+    else {
+      D_THROW(std::invalid_argument, "unknown transform type -> " << transformTypeVal);
+    }
+  }
+
+  return tmpMat;
+}
 
 // MARK: _loadShapes
 void _loadShapes(VoxelManager& manager, const json& inJsonData)
@@ -43,7 +92,7 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
   for (auto pair : shapes.items()) {
 
     const std::string shapeKey = pair.key();
-    D_MYLOG(" -> shapeKey => " << shapeKey);
+    // D_MYLOG(" -> shapeKey => " << shapeKey);
 
     const auto shapeVal = pair.value();
 
@@ -70,7 +119,7 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
       for (auto vertexVal : shapeVal["vertices"]) {
         glm::vec3 pos;
         jsonUtils::fvec3::get(vertexVal, "pos", pos);
-        D_MYLOG("pos -> " << pos);
+        // D_MYLOG("pos -> " << pos);
 
         rawVertices.push_back(pos);
       }
@@ -103,7 +152,7 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
         // uint32_t n;
         // jsonUtils::uint32::get(indexVal, "n", n);
         // D_MYLOG("tri -> " << tri << " | n -> " << n);
-        D_MYLOG("tri -> " << tri);
+        // D_MYLOG("tri -> " << tri);
 
         const glm::vec3 v0 = rawVertices.at(tri.x);
         const glm::vec3 v1 = rawVertices.at(tri.y);
@@ -114,7 +163,7 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
         if (magnitude > 0.0f) {
           normal /= magnitude;
         }
-        D_MYLOG("normal -> " << normal);
+        // D_MYLOG("normal -> " << normal);
 
         newShape->vertices.push_back({ v0, glm::vec3(1,1,1), normal });
         newShape->vertices.push_back({ v1, glm::vec3(1,1,1), normal });
@@ -127,7 +176,7 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
   for (auto pair : shapes.items()) {
 
     const std::string shapeKey = pair.key();
-    D_MYLOG(" -> shapeKey => " << shapeKey);
+    // D_MYLOG(" -> shapeKey => " << shapeKey);
 
     const auto shapeVal = pair.value();
 
@@ -135,7 +184,6 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
 
       jsonUtils::common::propertyExist(shapeVal, "ref");
       jsonUtils::common::propertyExist(shapeVal, "extrusion-axis");
-      jsonUtils::common::propertyExist(shapeVal, "transforms");
 
       std::string refVal;
       jsonUtils::str::get(shapeVal, "ref", refVal);
@@ -144,10 +192,6 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
         D_THROW(std::invalid_argument, "ref shape not found -> " << refVal);
       }
       auto refShape = it->second;
-
-      if (!shapeVal["transforms"].is_array()) {
-        D_THROW(std::invalid_argument, "transforms not an array");
-      }
 
       uint32_t alias;
       jsonUtils::uint32::get(shapeVal, "alias", alias);
@@ -166,41 +210,14 @@ void _loadShapes(VoxelManager& manager, const json& inJsonData)
 
       jsonUtils::ivec3::get(shapeVal, "extrusion-axis", newShape->extrusionAxis);
 
-      glm::mat4 tmpMat = glm::identity<glm::mat4>();
+      jsonUtils::common::propertyExist(shapeVal, "transforms");
+      const glm::mat4 tmpMat = _processTransform(shapeVal["transforms"]);
 
-      for (auto transformVal : shapeVal["transforms"]) {
-
-        std::string transformTypeVal;
-        jsonUtils::str::get(transformVal, "type", transformTypeVal);
-
-        if (transformTypeVal == "translate") {
-          glm::vec3 pos;
-          jsonUtils::fvec3::get(transformVal, "pos", pos);
-          D_MYLOG(" => pos -> " << pos);
-          tmpMat = glm::translate(tmpMat, pos);
-        }
-        else if (transformTypeVal == "rotate") {
-          glm::vec3 axis;
-          jsonUtils::fvec3::get(transformVal, "axis", axis);
-          D_MYLOG(" => axis -> " << axis);
-          float angle;
-          jsonUtils::float32::get(transformVal, "angle", angle);
-          D_MYLOG(" => angle -> " << angle);
-          tmpMat = glm::rotate(tmpMat, glm::radians(angle), axis);
-        }
-        else if (transformTypeVal == "apply") {
-          for (auto& vertex : newShape->vertices) {
-            vertex.pos = tmpMat * glm::vec4(vertex.pos, 1.0f);
-            vertex.norm = tmpMat * glm::vec4(vertex.norm, 0.0f);
-          }
-        }
-        else if (transformTypeVal == "reset") {
-          tmpMat = glm::identity<glm::mat4>();
-        }
-        else {
-          D_THROW(std::invalid_argument, "unknown transform type -> " << transformTypeVal);
-        }
+      for (auto& vertex : newShape->vertices) {
+        vertex.pos = tmpMat * glm::vec4(vertex.pos, 1.0f);
+        vertex.norm = tmpMat * glm::vec4(vertex.norm, 0.0f);
       }
+
     }
   }
 
@@ -223,7 +240,7 @@ void _loadMaterials(VoxelManager& manager, const json& inJsonData)
   for (auto pair : materialsVal.items()) {
 
     const std::string materialKey = pair.key();
-    D_MYLOG(" -> materialKey => " << materialKey);
+    // D_MYLOG(" -> materialKey => " << materialKey);
 
     const auto materialVal = pair.value();
 
@@ -264,15 +281,28 @@ void _loadModels(VoxelManager& manager, const json& inJsonData)
   for (auto pair : modelsVal.items()) {
 
     const std::string modelKey = pair.key();
-    D_MYLOG(" -> modelKey => " << modelKey);
+    // D_MYLOG(" -> modelKey => " << modelKey);
 
     const auto modelVal = pair.value();
 
-    glm::vec3 modelPos;
-    jsonUtils::fvec3::get(modelVal, "pos", modelPos);
+    glm::vec3 modelPos = glm::vec3(0,0,0);
+    glm::quat modelQuat = glm::identity<glm::quat>();
+    // jsonUtils::fvec3::get(modelVal, "pos", modelPos);
 
-    glm::quat modelQuat;
-    jsonUtils::quat::tryGet(modelVal, "quat", modelQuat);
+
+    if (
+      modelVal.contains("transforms") &&
+      modelVal["transforms"].is_array()
+    ) {
+      const glm::mat4 tmpMat = _processTransform(modelVal["transforms"]);
+      modelPos = tmpMat * glm::vec4(modelPos, 1.0f);
+      modelQuat = glm::toQuat(tmpMat);
+      // vertex.norm = tmpMat * glm::vec4(vertex.norm, 0.0f);
+    }
+
+
+    // glm::quat modelQuat;
+    // jsonUtils::quat::tryGet(modelVal, "quat", modelQuat);
 
     jsonUtils::common::propertyExist(modelVal, "data-matrix");
 
@@ -355,22 +385,14 @@ void _loadModels(VoxelManager& manager, const json& inJsonData)
 
     }
 
-
     auto newGeometry = std::make_shared<VoxelModelGeometry>();
     newGeometry->build(manager, *newMatrix);
     manager.geometriesData.allVoxelGeometries.push_back(newGeometry);
 
-
-
     auto newInstance = std::make_shared<VoxelModelGeometryInstance>();
     newInstance->modelGeometry = newGeometry;
-    newInstance->position.x = 35.0f;
-    newInstance->position.y = 35.0f;
-    newInstance->position.z = 35.0f;
-
-    glm::vec3 quatAxis = glm::vec3(1.0f,1.0f,1.0f);
-    gero::math::safeNormalize(quatAxis);
-    newInstance->orientation = glm::angleAxis(gero::math::qpi, quatAxis);
+    newInstance->position = modelPos;
+    newInstance->orientation = modelQuat;
 
     manager.geometriesData.allVoxelGeometryInstances.push_back(newInstance);
   }
@@ -393,7 +415,7 @@ void VoxelManager::loadJsonFile(const std::string_view inFilepath)
   constexpr bool ignore_comments = true;
   const json data = json::parse(filestream, nullptr, allow_exceptions, ignore_comments);
 
-  D_MYLOG(" -> data[\"hello\"] => " << data["hello"]);
+  // D_MYLOG(" -> data[\"hello\"] => " << data["hello"]);
 
   _loadShapes(*this, data);
   _loadMaterials(*this, data);

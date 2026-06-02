@@ -8,39 +8,39 @@ set(GERONIMO_DIR "${PROJECT_SOURCE_DIR}/../../..")
 set(THIRD_PARTIES_DIR ${GERONIMO_DIR}/thirdparties)
 
 set(SOURCE_FILES
-    ./src/geronimo/graphics/input-managers/KeyboardManager.cpp
-    ./src/geronimo/graphics/input-managers/MouseManager.cpp
-    ./src/geronimo/graphics/input-managers/TouchManager.cpp
-    ./src/geronimo/graphics/vertexBuffers/VertexBufferObject.cpp
-    ./src/geronimo/graphics/vertexBuffers/VertexArrayObject.cpp
-    ./src/geronimo/graphics/GeometryBuilder.cpp
-    ./src/geronimo/graphics/advanced-concept/stackRenderers/internals/WireFramesStackRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/stackRenderers/internals/TrianglesStackRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/stackRenderers/StackRenderers.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred/internals/LightStackRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred/internals/ResultQuadRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred/internals/ScreenRecorder.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred/internals/FrameMerger.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred/DepthDeferred.cpp
-    ./src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/LightManager.cpp
-    ./src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/PerspectiveClustering.cpp
-    ./src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/ResultQuadRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/clusteredDeferred/internals/ScreenRecorder.cpp
-    ./src/geronimo/graphics/advanced-concept/clusteredDeferred/ClusteredDeferred.cpp
-    ./src/geronimo/graphics/advanced-concept/widgets/helpers/renderTextBackground.cpp
-    ./src/geronimo/graphics/advanced-concept/widgets/helpers/writeTime.cpp
-    ./src/geronimo/graphics/advanced-concept/widgets/renderHistoricalTimeData.cpp
-    ./src/geronimo/graphics/advanced-concept/textRenderer/TextRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/DepthDeferredNoSPecular.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/internals/LightStackRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/internals/ResultQuadRenderer.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/internals/ScreenRecorder.cpp
-    ./src/geronimo/graphics/advanced-concept/depthDeferred-noSpecular/internals/FrameMerger.cpp
-    ./src/geronimo/graphics/ShaderProgramBuilder.cpp
-    ./src/geronimo/graphics/Texture.cpp
-    ./src/geronimo/graphics/RenderBuffer.cpp
-    ./src/geronimo/graphics/DataTexture.cpp
-    ./src/geronimo/graphics/ShaderProgram.cpp
+    ./src/geronimo/graphics/inputs/KeyboardManager.cpp
+    ./src/geronimo/graphics/inputs/MouseManager.cpp
+    ./src/geronimo/graphics/inputs/TouchManager.cpp
+    ./src/geronimo/graphics/opengl/vertexBuffers/VertexBufferObject.cpp
+    ./src/geronimo/graphics/opengl/vertexBuffers/VertexArrayObject.cpp
+    ./src/geronimo/graphics/opengl/GeometryBuilder.cpp
+    ./src/geronimo/graphics/opengl/advanced/stackRenderers/internals/WireFramesStackRenderer.cpp
+    ./src/geronimo/graphics/opengl/advanced/stackRenderers/internals/TrianglesStackRenderer.cpp
+    ./src/geronimo/graphics/opengl/advanced/stackRenderers/StackRenderers.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred/internals/LightStackRenderer.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred/internals/ResultQuadRenderer.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred/internals/ScreenRecorder.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred/internals/FrameMerger.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred/DepthDeferred.cpp
+    # ./src/geronimo/graphics/opengl/advanced/clusteredDeferred/internals/LightManager.cpp
+    # ./src/geronimo/graphics/opengl/advanced/clusteredDeferred/internals/PerspectiveClustering.cpp
+    # ./src/geronimo/graphics/opengl/advanced/clusteredDeferred/internals/ResultQuadRenderer.cpp
+    # ./src/geronimo/graphics/opengl/advanced/clusteredDeferred/internals/ScreenRecorder.cpp
+    # ./src/geronimo/graphics/opengl/advanced/clusteredDeferred/ClusteredDeferred.cpp
+    ./src/geronimo/graphics/opengl/advanced/widgets/helpers/renderTextBackground.cpp
+    ./src/geronimo/graphics/opengl/advanced/widgets/helpers/writeTime.cpp
+    ./src/geronimo/graphics/opengl/advanced/widgets/renderHistoricalTimeData.cpp
+    ./src/geronimo/graphics/opengl/advanced/textRenderer/TextRenderer.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred-noSpecular/DepthDeferredNoSPecular.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred-noSpecular/internals/LightStackRenderer.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred-noSpecular/internals/ResultQuadRenderer.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred-noSpecular/internals/ScreenRecorder.cpp
+    ./src/geronimo/graphics/opengl/advanced/depthDeferred-noSpecular/internals/FrameMerger.cpp
+    ./src/geronimo/graphics/opengl/ShaderProgramBuilder.cpp
+    ./src/geronimo/graphics/opengl/Texture.cpp
+    ./src/geronimo/graphics/opengl/RenderBuffer.cpp
+    ./src/geronimo/graphics/opengl/DataTexture.cpp
+    ./src/geronimo/graphics/opengl/ShaderProgram.cpp
     ./src/geronimo/graphics/make-geometries/MakeGeometries_makeBox.cpp
     ./src/geronimo/graphics/make-geometries/MakeGeometries_makeCylinder.cpp
     ./src/geronimo/graphics/make-geometries/MakeGeometries_makeSphere.cpp
@@ -53,15 +53,15 @@ set(SOURCE_FILES
     ./src/geronimo/graphics/ResourceManager.cpp
     ./src/geronimo/graphics/Image.cpp
     ./src/geronimo/graphics/loaders/loadObjModel.cpp
-    ./src/geronimo/graphics/sdl/SDLWindowWrapper.cpp
-    ./src/geronimo/graphics/FrameBuffer.cpp
-    ./src/geronimo/graphics/Geometry.cpp
-    ./src/geronimo/graphics/wrappers/GlContext_VertexBufferObject.cpp
-    ./src/geronimo/graphics/wrappers/GlContext_Texture.cpp
-    ./src/geronimo/graphics/wrappers/GlContext.cpp
-    ./src/geronimo/graphics/wrappers/glCheckError.cpp
-    ./src/geronimo/graphics/wrappers/GlContext_Shader.cpp
-    ./src/geronimo/graphics/wrappers/GlContext_Framebuffers.cpp
+    ./src/geronimo/graphics/opengl/sdl2/SDLWindowWrapper.cpp
+    ./src/geronimo/graphics/opengl/FrameBuffer.cpp
+    ./src/geronimo/graphics/opengl/Geometry.cpp
+    ./src/geronimo/graphics/opengl/wrappers/GlContext_VertexBufferObject.cpp
+    ./src/geronimo/graphics/opengl/wrappers/GlContext_Texture.cpp
+    ./src/geronimo/graphics/opengl/wrappers/GlContext.cpp
+    ./src/geronimo/graphics/opengl/wrappers/glCheckError.cpp
+    ./src/geronimo/graphics/opengl/wrappers/GlContext_Shader.cpp
+    ./src/geronimo/graphics/opengl/wrappers/GlContext_Framebuffers.cpp
 )
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
@@ -87,6 +87,46 @@ if (DEFINED EMSCRIPTEN)
 else()
 
     set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${GERONIMO_DIR}/lib/native")
+
+
+    # UNIT TESTS
+    # UNIT TESTS
+    # UNIT TESTS
+
+    add_executable(unit_test__graphics
+        ./src/geronimo/graphics/camera/FrustumCulling.tests.cpp
+    )
+    add_dependencies(unit_test__graphics ${PROJECT_NAME})
+
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GRAPHICS_UNIT_TESTS REQUIRED IMPORTED_TARGET GLOBAL sdl2 glesv2)
+    target_link_libraries(unit_test__graphics
+        ${PROJECT_NAME}
+        geronimo-system
+        # bullet-dynamics
+        # bullet-collision
+        # bullet-linearmath
+        gtest_main
+        gtest
+        PkgConfig::GRAPHICS_UNIT_TESTS
+        pthread
+    )
+
+    target_include_directories(unit_test__graphics PRIVATE
+        ./src
+        ../helpers/src
+        ../system/src
+        ${THIRD_PARTIES_DIR}
+    )
+
+    set_target_properties(unit_test__graphics PROPERTIES COMPILE_FLAGS "-O3")
+    set_target_properties(unit_test__graphics PROPERTIES LINK_FLAGS "-O3")
+    set_target_properties(unit_test__graphics PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+
+    # UNIT TESTS
+    # UNIT TESTS
+    # UNIT TESTS
+
 
 endif()
 

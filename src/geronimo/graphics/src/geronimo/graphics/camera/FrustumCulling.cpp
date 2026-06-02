@@ -5,6 +5,7 @@
 
 namespace gero {
 namespace graphics {
+namespace camera {
 
 void FrustumCulling::calculateFrustum(const glm::mat4& inProj, const glm::mat4& inView) {
   calculateFrustum(inProj * inView);
@@ -96,5 +97,6 @@ void FrustumCulling::_setPlane(FrustumSide inSide, const glm::vec4& inValue) {
   }
 }
 
+} // namespace camera
 } // namespace graphics
 } // namespace gero

@@ -25,5 +25,5 @@ void GraphicHudRenderer::computeMatrices() {
 }
 
 gero::graphics::ICamera& GraphicHudRenderer::getCamera() { return _camera; }
-gero::graphics::IStackRenderers& GraphicHudRenderer::getStackRenderers() { return _stackRenderers; }
-gero::graphics::ITextRenderer& GraphicHudRenderer::getTextRenderer() { return _textRenderer; }
+gero::graphics::opengl::advanced::IStackRenderers& GraphicHudRenderer::getStackRenderers() { return _stackRenderers; }
+gero::graphics::opengl::advanced::ITextRenderer& GraphicHudRenderer::getTextRenderer() { return _textRenderer; }

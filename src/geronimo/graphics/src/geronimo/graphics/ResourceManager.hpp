@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include "Geometry.hpp"
-#include "ShaderProgram.hpp"
-#include "Texture.hpp"
+#include "opengl/Geometry.hpp"
+#include "opengl/ShaderProgram.hpp"
+#include "opengl/Texture.hpp"
 
 #include "geronimo/system/file-utils/FileManager.hpp"
 
@@ -23,33 +23,33 @@ private:
 
 private:
   std::unordered_map<std::string, int32_t> _shaderDefsMap;
-  std::unordered_map<int32_t, std::shared_ptr<IUnboundShaderProgram>> _shadersMap;
+  std::unordered_map<int32_t, std::shared_ptr<opengl::IUnboundShaderProgram>> _shadersMap;
 
 public:
-  std::shared_ptr<IUnboundShaderProgram>
-  createShader(int32_t aliasCode, const ShaderProgram::Definition def, bool allowDuplicates = false);
-  std::shared_ptr<IUnboundShaderProgram> getShader(int32_t aliasCode);
+  std::shared_ptr<opengl::IUnboundShaderProgram>
+  createShader(int32_t aliasCode, const opengl::ShaderProgram::Definition def, bool allowDuplicates = false);
+  std::shared_ptr<opengl::IUnboundShaderProgram> getShader(int32_t aliasCode);
 
 private:
   std::unordered_map<std::string, int32_t> _textureDefsMap;
-  std::unordered_map<int32_t, std::shared_ptr<Texture>> _texturesMap;
+  std::unordered_map<int32_t, std::shared_ptr<opengl::Texture>> _texturesMap;
 
 public:
-  std::shared_ptr<Texture> createTexture(int32_t aliasCode,
+  std::shared_ptr<opengl::Texture> createTexture(int32_t aliasCode,
                                          const std::string& filename,
-                                         Texture::Quality quality = Texture::Quality::pixelated,
-                                         Texture::Pattern pattern = Texture::Pattern::clamped,
+                                         opengl::Texture::Quality quality = opengl::Texture::Quality::pixelated,
+                                         opengl::Texture::Pattern pattern = opengl::Texture::Pattern::clamped,
                                          bool allowDuplicates = false);
-  std::shared_ptr<Texture> getTexture(int32_t aliasCode);
+  std::shared_ptr<opengl::Texture> getTexture(int32_t aliasCode);
 
 private:
   std::unordered_map<std::string, int32_t> _geometryDefsMap;
-  std::unordered_map<int32_t, Geometry::Definition> _geometriesMap;
+  std::unordered_map<int32_t, opengl::Geometry::Definition> _geometriesMap;
 
 public:
-  const Geometry::Definition&
-  createGeometryDefinition(int32_t aliasCode, const Geometry::Definition& def, bool allowDuplicates = false);
-  const Geometry::Definition& getGeometryDefinition(int32_t aliasCode);
+  const opengl::Geometry::Definition&
+  createGeometryDefinition(int32_t aliasCode, const opengl::Geometry::Definition& def, bool allowDuplicates = false);
+  const opengl::Geometry::Definition& getGeometryDefinition(int32_t aliasCode);
 };
 
 } // namespace graphics

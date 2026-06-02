@@ -1,7 +1,7 @@
 
 #include "./FrustumCulling.hpp"
 
-#include "../../system/TraceLogger.hpp"
+#include "geronimo/system/TraceLogger.hpp"
 
 #include "gtest/gtest.h"
 
@@ -67,7 +67,7 @@ TEST(graphic_frustum_culling, confirm_under_multiple_angles_the_point_in_frustum
           const glm::mat4 proj = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
           const glm::mat4 view = glm::lookAt(currData.eye, currData.center, currData.up);
 
-          gero::graphics::FrustumCulling frustumCulling;
+          gero::graphics::camera::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
 
           //
@@ -96,7 +96,7 @@ TEST(graphic_frustum_culling, confirm_under_multiple_angles_the_sphere_in_frustu
           const glm::mat4 proj = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
           const glm::mat4 view = glm::lookAt(currData.eye, currData.center, currData.up);
 
-          gero::graphics::FrustumCulling frustumCulling;
+          gero::graphics::camera::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
 
           //
@@ -127,7 +127,7 @@ TEST(graphic_frustum_culling, confirm_under_multiple_angles_the_cube_in_frustum_
           const glm::mat4 proj = glm::perspective(glm::radians(70.0f), 1.0f, 0.1f, 100.0f);
           const glm::mat4 view = glm::lookAt(currData.eye, currData.center, currData.up);
 
-          gero::graphics::FrustumCulling frustumCulling;
+          gero::graphics::camera::FrustumCulling frustumCulling;
           frustumCulling.calculateFrustum(proj, view);
 
           //

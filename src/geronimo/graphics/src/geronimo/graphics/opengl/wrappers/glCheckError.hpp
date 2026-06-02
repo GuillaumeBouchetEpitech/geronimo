@@ -1,0 +1,29 @@
+
+namespace gero {
+namespace graphics {
+namespace opengl {
+
+namespace debug {
+
+// void glCheckError(const int8_t* file, uint32_t line, const int8_t* expression);
+void glCheckError(const char* file, uint32_t line, const char* expression);
+
+} // namespace debug
+
+#if 0
+
+#define glCheck(expr)                                                                                                  \
+  {                                                                                                                    \
+    expr;                                                                                                              \
+    debug::glCheckError(__FILE__, __LINE__, #expr);                                                                    \
+  }
+
+#else
+
+#define glCheck(expr) (expr)
+
+#endif
+
+} // namespace opengl
+} // namespace graphics
+} // namespace gero
