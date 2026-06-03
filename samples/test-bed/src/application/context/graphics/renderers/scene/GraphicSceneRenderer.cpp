@@ -97,7 +97,7 @@ void GraphicSceneRenderer::lookAt(const glm::vec3& eye, const glm::vec3& target,
   _camera.lookAt(eye, target, up);
 }
 
-gero::graphics::ICamera& GraphicSceneRenderer::getCamera() { return _camera; }
+gero::graphics::camera::ICamera& GraphicSceneRenderer::getCamera() { return _camera; }
 
 gero::graphics::opengl::advanced::IStackRenderers& GraphicSceneRenderer::getStackRenderers() { return _stackRenderers; }
 

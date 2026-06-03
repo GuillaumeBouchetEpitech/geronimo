@@ -74,7 +74,7 @@ void Scene::_renderScene() {
 
   auto& context = Context::get();
   auto& renderer = context.graphic.renderer;
-  gero::graphics::ICamera& camInstance = renderer.getSceneRenderer().getCamera();
+  gero::graphics::camera::ICamera& camInstance = renderer.getSceneRenderer().getCamera();
 
   auto& scene = renderer.getSceneRenderer();
 

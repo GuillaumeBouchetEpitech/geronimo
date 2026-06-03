@@ -1,9 +1,9 @@
 
 #include "FreeFlyCameraController.hpp"
 
-#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
-#include "geronimo/graphics/input-managers/MouseManager.hpp"
-#include "geronimo/graphics/input-managers/TouchManager.hpp"
+#include "geronimo/graphics/inputs/KeyboardManager.hpp"
+#include "geronimo/graphics/inputs/MouseManager.hpp"
+#include "geronimo/graphics/inputs/TouchManager.hpp"
 
 #include "application/context/Context.hpp"
 
@@ -12,7 +12,7 @@ void FreeFlyCameraController::update(float elapsedTime) {
 
   { // mouse
 
-    auto& keyboard = KeyboardManager::get();
+    auto& keyboard = gero::graphics::inputs::KeyboardManager::get();
 
     const bool lookUp = keyboard.isPressed(SDLK_UP);
     const bool lookDown = keyboard.isPressed(SDLK_DOWN);
@@ -32,8 +32,8 @@ void FreeFlyCameraController::update(float elapsedTime) {
       _horizontalAngle -= k_lookSpeed;
     }
 
-    const bool hasTouchEvent = TouchManager::get().getTouchData(0).has_value();
-    const bool hasMouseEvent = MouseManager::get().isLocked();
+    const bool hasTouchEvent = gero::graphics::inputs::TouchManager::get().getTouchData(0).has_value();
+    const bool hasMouseEvent = gero::graphics::inputs::MouseManager::get().isLocked();
 
     // touch OR mouse, not both
 
@@ -45,7 +45,7 @@ void FreeFlyCameraController::update(float elapsedTime) {
         _doubleTapTimeLeft -= elapsedTime;
       }
 
-      if (auto touch = TouchManager::get().getTouchData(0)) {
+      if (auto touch = gero::graphics::inputs::TouchManager::get().getTouchData(0)) {
 
         if (_doubleTapTimeLeft > 0.0f) {
           _forceForward = true;
@@ -62,7 +62,7 @@ void FreeFlyCameraController::update(float elapsedTime) {
 
       // mouse event(s)
 
-      auto& mouse = MouseManager::get();
+      auto& mouse = gero::graphics::inputs::MouseManager::get();
 
       if (mouse.isLocked()) {
         _horizontalAngle -= float(mouse.getDelta().x) / 5.f;
@@ -113,7 +113,7 @@ void FreeFlyCameraController::update(float elapsedTime) {
 
     // auto& keys = context.inputs.keys;
 
-    auto& keyboard = KeyboardManager::get();
+    auto& keyboard = gero::graphics::inputs::KeyboardManager::get();
 
     const bool moveForward = keyboard.isPressed(SDLK_w, SDLK_z);
     const bool moveBackward = keyboard.isPressed(SDLK_s);

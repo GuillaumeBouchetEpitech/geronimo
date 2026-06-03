@@ -6,7 +6,7 @@
 
 class IGraphicHudRenderer {
 public:
-  virtual gero::graphics::ICamera& getCamera() = 0;
+  virtual gero::graphics::camera::ICamera& getCamera() = 0;
   virtual gero::graphics::opengl::advanced::IStackRenderers& getStackRenderers() = 0;
   virtual gero::graphics::opengl::advanced::ITextRenderer& getTextRenderer() = 0;
 };
@@ -22,12 +22,12 @@ public:
   void computeMatrices();
 
 public:
-  gero::graphics::ICamera& getCamera() override;
+  gero::graphics::camera::ICamera& getCamera() override;
   gero::graphics::opengl::advanced::IStackRenderers& getStackRenderers() override;
   gero::graphics::opengl::advanced::ITextRenderer& getTextRenderer() override;
 
 private:
-  gero::graphics::Camera _camera;
+  gero::graphics::camera::Camera _camera;
 
   gero::graphics::opengl::advanced::StackRenderers _stackRenderers;
   gero::graphics::opengl::advanced::TextRenderer _textRenderer;

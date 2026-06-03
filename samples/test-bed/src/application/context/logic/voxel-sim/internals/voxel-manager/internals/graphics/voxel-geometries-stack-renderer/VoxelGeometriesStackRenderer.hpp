@@ -30,14 +30,14 @@ public:
   virtual ~IVoxelGeometriesStackRenderer() = default;
 
 public:
-  virtual void setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) = 0;
+  virtual void setMatricesData(const gero::graphics::camera::Camera::MatricesData& matricesData) = 0;
 
 public:
   virtual void createAlias(int32_t alias, const std::vector<TrimeshVertex>& vertices) = 0;
   virtual void deleteAlias(int32_t alias) = 0;
   virtual void clearAlias(int32_t alias) = 0;
   virtual void pushAlias(int32_t alias, const GeometryInstance& newInstance) = 0;
-  virtual void sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera) = 0;
+  virtual void sortAlias(int32_t alias, const gero::graphics::camera::ICamera& sceneCamera) = 0;
   virtual void preAllocateAlias(int32_t alias, std::size_t newSize) = 0;
 
 public:
@@ -56,14 +56,14 @@ public:
 
 public:
   void initialize();
-  void setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) override;
+  void setMatricesData(const gero::graphics::camera::Camera::MatricesData& matricesData) override;
 
 public:
   void createAlias(int32_t alias, const std::vector<TrimeshVertex>& vertices) override;
   void deleteAlias(int32_t alias) override;
   void clearAlias(int32_t alias) override;
   void pushAlias(int32_t alias, const GeometryInstance& newInstance) override;
-  void sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera) override;
+  void sortAlias(int32_t alias, const gero::graphics::camera::ICamera& sceneCamera) override;
   void preAllocateAlias(int32_t alias, std::size_t newSize) override;
 
 public:
@@ -73,7 +73,7 @@ public:
 private:
   std::shared_ptr<gero::graphics::opengl::ShaderProgram> _shader = nullptr;
   gero::graphics::opengl::Geometry::Definition _geomDef;
-  gero::graphics::Camera::MatricesData _matricesData;
+  gero::graphics::camera::Camera::MatricesData _matricesData;
 
 private:
   struct AliasedGeometry {

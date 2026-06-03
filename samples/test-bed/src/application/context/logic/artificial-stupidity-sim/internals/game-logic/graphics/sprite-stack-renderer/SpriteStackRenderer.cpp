@@ -56,7 +56,7 @@ void SpriteStackRenderer::initialize() {
   _geometry.setPrimitiveCount(0);
 }
 
-void SpriteStackRenderer::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) {
+void SpriteStackRenderer::setMatricesData(const gero::graphics::camera::Camera::MatricesData& matricesData) {
   _matricesData = matricesData;
 }
 

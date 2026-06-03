@@ -3,9 +3,9 @@
 
 #include "StateManager.hpp"
 
-#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
-#include "geronimo/graphics/input-managers/MouseManager.hpp"
-#include "geronimo/graphics/input-managers/TouchManager.hpp"
+#include "geronimo/graphics/inputs/KeyboardManager.hpp"
+#include "geronimo/graphics/inputs/MouseManager.hpp"
+#include "geronimo/graphics/inputs/TouchManager.hpp"
 
 #include "application/context/Context.hpp"
 #include "application/context/graphics/Scene.hpp"
@@ -31,9 +31,9 @@ void State_Running::leave() {
 void State_Running::handleEvent(const SDL_Event& event) {
   auto& context = Context::get();
 
-  auto& keyboard = KeyboardManager::get();
-  auto& mouse = MouseManager::get();
-  auto& touch = TouchManager::get();
+  auto& keyboard = gero::graphics::inputs::KeyboardManager::get();
+  auto& mouse = gero::graphics::inputs::MouseManager::get();
+  auto& touch = gero::graphics::inputs::TouchManager::get();
 
   switch (event.type) {
   case SDL_KEYDOWN: {
@@ -132,7 +132,7 @@ void State_Running::update(uint32_t deltaTimeMSec) {
   auto& freeFly = context.logic.controllers.freeFly;
 
   {
-    auto& keyboard = KeyboardManager::get();
+    auto& keyboard = gero::graphics::inputs::KeyboardManager::get();
 
     if (freeFly.isEnabled()) {
       if (keyboard.isPressed(SDLK_RETURN)) {
@@ -160,7 +160,7 @@ void State_Running::update(uint32_t deltaTimeMSec) {
       freeFly.setTarget(freeFly.getPosition() + freeFly.getForwardAxis());
     }
 
-    auto& mouse = MouseManager::get();
+    auto& mouse = gero::graphics::inputs::MouseManager::get();
     mouse.resetDelta();
 
     // sync the scene camera with freefly controller latest values

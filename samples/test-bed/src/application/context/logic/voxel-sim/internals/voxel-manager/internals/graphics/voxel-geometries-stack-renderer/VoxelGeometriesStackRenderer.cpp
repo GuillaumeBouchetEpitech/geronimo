@@ -53,7 +53,7 @@ void VoxelGeometriesStackRenderer::initialize() {
   _geomDef = geometryBuilder.getDefinition();
 }
 
-void VoxelGeometriesStackRenderer::setMatricesData(const gero::graphics::Camera::MatricesData& matricesData) {
+void VoxelGeometriesStackRenderer::setMatricesData(const gero::graphics::camera::Camera::MatricesData& matricesData) {
   _matricesData = matricesData;
 }
 
@@ -103,7 +103,7 @@ void VoxelGeometriesStackRenderer::pushAlias(int32_t alias, const GeometryInstan
   tmpData.instanceVertices.push_back(newInstance);
 }
 
-void VoxelGeometriesStackRenderer::sortAlias(int32_t alias, const gero::graphics::ICamera& sceneCamera) {
+void VoxelGeometriesStackRenderer::sortAlias(int32_t alias, const gero::graphics::camera::ICamera& sceneCamera) {
   auto it = _aliasedGeometriesMap.find(alias);
   if (it == _aliasedGeometriesMap.end()) {
     D_THROW(std::runtime_error, "alias not found, alias: " << alias);
@@ -122,14 +122,14 @@ void VoxelGeometriesStackRenderer::sortAlias(int32_t alias, const gero::graphics
               glm::vec3 leftScreenCoord = glm::vec3(0, 0, 1);
               glm::vec3 rightScreenCoord = glm::vec3(0, 0, 1);
 
-              gero::graphics::sceneToScreen(left.position,
+              gero::graphics::camera::sceneToScreen(left.position,
                                             matricesData.view,
                                             matricesData.projection,
                                             glm::vec2(0, 0),
                                             sceneCamera.getSize(),
                                             leftScreenCoord);
 
-              gero::graphics::sceneToScreen(right.position,
+              gero::graphics::camera::sceneToScreen(right.position,
                                             matricesData.view,
                                             matricesData.projection,
                                             glm::vec2(0, 0),

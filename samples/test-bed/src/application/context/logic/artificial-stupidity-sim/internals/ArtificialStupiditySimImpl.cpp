@@ -3,7 +3,7 @@
 
 #include "application/context/Context.hpp"
 
-#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
+// #include "geronimo/graphics/inputs/KeyboardManager.hpp"
 
 ArtificialStupiditySimImpl::ArtificialStupiditySimImpl()
   : _platformerDuel(this->_keyframesManager)

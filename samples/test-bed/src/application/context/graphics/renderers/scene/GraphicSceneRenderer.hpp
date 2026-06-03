@@ -12,7 +12,7 @@ public:
   virtual void lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up) = 0;
 
 public:
-  virtual gero::graphics::ICamera& getCamera() = 0;
+  virtual gero::graphics::camera::ICamera& getCamera() = 0;
   virtual gero::graphics::opengl::advanced::IStackRenderers& getStackRenderers() = 0;
   virtual IGeometriesStackRenderer& getGeometriesStackRenderer() = 0;
   // virtual gero::graphics::IClusteredDeferred& getDeferred() = 0;
@@ -33,14 +33,14 @@ public:
   void lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up) override;
 
 public:
-  gero::graphics::ICamera& getCamera() override;
+  gero::graphics::camera::ICamera& getCamera() override;
   gero::graphics::opengl::advanced::IStackRenderers& getStackRenderers() override;
   IGeometriesStackRenderer& getGeometriesStackRenderer() override;
   // gero::graphics::IClusteredDeferred& getDeferred() override;
   gero::graphics::opengl::advanced::DepthDeferred& getDeferred() override;
 
 private:
-  gero::graphics::Camera _camera;
+  gero::graphics::camera::Camera _camera;
 
   SceneStackRenderers _stackRenderers;
   GeometriesStackRenderer _geometriesStackRenderer;

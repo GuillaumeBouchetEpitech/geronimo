@@ -34,7 +34,7 @@ public:
 
 public:
   void initialize();
-  void setMatricesData(const gero::graphics::Camera::MatricesData& matricesData);
+  void setMatricesData(const gero::graphics::camera::Camera::MatricesData& matricesData);
 
 public:
   void push(const StackElement& newElem);
@@ -45,7 +45,7 @@ public:
 private:
   std::shared_ptr<gero::graphics::opengl::ShaderProgram> _shader = nullptr;
   gero::graphics::opengl::Geometry _geometry;
-  gero::graphics::Camera::MatricesData _matricesData;
+  gero::graphics::camera::Camera::MatricesData _matricesData;
 
   std::vector<StackElement> _stack;
 

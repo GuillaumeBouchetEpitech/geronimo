@@ -5,9 +5,9 @@
 
 #include "context/Context.hpp"
 
-#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
-#include "geronimo/graphics/input-managers/MouseManager.hpp"
-#include "geronimo/graphics/input-managers/TouchManager.hpp"
+#include "geronimo/graphics/inputs/KeyboardManager.hpp"
+#include "geronimo/graphics/inputs/MouseManager.hpp"
+#include "geronimo/graphics/inputs/TouchManager.hpp"
 
 #include "context/graphics/Scene.hpp"
 
@@ -29,9 +29,9 @@ constexpr uint32_t k_frameRate = 0;
 Application::Application(const Definition& def)
   : SDLWindowWrapper("Test Bed", def.width, def.height, k_frameRate, OpenGlEsVersion::v3, k_canResize) {
 
-  KeyboardManager::create();
-  MouseManager::create();
-  TouchManager::create();
+  gero::graphics::inputs::KeyboardManager::create();
+  gero::graphics::inputs::MouseManager::create();
+  gero::graphics::inputs::TouchManager::create();
   Context::create(def.width, def.height);
   StateManager::create();
 
@@ -41,15 +41,16 @@ Application::Application(const Definition& def)
 Application::~Application() {
   StateManager::destroy();
   Context::destroy();
-  MouseManager::destroy();
-  KeyboardManager::destroy();
+  gero::graphics::inputs::TouchManager::destroy();
+  gero::graphics::inputs::MouseManager::destroy();
+  gero::graphics::inputs::KeyboardManager::destroy();
 }
 
 //
 
 void Application::setMouseLockStatus(bool isLocked) {
 
-  auto& mouse = MouseManager::get();
+  auto& mouse = gero::graphics::inputs::MouseManager::get();
   if (mouse.setLock(isLocked))
     mouse.reset();
 }

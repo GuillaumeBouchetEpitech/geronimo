@@ -4,7 +4,7 @@
 
 #include "application/context/Context.hpp"
 
-#include "geronimo/graphics/input-managers/KeyboardManager.hpp"
+#include "geronimo/graphics/inputs/KeyboardManager.hpp"
 #include "geronimo/graphics/camera/sceneToScreen.hpp"
 
 #include <sstream>
@@ -106,7 +106,7 @@ void PlatformerDuel::update(float deltaTimeSec) {
   //
 
   {
-    auto& keyboard = KeyboardManager::get();
+    auto& keyboard = gero::graphics::inputs::KeyboardManager::get();
 
     const bool arrowLeft = keyboard.isPressed(SDLK_LEFT);
     const bool arrowRight = keyboard.isPressed(SDLK_RIGHT);
@@ -250,7 +250,7 @@ void PlatformerDuel::renderHUD()
 
     glm::vec3 botScreenCoord = glm::vec3(0, 0, 1);
 
-    gero::graphics::sceneToScreen(botPos,
+    gero::graphics::camera::sceneToScreen(botPos,
                                   matricesData.view,
                                   matricesData.projection,
                                   glm::vec2(0, 0),

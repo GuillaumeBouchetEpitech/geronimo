@@ -24,6 +24,6 @@ void GraphicHudRenderer::computeMatrices() {
   _textRenderer.setMatricesData(_camera.getMatricesData());
 }
 
-gero::graphics::ICamera& GraphicHudRenderer::getCamera() { return _camera; }
+gero::graphics::camera::ICamera& GraphicHudRenderer::getCamera() { return _camera; }
 gero::graphics::opengl::advanced::IStackRenderers& GraphicHudRenderer::getStackRenderers() { return _stackRenderers; }
 gero::graphics::opengl::advanced::ITextRenderer& GraphicHudRenderer::getTextRenderer() { return _textRenderer; }
