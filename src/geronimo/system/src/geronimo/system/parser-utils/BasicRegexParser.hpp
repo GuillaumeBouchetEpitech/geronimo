@@ -6,6 +6,7 @@
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <regex>
+#include <functional>
 
 namespace gero {
 namespace parserUtils {

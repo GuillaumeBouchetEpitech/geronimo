@@ -2,6 +2,7 @@
 #pragma once
 
 #include <regex>
+#include <string_view>
 
 namespace gero {
 namespace parserUtils {

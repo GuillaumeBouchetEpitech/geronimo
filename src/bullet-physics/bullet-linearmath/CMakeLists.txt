@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(bullet-linearmath)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 set(GERONIMO_DIR "${PROJECT_SOURCE_DIR}/../../..")
 set(BULLET_DIR ${GERONIMO_DIR}/thirdparties/dependencies/bullet3/)

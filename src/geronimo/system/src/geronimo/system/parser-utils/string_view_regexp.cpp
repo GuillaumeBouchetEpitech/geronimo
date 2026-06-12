@@ -8,7 +8,7 @@ namespace string_view_regexp {
 using match = std::match_results<std::string_view::const_iterator>;
 using sub_match = std::sub_match<std::string_view::const_iterator>;
 
-std::string_view get_string_view(const sub_match& m) { return std::string_view(m.first, std::size_t(m.length())); }
+std::string_view get_string_view(const sub_match& m) { return std::string_view(m.first, m.second); }
 
 bool regex_match(std::string_view sv,
                  match& m,

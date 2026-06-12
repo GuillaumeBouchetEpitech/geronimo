@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.24)
 
 project(test-bed)
 
+set(CMAKE_CXX_STANDARD 23)
+
 set(GERONIMO_DIR "${PROJECT_SOURCE_DIR}/../..")
 
 add_executable(${PROJECT_NAME}
@@ -136,7 +138,7 @@ if (DEFINED EMSCRIPTEN)
     # emscripten will generate both .js and .wasm files
 	set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
-	set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3 -s USE_SDL=2 -s USE_PTHREADS=0")
+	set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3 -s USE_SDL=2 -s USE_PTHREADS=0 ")
 
     set(EM_LDFLAGS "")
     set(EM_LDFLAGS "${EM_LDFLAGS} -O3")

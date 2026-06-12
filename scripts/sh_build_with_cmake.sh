@@ -14,9 +14,9 @@ echo ""
 
 cd "$INITIAL_CWD" || exit 1
 
-emcmake cmake -B "./cmake-build.release.wasm" -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache"
+emcmake cmake -B "./cmake-build.release.wasm" -DCMAKE_C_COMPILER_LAUNCHER=/usr/bin/sccache -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/sccache
 cd "./cmake-build.release.wasm" || exit 1
-mold -run cmake --build . --config Release --parallel 5" || exit 1
+mold -run cmake --build . --config Release --parallel 5 || exit 1
 
 #
 #
