@@ -12,7 +12,7 @@ bool VoxelModelGeometryInstance::intersect(
 
   if (!modelGeometry) {
     outRayCastResult.distance = -1.0f;
-    return -1.0f;
+    return false;
   }
 
   // compute inverse mat4
@@ -37,12 +37,12 @@ bool VoxelModelGeometryInstance::intersect(
 
   // did not intersect
   if (!hasHit) {
-    return outRayCastResult.distance;
+    return false;
   }
 
   // collision but not an any closer collision
   if (outRayCastResult.distance > 0.0f && tmpRayCastResult.distance > outRayCastResult.distance) {
-    return outRayCastResult.distance;
+    return false;
   }
 
   // D_MYLOG("   tmpRayCastResult.distance -> " << tmpRayCastResult.distance);
@@ -54,7 +54,7 @@ bool VoxelModelGeometryInstance::intersect(
   tmpRayCastResult.normal = this->orientation * tmpRayCastResult.normal;
 
   outRayCastResult = tmpRayCastResult;
-  return tmpRayCastResult.distance;
+  return true;
 }
 
 void VoxelModelGeometryInstance::debugRender() const

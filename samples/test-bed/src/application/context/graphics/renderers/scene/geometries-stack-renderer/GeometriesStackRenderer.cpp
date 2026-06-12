@@ -10,7 +10,7 @@
 void GeometriesStackRenderer::initialize() {
 
   // const std::string basePath = "./assets/graphics/shaders/scene/";
-  const std::string basePath = "./assets/graphics/scene/geometriesStackRenderer/shaders/";
+  const std::string basePath = "./assets/graphics/shaders/scene/geometriesStackRenderer/shaders/";
 
   gero::graphics::opengl::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()

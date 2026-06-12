@@ -6,17 +6,17 @@ INITIAL_CWD="$PWD"
 #
 #
 
-# echo ""
-# echo "#"
-# echo "# WEB_WASM BUILD"
-# echo "#"
-# echo ""
+echo ""
+echo "#"
+echo "# WEB_WASM BUILD"
+echo "#"
+echo ""
 
-# cd "$INITIAL_CWD" || exit 1
+cd "$INITIAL_CWD" || exit 1
 
-# emcmake cmake -B "./cmake-build.release.wasm"
-# cd "./cmake-build.release.wasm" || exit 1
-# cmake --build . --config Release --parallel 5
+emcmake cmake -B "./cmake-build.release.wasm"
+cd "./cmake-build.release.wasm" || exit 1
+cmake --build . --config Release --parallel 5
 
 #
 #

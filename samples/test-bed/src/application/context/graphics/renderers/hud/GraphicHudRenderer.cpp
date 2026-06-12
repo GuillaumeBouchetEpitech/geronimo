@@ -10,8 +10,8 @@ void GraphicHudRenderer::initialize(uint32_t width, uint32_t height) {
   const glm::vec3 upAxis = {0.0f, 1.0f, 0.0f};
   _camera.lookAt(eye, center, upAxis);
 
-  _stackRenderers.initialize("./assets/graphics/hud/advanced-concept-sub-assets/stackRenderers");
-  _textRenderer.initialize("./assets/graphics/hud/advanced-concept-sub-assets/textRenderer");
+  _stackRenderers.initialize("./assets/graphics/shaders/hud/advanced-concept-sub-assets/stackRenderers");
+  _textRenderer.initialize("./assets/graphics/shaders/hud/advanced-concept-sub-assets/textRenderer");
 
   // samples/test-bed/assets/graphics/advanced-concept-sub-assets/depthDeferred
 }

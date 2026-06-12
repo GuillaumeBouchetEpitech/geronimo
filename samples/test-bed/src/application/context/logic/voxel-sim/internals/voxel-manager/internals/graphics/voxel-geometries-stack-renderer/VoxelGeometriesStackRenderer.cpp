@@ -10,7 +10,7 @@
 void VoxelGeometriesStackRenderer::initialize() {
 
   // const std::string basePath = "./assets/graphics/shaders/scene/";
-  const std::string basePath = "./assets/graphics/scene/voxel-geometriesStackRenderer/shaders/";
+  const std::string basePath = "./assets/graphics/shaders/scene/voxel-geometriesStackRenderer/shaders/";
 
   gero::graphics::opengl::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()

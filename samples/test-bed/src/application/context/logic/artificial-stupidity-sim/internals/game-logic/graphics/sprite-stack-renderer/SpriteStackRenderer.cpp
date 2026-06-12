@@ -22,7 +22,7 @@ void SpriteStackRenderer::initialize() {
   // const std::string basePath = "./assets/graphics/shaders/scene/";
   // const std::string basePath = "./src/application/context/graphics/renderers/scene/geometries-stack-renderer/shaders/";
   // const std::string basePath = "./src/application/context/graphics/renderers/scene/sprite-stack-renderer/shaders/";
-  const std::string basePath = "./assets/graphics/scene/sprite-stack-renderer/shaders/";
+  const std::string basePath = "./assets/graphics/shaders/scene/sprite-stack-renderer/shaders/";
 
   gero::graphics::opengl::ShaderProgramBuilder shaderProgramBuilder;
   shaderProgramBuilder.reset()
