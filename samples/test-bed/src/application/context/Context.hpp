@@ -5,8 +5,9 @@
 
 #include "graphics/renderers/GraphicsRenderer.hpp"
 
-#include "logic/HeightField.hpp"
 #include "logic/controllers/FreeFlyCameraController.hpp"
+
+#include "logic/basic-scene/AbstractBasicScene.hpp"
 #include "logic/flocking/AbstractFlockingManager.hpp"
 #include "logic/voxel-sim/AbstractVoxelSim.hpp"
 #include "logic/artificial-stupidity-sim/AbstractArtificialStupiditySim.hpp"
@@ -24,24 +25,6 @@
 #include <memory> // <= unique_ptr / make_unique
 #include <string>
 #include <unordered_map>
-
-enum class Groups : short {
-  all = -1,
-  player = (1 << 0),
-  ground = (1 << 1),
-  dynamic = (1 << 2),
-  projectile = (1 << 3),
-  sensor = (1 << 4),
-};
-
-enum class Masks : short {
-  all = -1,
-  player = gero::asValue(Groups::ground) | gero::asValue(Groups::projectile) | gero::asValue(Groups::sensor),
-  ground = gero::asValue(Groups::player) | gero::asValue(Groups::dynamic) | gero::asValue(Groups::projectile),
-  dynamic = (1 << 2),
-  projectile = gero::asValue(Groups::ground) | gero::asValue(Groups::player),
-  sensor = (1 << 4),
-};
 
 class Context : public gero::NonCopyable {
 
@@ -67,23 +50,12 @@ public:
   //
   //
 
-private:
-  void initializePhysicResources();
-
-#if 1
-  void experimentalPhysicVehicle();
-#endif
-
 public:
   struct Graphic {
     GraphicsRenderer renderer;
   } graphic;
 
   //
-
-  struct t_physic {
-    std::unique_ptr<gero::physics::AbstractPhysicWorld> world;
-  } physic;
 
   struct t_audio {
     gero::audio::OpenALSoundManager* soundManager;
@@ -97,7 +69,7 @@ public:
       FreeFlyCameraController freeFly;
     } controllers;
 
-    HeightField heightField;
+    std::unique_ptr<AbstractBasicScene> basicScene;
     std::unique_ptr<AbstractFlockingManager> flockingManager;
     std::unique_ptr<AbstractVoxelSim> voxelSim;
     std::unique_ptr<AbstractArtificialStupiditySim> artificialStupiditySim;

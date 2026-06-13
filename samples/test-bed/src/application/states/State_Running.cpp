@@ -28,6 +28,7 @@ void State_Running::leave() {
   SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
+//MARK:handleEvent
 void State_Running::handleEvent(const SDL_Event& event) {
   auto& context = Context::get();
 
@@ -114,6 +115,7 @@ void State_Running::handleEvent(const SDL_Event& event) {
   }
 }
 
+//MARK:update
 void State_Running::update(uint32_t deltaTimeMSec) {
 
   const float deltaTimeSec = float(deltaTimeMSec) / 1000.0f;
@@ -181,6 +183,7 @@ void State_Running::update(uint32_t deltaTimeMSec) {
       }
 
       if (freeFly.isEnabled()) {
+        context.logic.basicScene->update(deltaTimeSec);
         context.logic.flockingManager->update(deltaTimeSec);
         context.logic.voxelSim->update(deltaTimeSec);
       } else {
@@ -188,20 +191,13 @@ void State_Running::update(uint32_t deltaTimeMSec) {
       }
 
       context.logic.time += deltaTimeSec;
-
-      performanceProfiler.start("1 update physic");
-
-      constexpr uint32_t k_maxSubSteps = 3;
-      constexpr float k_fixedStep = 1.0f / 60.0f;
-      context.physic.world->step(deltaTimeSec, k_maxSubSteps, k_fixedStep);
-
-      performanceProfiler.stop("1 update physic");
     }
   }
 
   performanceProfiler.stop("1 UPDATE");
 }
 
+//MARK:render
 void State_Running::render(const SDL_Window&) {
 
   auto& context = Context::get();

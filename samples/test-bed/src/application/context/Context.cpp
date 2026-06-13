@@ -8,8 +8,6 @@
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 
-// #include "geronimo/helpers/Json.hpp"
-
 #include <fstream>
 #include <iomanip>
 #include <sstream>
@@ -26,20 +24,13 @@ void Context::initialize(uint32_t width, uint32_t height) {
 
   graphic.renderer.initialize(width, height);
 
-  physic.world = gero::physics::AbstractPhysicWorld::create();
-  physic.world->setDebuggerPushLine([this](const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
-    graphic.renderer.getSceneRenderer().getStackRenderers().getWireFramesStack().pushLine(posA, posB, color);
-  });
-
   audio.soundManager = new gero::audio::OpenALSoundManager();
   audio.soundManager->setVolume(0.5f);
   audio.soundManager->loadOggFromFile(666, "./assets/audio/Cannon_3.ogg");
 
   logic.controllers.freeFly.setPosition(glm::vec3(-30, -20, 20));
 
-  initializePhysicResources();
-  experimentalPhysicVehicle();
-
+  logic.basicScene = AbstractBasicScene::create();
   logic.flockingManager = AbstractFlockingManager::create();
   logic.voxelSim = AbstractVoxelSim::create();
   logic.artificialStupiditySim = AbstractArtificialStupiditySim::create();

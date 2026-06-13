@@ -1,5 +1,7 @@
 
-#include "Context.hpp"
+#include "BasicScene.hpp"
+
+#include "application/context/Context.hpp"
 
 #include "application/defines.hpp"
 
@@ -9,7 +11,7 @@
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/math/constants.hpp"
 
-void Context::initializePhysicResources() {
+void BasicScene::initializePhysicResources() {
 
   {
     // MARK: heightField
@@ -98,7 +100,7 @@ void Context::initializePhysicResources() {
         geoVertices.push_back({pos3, normal3});
       }
 
-      graphic.renderer.getSceneRenderer().getGeometriesStackRenderer().createAlias(100, geoVertices);
+      Context::get().graphic.renderer.getSceneRenderer().getGeometriesStackRenderer().createAlias(100, geoVertices);
     }
   }
 

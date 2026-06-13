@@ -80,6 +80,8 @@ tree -hD ./lib/native
 # tree -hD ./samples/test-bed/bin
 # tree -hD ./samples/test-bed/dist
 
+find ./src/geronimo -name "unit_test__*" -exec bash -c 'echo "{}";' \;
+
 echo ""
 echo "#"
 echo "# DONE!"

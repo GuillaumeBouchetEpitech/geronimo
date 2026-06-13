@@ -2,7 +2,9 @@
 
 # clear
 
-INITIAL_CWD=$PWD
+ROOT_DIR=$(dirname "$(dirname "$(readlink -f "$0")")")
+
+echo "ROOT_DIR -> ${ROOT_DIR}"
 
 #
 #
@@ -10,8 +12,8 @@ INITIAL_CWD=$PWD
 #
 #
 
-DIR_THIRDPARTIES=$PWD/thirdparties
-DIR_DEPENDENCIES=$DIR_THIRDPARTIES/dependencies
+DIR_THIRD_PARTIES=$ROOT_DIR/thirdparties
+DIR_DEPENDENCIES=$DIR_THIRD_PARTIES/dependencies
 
 #
 #
@@ -27,7 +29,7 @@ echo "###"
 echo "###"
 echo ""
 
-sh sh_install_one_git_thirdparty.sh \
+sh "$ROOT_DIR/scripts/sh_install_one_git_thirdparty.sh" \
   "$DIR_DEPENDENCIES" \
   "BULLET_PHYSICS" \
   "bullet3" \
@@ -35,7 +37,7 @@ sh sh_install_one_git_thirdparty.sh \
   "2.87" \
   "not-interactive" || exit 1
 
-sh sh_install_one_git_thirdparty.sh \
+sh "$ROOT_DIR/scripts/sh_install_one_git_thirdparty.sh" \
   "$DIR_DEPENDENCIES" \
   "GLM" \
   "glm" \
@@ -43,7 +45,7 @@ sh sh_install_one_git_thirdparty.sh \
   "0.9.9.2" \
   "not-interactive" || exit 1
 
-sh sh_install_one_git_thirdparty.sh \
+sh "$ROOT_DIR/scripts/sh_install_one_git_thirdparty.sh" \
   "$DIR_DEPENDENCIES" \
   "TINY_OBJ_LOADER" \
   "tinyobjloader" \
@@ -51,7 +53,7 @@ sh sh_install_one_git_thirdparty.sh \
   "v1.0.6" \
   "not-interactive" || exit 1
 
-sh sh_install_one_git_thirdparty.sh \
+sh "$ROOT_DIR/scripts/sh_install_one_git_thirdparty.sh" \
   "$DIR_DEPENDENCIES" \
   "STB" \
   "stb" \
@@ -59,7 +61,7 @@ sh sh_install_one_git_thirdparty.sh \
   "master" \
   "not-interactive" || exit 1
 
-sh sh_install_one_git_thirdparty.sh \
+sh "$ROOT_DIR/scripts/sh_install_one_git_thirdparty.sh" \
   "$DIR_DEPENDENCIES" \
   "ENTT" \
   "entt" \
@@ -67,7 +69,7 @@ sh sh_install_one_git_thirdparty.sh \
   "v3.16.0" \
   "not-interactive" || exit 1
 
-sh sh_install_one_git_thirdparty.sh \
+sh "$ROOT_DIR/scripts/sh_install_one_git_thirdparty.sh" \
   "$DIR_DEPENDENCIES" \
   "JSON" \
   "json" \
@@ -78,7 +80,7 @@ sh sh_install_one_git_thirdparty.sh \
 tree -L 1 "$DIR_DEPENDENCIES"
 
 
-cd "$INITIAL_CWD" || exit 1
+cd "$ROOT_DIR" || exit 1
 
 echo ""
 echo "###"

@@ -10,6 +10,19 @@ set(GERONIMO_DIR "${PROJECT_SOURCE_DIR}/../..")
 add_executable(${PROJECT_NAME}
     ./src/main.cpp
     ./src/application/context/logic/controllers/FreeFlyCameraController.cpp
+
+
+
+    ./src/application/context/logic/basic-scene/internals/helpers/renderPhysicVehicle.cpp
+    ./src/application/context/logic/basic-scene/internals/helpers/renderPhysicBody.cpp
+    ./src/application/context/logic/basic-scene/internals/BasicScene_experimentalPhysicVehicle.cpp
+    ./src/application/context/logic/basic-scene/internals/BasicScene_initializePhysicResources.cpp
+    ./src/application/context/logic/basic-scene/internals/HeightField.cpp
+    ./src/application/context/logic/basic-scene/internals/BasicScene.cpp
+    ./src/application/context/logic/basic-scene/AbstractBasicScene.cpp
+
+
+
     ./src/application/context/logic/flocking/internals/Boid.cpp
     ./src/application/context/logic/flocking/internals/FlockingManager.cpp
     ./src/application/context/logic/flocking/AbstractFlockingManager.cpp
@@ -49,18 +62,13 @@ add_executable(${PROJECT_NAME}
 
 
 
-    ./src/application/context/logic/HeightField.cpp
-    ./src/application/context/Context_experimentalPhysicVehicle.cpp
     ./src/application/context/Context.cpp
     ./src/application/context/graphics/renderers/hud/GraphicHudRenderer.cpp
-    ./src/application/context/graphics/renderers/scene/helpers/renderPhysicVehicle.cpp
-    ./src/application/context/graphics/renderers/scene/helpers/renderPhysicBody.cpp
     ./src/application/context/graphics/renderers/scene/scene-stack-renderers/SceneStackRenderers.cpp
     ./src/application/context/graphics/renderers/scene/GraphicSceneRenderer.cpp
     ./src/application/context/graphics/renderers/scene/geometries-stack-renderer/GeometriesStackRenderer.cpp
     ./src/application/context/graphics/renderers/GraphicsRenderer.cpp
     ./src/application/context/graphics/Scene.cpp
-    ./src/application/context/Context_initializePhysicResources.cpp
     ./src/application/Application.cpp
     ./src/application/states/State_Running.cpp
     ./src/application/states/StateManager.cpp

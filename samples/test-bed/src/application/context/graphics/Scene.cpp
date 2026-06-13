@@ -1,9 +1,6 @@
 
 #include "Scene.hpp"
 
-#include "renderers/scene/helpers/renderPhysicBody.hpp"
-#include "renderers/scene/helpers/renderPhysicVehicle.hpp"
-
 #include "application/states/StateManager.hpp"
 
 #include "geronimo/graphics/opengl/GlContext.hpp"
@@ -82,91 +79,6 @@ void Scene::_renderScene() {
 
   {
 
-    {
-      //
-      // physic bodies
-      //
-
-      auto& physicBodyManager = context.physic.world->getPhysicBodyManager();
-      for (std::size_t ii = 0; ii < physicBodyManager.size(); ++ii) {
-        auto body = physicBodyManager.getBody(uint32_t(ii));
-
-        renderPhysicBody(body->getShapeDefinition(), body->getPosition(), body->getOrientation());
-      }
-    }
-
-    {
-      //
-      // heightfield
-      //
-
-      GeometriesStackRenderer::GeometryInstance instance;
-      instance.position = glm::vec3(0, 0, 0);
-      instance.orientation = glm::quat(1, 0, 0, 0);
-      instance.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-      // instance.color = glm::vec4(0.6f, 1.0f, 0.6f, 1.0f);
-      instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-      instance.light = 0.5f;
-
-      scene.getGeometriesStackRenderer().pushAlias(100, instance);
-    }
-
-    {
-      //
-      // physic vehicles
-      //
-
-      auto& geometriesStackRenderer = scene.getGeometriesStackRenderer();
-      const auto& frustumCulling = scene.getCamera().getFrustumCulling();
-
-      auto& vehicleManager = context.physic.world->getPhysicVehicleManager();
-      for (std::size_t ii = 0; ii < vehicleManager.vehicleSize(); ++ii) {
-        auto vehicle = vehicleManager.getVehicle(uint32_t(ii));
-
-        renderPhysicVehicle(*vehicle);
-
-        {
-          const auto body = vehicle->getPhysicBody();
-
-          const glm::mat3 rotMat3 = glm::mat3_cast(body->getOrientation());
-
-          glm::vec3 lightPos1 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 3);
-          glm::vec3 lightPos2 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 4);
-          glm::vec3 lightPos3 = body->getPosition() + rotMat3 * glm::vec3(0, 0, 5);
-
-          if (frustumCulling.sphereInFrustum(lightPos3, 5)) {
-            scene.getDeferred().pushSpotLight(lightPos3, glm::vec3(1), 10);
-          }
-
-          {
-            const float radius = 0.5f;
-
-            GeometriesStackRenderer::GeometryInstance instance;
-            instance.position = lightPos3;
-            instance.orientation = glm::quat(1, 0, 0, 0);
-            instance.scale = glm::vec3(radius);
-            instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-            instance.light = 0.0f;
-
-            if (frustumCulling.sphereInFrustum(instance.position, radius)) {
-              geometriesStackRenderer.pushAlias(1112, instance);
-            }
-
-            instance.scale = glm::vec3(radius * 0.5f);
-
-            instance.position = lightPos1;
-            if (frustumCulling.sphereInFrustum(instance.position, radius)) {
-              geometriesStackRenderer.pushAlias(1112, instance);
-            }
-
-            instance.position = lightPos2;
-            if (frustumCulling.sphereInFrustum(instance.position, radius)) {
-              geometriesStackRenderer.pushAlias(1112, instance);
-            }
-          }
-        }
-      }
-    }
 
     {
       //
@@ -176,6 +88,7 @@ void Scene::_renderScene() {
       auto& stackRenderers = scene.getStackRenderers();
       stackRenderers.flush();
 
+      context.logic.basicScene->render();
       context.logic.flockingManager->render();
 
       stackRenderers.flush();
@@ -185,146 +98,9 @@ void Scene::_renderScene() {
       });
 
       context.logic.artificialStupiditySim->renderScene();
-
-
-      // if (context.logic.flockingManager->getTotalBoids() > 0) {
-
-      //   auto& geometriesStackRenderer = scene.getGeometriesStackRenderer();
-      //   const auto& frustumCulling = scene.getCamera().getFrustumCulling();
-
-      //   const glm::vec3& lightPos = context.logic.flockingManager->getBoid(0).getPosition();
-
-      //   if (frustumCulling.sphereInFrustum(lightPos, 15)) {
-
-      //     // scene.getDeferred().pushSpotLight(lightPos, 30);
-
-      //     const float radius = 0.5f;
-
-      //     GeometriesStackRenderer::GeometryInstance instance;
-      //     instance.position = lightPos;
-      //     instance.orientation = glm::quat(1, 0, 0, 0);
-      //     instance.scale = glm::vec3(radius);
-      //     instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-      //     instance.light = 0.0f;
-
-      //     if (frustumCulling.sphereInFrustum(instance.position, radius)) {
-      //       geometriesStackRenderer.pushAlias(1112, instance);
-      //     }
-
-      //   }
-      // }
     }
 
     scene.getGeometriesStackRenderer().renderAll();
-  }
-
-  {
-
-    auto& stackRenderers = scene.getStackRenderers();
-
-    {
-
-      // std::array<glm::vec3, 5> allPos = {{
-      //   glm::vec3(10, 10, 10),
-      //   glm::vec3(20, 20, 20),
-      //   glm::vec3(10, 20, 30),
-      //   glm::vec3(20, 10, 40),
-      //   glm::vec3(0, 0, 50),
-      // }};
-
-      // for (std::size_t ii = 0; ii + 1 < allPos.size(); ++ii) {
-      //   stackRenderers.getTrianglesStack().pushThickTriangle3dLine(
-      //     allPos.at(ii + 0), allPos.at(ii + 1), 0.5f, glm::vec4(1, 1, 1, 1));
-      // }
-
-    }
-
-    {
-      auto& wireFrames = stackRenderers.getWireFramesStack();
-
-      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(1000, 0, 0), glm::vec3(1, 0, 0));
-      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 1000, 0), glm::vec3(0, 1, 0));
-      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1000), glm::vec3(0, 0, 1));
-
-      const auto getGroundPos = [&context](const glm::vec3& inOrigin) {
-        gero::physics::RayCaster::RayCastParams params(inOrigin + glm::vec3(0, 0, +100),
-                                                       inOrigin + glm::vec3(0, 0, -100));
-        params.collisionGroup = -1;
-        params.collisionMask = -1;
-        params.radius = 0.0f;
-
-        gero::physics::RayCaster::RayCastParams::ResultArray<1> result;
-        context.physic.world->getRayCaster().rayCast(params, result);
-
-        if (result.hasHit && result.allImpactsTotal > 0) {
-          const auto& impact = result.allImpactsData.front();
-          return impact.impactPoint.z;
-        }
-        return 0.0f;
-      };
-
-      auto& frustumCulling = camInstance.getFrustumCulling();
-
-      std::array<glm::vec3, 7> k_colors = {{
-        {1.0f, 1.0f, 1.0f},
-        {1.0f, 0.0f, 0.0f},
-        {0.0f, 1.0f, 0.0f},
-        {0.0f, 0.0f, 1.0f},
-        {1.0f, 1.0f, 0.0f},
-        {0.0f, 1.0f, 1.0f},
-        {1.0f, 0.0f, 1.0f},
-      }};
-
-      for (int xx = -2; xx <= 1; ++xx)
-        for (int yy = -2; yy <= 2; ++yy) {
-
-          int currIndex = xx + yy;
-
-          const float angle = context.logic.time * 1.0f + float(currIndex);
-          const glm::vec3 dir = glm::vec3(gero::math::getDirection(angle), 0);
-
-          glm::vec3 lightPos = {xx * 10, yy * 10, 7};
-          lightPos += dir * 10.0f;
-          lightPos.z = getGroundPos(lightPos) + 2;
-
-          if (!frustumCulling.sphereInFrustum(lightPos, 5))
-            continue;
-
-          glm::vec3 lightColor = k_colors[std::size_t(currIndex) % k_colors.size()];
-          // glm::vec3 lightColor = glm::vec3(0,0,0);
-          // lightColor.x = (currIndex % 2) == 0;
-          // lightColor.y = (currIndex % 3) == 0;
-          // lightColor.z = (lightColor.x + lightColor.y) == 0.0f ? 1.0f : 0.0f;
-
-          scene.getDeferred().pushSpotLight(lightPos, lightColor, 5);
-
-          {
-            const float radius = 0.5f;
-
-            GeometriesStackRenderer::GeometryInstance instance;
-            instance.position = lightPos;
-            instance.orientation = glm::quat(1, 0, 0, 0);
-            instance.scale = glm::vec3(radius);
-            instance.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-            instance.light = 0.0f;
-
-            scene.getGeometriesStackRenderer().pushAlias(1112, instance);
-          }
-
-          // wireFrames.pushCross(lightPos, glm::vec3(1,1,1), 1.0f);
-
-          // xx = 100; // TODO: debug
-          // yy = 100; // TODO: debug
-          // break; // TODO: debug
-        }
-
-      stackRenderers.flush();
-
-      if (context.logic.debugMode) {
-
-        scene.getStackRenderers().safeMode([&context]() { context.physic.world->renderDebug(); });
-      }
-    }
   }
 
   { // debug
