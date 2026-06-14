@@ -295,9 +295,9 @@ void OpenALSoundManager::setVolume(float level) { OpenAlContext::setListenerVolu
 
 void OpenALSoundManager::setListener(const glm::vec3& inPos, const glm::vec3& inFrontAxis, const glm::vec3& inUpAxis) {
 
-  if (_listenerPos == inPos) {
-    return; // no changes -> skip
-  }
+  // if (_listenerPos == inPos) {
+  //   return; // no changes -> skip
+  // }
 
   _listenerPos = inPos;
 
