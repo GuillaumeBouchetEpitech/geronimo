@@ -186,6 +186,7 @@ void State_Running::update(uint32_t deltaTimeMSec) {
         context.logic.basicScene->update(deltaTimeSec);
         context.logic.flockingManager->update(deltaTimeSec);
         context.logic.voxelSim->update(deltaTimeSec);
+        context.logic.cityArchitect->update(deltaTimeSec);
       } else {
         context.logic.artificialStupiditySim->update(deltaTimeSec);
       }

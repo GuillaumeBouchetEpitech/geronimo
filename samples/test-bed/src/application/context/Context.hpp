@@ -11,6 +11,7 @@
 #include "logic/flocking/AbstractFlockingManager.hpp"
 #include "logic/voxel-sim/AbstractVoxelSim.hpp"
 #include "logic/artificial-stupidity-sim/AbstractArtificialStupiditySim.hpp"
+#include "logic/city-architect/AbstractCityArchitect.hpp"
 
 #include "geronimo/audio/OpenALSoundManager.hpp"
 
@@ -73,6 +74,7 @@ public:
     std::unique_ptr<AbstractFlockingManager> flockingManager;
     std::unique_ptr<AbstractVoxelSim> voxelSim;
     std::unique_ptr<AbstractArtificialStupiditySim> artificialStupiditySim;
+    std::unique_ptr<AbstractCityArchitect> cityArchitect;
 
     float time;
 

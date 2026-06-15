@@ -91,13 +91,14 @@ void Scene::_renderScene() {
       context.logic.basicScene->render();
       context.logic.flockingManager->render();
 
-      stackRenderers.flush();
+      // stackRenderers.flush();
 
       scene.getStackRenderers().safeMode([&context]() {
         context.logic.voxelSim->render();
       });
 
       context.logic.artificialStupiditySim->renderScene();
+      context.logic.cityArchitect->render();
     }
 
     scene.getGeometriesStackRenderer().renderAll();
