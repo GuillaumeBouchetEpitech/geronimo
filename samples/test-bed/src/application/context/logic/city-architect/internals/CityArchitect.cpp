@@ -23,6 +23,9 @@ CityArchitect::CityArchitect() {
   this->_floorManager.addFloorFromOrigin(glm::vec3(90.0f,52.5f,15.0f), glm::vec2(10.0f,10.0f));
   this->_floorManager.addFloorFromOrigin(glm::vec3(90.0f,30.0f,10.0f), glm::vec2(10.0f,10.0f));
 
+  this->_floorManager.addFloorFromOrigin(glm::vec3(60.0f,80.0f,10.0f), glm::vec2(10.0f,10.0f));
+  this->_floorManager.removeFloorFromOrigin(glm::vec3(61.0f,81.0f,9.0f), glm::vec3(5.0f,5.0f,5.0f));
+
   this->_floorManager.connectFloors(
     this->_floorManager.getFloorQuads().at(0),
     this->_floorManager.getFloorQuads().at(1),
@@ -44,6 +47,8 @@ CityArchitect::CityArchitect() {
     this->_floorManager.getFloorQuads().at(2),
     this->_floorManager.getFloorQuads().at(3)
   );
+
+  this->_floorManager.mergeAllAdjacentQuads();
 
 }
 

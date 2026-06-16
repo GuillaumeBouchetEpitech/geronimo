@@ -26,12 +26,13 @@ public:
 
   // using MaybeGenericQuadRef = std::optional<std::reference_wrapper<GenericQuad>>;
 
-  enum class ConnectionError {
+  enum class QuadCreateError {
+    is_blocked,
     not_aligned,
     out_of_range
   };
 
-  using ExpectGenericQuadRef = std::expected<std::reference_wrapper<const GenericQuad>, ConnectionError>;
+  using ExpectGenericQuadRef = std::expected<std::reference_wrapper<const GenericQuad>, QuadCreateError>;
 
   //
   //
@@ -43,6 +44,7 @@ public:
 
 public:
   ExpectGenericQuadRef addFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec2& inSize);
+  bool removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec3& inSize);
 
 public:
   ExpectGenericQuadRef connectFloors(
@@ -52,8 +54,12 @@ public:
   );
 
 public:
-  bool findQuads(const glm::vec3& inCenter, const glm::vec3& inSize, std::vector<GenericQuad>& outQuads) const;
-  bool findQuads(const glm::vec3& inCenter, float inRadius, std::vector<GenericQuad>& outQuads) const;
+  void mergeAllAdjacentQuads();
+
+public:
+  bool collideQuads(const glm::vec3& inCenter, const glm::vec3& inSize) const;
+  bool findQuads(const glm::vec3& inCenter, const glm::vec3& inSize, std::vector<std::size_t>& outQuads) const;
+  bool findQuads(const glm::vec3& inCenter, float inRadius, std::vector<std::size_t>& outQuads) const;
 
 public:
   const std::vector<GenericQuad>& getFloorQuads() const { return this->_floorQuads; }

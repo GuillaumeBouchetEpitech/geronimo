@@ -194,10 +194,26 @@ else()
         # PkgConfig::YOUR_PKG
     )
 
-    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3")
+    # message(STATUS " -> CMAKE_CONFIGURATION_TYPES: ${CMAKE_CONFIGURATION_TYPES}")
+    message(STATUS " -> CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-O3")
-
-    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+    string(TOLOWER "${CMAKE_BUILD_TYPE}" build_type)
+    message(STATUS " -> build_type: ${build_type}")
+    if (build_type STREQUAL debug)
+        # message(STATUS " -> DEBUG")
+        set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-g3") # debug
+        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-g3") # debug
+        set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin.debug")
+    elseif (build_type STREQUAL release)
+        # message(STATUS " -> RELEASE")
+        set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O3") # release
+        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-O3") # release
+        set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+    else () # if (build_type STREQUAL dev)
+        # message(STATUS " -> DEV")
+        set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-O0") # dev
+        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-O0") # dev
+        set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin.dev")
+    endif()
 
 endif()
