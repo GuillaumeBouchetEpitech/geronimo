@@ -1,5 +1,5 @@
 
-#include "GenericQuad.hpp"
+#include "FloorQuad.hpp"
 
 #include "application/context/Context.hpp"
 
@@ -12,9 +12,9 @@
 #include <algorithm> // std::sort
 
 //MARK: make from origin
-GenericQuad GenericQuad::makeFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec2& inSize)
+FloorQuad FloorQuad::makeFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec2& inSize)
 {
-  GenericQuad newFloorQuad;
+  FloorQuad newFloorQuad;
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_negY)) = inOrigin + glm::vec3(inSize.x * 0.0f, inSize.y * 0.0f, 0);
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::posX_negY)) = inOrigin + glm::vec3(inSize.x * 1.0f, inSize.y * 0.0f, 0);
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_posY)) = inOrigin + glm::vec3(inSize.x * 0.0f, inSize.y * 1.0f, 0);
@@ -23,7 +23,7 @@ GenericQuad GenericQuad::makeFloorFromOrigin(const glm::vec3& inOrigin, const gl
 }
 
 //MARK: make connection
-GenericQuad GenericQuad::makeFloorConnection(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3)
+FloorQuad FloorQuad::makeFloorConnection(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3)
 {
   const std::array<glm::vec3, 4> tmpVertices = {{ v0, v1, v2, v3 }};
 
@@ -48,7 +48,7 @@ GenericQuad GenericQuad::makeFloorConnection(const glm::vec3& v0, const glm::vec
     return tmpVertices.at(bestIndex);
   };
 
-  GenericQuad newFloorQuad;
+  FloorQuad newFloorQuad;
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_negY)) = _findVertex(false, false);
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::posX_negY)) = _findVertex(true, false);
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_posY)) = _findVertex(false, true);
@@ -58,23 +58,27 @@ GenericQuad GenericQuad::makeFloorConnection(const glm::vec3& v0, const glm::vec
 }
 
 //MARK: divideFromCoords
-bool GenericQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::vector<GenericQuad>& outFloorQuads) const
+bool FloorQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::vector<FloorQuad>& outFloorQuads) const
 {
   /**
    * FROM
-   *   *-------*
-   *   |       |
-   *   |       |
-   *   |    x  |
-   *   |       |
-   *   *-------*
+   *   *----------*
+   *   |          |
+   *   |  x       |
+   *   |          |
+   *   |     x    |
+   *   |          |
+   *   |          |
+   *   *----------*
    * TO
-   *   *----*--*
-   *   |    |  |
-   *   |    |  |
-   *   *----*--*
-   *   |    |  |
-   *   *----*--*
+   *   *--*--*----*
+   *   |  |  |    |
+   *   *--*--*----*
+   *   |  |  |    |
+   *   *--*--*----*
+   *   |  |  |    |
+   *   |  |  |    |
+   *   *--*--*----*
    */
 
   std::unordered_set<float> allCoordSetX;
@@ -86,8 +90,8 @@ bool GenericQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, st
     allCoordSetY.insert(vertex.y);
   }
 
-  const glm::vec3& this_maxCoord = this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
-  const glm::vec3& this_minCoord = this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
+  const glm::vec3& this_maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3& this_minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
   constexpr float k_rangeEpsilon = 0.1f;
 
@@ -141,7 +145,7 @@ bool GenericQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, st
     const glm::vec2 minCoord = glm::vec2(allCoordX.at(xx + 0), allCoordY.at(yy + 0));
     const glm::vec2 maxCoord = glm::vec2(allCoordX.at(xx + 1), allCoordY.at(yy + 1));
 
-    outFloorQuads.push_back(GenericQuad::makeFloorFromOrigin(glm::vec3(minCoord, 0), maxCoord - minCoord));
+    outFloorQuads.push_back(FloorQuad::makeFloorFromOrigin(glm::vec3(minCoord, 0), maxCoord - minCoord));
     auto& latestVertices = outFloorQuads.back()._vertices;
     for (auto& currVertex : latestVertices) {
       currVertex.z = this->getFloorZ(currVertex.x, currVertex.y);
@@ -152,7 +156,7 @@ bool GenericQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, st
 }
 
 //MARK: merge
-std::optional<GenericQuad> GenericQuad::merge(const GenericQuad& other) const
+std::optional<FloorQuad> FloorQuad::getMergedQuad(const FloorQuad& other) const
 {
   // check if both quads are connected
   uint32_t totalConnected = 0;
@@ -216,7 +220,7 @@ std::optional<GenericQuad> GenericQuad::merge(const GenericQuad& other) const
     return notSharedVertices.at(bestIndex);
   };
 
-  GenericQuad newFloorQuad;
+  FloorQuad newFloorQuad;
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_negY)) = _findVertex(false, false);
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::posX_negY)) = _findVertex(true, false);
   newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_posY)) = _findVertex(false, true);
@@ -238,13 +242,13 @@ std::optional<GenericQuad> GenericQuad::merge(const GenericQuad& other) const
   return newFloorQuad;
 }
 
-
-float GenericQuad::getFloorZ(float inX, float inY) const
+//MARK: getFloorZ
+float FloorQuad::getFloorZ(float inX, float inY) const
 {
-  const glm::vec3& posX_posY_Pos = this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
-  const glm::vec3& posX_negY_Pos = this->getFloorVertex(GenericQuad::FloorVertexType::posX_negY);
-  const glm::vec3& negX_posX_Pos = this->getFloorVertex(GenericQuad::FloorVertexType::negX_posY);
-  const glm::vec3& negX_negY_Pos = this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
+  const glm::vec3& posX_posY_Pos = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3& posX_negY_Pos = this->getFloorVertex(FloorQuad::FloorVertexType::posX_negY);
+  const glm::vec3& negX_posX_Pos = this->getFloorVertex(FloorQuad::FloorVertexType::negX_posY);
+  const glm::vec3& negX_negY_Pos = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
   const glm::vec2& k_origin = negX_negY_Pos;
   const glm::vec2 k_size = posX_posY_Pos - negX_negY_Pos;
@@ -260,13 +264,13 @@ float GenericQuad::getFloorZ(float inX, float inY) const
 }
 
 //MARK: isColliding
-bool GenericQuad::isColliding(const glm::vec3& inCenter, const glm::vec3& inSize) const
+bool FloorQuad::isColliding(const glm::vec3& inCenter, const glm::vec3& inSize) const
 {
   const glm::vec3 colliderMinCoord = inCenter - inSize * 0.5f;
   const glm::vec3 colliderMaxCoord = inCenter + inSize * 0.5f;
 
-  const glm::vec3& maxCoord = this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
-  const glm::vec3& minCoord = this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
+  const glm::vec3& maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3& minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
   if (
     // too far backward
@@ -301,20 +305,21 @@ bool GenericQuad::isColliding(const glm::vec3& inCenter, const glm::vec3& inSize
   return true;
 }
 
-bool GenericQuad::isColliding(const glm::vec3& inCenter, float inRadius) const
+bool FloorQuad::isColliding(const glm::vec3& inCenter, float inRadius) const
 {
   return this->isColliding(inCenter, glm::vec3(inRadius, inRadius, inRadius));
 }
 
-bool GenericQuad::isIntersecting(const GenericQuad& other, float epsilon /*= 0.1f*/) const
+//MARK: isIntersecting
+bool FloorQuad::isIntersecting(const FloorQuad& other, float epsilon /*= 0.1f*/) const
 {
   constexpr float k_rangeEpsilon = 0.1f;
 
-  const glm::vec3& this_maxCoord = this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
-  const glm::vec3& this_minCoord = this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
+  const glm::vec3& this_maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3& this_minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
-  const glm::vec3& other_maxCoord = other.getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
-  const glm::vec3& other_minCoord = other.getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
+  const glm::vec3& other_maxCoord = other.getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3& other_minCoord = other.getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
   const bool k_intersect = (!(
     this_maxCoord.x < other_minCoord.x + epsilon ||
@@ -360,7 +365,8 @@ bool GenericQuad::isIntersecting(const GenericQuad& other, float epsilon /*= 0.1
   );
 }
 
-glm::vec3 GenericQuad::getNormal() const {
+//MARK: getNormal
+glm::vec3 FloorQuad::getNormal() const {
   glm::vec3 normal = glm::cross(
     this->getFloorVertex(FloorVertexType::posX_negY) - this->getOrigin(),
     this->getFloorVertex(FloorVertexType::negX_posY) - this->getOrigin()
@@ -373,7 +379,7 @@ glm::vec3 GenericQuad::getNormal() const {
 }
 
 //MARK: render
-void GenericQuad::render() const
+void FloorQuad::render() const
 {
 
   auto& context = Context::get();
@@ -385,57 +391,50 @@ void GenericQuad::render() const
   auto& stackRenderers = scene.getStackRenderers();
   auto& wireFrames = stackRenderers.getWireFramesStack();
 
-  const glm::vec3& minCoord = this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
-  const glm::vec3& maxCoord = this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
+  const glm::vec3& minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
+  const glm::vec3& maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
   const glm::vec3 center = this->getCenter();
   const glm::vec3 size = this->getSize();
   const glm::vec3 normal = this->getNormal();
 
-  wireFrames.pushCross(
-    center,
-    glm::vec3(1.0f, 0.3f, 1.0f),
-    0.25f);
+  const glm::vec3 tmpColor = glm::vec3(1.0f, 0.3f, 1.0f);
 
-  wireFrames.pushLine(
-    this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY),
-    this->getFloorVertex(GenericQuad::FloorVertexType::posX_negY),
-    glm::vec3(1.0f, 0.3f, 1.0f));
-  wireFrames.pushLine(
-    this->getFloorVertex(GenericQuad::FloorVertexType::negX_posY),
-    this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY),
-    glm::vec3(1.0f, 0.3f, 1.0f));
-  wireFrames.pushLine(
-    this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY),
-    this->getFloorVertex(GenericQuad::FloorVertexType::negX_posY),
-    glm::vec3(1.0f, 0.3f, 1.0f));
-  wireFrames.pushLine(
-    this->getFloorVertex(GenericQuad::FloorVertexType::posX_negY),
-    this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY),
-    glm::vec3(1.0f, 0.3f, 1.0f));
+  wireFrames.pushCross(center, tmpColor, 0.25f);
+
+  for (std::size_t ii = 0; ii < this->_vertices.size(); ++ii) {
+    const std::size_t jj = (ii + 1) % this->_vertices.size();
+    wireFrames.pushLine(
+      this->_vertices.at(ii),
+      this->_vertices.at(jj),
+      tmpColor);
+  }
 
   // // cross
   // wireFrames.pushLine(
-  //   this->getFloorVertex(GenericQuad::FloorVertexType::negX_negY),
-  //   this->getFloorVertex(GenericQuad::FloorVertexType::posX_posY),
+  //   this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY),
+  //   this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY),
   //   glm::vec3(1.0f, 0.6f, 1.0f));
   // wireFrames.pushLine(
-  //   this->getFloorVertex(GenericQuad::FloorVertexType::posX_negY),
-  //   this->getFloorVertex(GenericQuad::FloorVertexType::negX_posY),
+  //   this->getFloorVertex(FloorQuad::FloorVertexType::posX_negY),
+  //   this->getFloorVertex(FloorQuad::FloorVertexType::negX_posY),
   //   glm::vec3(1.0f, 0.6f, 1.0f));
 
   constexpr float k_step = 0.2f;
 
-  std::array<glm::vec2, 4> innerVertices = {{
-    glm::vec2(center.x - size.x * 0.5f + k_step, center.y - size.y * 0.5f + k_step),
-    glm::vec2(center.x + size.x * 0.5f - k_step, center.y - size.y * 0.5f + k_step),
-    glm::vec2(center.x + size.x * 0.5f - k_step, center.y + size.y * 0.5f - k_step),
-    glm::vec2(center.x - size.x * 0.5f + k_step, center.y + size.y * 0.5f - k_step),
+  const glm::vec2 hSize = glm::vec2(size.x, size.y) * 0.5f - k_step;
+
+  const std::array<glm::vec2, 4> innerVertices = {{
+    glm::vec2(center.x - hSize.x, center.y - hSize.y),
+    glm::vec2(center.x + hSize.x, center.y - hSize.y),
+    glm::vec2(center.x + hSize.x, center.y + hSize.y),
+    glm::vec2(center.x - hSize.x, center.y + hSize.y),
   }};
 
   for (std::size_t ii = 0; ii < innerVertices.size(); ++ii) {
+    const std::size_t jj = (ii + 1) % this->_vertices.size();
 
     const glm::vec2& v0 = innerVertices.at(ii);
-    const glm::vec2& v1 = innerVertices.at((ii + 1) % innerVertices.size());
+    const glm::vec2& v1 = innerVertices.at(jj);
     const glm::vec3 v0a = glm::vec3(v0.x, v0.y, this->getFloorZ(v0.x, v0.y));
     const glm::vec3 v1a = glm::vec3(v1.x, v1.y, this->getFloorZ(v1.x, v1.y));
 

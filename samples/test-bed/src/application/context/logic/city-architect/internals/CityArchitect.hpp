@@ -1,7 +1,7 @@
 
 #include "../AbstractCityArchitect.hpp"
 
-#include "logic/FloorManager.hpp"
+#include "logic/BuildingBrickModelsManager.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/NonCopyable.hpp"
@@ -17,6 +17,6 @@ public:
 
 private:
 
-  FloorManager _floorManager;
+  BuildingBrickModelsManager _buildingBrickModelsManager;
 
 };

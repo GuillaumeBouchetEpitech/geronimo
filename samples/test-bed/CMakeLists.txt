@@ -61,11 +61,15 @@ add_executable(${PROJECT_NAME}
     ./src/application/context/logic/artificial-stupidity-sim/AbstractArtificialStupiditySim.cpp
 
 
+
     # find ./src/application/context/logic/city-architect -name *.cpp >> CMakeLists.txt
-    ./src/application/context/logic/city-architect/internals/logic/FloorManager.cpp
-    ./src/application/context/logic/city-architect/internals/logic/GenericQuad.cpp
-    ./src/application/context/logic/city-architect/internals/CityArchitect.cpp
     ./src/application/context/logic/city-architect/AbstractCityArchitect.cpp
+    ./src/application/context/logic/city-architect/internals/logic/WallQuad.cpp
+    ./src/application/context/logic/city-architect/internals/logic/FloorBuilder.cpp
+    ./src/application/context/logic/city-architect/internals/logic/FloorQuad.cpp
+    ./src/application/context/logic/city-architect/internals/logic/BuildingBrickModelsManager.cpp
+    ./src/application/context/logic/city-architect/internals/logic/BuildingBrickModel.cpp
+    ./src/application/context/logic/city-architect/internals/CityArchitect.cpp
 
 
 

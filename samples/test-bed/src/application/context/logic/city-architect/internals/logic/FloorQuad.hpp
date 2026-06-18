@@ -8,7 +8,7 @@
 #include <vector>
 #include <optional>
 
-class GenericQuad {
+class FloorQuad {
 public:
   enum class FloorVertexType : std::size_t {
     negX_posY = 0,
@@ -18,25 +18,36 @@ public:
   };
 
 private:
-  GenericQuad() = default;
+  // must use the static and/or deducing method
+  FloorQuad() = default;
 
 public:
-  virtual ~GenericQuad() = default;
+  virtual ~FloorQuad() = default;
 
 public:
 
-  [[nodiscard]]
-  static GenericQuad makeFloorFromOrigin(const glm::vec3& origin, const glm::vec2& size);
+  // create new floor quad(s)
 
   [[nodiscard]]
-  static GenericQuad makeFloorConnection(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3);
-
-  bool divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::vector<GenericQuad>& outFloorQuads) const;
+  static FloorQuad makeFloorFromOrigin(const glm::vec3& origin, const glm::vec2& size);
 
   [[nodiscard]]
-  std::optional<GenericQuad> merge(const GenericQuad& other) const;
+  static FloorQuad makeFloorConnection(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3);
 
 public:
+
+  // deduce new floor quad(s)
+
+  [[nodiscard]]
+  bool divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::vector<FloorQuad>& outFloorQuads) const;
+
+  [[nodiscard]]
+  std::optional<FloorQuad> getMergedQuad(const FloorQuad& other) const;
+
+public:
+
+  // getter(s)
+
   [[nodiscard]]
   const glm::vec3& getFloorVertex(FloorVertexType type) const {
     return this->_vertices.at(gero::asValue(type));
@@ -52,7 +63,7 @@ public:
   bool isColliding(const glm::vec3& inCenter, float inRadius) const;
 
   [[nodiscard]]
-  bool isIntersecting(const GenericQuad& other, float epsilon = 0.1f) const;
+  bool isIntersecting(const FloorQuad& other, float epsilon = 0.1f) const;
 
   [[nodiscard]]
   const glm::vec3& getOrigin() const {
@@ -73,14 +84,12 @@ public:
   glm::vec3 getNormal() const;
 
 public:
+
+  // render
+
   void render() const;
 
 private:
-  // glm::vec3 _origin;
-  // glm::vec3 _size;
-  // glm::vec3 _normal;
-  // float _thickness = 0.1f;
-
   std::array<glm::vec3, 4> _vertices = {{
     glm::vec3(0,0,0),
     glm::vec3(0,0,0),

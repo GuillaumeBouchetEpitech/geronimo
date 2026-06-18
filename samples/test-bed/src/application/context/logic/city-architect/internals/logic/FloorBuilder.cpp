@@ -1,5 +1,5 @@
 
-#include "FloorManager.hpp"
+#include "FloorBuilder.hpp"
 
 #include "application/context/Context.hpp"
 
@@ -7,31 +7,33 @@
 
 #include <algorithm> // std::sort
 
-FloorManager::FloorManager()
-{
-  this->_floorQuads.reserve(256);
-}
+// FloorBuilder::FloorBuilder()
+// {
+//   this->_model->_floorQuads.reserve(256);
+// }
 
 //MARK:addFloorFromOrigin
-FloorManager::ExpectGenericQuadRef FloorManager::addFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec2& inSize)
+FloorBuilder::ExpectGenericQuadRef FloorBuilder::addFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec2& inSize)
 {
   const glm::vec3 size = glm::vec3(inSize, 0.1f);
   const glm::vec3 center = inOrigin + size * 0.5f;
-  if (this->collideQuads(center, size)) {
+  if (this->_model->collideFloorQuads(center, size)) {
+    D_MYLOG("is blocked");
     return std::unexpected(QuadCreateError::is_blocked);
   }
 
-  this->_floorQuads.push_back(GenericQuad::makeFloorFromOrigin(inOrigin, inSize));
-  return this->_floorQuads.back();
+  this->_model->_floorQuads.push_back(FloorQuad::makeFloorFromOrigin(inOrigin, inSize));
+  return this->_model->_floorQuads.back();
 }
 
 //MARK:removeFloorFromOrigin
-bool FloorManager::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec3& inSize)
+bool FloorBuilder::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::vec3& inSize)
 {
   const glm::vec3 center = inOrigin + inSize * 0.5f;
 
   std::vector<std::size_t> matchingQuads;
-  if (!this->findQuads(center, inSize, matchingQuads)) {
+  if (!this->_model->findFloorQuads(center, inSize, matchingQuads)) {
+    D_MYLOG("no quad found");
     return false;
   }
 
@@ -42,7 +44,7 @@ bool FloorManager::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
   allCutCoords.push_back(glm::vec2(inOrigin.x, inOrigin.y + inSize.y));
   allCutCoords.push_back(glm::vec2(inOrigin.x + inSize.x, inOrigin.y + inSize.y));
 
-  std::vector<GenericQuad> newSubFloorQuads;
+  std::vector<FloorQuad> newSubFloorQuads;
   newSubFloorQuads.reserve(16);
 
   std::vector<std::size_t> toDeleteQuads;
@@ -51,7 +53,7 @@ bool FloorManager::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
   for (std::size_t index : matchingQuads) {
 
     newSubFloorQuads.clear();
-    if (!this->_floorQuads.at(index).divideFromCoords(allCutCoords, newSubFloorQuads)) {
+    if (!this->_model->_floorQuads.at(index).divideFromCoords(allCutCoords, newSubFloorQuads)) {
       continue;
     }
 
@@ -64,7 +66,7 @@ bool FloorManager::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
         continue;
       }
 
-      this->_floorQuads.push_back(newSubQuad);
+      this->_model->_floorQuads.push_back(newSubQuad);
     }
   }
 
@@ -72,33 +74,35 @@ bool FloorManager::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
   std::sort(toDeleteQuads.begin(), toDeleteQuads.end());
   // from "last item" to "first item"
   for (auto it = toDeleteQuads.rbegin(); it != toDeleteQuads.rend(); ++it) {
-    this->_floorQuads.erase(this->_floorQuads.begin() + *it);
+    this->_model->_floorQuads.erase(this->_model->_floorQuads.begin() + *it);
   }
 
   return true;
 }
 
 //MARK:connectFloors
-FloorManager::ExpectGenericQuadRef FloorManager::connectFloors(
-  const GenericQuad& inFloorA,
-  const GenericQuad& inFloorB,
-  const FloorManager::ConnectOpts& inOpts /*= ConnectOpts(0.0, 0.0f)*/
+bool FloorBuilder::connectFloors(
+  const FloorQuad& inFloorA,
+  const FloorQuad& inFloorB,
+  const FloorBuilder::ConnectOpts& inOpts /*= ConnectOpts(0.0, 0.0f)*/
 ) {
 
   // TODO: check if adjacent
 
-  const glm::vec3& floorA_maxCoord = inFloorA.getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
-  const glm::vec3& floorA_minCoord = inFloorA.getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
+  const glm::vec3& floorA_maxCoord = inFloorA.getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3& floorA_minCoord = inFloorA.getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
-  const glm::vec3& floorB_maxCoord = inFloorB.getFloorVertex(GenericQuad::FloorVertexType::posX_posY);
-  const glm::vec3& floorB_minCoord = inFloorB.getFloorVertex(GenericQuad::FloorVertexType::negX_negY);
+  const glm::vec3& floorB_maxCoord = inFloorB.getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3& floorB_minCoord = inFloorB.getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
   const bool isOutsideX = (floorA_maxCoord.x < floorB_minCoord.x || floorA_minCoord.x > floorB_maxCoord.x);
   const bool isOutsideY = (floorA_maxCoord.y < floorB_minCoord.y || floorA_minCoord.y > floorB_maxCoord.y);
 
   if (isOutsideX && isOutsideY) {
+    D_MYLOG("quads are not aligned");
     // D_MYLOG("isOutsideX && isOutsideY");
-    return std::unexpected(QuadCreateError::not_aligned);
+    // return std::unexpected(QuadCreateError::not_aligned);
+    return false;
   }
 
   if (isOutsideY) {
@@ -184,7 +188,9 @@ FloorManager::ExpectGenericQuadRef FloorManager::connectFloors(
       }
       if (foundIndex < 0) {
         // D_MYLOG("    - NO JOY");
-        return std::unexpected(QuadCreateError::out_of_range);
+        // return std::unexpected(QuadCreateError::out_of_range);
+        D_MYLOG("out of range");
+        return false;
       }
 
       // override the "connection range"
@@ -200,13 +206,14 @@ FloorManager::ExpectGenericQuadRef FloorManager::connectFloors(
       allNewVertices[2] = glm::vec2(posX_min, floorB_minCoord.y);
       allNewVertices[3] = glm::vec2(posX_max, floorB_minCoord.y);
 
-      this->_floorQuads.push_back(GenericQuad::makeFloorConnection(
+      this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
         glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
         glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
         glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
         glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
       ));
-      return this->_floorQuads.back();
+      // return this->_model->_floorQuads.back();
+      return true;
     }
 
     std::array<glm::vec2, 4> allNewVertices;
@@ -215,13 +222,14 @@ FloorManager::ExpectGenericQuadRef FloorManager::connectFloors(
     allNewVertices[2] = glm::vec2(posX_min, floorB_maxCoord.y);
     allNewVertices[3] = glm::vec2(posX_max, floorB_maxCoord.y);
 
-    this->_floorQuads.push_back(GenericQuad::makeFloorConnection(
+    this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
       glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
       glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
       glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
       glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
     ));
-    return this->_floorQuads.back();
+    // return this->_model->_floorQuads.back();
+    return true;
 
   }
   // else if (isOutsideX) {
@@ -314,7 +322,9 @@ FloorManager::ExpectGenericQuadRef FloorManager::connectFloors(
     }
     if (foundIndex < 0) {
       // D_MYLOG("    - NO JOY");
-      return std::unexpected(QuadCreateError::out_of_range);
+      // return std::unexpected(QuadCreateError::out_of_range);
+      D_MYLOG("out of range");
+      return false;
     }
 
     // override the "connection range"
@@ -330,13 +340,14 @@ FloorManager::ExpectGenericQuadRef FloorManager::connectFloors(
     allNewVertices[2] = glm::vec2(floorB_minCoord.x, posY_min);
     allNewVertices[3] = glm::vec2(floorB_minCoord.x, posY_max);
 
-    this->_floorQuads.push_back(GenericQuad::makeFloorConnection(
+    this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
       glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
       glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
       glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
       glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
     ));
-    return this->_floorQuads.back();
+    // return this->_model->_floorQuads.back();
+    return true;
   }
 
   std::array<glm::vec2, 4> allNewVertices;
@@ -345,42 +356,81 @@ FloorManager::ExpectGenericQuadRef FloorManager::connectFloors(
   allNewVertices[2] = glm::vec2(floorB_maxCoord.x, posY_min);
   allNewVertices[3] = glm::vec2(floorB_maxCoord.x, posY_max);
 
-  this->_floorQuads.push_back(GenericQuad::makeFloorConnection(
+  this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
     glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
     glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
     glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
     glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
   ));
-  return this->_floorQuads.back();
+  // return this->_model->_floorQuads.back();
+  return true;
 }
 
+bool FloorBuilder::connectFloors(
+  const glm::vec3& inCenterA, const glm::vec3& inSizeA,
+  const glm::vec3& inCenterB, const glm::vec3& inSizeB,
+  const FloorBuilder::ConnectOpts& inOpts /*= ConnectOpts(0.0, 0.0f)*/
+) {
+  std::vector<std::size_t> foundQuadsA;
+  std::vector<std::size_t> foundQuadsB;
+  foundQuadsA.reserve(16);
+  foundQuadsB.reserve(16);
+
+  if (
+    !this->_model->findFloorQuads(inCenterA, inSizeA, foundQuadsA) ||
+    !this->_model->findFloorQuads(inCenterB, inSizeB, foundQuadsB) ||
+    foundQuadsA.size() > 1 ||
+    foundQuadsB.size() > 1
+  ) {
+    return false;
+  }
+
+  return this->connectFloors(
+    this->_model->_floorQuads.at(foundQuadsA.at(0)),
+    this->_model->_floorQuads.at(foundQuadsB.at(0)),
+    inOpts);
+}
+
+bool FloorBuilder::connectFloors(
+  const glm::vec3& inCenterA, float inRadiusA,
+  const glm::vec3& inCenterB, float inRadiusB,
+  const FloorBuilder::ConnectOpts& inOpts /*= ConnectOpts(0.0, 0.0f)*/
+) {
+  return this->connectFloors(
+    inCenterA, glm::vec3(inRadiusA, inRadiusA, inRadiusA),
+    inCenterB, glm::vec3(inRadiusB, inRadiusB, inRadiusB),
+    inOpts
+  );
+}
+
+
 //MARK:mergeAdjacent
-void FloorManager::mergeAllAdjacentQuads()
+void FloorBuilder::mergeAllAdjacentQuads()
 {
   bool keepGoing = false;
   do {
 
     keepGoing = false;
 
-    for (std::size_t ii = 0; !keepGoing && ii < _floorQuads.size(); ++ii)
+    for (std::size_t ii = 0; !keepGoing && ii < this->_model->_floorQuads.size(); ++ii)
     {
-      const GenericQuad& currQuad = _floorQuads.at(ii);
-      for (std::size_t jj = ii + 1; !keepGoing && jj < _floorQuads.size(); ++jj)
+      const FloorQuad& currQuad = this->_model->_floorQuads.at(ii);
+      for (std::size_t jj = ii + 1; !keepGoing && jj < this->_model->_floorQuads.size(); ++jj)
       {
-        const GenericQuad& testQuad = _floorQuads.at(jj);
+        const FloorQuad& testQuad = this->_model->_floorQuads.at(jj);
 
-        std::optional<GenericQuad> result = currQuad.merge(testQuad);
+        std::optional<FloorQuad> result = currQuad.getMergedQuad(testQuad);
         if (result.has_value() == false) {
           continue;
         }
 
         // erase test quad
-        _floorQuads.erase(_floorQuads.begin() + int32_t(jj));
+        this->_model->_floorQuads.erase(_model->_floorQuads.begin() + int32_t(jj));
         // erase current quad
-        _floorQuads.erase(_floorQuads.begin() + int32_t(ii));
+        this->_model->_floorQuads.erase(_model->_floorQuads.begin() + int32_t(ii));
 
         // add new quad
-        _floorQuads.push_back(result.value());
+        this->_model->_floorQuads.push_back(result.value());
 
         keepGoing = true;
 
@@ -389,67 +439,5 @@ void FloorManager::mergeAllAdjacentQuads()
     }
 
   } while (keepGoing);
-
-}
-
-bool FloorManager::collideQuads(const glm::vec3& inCenter, const glm::vec3& inSize) const
-{
-  for (std::size_t ii = 0; ii < this->_floorQuads.size(); ++ii) {
-    if (this->_floorQuads.at(ii).isColliding(inCenter, inSize)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-//MARK:findQuads
-bool FloorManager::findQuads(const glm::vec3& inCenter, const glm::vec3& inSize, std::vector<std::size_t>& outQuads) const
-{
-  outQuads.clear();
-  outQuads.reserve(16);
-
-  for (std::size_t ii = 0; ii < this->_floorQuads.size(); ++ii) {
-    if (this->_floorQuads.at(ii).isColliding(inCenter, inSize)) {
-      outQuads.push_back(ii);
-    }
-  }
-
-  return !outQuads.empty();
-}
-
-bool FloorManager::findQuads(const glm::vec3& inCenter, float inRadius, std::vector<std::size_t>& outQuads) const
-{
-  return findQuads(inCenter, glm::vec3(inRadius, inRadius, inRadius), outQuads);
-}
-
-//MARK:render
-void FloorManager::render()
-{
-
-  auto& context = Context::get();
-  auto& renderer = context.graphic.renderer;
-  // gero::graphics::camera::ICamera& camInstance = renderer.getSceneRenderer().getCamera();
-
-  auto& scene = renderer.getSceneRenderer();
-
-  auto& stackRenderers = scene.getStackRenderers();
-  // auto& wireFrames = stackRenderers.getWireFramesStack();
-
-  // {
-  //   auto& wireFrames = stackRenderers.getWireFramesStack();
-
-  //   wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(1000, 0, 0), glm::vec3(1, 0, 0));
-  //   wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 1000, 0), glm::vec3(0, 1, 0));
-  //   wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1000), glm::vec3(0, 0, 1));
-
-  //   stackRenderers.flush();
-  // }
-
-  for (auto& currQuad : this->_floorQuads) {
-    currQuad.render();
-  }
-
-  stackRenderers.flush();
 
 }
