@@ -2,7 +2,7 @@
 #pragma once
 
 #include "FloorQuad.hpp"
-#include "BuildingBrickModel.hpp"
+#include "../BuildingBrickModel.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 

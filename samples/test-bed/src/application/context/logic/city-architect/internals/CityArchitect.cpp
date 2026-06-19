@@ -24,113 +24,134 @@ CityArchitect::CityArchitect() {
   auto& currBuilder = this->_buildingBrickModelsManager._floorBuilder;
   currBuilder.setBuildingBrickModel(&currModel);
 
+  auto& currWBuilder = this->_buildingBrickModelsManager._wallBuilder;
+  currWBuilder.setBuildingBrickModel(&currModel);
+
   currBuilder.addFloorFromOrigin(glm::vec3(62.5f,30.0f, 5.0f), glm::vec2(10.0f,10.0f));
   currBuilder.addFloorFromOrigin(glm::vec3(60.0f,50.0f,10.0f), glm::vec2(20.0f,20.0f));
   currBuilder.addFloorFromOrigin(glm::vec3(90.0f,52.5f,15.0f), glm::vec2(10.0f,10.0f));
   currBuilder.addFloorFromOrigin(glm::vec3(90.0f,30.0f,10.0f), glm::vec2(10.0f,10.0f));
 
+  currBuilder.connectFloors(
+    currModel.getFloorsManager().getFloorQuads().at(0).getCenter(), 0.5f,
+    currModel.getFloorsManager().getFloorQuads().at(1).getCenter(), 0.5f //,
+    // FloorBuilder::ConnectOpts(currModel.getFloorsManager().getFloorQuads().at(0).getCenter().x, 6.0f)
+  );
+
+  currBuilder.connectFloors(
+    currModel.getFloorsManager().getFloorQuads().at(1).getCenter(), 0.5f,
+    currModel.getFloorsManager().getFloorQuads().at(2).getCenter(), 0.5f,
+    FloorBuilder::ConnectOpts(currModel.getFloorsManager().getFloorQuads().at(2).getCenter().y, 6.0f)
+  );
+
+  currBuilder.connectFloors(
+    currModel.getFloorsManager().getFloorQuads().at(0).getCenter(), 0.5f,
+    currModel.getFloorsManager().getFloorQuads().at(3).getCenter(), 0.5f
+  );
+
+  currBuilder.connectFloors(
+    currModel.getFloorsManager().getFloorQuads().at(2).getCenter(), 0.5f,
+    currModel.getFloorsManager().getFloorQuads().at(3).getCenter(), 0.5f,
+    FloorBuilder::ConnectOpts(currModel.getFloorsManager().getFloorQuads().at(2).getCenter().x, 6.0f)
+  );
+
+  // pre-merge
   currBuilder.addFloorFromOrigin(glm::vec3(60.0f,80.0f,10.0f), glm::vec2(20.0f,20.0f));
   currBuilder.removeFloorFromOrigin(glm::vec3(65.0f,85.0f,7.5f), glm::vec3(5.0f,5.0f,5.0f));
 
-  currBuilder.connectFloors(
-    currModel.getFloorQuads().at(0).getCenter(), 0.5f,
-    currModel.getFloorQuads().at(1).getCenter(), 0.5f,
-    FloorBuilder::ConnectOpts(currModel.getFloorQuads().at(0).getCenter().x, 6.0f)
-  );
-
-  currBuilder.connectFloors(
-    currModel.getFloorQuads().at(1).getCenter(), 0.5f,
-    currModel.getFloorQuads().at(2).getCenter(), 0.5f,
-    FloorBuilder::ConnectOpts(currModel.getFloorQuads().at(2).getCenter().y, 6.0f)
-  );
-
-  currBuilder.connectFloors(
-    currModel.getFloorQuads().at(0).getCenter(), 0.5f,
-    currModel.getFloorQuads().at(3).getCenter(), 0.5f
-  );
-
-  currBuilder.connectFloors(
-    currModel.getFloorQuads().at(2).getCenter(), 0.5f,
-    currModel.getFloorQuads().at(3).getCenter(), 0.5f
-  );
-
   currBuilder.mergeAllAdjacentQuads();
 
-  currBuilder.addFloorFromOrigin(glm::vec3(60.0f+25.0f,80.0f,10.0f), glm::vec2(20.0f,20.0f));
-  currBuilder.removeFloorFromOrigin(glm::vec3(65.0f+25.0f,85.0f,7.5f), glm::vec3(5.0f,5.0f,5.0f));
+  // post-merge
+  currBuilder.addFloorFromOrigin(glm::vec3(85.0f,80.0f,10.0f), glm::vec2(20.0f,20.0f));
+  currBuilder.removeFloorFromOrigin(glm::vec3(90.0f,85.0f,7.5f), glm::vec3(5.0f,5.0f,5.0f));
 
   {
-    currModel._wallQuads.push_back(WallQuad::makeWallFromOrigin(glm::vec3(62,28,10), glm::vec2(20,20)));
-    std::vector<glm::vec2> cutCoords;
-    cutCoords.push_back(glm::vec2(38, 20));
-    cutCoords.push_back(glm::vec2(43, 20));
-    cutCoords.push_back(glm::vec2(43, 25));
-    std::vector<WallQuad> outWallQuads;
-    if (currModel._wallQuads.back().divideFromCoords(cutCoords, outWallQuads)) {
-      currModel._wallQuads.pop_back();
-      for (const auto& currWallQuad : outWallQuads) {
-        currModel._wallQuads.push_back(currWallQuad);
-      }
-    }
-    D_MYLOG("outWallQuads.size() " << outWallQuads.size());
+    currWBuilder.addWallFromOrigin(glm::vec3(50+62,30+28,10+10), glm::vec2(20,20), WallOrientation::posX);
+    currWBuilder.removeWallFromOrigin(glm::vec3(50+60,30+38,10+20), glm::vec3(5,5,5));
   }
 
+  D_MYLOG("step1");
+
   {
-    auto& quadA = currModel.getFloorQuads().at(2);
-    auto& quadB = currModel.getFloorQuads().at(3);
+    auto& quadA = currModel.getFloorsManager().getFloorQuads().at(2);
+    auto& quadB = currModel.getFloorsManager().getFloorQuads().at(3);
     const glm::vec3 searchPos = (quadA.getCenter() + quadB.getCenter()) * 0.5f;
 
-    std::vector<const FloorQuad*> outQuads;
-    if (currModel.findFloorQuads(searchPos, 0.5f, outQuads)) {
-      auto& connQuad = *outQuads.at(0);
-      currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(connQuad, WallOrientation::negX, 5.0f));
-      currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(connQuad, WallOrientation::posX, 5.0f));
-    }
+    // std::vector<const FloorQuad*> outQuads;
+    // if (currModel.findFloorQuads(searchPos, 0.5f, outQuads)) {
+    //   auto& connQuad = *outQuads.at(0);
+    //   // currWBuilder.
+    //   currWBuilder.makeWallAdjacentToFloor(connQuad, WallOrientation::negX, 5.0f);
+    //   currWBuilder.makeWallAdjacentToFloor(connQuad, WallOrientation::posX, 5.0f);
+    // }
+    currWBuilder.makeWallAdjacentToFloor(searchPos, 0.5f, WallOrientation::negX, 5.0f);
+    currWBuilder.makeWallAdjacentToFloor(searchPos, 0.5f, WallOrientation::posX, 5.0f);
 
-    currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(quadA, WallOrientation::posY, 5.0f));
-    currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(quadB, WallOrientation::negY, 5.0f));
+    currWBuilder.makeWallAdjacentToFloor(quadA, WallOrientation::posY, 5.0f);
+    currWBuilder.makeWallAdjacentToFloor(quadB, WallOrientation::negY, 5.0f);
   }
 
+  D_MYLOG("step2");
+
   {
-    auto& quadA = currModel.getFloorQuads().at(1);
-    auto& quadB = currModel.getFloorQuads().at(2);
+    auto& quadA = currModel.getFloorsManager().getFloorQuads().at(1);
+    auto& quadB = currModel.getFloorsManager().getFloorQuads().at(2);
     const glm::vec3 searchPos = quadA.getCenter() + (quadB.getCenter() - quadA.getCenter()) * 0.7f;
 
-    std::vector<const FloorQuad*> outQuads;
-    if (currModel.findFloorQuads(searchPos, 0.5f, outQuads)) {
-      auto& connQuad = *outQuads.at(0);
-      currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(connQuad, WallOrientation::negY, 5.0f));
-      currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(connQuad, WallOrientation::posY, 5.0f));
+    // std::vector<const FloorQuad*> outQuads;
+    // if (currModel.findFloorQuads(searchPos, 0.5f, outQuads)) {
+    //   auto& connQuad = *outQuads.at(0);
+    //   currWBuilder.makeWallAdjacentToFloor(connQuad, WallOrientation::negY, 5.0f);
+    //   currWBuilder.makeWallAdjacentToFloor(connQuad, WallOrientation::posY, 5.0f);
 
-      const float width1 = quadB.getFloorVertex(FloorQuad::FloorVertexType::posX_posY).y - connQuad.getFloorVertex(FloorQuad::FloorVertexType::posX_posY).y;
-      currModel._wallQuads.push_back(WallQuad::makeWallFromOrigin(
-        connQuad.getFloorVertex(FloorQuad::FloorVertexType::posX_posY),
-        glm::vec2(width1, 5.0f)
-      ));
+    //   // const float width1 = quadB.getFloorVertex(FloorQuad::FloorVertexType::posX_posY).y - connQuad.getFloorVertex(FloorQuad::FloorVertexType::posX_posY).y;
+    //   // currWBuilder.addWallFromOrigin(
+    //   //   connQuad.getFloorVertex(FloorQuad::FloorVertexType::posX_posY),
+    //   //   glm::vec2(width1, 5.0f),
+    //   //   WallOrientation::posX
+    //   // );
 
-      const float width2 = connQuad.getFloorVertex(FloorQuad::FloorVertexType::posX_negY).y - quadB.getFloorVertex(FloorQuad::FloorVertexType::posX_negY).y;
-      currModel._wallQuads.push_back(WallQuad::makeWallFromOrigin(
-        quadB.getFloorVertex(FloorQuad::FloorVertexType::negX_negY),
-        glm::vec2(width2, 5.0f)
-      ));
-    }
+    //   // const float width2 = connQuad.getFloorVertex(FloorQuad::FloorVertexType::posX_negY).y - quadB.getFloorVertex(FloorQuad::FloorVertexType::posX_negY).y;
+    //   // currWBuilder.addWallFromOrigin(
+    //   //   quadB.getFloorVertex(FloorQuad::FloorVertexType::negX_negY),
+    //   //   glm::vec2(width2, 5.0f),
+    //   //   WallOrientation::posX
+    //   // );
+    // }
 
-    currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(quadA, WallOrientation::negX, 5.0f));
-    currModel._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(quadB, WallOrientation::posX, 5.0f));
+    D_MYLOG("step3");
+
+    currWBuilder.makeWallAdjacentToFloor(quadA, WallOrientation::negX, 5.0f);
+    currWBuilder.makeWallAdjacentToFloor(quadB, WallOrientation::posX, 5.0f);
+
+    currWBuilder.makeWallAdjacentToFloor(searchPos, 0.5f, WallOrientation::negY, 5.0f);
+    currWBuilder.makeWallAdjacentToFloor(searchPos, 0.5f, WallOrientation::posY, 5.0f);
 
     {
-      std::vector<glm::vec2> cutCoords;
-      cutCoords.push_back(glm::vec2(currModel._wallQuads.back().getCenter().y-2.0f, currModel._wallQuads.back().getCenter().z+1.0f));
-      cutCoords.push_back(glm::vec2(currModel._wallQuads.back().getCenter().y+2.0f, currModel._wallQuads.back().getCenter().z+1.0f));
-      // cutCoords.push_back(glm::vec2(quadB.getCenter().y, quadB.getCenter().z + 2));
-      // cutCoords.push_back(glm::vec2(quadB.getCenter().y, quadB.getCenter().z + 2));
-      std::vector<WallQuad> outWallQuads;
-      if (currModel._wallQuads.back().divideFromCoords(cutCoords, outWallQuads)) {
-        currModel._wallQuads.pop_back();
-        for (const auto& currWallQuad : outWallQuads) {
-          currModel._wallQuads.push_back(currWallQuad);
-        }
+      // currWBuilder.addWallFromOrigin(glm::vec3(62,28,10), glm::vec2(20,20));
+      // currWBuilder.removeWallFromOrigin(glm::vec3(quadB.getCenter().x, quadB.getCenter().y, quadB.getCenter().z + 1), glm::vec3(3,100,3));
+      // currWBuilder.removeWallFromOrigin(glm::vec3(quadB.getCenter().x, quadB.getCenter().y, quadB.getCenter().z + 1), glm::vec3(100,3,3));
+
+
+      auto& targetQuad = currModel.getFloorsManager().getFloorQuads().at(2);
+      currWBuilder.makeWallAdjacentToFloor(targetQuad, WallOrientation::negX, 5.0f);
+      glm::vec3 targetpos = currModel.getWallsManager().getWallQuads().back().getCenter();
+      targetpos.x -= 1.0f;
+      targetpos.y -= 2.0f;
+      targetpos.z -= 2.5f;
+      currWBuilder.removeWallFromOrigin(targetpos, glm::vec3(3,4,3.5));
+
+      {
+        currWBuilder.makeWallAdjacentToFloor(targetQuad, WallOrientation::negY, 5.0f);
+
+        glm::vec3 targetpos = currModel.getWallsManager().getWallQuads().back().getCenter();
+        targetpos.x -= 2.0f;
+        targetpos.y -= 1.0f;
+        targetpos.z -= 2.5f;
+        currWBuilder.removeWallFromOrigin(targetpos, glm::vec3(4,3,3.5));
       }
+
+      currWBuilder.mergeAllAdjacentQuads();
     }
 
   }

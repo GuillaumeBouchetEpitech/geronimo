@@ -9,7 +9,7 @@
 
 // FloorBuilder::FloorBuilder()
 // {
-//   this->_model->_floorQuads.reserve(256);
+//   this->_model->_floorsManager._floorQuads.reserve(256);
 // }
 
 //MARK:addFloorFromOrigin
@@ -17,13 +17,13 @@ FloorBuilder::ExpectGenericQuadRef FloorBuilder::addFloorFromOrigin(const glm::v
 {
   const glm::vec3 size = glm::vec3(inSize, 0.1f);
   const glm::vec3 center = inOrigin + size * 0.5f;
-  if (this->_model->collideFloorQuads(center, size)) {
+  if (this->_model->_floorsManager.collideFloorQuads(center, size)) {
     D_MYLOG("is blocked");
     return std::unexpected(QuadCreateError::is_blocked);
   }
 
-  this->_model->_floorQuads.push_back(FloorQuad::makeFloorFromOrigin(inOrigin, inSize));
-  return this->_model->_floorQuads.back();
+  this->_model->_floorsManager._floorQuads.push_back(FloorQuad::makeFloorFromOrigin(inOrigin, inSize));
+  return this->_model->_floorsManager._floorQuads.back();
 }
 
 //MARK:removeFloorFromOrigin
@@ -32,7 +32,7 @@ bool FloorBuilder::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
   const glm::vec3 center = inOrigin + inSize * 0.5f;
 
   std::vector<std::size_t> matchingQuads;
-  if (!this->_model->findFloorQuads(center, inSize, matchingQuads)) {
+  if (!this->_model->_floorsManager.findFloorQuads(center, inSize, matchingQuads)) {
     D_MYLOG("no quad found");
     return false;
   }
@@ -53,7 +53,7 @@ bool FloorBuilder::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
   for (std::size_t index : matchingQuads) {
 
     newSubFloorQuads.clear();
-    if (!this->_model->_floorQuads.at(index).divideFromCoords(allCutCoords, newSubFloorQuads)) {
+    if (!this->_model->_floorsManager._floorQuads.at(index).divideFromCoords(allCutCoords, newSubFloorQuads)) {
       continue;
     }
 
@@ -66,7 +66,7 @@ bool FloorBuilder::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
         continue;
       }
 
-      this->_model->_floorQuads.push_back(newSubQuad);
+      this->_model->_floorsManager._floorQuads.push_back(newSubQuad);
     }
   }
 
@@ -74,7 +74,7 @@ bool FloorBuilder::removeFloorFromOrigin(const glm::vec3& inOrigin, const glm::v
   std::sort(toDeleteQuads.begin(), toDeleteQuads.end());
   // from "last item" to "first item"
   for (auto it = toDeleteQuads.rbegin(); it != toDeleteQuads.rend(); ++it) {
-    this->_model->_floorQuads.erase(this->_model->_floorQuads.begin() + *it);
+    this->_model->_floorsManager._floorQuads.erase(this->_model->_floorsManager._floorQuads.begin() + *it);
   }
 
   return true;
@@ -206,13 +206,13 @@ bool FloorBuilder::connectFloors(
       allNewVertices[2] = glm::vec2(posX_min, floorB_minCoord.y);
       allNewVertices[3] = glm::vec2(posX_max, floorB_minCoord.y);
 
-      this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
+      this->_model->_floorsManager._floorQuads.push_back(FloorQuad::makeFloorConnection(
         glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
         glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
         glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
         glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
       ));
-      // return this->_model->_floorQuads.back();
+      // return this->_model->_floorsManager._floorQuads.back();
       return true;
     }
 
@@ -222,13 +222,13 @@ bool FloorBuilder::connectFloors(
     allNewVertices[2] = glm::vec2(posX_min, floorB_maxCoord.y);
     allNewVertices[3] = glm::vec2(posX_max, floorB_maxCoord.y);
 
-    this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
+    this->_model->_floorsManager._floorQuads.push_back(FloorQuad::makeFloorConnection(
       glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
       glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
       glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
       glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
     ));
-    // return this->_model->_floorQuads.back();
+    // return this->_model->_floorsManager._floorQuads.back();
     return true;
 
   }
@@ -340,13 +340,13 @@ bool FloorBuilder::connectFloors(
     allNewVertices[2] = glm::vec2(floorB_minCoord.x, posY_min);
     allNewVertices[3] = glm::vec2(floorB_minCoord.x, posY_max);
 
-    this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
+    this->_model->_floorsManager._floorQuads.push_back(FloorQuad::makeFloorConnection(
       glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
       glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
       glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
       glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
     ));
-    // return this->_model->_floorQuads.back();
+    // return this->_model->_floorsManager._floorQuads.back();
     return true;
   }
 
@@ -356,13 +356,13 @@ bool FloorBuilder::connectFloors(
   allNewVertices[2] = glm::vec2(floorB_maxCoord.x, posY_min);
   allNewVertices[3] = glm::vec2(floorB_maxCoord.x, posY_max);
 
-  this->_model->_floorQuads.push_back(FloorQuad::makeFloorConnection(
+  this->_model->_floorsManager._floorQuads.push_back(FloorQuad::makeFloorConnection(
     glm::vec3(allNewVertices[0], inFloorA.getFloorZ(allNewVertices[0].x, allNewVertices[0].y)),
     glm::vec3(allNewVertices[1], inFloorA.getFloorZ(allNewVertices[1].x, allNewVertices[1].y)),
     glm::vec3(allNewVertices[2], inFloorB.getFloorZ(allNewVertices[2].x, allNewVertices[2].y)),
     glm::vec3(allNewVertices[3], inFloorB.getFloorZ(allNewVertices[3].x, allNewVertices[3].y))
   ));
-  // return this->_model->_floorQuads.back();
+  // return this->_model->_floorsManager._floorQuads.back();
   return true;
 }
 
@@ -377,8 +377,8 @@ bool FloorBuilder::connectFloors(
   foundQuadsB.reserve(16);
 
   if (
-    !this->_model->findFloorQuads(inCenterA, inSizeA, foundQuadsA) ||
-    !this->_model->findFloorQuads(inCenterB, inSizeB, foundQuadsB) ||
+    !this->_model->_floorsManager.findFloorQuads(inCenterA, inSizeA, foundQuadsA) ||
+    !this->_model->_floorsManager.findFloorQuads(inCenterB, inSizeB, foundQuadsB) ||
     foundQuadsA.size() > 1 ||
     foundQuadsB.size() > 1
   ) {
@@ -386,8 +386,8 @@ bool FloorBuilder::connectFloors(
   }
 
   return this->connectFloors(
-    this->_model->_floorQuads.at(foundQuadsA.at(0)),
-    this->_model->_floorQuads.at(foundQuadsB.at(0)),
+    this->_model->_floorsManager._floorQuads.at(foundQuadsA.at(0)),
+    this->_model->_floorsManager._floorQuads.at(foundQuadsB.at(0)),
     inOpts);
 }
 
@@ -412,12 +412,12 @@ void FloorBuilder::mergeAllAdjacentQuads()
 
     keepGoing = false;
 
-    for (std::size_t ii = 0; !keepGoing && ii < this->_model->_floorQuads.size(); ++ii)
+    for (std::size_t ii = 0; !keepGoing && ii < this->_model->_floorsManager._floorQuads.size(); ++ii)
     {
-      const FloorQuad& currQuad = this->_model->_floorQuads.at(ii);
-      for (std::size_t jj = ii + 1; !keepGoing && jj < this->_model->_floorQuads.size(); ++jj)
+      const FloorQuad& currQuad = this->_model->_floorsManager._floorQuads.at(ii);
+      for (std::size_t jj = ii + 1; !keepGoing && jj < this->_model->_floorsManager._floorQuads.size(); ++jj)
       {
-        const FloorQuad& testQuad = this->_model->_floorQuads.at(jj);
+        const FloorQuad& testQuad = this->_model->_floorsManager._floorQuads.at(jj);
 
         std::optional<FloorQuad> result = currQuad.getMergedQuad(testQuad);
         if (result.has_value() == false) {
@@ -425,12 +425,12 @@ void FloorBuilder::mergeAllAdjacentQuads()
         }
 
         // erase test quad
-        this->_model->_floorQuads.erase(_model->_floorQuads.begin() + int32_t(jj));
+        this->_model->_floorsManager._floorQuads.erase(_model->_floorsManager._floorQuads.begin() + int32_t(jj));
         // erase current quad
-        this->_model->_floorQuads.erase(_model->_floorQuads.begin() + int32_t(ii));
+        this->_model->_floorsManager._floorQuads.erase(_model->_floorsManager._floorQuads.begin() + int32_t(ii));
 
         // add new quad
-        this->_model->_floorQuads.push_back(result.value());
+        this->_model->_floorsManager._floorQuads.push_back(result.value());
 
         keepGoing = true;
 

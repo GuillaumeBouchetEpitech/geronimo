@@ -39,7 +39,7 @@ public:
   // create new wall quad(s)
 
   [[nodiscard]]
-  static WallQuad makeWallFromOrigin(const glm::vec3& origin, const glm::vec2& size);
+  static WallQuad makeWallFromOrigin(const glm::vec3& origin, const glm::vec2& size, WallOrientation inWallOrientation);
 
   [[nodiscard]]
   static WallQuad makeWallAdjacentToFloor(
@@ -55,6 +55,9 @@ public:
   [[nodiscard]]
   bool divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::vector<WallQuad>& outWallQuads) const;
 
+  [[nodiscard]]
+  std::optional<WallQuad> getMergedQuad(const WallQuad& other) const;
+
 public:
 
   // getter(s)
@@ -64,8 +67,14 @@ public:
     return this->_vertices.at(gero::asValue(type));
   }
 
+  // [[nodiscard]]
+  // float getWallZ(float inAxis) const;
+
   [[nodiscard]]
-  float getWallZ(float inAxis) const;
+  bool isColliding(const glm::vec3& inCenter, const glm::vec3& inSize) const;
+
+  [[nodiscard]]
+  bool isColliding(const glm::vec3& inCenter, float inRadius) const;
 
   [[nodiscard]]
   const glm::vec3& getOrigin() const {

@@ -1,9 +1,10 @@
 
 #pragma once
 
-#include "FloorQuad.hpp"
 #include "BuildingBrickModel.hpp"
-#include "FloorBuilder.hpp"
+
+#include "floors/FloorBuilder.hpp"
+#include "walls/WallBuilder.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 
@@ -24,5 +25,6 @@ public:
 public:
   std::vector<BuildingBrickModel> _buildingBrickModels;
   FloorBuilder _floorBuilder;
+  WallBuilder _wallBuilder;
 
 };
