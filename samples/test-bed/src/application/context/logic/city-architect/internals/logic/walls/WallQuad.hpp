@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "../../graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/asValue.hpp"
 
@@ -98,6 +100,7 @@ public:
 
   // render
 
+  void buildVertices(IWireFramesStackRenderer& inWireFrames) const;
   void render() const;
 
 protected:

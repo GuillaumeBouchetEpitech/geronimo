@@ -134,17 +134,17 @@ void State_Running::update(uint32_t deltaTimeMSec) {
   auto& freeFly = context.logic.controllers.freeFly;
 
   {
-    auto& keyboard = gero::graphics::inputs::KeyboardManager::get();
+    // auto& keyboard = gero::graphics::inputs::KeyboardManager::get();
 
-    if (freeFly.isEnabled()) {
-      if (keyboard.isPressed(SDLK_RETURN)) {
-        freeFly.disable();
-      }
-    } else {
-      if (keyboard.isPressed(SDLK_BACKSPACE)) {
-        freeFly.enable();
-      }
-    }
+    // if (freeFly.isEnabled()) {
+    //   if (keyboard.isPressed(SDLK_RETURN)) {
+    //     freeFly.disable();
+    //   }
+    // } else {
+    //   if (keyboard.isPressed(SDLK_BACKSPACE)) {
+    //     freeFly.enable();
+    //   }
+    // }
 
     if (freeFly.isEnabled()) {
       // apply the freefly controller logic

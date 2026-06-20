@@ -1,15 +1,11 @@
 
 #pragma once
 
-// #include "floors/FloorQuad.hpp"
-// #include "floors/FloorsManager.hpp"
 #include "WallQuad.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <vector>
-// #include <optional>
-// #include <expected>
 
 //
 //

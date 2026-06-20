@@ -9,7 +9,7 @@
 
 // WallBuilder::WallBuilder()
 // {
-//   this->_model->_wallsManager._wallQuads.reserve(256);
+//   this->_model->getWallsManager()._wallQuads.reserve(256);
 // }
 
 //MARK:addWallFromOrigin
@@ -23,13 +23,13 @@ WallBuilder::ExpectGenericQuadRef WallBuilder::addWallFromOrigin(
     std::swap(size.x, size.y);
   }
   const glm::vec3 center = inOrigin + size * 0.5f;
-  if (this->_model->_wallsManager.collideWallQuads(center, size)) {
+  if (this->_model->getWallsManager().collideWallQuads(center, size)) {
     D_MYLOG("is blocked");
     return std::unexpected(QuadCreateError::is_blocked);
   }
 
-  this->_model->_wallsManager._wallQuads.push_back(WallQuad::makeWallFromOrigin(inOrigin, inSize, inWallOrientation));
-  return this->_model->_wallsManager._wallQuads.back();
+  this->_model->getWallsManager()._wallQuads.push_back(WallQuad::makeWallFromOrigin(inOrigin, inSize, inWallOrientation));
+  return this->_model->getWallsManager()._wallQuads.back();
 }
 
 //MARK:makeWallAdjacentToFloor
@@ -48,8 +48,8 @@ WallBuilder::ExpectGenericQuadRef WallBuilder::makeWallAdjacentToFloor(
   //   return std::unexpected(QuadCreateError::is_blocked);
   // }
 
-  this->_model->_wallsManager._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(inFloorQuad, inWallOrientation, inHeight));
-  return this->_model->_wallsManager._wallQuads.back();
+  this->_model->getWallsManager()._wallQuads.push_back(WallQuad::makeWallAdjacentToFloor(inFloorQuad, inWallOrientation, inHeight));
+  return this->_model->getWallsManager()._wallQuads.back();
 }
 
 WallBuilder::ExpectGenericQuadRef WallBuilder::makeWallAdjacentToFloor(
@@ -59,11 +59,11 @@ WallBuilder::ExpectGenericQuadRef WallBuilder::makeWallAdjacentToFloor(
   float inHeight
 ) {
   std::vector<std::size_t> matchingQuads;
-  if (!this->_model->_floorsManager.findFloorQuads(inCenter, inSize, matchingQuads)) {
+  if (!this->_model->getFloorsManager().findFloorQuads(inCenter, inSize, matchingQuads)) {
     D_MYLOG("no quad found");
     return std::unexpected(QuadCreateError::out_of_range);
   }
-  const FloorQuad& floorQuad = this->_model->_floorsManager._floorQuads.at(matchingQuads.front());
+  const FloorQuad& floorQuad = this->_model->getFloorsManager()._floorQuads.at(matchingQuads.front());
   return this->makeWallAdjacentToFloor(floorQuad, inWallOrientation, inHeight);
 }
 
@@ -82,7 +82,7 @@ bool WallBuilder::removeWallFromOrigin(const glm::vec3& inOrigin, const glm::vec
   const glm::vec3 center = inOrigin + inSize * 0.5f;
 
   std::vector<std::size_t> matchingQuads;
-  if (!this->_model->_wallsManager.findWallQuads(center, inSize, matchingQuads)) {
+  if (!this->_model->getWallsManager().findWallQuads(center, inSize, matchingQuads)) {
     D_MYLOG("no quad found");
     return false;
   }
@@ -104,7 +104,7 @@ bool WallBuilder::removeWallFromOrigin(const glm::vec3& inOrigin, const glm::vec
 
   for (std::size_t index : matchingQuads) {
 
-    auto& currQuad = this->_model->_wallsManager._wallQuads.at(index);
+    auto& currQuad = this->_model->getWallsManager()._wallQuads.at(index);
 
     const bool isFacingX = glm::epsilonEqual(currQuad.getVertex(WallQuad::VertexType::posAxis_negZ).x, currQuad.getVertex(WallQuad::VertexType::negAxis_negZ).x, 0.1f);
     const std::size_t hAxis = isFacingX ? 1 : 0;
@@ -131,7 +131,7 @@ bool WallBuilder::removeWallFromOrigin(const glm::vec3& inOrigin, const glm::vec
         continue;
       }
 
-      this->_model->_wallsManager._wallQuads.push_back(newSubQuad);
+      this->_model->getWallsManager()._wallQuads.push_back(newSubQuad);
     }
   }
 
@@ -139,7 +139,7 @@ bool WallBuilder::removeWallFromOrigin(const glm::vec3& inOrigin, const glm::vec
   std::sort(toDeleteQuads.begin(), toDeleteQuads.end());
   // from "last item" to "first item"
   for (auto it = toDeleteQuads.rbegin(); it != toDeleteQuads.rend(); ++it) {
-    this->_model->_wallsManager._wallQuads.erase(this->_model->_wallsManager._wallQuads.begin() + *it);
+    this->_model->getWallsManager()._wallQuads.erase(this->_model->getWallsManager()._wallQuads.begin() + *it);
   }
 
   D_MYLOG("end");
@@ -155,12 +155,12 @@ void WallBuilder::mergeAllAdjacentQuads()
 
     keepGoing = false;
 
-    for (std::size_t ii = 0; !keepGoing && ii < this->_model->_wallsManager._wallQuads.size(); ++ii)
+    for (std::size_t ii = 0; !keepGoing && ii < this->_model->getWallsManager()._wallQuads.size(); ++ii)
     {
-      const WallQuad& currQuad = this->_model->_wallsManager._wallQuads.at(ii);
-      for (std::size_t jj = ii + 1; !keepGoing && jj < this->_model->_wallsManager._wallQuads.size(); ++jj)
+      const WallQuad& currQuad = this->_model->getWallsManager()._wallQuads.at(ii);
+      for (std::size_t jj = ii + 1; !keepGoing && jj < this->_model->getWallsManager()._wallQuads.size(); ++jj)
       {
-        const WallQuad& testQuad = this->_model->_wallsManager._wallQuads.at(jj);
+        const WallQuad& testQuad = this->_model->getWallsManager()._wallQuads.at(jj);
 
         std::optional<WallQuad> result = currQuad.getMergedQuad(testQuad);
         if (result.has_value() == false) {
@@ -168,12 +168,12 @@ void WallBuilder::mergeAllAdjacentQuads()
         }
 
         // erase test quad
-        this->_model->_wallsManager._wallQuads.erase(_model->_wallsManager._wallQuads.begin() + int32_t(jj));
+        this->_model->getWallsManager()._wallQuads.erase(_model->getWallsManager()._wallQuads.begin() + int32_t(jj));
         // erase current quad
-        this->_model->_wallsManager._wallQuads.erase(_model->_wallsManager._wallQuads.begin() + int32_t(ii));
+        this->_model->getWallsManager()._wallQuads.erase(_model->getWallsManager()._wallQuads.begin() + int32_t(ii));
 
         // add new quad
-        this->_model->_wallsManager._wallQuads.push_back(result.value());
+        this->_model->getWallsManager()._wallQuads.push_back(result.value());
 
         keepGoing = true;
 

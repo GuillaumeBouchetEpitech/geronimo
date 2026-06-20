@@ -2,7 +2,7 @@
 #pragma once
 
 #include "WallQuad.hpp"
-#include "../BuildingBrickModel.hpp"
+#include "../BrickModel.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 
@@ -73,10 +73,10 @@ public:
   void mergeAllAdjacentQuads();
 
 public:
-  void setBuildingBrickModel(BuildingBrickModel* inBuildingBrickModel) { this->_model = inBuildingBrickModel; }
-  void resetBuildingBrickModel() { this->_model = nullptr; }
+  void setBrickModel(AbstractBrickModel* inBrickModel) { this->_model = inBrickModel; }
+  void resetBrickModel() { this->_model = nullptr; }
 
 private:
-  BuildingBrickModel* _model = nullptr;
+  AbstractBrickModel* _model = nullptr;
 
 };

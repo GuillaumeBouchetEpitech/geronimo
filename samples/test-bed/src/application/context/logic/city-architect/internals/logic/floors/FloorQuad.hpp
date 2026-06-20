@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "../../graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/asValue.hpp"
 
@@ -62,8 +64,8 @@ public:
   [[nodiscard]]
   bool isColliding(const glm::vec3& inCenter, float inRadius) const;
 
-  [[nodiscard]]
-  bool isIntersecting(const FloorQuad& other, float epsilon = 0.1f) const;
+  // [[nodiscard]]
+  // bool isIntersecting(const FloorQuad& other, float epsilon = 0.1f) const;
 
   [[nodiscard]]
   const glm::vec3& getOrigin() const {
@@ -87,6 +89,7 @@ public:
 
   // render
 
+  void buildVertices(IWireFramesStackRenderer& inWireFrames) const;
   void render() const;
 
 private:

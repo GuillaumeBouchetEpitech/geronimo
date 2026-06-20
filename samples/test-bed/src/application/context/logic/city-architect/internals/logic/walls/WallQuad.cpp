@@ -501,6 +501,28 @@ glm::vec3 WallQuad::getNormal() const {
   return normal;
 }
 
+//MARK: buildVertices
+void WallQuad::buildVertices(IWireFramesStackRenderer& inWireFrames) const {
+
+  const glm::vec3 center = this->getCenter();
+  // const glm::vec3 size = this->getSize();
+  const glm::vec3 normal = this->getNormal();
+
+  const glm::vec3 tmpColor = glm::vec3(1.0f, 0.6f, 0.3f);
+
+  inWireFrames.pushCross(center, tmpColor, 0.25f);
+
+  for (std::size_t ii = 0; ii < this->_vertices.size(); ++ii) {
+    const std::size_t jj = (ii + 1) % this->_vertices.size();
+    inWireFrames.pushLine(
+      this->_vertices.at(ii),
+      this->_vertices.at(jj),
+      tmpColor);
+  }
+
+  inWireFrames.pushLine(center, center + normal, glm::vec3(1.0f, 1.0f, 0.5f));
+}
+
 //MARK: render
 void WallQuad::render() const {
 

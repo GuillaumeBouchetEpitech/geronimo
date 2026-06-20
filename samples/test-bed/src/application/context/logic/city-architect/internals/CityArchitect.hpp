@@ -1,7 +1,10 @@
 
 #include "../AbstractCityArchitect.hpp"
 
-#include "logic/BuildingBrickModelsManager.hpp"
+#include "logic/BrickModelsManager.hpp"
+
+#include "graphics/instanced-brick-models/InstancedBrickModels.hpp"
+#include "graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/NonCopyable.hpp"
@@ -17,6 +20,9 @@ public:
 
 private:
 
-  BuildingBrickModelsManager _buildingBrickModelsManager;
+  BrickModelsManager _brickModelsManager;
+
+  InstancedBrickModels _instancedBrickModels;
+  WireFramesStackRenderer _wireFramesStackRenderer;
 
 };

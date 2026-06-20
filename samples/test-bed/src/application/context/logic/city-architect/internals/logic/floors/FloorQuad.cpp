@@ -310,60 +310,60 @@ bool FloorQuad::isColliding(const glm::vec3& inCenter, float inRadius) const
   return this->isColliding(inCenter, glm::vec3(inRadius, inRadius, inRadius));
 }
 
-//MARK: isIntersecting
-bool FloorQuad::isIntersecting(const FloorQuad& other, float epsilon /*= 0.1f*/) const
-{
-  constexpr float k_rangeEpsilon = 0.1f;
+// //MARK: isIntersecting
+// bool FloorQuad::isIntersecting(const FloorQuad& other, float epsilon /*= 0.1f*/) const
+// {
+//   constexpr float k_rangeEpsilon = 0.1f;
 
-  const glm::vec3& this_maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
-  const glm::vec3& this_minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
+//   const glm::vec3& this_maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+//   const glm::vec3& this_minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
-  const glm::vec3& other_maxCoord = other.getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
-  const glm::vec3& other_minCoord = other.getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
+//   const glm::vec3& other_maxCoord = other.getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+//   const glm::vec3& other_minCoord = other.getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
 
-  const bool k_intersect = (!(
-    this_maxCoord.x < other_minCoord.x + epsilon ||
-    this_minCoord.x > other_maxCoord.x - epsilon ||
-    this_maxCoord.y < other_minCoord.y + epsilon ||
-    this_minCoord.y > other_maxCoord.y - epsilon
-  ));
+//   const bool k_intersect = (!(
+//     this_maxCoord.x < other_minCoord.x + epsilon ||
+//     this_minCoord.x > other_maxCoord.x - epsilon ||
+//     this_maxCoord.y < other_minCoord.y + epsilon ||
+//     this_minCoord.y > other_maxCoord.y - epsilon
+//   ));
 
-  if (!k_intersect) {
-    return false;
-  }
+//   if (!k_intersect) {
+//     return false;
+//   }
 
-  // get overlapping rectangle
+//   // get overlapping rectangle
 
-  /**
-   * FROM
-   *   *--------*
-   *   |A       |
-   *   |  *----------*
-   *   |  |     |    |
-   *   *--|-----*    |
-   *      |         B|
-   *      *----------*
-   *
-   * TO
-   *      *-----*
-   *      |     |
-   *      *-----*
-  */
+//   /**
+//    * FROM
+//    *   *--------*
+//    *   |A       |
+//    *   |  *----------*
+//    *   |  |     |    |
+//    *   *--|-----*    |
+//    *      |         B|
+//    *      *----------*
+//    *
+//    * TO
+//    *      *-----*
+//    *      |     |
+//    *      *-----*
+//   */
 
-  const float minX = std::max(this_minCoord.x, other_minCoord.x);
-  const float minY = std::max(this_minCoord.y, other_minCoord.y);
-  const float maxX = std::min(this_maxCoord.x, other_maxCoord.x);
-  const float maxY = std::min(this_maxCoord.y, other_maxCoord.y);
+//   const float minX = std::max(this_minCoord.x, other_minCoord.x);
+//   const float minY = std::max(this_minCoord.y, other_minCoord.y);
+//   const float maxX = std::min(this_maxCoord.x, other_maxCoord.x);
+//   const float maxY = std::min(this_maxCoord.y, other_maxCoord.y);
 
-  // use the intersecting rectangle vertices to compare the Z axis values
+//   // use the intersecting rectangle vertices to compare the Z axis values
 
-  return (
-    glm::epsilonEqual(this->getFloorZ(minX, minY), other.getFloorZ(minX, minY), k_rangeEpsilon) &&
-    glm::epsilonEqual(this->getFloorZ(minX, maxY), other.getFloorZ(minX, maxY), k_rangeEpsilon) &&
-    glm::epsilonEqual(this->getFloorZ(maxX, minY), other.getFloorZ(maxX, minY), k_rangeEpsilon) &&
-    glm::epsilonEqual(this->getFloorZ(maxX, maxY), other.getFloorZ(maxX, maxY), k_rangeEpsilon)
-  );
-}
+//   return (
+//     glm::epsilonEqual(this->getFloorZ(minX, minY), other.getFloorZ(minX, minY), k_rangeEpsilon) &&
+//     glm::epsilonEqual(this->getFloorZ(minX, maxY), other.getFloorZ(minX, maxY), k_rangeEpsilon) &&
+//     glm::epsilonEqual(this->getFloorZ(maxX, minY), other.getFloorZ(maxX, minY), k_rangeEpsilon) &&
+//     glm::epsilonEqual(this->getFloorZ(maxX, maxY), other.getFloorZ(maxX, maxY), k_rangeEpsilon)
+//   );
+// }
 
 //MARK: getNormal
 glm::vec3 FloorQuad::getNormal() const {
@@ -376,6 +376,53 @@ glm::vec3 FloorQuad::getNormal() const {
     normal /= magnitude;
   }
   return normal;
+}
+
+//MARK: buildVertices
+void FloorQuad::buildVertices(IWireFramesStackRenderer& inWireFrames) const {
+
+  const glm::vec3& minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
+  const glm::vec3& maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
+  const glm::vec3 center = this->getCenter();
+  const glm::vec3 size = this->getSize();
+  const glm::vec3 normal = this->getNormal();
+
+  const glm::vec3 tmpColor = glm::vec3(1.0f, 0.3f, 1.0f);
+
+  inWireFrames.pushCross(center, tmpColor, 0.25f);
+
+  for (std::size_t ii = 0; ii < this->_vertices.size(); ++ii) {
+    const std::size_t jj = (ii + 1) % this->_vertices.size();
+    inWireFrames.pushLine(
+      this->_vertices.at(ii),
+      this->_vertices.at(jj),
+      tmpColor);
+  }
+
+  constexpr float k_step = 0.2f;
+
+  const glm::vec2 hSize = glm::vec2(size.x, size.y) * 0.5f - k_step;
+
+  const std::array<glm::vec2, 4> innerVertices = {{
+    glm::vec2(center.x - hSize.x, center.y - hSize.y),
+    glm::vec2(center.x + hSize.x, center.y - hSize.y),
+    glm::vec2(center.x + hSize.x, center.y + hSize.y),
+    glm::vec2(center.x - hSize.x, center.y + hSize.y),
+  }};
+
+  for (std::size_t ii = 0; ii < innerVertices.size(); ++ii) {
+    const std::size_t jj = (ii + 1) % this->_vertices.size();
+
+    const glm::vec2& v0 = innerVertices.at(ii);
+    const glm::vec2& v1 = innerVertices.at(jj);
+    const glm::vec3 v0a = glm::vec3(v0.x, v0.y, this->getFloorZ(v0.x, v0.y));
+    const glm::vec3 v1a = glm::vec3(v1.x, v1.y, this->getFloorZ(v1.x, v1.y));
+
+    inWireFrames.pushLine(v0a, v1a, glm::vec3(1.0f, 0.8f, 1.0f));
+  }
+
+  inWireFrames.pushLine(center, center + normal, glm::vec3(1.0f, 1.0f, 0.5f));
+
 }
 
 //MARK: render

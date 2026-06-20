@@ -64,15 +64,19 @@ add_executable(${PROJECT_NAME}
 
     # find ./src/application/context/logic/city-architect -name *.cpp >> CMakeLists.txt
     ./src/application/context/logic/city-architect/AbstractCityArchitect.cpp
-    ./src/application/context/logic/city-architect/internals/logic/BuildingBrickModel.cpp
+    ./src/application/context/logic/city-architect/internals/logic/BrickModel.cpp
     ./src/application/context/logic/city-architect/internals/logic/walls/WallQuad.cpp
     ./src/application/context/logic/city-architect/internals/logic/walls/WallBuilder.cpp
     ./src/application/context/logic/city-architect/internals/logic/walls/WallsManager.cpp
-    ./src/application/context/logic/city-architect/internals/logic/BuildingBrickModelsManager.cpp
+    ./src/application/context/logic/city-architect/internals/logic/brick-instances/BrickInstancesManager.cpp
+    ./src/application/context/logic/city-architect/internals/logic/brick-instances/BrickInstanceBuilder.cpp
     ./src/application/context/logic/city-architect/internals/logic/floors/FloorBuilder.cpp
     ./src/application/context/logic/city-architect/internals/logic/floors/FloorQuad.cpp
     ./src/application/context/logic/city-architect/internals/logic/floors/FloorsManager.cpp
+    ./src/application/context/logic/city-architect/internals/logic/BrickModelsManager.cpp
     ./src/application/context/logic/city-architect/internals/CityArchitect.cpp
+    ./src/application/context/logic/city-architect/internals/graphics/instanced-brick-models/WireFramesStackRenderer.cpp
+    ./src/application/context/logic/city-architect/internals/graphics/instanced-brick-models/InstancedBrickModels.cpp
 
 
 
