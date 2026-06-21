@@ -42,6 +42,12 @@ public:
   virtual const FloorsManager& getFloorsManager() const = 0;
   virtual const WallsManager& getWallsManager() const = 0;
   virtual const BrickInstancesManager& getBrickInstancesManager() const = 0;
+  virtual const std::string& getName() const = 0;
+
+public:
+  // virtual bool collideFloorQuads(const glm::vec3& inCenter, const glm::vec3& inSize) const = 0;
+  virtual bool findFloorQuads(const glm::vec3& inCenter, const glm::vec3& inSize, std::vector<FloorQuad>& outQuads) const = 0;
+  virtual bool findFloorQuads(const glm::vec3& inCenter, float inRadius, std::vector<FloorQuad>& outQuads) const = 0;
 
 protected:
   virtual FloorsManager& getFloorsManager() = 0;
@@ -50,6 +56,7 @@ protected:
 
 public:
   virtual void buildVertices(IWireFramesStackRenderer& inWireFrames) const = 0;
+  virtual void buildInstances(const glm::vec3& inOrigin, const glm::quat& inQuat, InstancedBrickModels& inInstancedBrickModels) const = 0;
   virtual void render(const glm::mat4& transform) const = 0;
 
 };

@@ -29,9 +29,9 @@ void VoxelManager::render() {
 
   stackRenderer.flush();
 
-  wireFramesStack.pushLine(k_origin + glm::vec3(0,0,0), k_origin + glm::vec3(100,0,0), glm::vec3(1,0,0));
-  wireFramesStack.pushLine(k_origin + glm::vec3(0,0,0), k_origin + glm::vec3(0,100,0), glm::vec3(0,1,0));
-  wireFramesStack.pushLine(k_origin + glm::vec3(0,0,0), k_origin + glm::vec3(0,0,100), glm::vec3(0,0,1));
+  wireFramesStack.pushLine(k_origin + glm::vec3(0,0,0), k_origin + glm::vec3(50,0,0), glm::vec3(1,0,0));
+  wireFramesStack.pushLine(k_origin + glm::vec3(0,0,0), k_origin + glm::vec3(0,50,0), glm::vec3(0,1,0));
+  wireFramesStack.pushLine(k_origin + glm::vec3(0,0,0), k_origin + glm::vec3(0,0,50), glm::vec3(0,0,1));
 
   trianglesStack.pushQuad(glm::vec2(35,35), glm::vec2(50,50), glm::vec4(0.3f,0.3f,0.3f, 1), 27.0f);
 

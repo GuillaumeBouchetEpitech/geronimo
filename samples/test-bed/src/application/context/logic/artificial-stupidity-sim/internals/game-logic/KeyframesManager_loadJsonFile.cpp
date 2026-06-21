@@ -22,7 +22,7 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
 
   // D_MYLOG(" -> data[\"hello\"] => " << data["hello"]);
 
-  D_MYLOG(" -> data[\"image-filepath\"] => " << data["image-filepath"]);
+  // D_MYLOG(" -> data[\"image-filepath\"] => " << data["image-filepath"]);
 
   jsonUtils::str::get(data, "image-filepath", this->_animationData.imgFilename);
 
@@ -46,7 +46,7 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
     auto newKeyframe = std::make_shared<KeyframeData>();
 
     newKeyframe->alias = pairVals.key();
-    D_MYLOG("   -> newKeyframe->alias => " << newKeyframe->alias);
+    // D_MYLOG("   -> newKeyframe->alias => " << newKeyframe->alias);
 
     this->_animationData.allKeyframes.push_back(newKeyframe);
     this->_animationData.keyframesMap[newKeyframe->alias] = newKeyframe;
@@ -54,7 +54,7 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
     const auto keyframeVal = pairVals.value();
 
     jsonUtils::fvec2::get(keyframeVal, "origin", newKeyframe->origin);
-    D_MYLOG("   -> newKeyframe->origin => " << newKeyframe->origin);
+    // D_MYLOG("   -> newKeyframe->origin => " << newKeyframe->origin);
 
     // correct Y axis
     newKeyframe->origin.y = this->_animationData.texSize.y - newKeyframe->origin.y;
@@ -70,8 +70,8 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
 
     jsonUtils::fvec2::get(keyframeVal["sprite-rect"], "bl", newKeyframe->rect.bottomLeft);
     jsonUtils::fvec2::get(keyframeVal["sprite-rect"], "tr", newKeyframe->rect.topRight);
-    D_MYLOG("   -> newKeyframe->rect.bottomLeft => " << newKeyframe->rect.bottomLeft);
-    D_MYLOG("   -> newKeyframe->rect.topRight => " << newKeyframe->rect.topRight);
+    // D_MYLOG("   -> newKeyframe->rect.bottomLeft => " << newKeyframe->rect.bottomLeft);
+    // D_MYLOG("   -> newKeyframe->rect.topRight => " << newKeyframe->rect.topRight);
 
     // correct Y axis
     newKeyframe->rect.bottomLeft.y = this->_animationData.texSize.y - newKeyframe->rect.bottomLeft.y;
@@ -83,7 +83,7 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
         D_THROW(std::invalid_argument, "health-colliders not an array");
       }
 
-      D_MYLOG("   -> healthColliders => " << healthColliders.size());
+      // D_MYLOG("   -> healthColliders => " << healthColliders.size());
 
       newKeyframe->healthColliders.reserve(healthColliders.size());
 
@@ -96,8 +96,8 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
         RectData newRect;
         jsonUtils::fvec2::get(healthCollider["bl"], newRect.bottomLeft);
         jsonUtils::fvec2::get(healthCollider["tr"], newRect.topRight);
-        D_MYLOG("     -> healthColliderRect.bottomLeft => " << newRect.bottomLeft);
-        D_MYLOG("     -> healthColliderRect.topRight => " << newRect.topRight);
+        // D_MYLOG("     -> healthColliderRect.bottomLeft => " << newRect.bottomLeft);
+        // D_MYLOG("     -> healthColliderRect.topRight => " << newRect.topRight);
 
         // correct Y axis
         newRect.bottomLeft.y = this->_animationData.texSize.y - newRect.bottomLeft.y;
@@ -113,7 +113,7 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
         D_THROW(std::invalid_argument, "attack-colliders not an array");
       }
 
-      D_MYLOG("   -> attackColliders => " << attackColliders.size());
+      // D_MYLOG("   -> attackColliders => " << attackColliders.size());
 
       newKeyframe->attackColliders.reserve(attackColliders.size());
 
@@ -126,8 +126,8 @@ void KeyframesManager::_loadJsonFile(const std::string_view inFilepath)
         RectData newRect;
         jsonUtils::fvec2::get(attackCollider["bl"], newRect.bottomLeft);
         jsonUtils::fvec2::get(attackCollider["tr"], newRect.topRight);
-        D_MYLOG("     -> attackColliderRect.bottomLeft => " << newRect.bottomLeft);
-        D_MYLOG("     -> attackColliderRect.topRight => " << newRect.topRight);
+        // D_MYLOG("     -> attackColliderRect.bottomLeft => " << newRect.bottomLeft);
+        // D_MYLOG("     -> attackColliderRect.topRight => " << newRect.topRight);
 
         // correct Y axis
         newRect.bottomLeft.y = this->_animationData.texSize.y - newRect.bottomLeft.y;

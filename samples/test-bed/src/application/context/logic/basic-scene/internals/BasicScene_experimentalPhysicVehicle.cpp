@@ -193,7 +193,7 @@ void BasicScene::experimentalPhysicVehicle() {
       vehicle->applyEngineForce(ii, 0.25f);
     }
 
-    body->setPosition({80, -40, 30});
+    body->setPosition({40, -80, 30});
 
     glm::quat orientation = glm::identity<glm::quat>();
     // 180 flip so it "face down"
@@ -221,7 +221,7 @@ void BasicScene::experimentalPhysicVehicle() {
 
       auto body = this->physic.world->getPhysicBodyManager().createAndAddBody(def);
 
-      body->setPosition({80, -40, 40});
+      body->setPosition({40, -80, 40});
     }
   }
 }

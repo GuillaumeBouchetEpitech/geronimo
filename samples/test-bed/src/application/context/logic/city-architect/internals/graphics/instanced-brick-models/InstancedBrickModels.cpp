@@ -57,7 +57,7 @@ void InstancedBrickModels::setMatricesData(const gero::graphics::camera::Camera:
   _matricesData = matricesData;
 }
 
-void InstancedBrickModels::createAlias(int32_t alias, const Vertices& vertices) {
+void InstancedBrickModels::createAlias(const std::string& alias, const Vertices& vertices) {
 
   if (_aliasedGeometriesMap.count(alias) > 0) {
     D_THROW(std::runtime_error, "alias already exist, alias: " << alias);
@@ -76,8 +76,8 @@ void InstancedBrickModels::createAlias(int32_t alias, const Vertices& vertices) 
   _aliasedGeometriesMap[alias] = newAlias;
 }
 
-void InstancedBrickModels::deleteAlias(int32_t alias) { _aliasedGeometriesMap.erase(alias); }
-void InstancedBrickModels::clearAlias(int32_t alias) {
+void InstancedBrickModels::deleteAlias(const std::string& alias) { _aliasedGeometriesMap.erase(alias); }
+void InstancedBrickModels::clearAlias(const std::string& alias) {
   auto it = _aliasedGeometriesMap.find(alias);
   if (it == _aliasedGeometriesMap.end()) {
     D_THROW(std::runtime_error, "alias not found, alias: " << alias);
@@ -86,7 +86,11 @@ void InstancedBrickModels::clearAlias(int32_t alias) {
   it->second->instanceVertices.clear();
 }
 
-void InstancedBrickModels::pushAlias(int32_t alias, const GeometryInstance& newInstance) {
+bool InstancedBrickModels::hasAlias(const std::string& alias) const {
+  return this->_aliasedGeometriesMap.count(alias) > 0;
+}
+
+void InstancedBrickModels::pushAlias(const std::string& alias, const GeometryInstance& newInstance) {
   auto it = _aliasedGeometriesMap.find(alias);
   if (it == _aliasedGeometriesMap.end()) {
     D_THROW(std::runtime_error, "alias not found, alias: " << alias);
@@ -103,7 +107,7 @@ void InstancedBrickModels::pushAlias(int32_t alias, const GeometryInstance& newI
   tmpData.instanceVertices.push_back(newInstance);
 }
 
-void InstancedBrickModels::sortAlias(int32_t alias, const gero::graphics::camera::ICamera& sceneCamera) {
+void InstancedBrickModels::sortAlias(const std::string& alias, const gero::graphics::camera::ICamera& sceneCamera) {
   auto it = _aliasedGeometriesMap.find(alias);
   if (it == _aliasedGeometriesMap.end()) {
     D_THROW(std::runtime_error, "alias not found, alias: " << alias);
@@ -140,7 +144,7 @@ void InstancedBrickModels::sortAlias(int32_t alias, const gero::graphics::camera
             });
 }
 
-void InstancedBrickModels::preAllocateAlias(int32_t alias, std::size_t newSize) {
+void InstancedBrickModels::preAllocateAlias(const std::string& alias, std::size_t newSize) {
   auto it = _aliasedGeometriesMap.find(alias);
   if (it == _aliasedGeometriesMap.end()) {
     D_THROW(std::runtime_error, "alias not found, alias: " << alias);

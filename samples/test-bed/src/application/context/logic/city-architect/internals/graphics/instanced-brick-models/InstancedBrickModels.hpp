@@ -12,6 +12,7 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 class InstancedBrickModels : public gero::NonCopyable {
 public:
@@ -41,12 +42,13 @@ public:
   void setMatricesData(const gero::graphics::camera::Camera::MatricesData& matricesData);
 
 public:
-  void createAlias(int32_t alias, const Vertices& vertices);
-  void deleteAlias(int32_t alias);
-  void clearAlias(int32_t alias);
-  void pushAlias(int32_t alias, const GeometryInstance& newInstance);
-  void sortAlias(int32_t alias, const gero::graphics::camera::ICamera& sceneCamera);
-  void preAllocateAlias(int32_t alias, std::size_t newSize);
+  void createAlias(const std::string& alias, const Vertices& vertices);
+  void deleteAlias(const std::string& alias);
+  bool hasAlias(const std::string& alias) const;
+  void clearAlias(const std::string& alias);
+  void pushAlias(const std::string& alias, const GeometryInstance& newInstance);
+  void sortAlias(const std::string& alias, const gero::graphics::camera::ICamera& sceneCamera);
+  void preAllocateAlias(const std::string& alias, std::size_t newSize);
 
 public:
   void clearAll();
@@ -63,7 +65,7 @@ private:
     InstanceVertices instanceVertices;
   };
 
-  std::unordered_map<int32_t, std::shared_ptr<AliasedGeometry>> _aliasedGeometriesMap;
+  std::unordered_map<std::string, std::shared_ptr<AliasedGeometry>> _aliasedGeometriesMap;
 
   bool _strictMode = true;
 };

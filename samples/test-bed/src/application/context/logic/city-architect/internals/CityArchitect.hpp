@@ -9,12 +9,15 @@
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/NonCopyable.hpp"
 
+#include <string_view>
+
 class CityArchitect : public AbstractCityArchitect {
 public:
   CityArchitect();
   ~CityArchitect() = default;
 
 public:
+  void loadJson(std::string_view inFilepath);
   void update(float deltaTimeSec) override;
   void render() override;
 

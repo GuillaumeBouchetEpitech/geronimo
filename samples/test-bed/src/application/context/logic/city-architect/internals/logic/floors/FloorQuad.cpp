@@ -57,6 +57,16 @@ FloorQuad FloorQuad::makeFloorConnection(const glm::vec3& v0, const glm::vec3& v
   return newFloorQuad;
 }
 
+
+FloorQuad FloorQuad::makeFloorFromMat4(const FloorQuad& inQuad, const glm::mat4& inTransform) {
+  FloorQuad newFloorQuad;
+  newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_negY)) = inTransform * glm::vec4(inQuad._vertices.at(gero::asValue(FloorVertexType::negX_negY)), 1.0f);
+  newFloorQuad._vertices.at(gero::asValue(FloorVertexType::posX_negY)) = inTransform * glm::vec4(inQuad._vertices.at(gero::asValue(FloorVertexType::posX_negY)), 1.0f);
+  newFloorQuad._vertices.at(gero::asValue(FloorVertexType::negX_posY)) = inTransform * glm::vec4(inQuad._vertices.at(gero::asValue(FloorVertexType::negX_posY)), 1.0f);
+  newFloorQuad._vertices.at(gero::asValue(FloorVertexType::posX_posY)) = inTransform * glm::vec4(inQuad._vertices.at(gero::asValue(FloorVertexType::posX_posY)), 1.0f);
+  return newFloorQuad;
+}
+
 //MARK: divideFromCoords
 bool FloorQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::vector<FloorQuad>& outFloorQuads) const
 {

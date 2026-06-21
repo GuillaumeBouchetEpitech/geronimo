@@ -366,19 +366,22 @@ bool FloorBuilder::connectFloors(
   return true;
 }
 
+//MARK:connectFloors
 bool FloorBuilder::connectFloors(
   const glm::vec3& inCenterA, const glm::vec3& inSizeA,
   const glm::vec3& inCenterB, const glm::vec3& inSizeB,
   const FloorBuilder::ConnectOpts& inOpts /*= ConnectOpts(0.0, 0.0f)*/
 ) {
-  std::vector<std::size_t> foundQuadsA;
-  std::vector<std::size_t> foundQuadsB;
+  std::vector<FloorQuad> foundQuadsA;
+  std::vector<FloorQuad> foundQuadsB;
   foundQuadsA.reserve(16);
   foundQuadsB.reserve(16);
 
   if (
-    !this->_model->getFloorsManager().findFloorQuads(inCenterA, inSizeA, foundQuadsA) ||
-    !this->_model->getFloorsManager().findFloorQuads(inCenterB, inSizeB, foundQuadsB) ||
+    // here using the BrickModel::findFloorQuads
+    // -> useful to connect 2 floor quads from 2 different instances
+    !this->_model->findFloorQuads(inCenterA, inSizeA, foundQuadsA) ||
+    !this->_model->findFloorQuads(inCenterB, inSizeB, foundQuadsB) ||
     foundQuadsA.size() > 1 ||
     foundQuadsB.size() > 1
   ) {
@@ -386,11 +389,12 @@ bool FloorBuilder::connectFloors(
   }
 
   return this->connectFloors(
-    this->_model->getFloorsManager()._floorQuads.at(foundQuadsA.at(0)),
-    this->_model->getFloorsManager()._floorQuads.at(foundQuadsB.at(0)),
+    foundQuadsA.at(0),
+    foundQuadsB.at(0),
     inOpts);
 }
 
+//MARK:connectFloors
 bool FloorBuilder::connectFloors(
   const glm::vec3& inCenterA, float inRadiusA,
   const glm::vec3& inCenterB, float inRadiusB,

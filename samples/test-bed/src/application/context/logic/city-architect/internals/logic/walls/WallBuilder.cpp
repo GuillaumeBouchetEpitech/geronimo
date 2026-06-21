@@ -60,7 +60,7 @@ WallBuilder::ExpectGenericQuadRef WallBuilder::makeWallAdjacentToFloor(
 ) {
   std::vector<std::size_t> matchingQuads;
   if (!this->_model->getFloorsManager().findFloorQuads(inCenter, inSize, matchingQuads)) {
-    D_MYLOG("no quad found");
+    // D_MYLOG("no quad found");
     return std::unexpected(QuadCreateError::out_of_range);
   }
   const FloorQuad& floorQuad = this->_model->getFloorsManager()._floorQuads.at(matchingQuads.front());
@@ -83,11 +83,11 @@ bool WallBuilder::removeWallFromOrigin(const glm::vec3& inOrigin, const glm::vec
 
   std::vector<std::size_t> matchingQuads;
   if (!this->_model->getWallsManager().findWallQuads(center, inSize, matchingQuads)) {
-    D_MYLOG("no quad found");
+    // D_MYLOG("no quad found");
     return false;
   }
 
-  D_MYLOG("quads found " << matchingQuads.size());
+  // D_MYLOG("quads found " << matchingQuads.size());
 
   // std::vector<glm::vec2> allCutCoords;
   // allCutCoords.reserve(4);
@@ -142,7 +142,7 @@ bool WallBuilder::removeWallFromOrigin(const glm::vec3& inOrigin, const glm::vec
     this->_model->getWallsManager()._wallQuads.erase(this->_model->getWallsManager()._wallQuads.begin() + *it);
   }
 
-  D_MYLOG("end");
+  // D_MYLOG("end");
   return true;
 }
 

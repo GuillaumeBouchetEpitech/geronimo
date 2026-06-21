@@ -102,9 +102,9 @@ void KeyframesManager::renderSpriteSheet(const glm::vec3& inOrigin)
 
   stackRenderer.flush();
 
-  wireFramesStack.pushLine(inOrigin + glm::vec3(0,0,0), inOrigin + glm::vec3(100,0,0), glm::vec3(1,0,0));
-  wireFramesStack.pushLine(inOrigin + glm::vec3(0,0,0), inOrigin + glm::vec3(0,100,0), glm::vec3(0,1,0));
-  wireFramesStack.pushLine(inOrigin + glm::vec3(0,0,0), inOrigin + glm::vec3(0,0,100), glm::vec3(0,0,1));
+  wireFramesStack.pushLine(inOrigin + glm::vec3(0,0,0), inOrigin + glm::vec3(50,0,0), glm::vec3(1,0,0));
+  wireFramesStack.pushLine(inOrigin + glm::vec3(0,0,0), inOrigin + glm::vec3(0,50,0), glm::vec3(0,1,0));
+  wireFramesStack.pushLine(inOrigin + glm::vec3(0,0,0), inOrigin + glm::vec3(0,0,50), glm::vec3(0,0,1));
 
 
   {

@@ -138,19 +138,19 @@ bool WallQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::
   glm::vec3 this_maxCoord = this->getVertex(WallQuad::VertexType::posAxis_posZ);
   glm::vec3 this_minCoord = this->getVertex(WallQuad::VertexType::negAxis_negZ);
 
-  D_MYLOG("this_maxCoord " << this_maxCoord);
-  D_MYLOG("this_minCoord " << this_minCoord);
+  // D_MYLOG("this_maxCoord " << this_maxCoord);
+  // D_MYLOG("this_minCoord " << this_minCoord);
 
   const bool isFacingX = glm::epsilonEqual(this_maxCoord.x, this_minCoord.x, 0.1f);
   const std::size_t hAxis = isFacingX ? 1 : 0;
   const std::size_t fAxis = isFacingX ? 0 : 1;
 
-  D_MYLOG(" -> hAxis " << hAxis);
+  // D_MYLOG(" -> hAxis " << hAxis);
 
   if (this_minCoord[hAxis] > this_maxCoord[hAxis]) {
     std::swap(this_minCoord[hAxis], this_maxCoord[hAxis]);
-    D_MYLOG(" -> this_maxCoord " << this_maxCoord);
-    D_MYLOG(" -> this_minCoord " << this_minCoord);
+    // D_MYLOG(" -> this_maxCoord " << this_maxCoord);
+    // D_MYLOG(" -> this_minCoord " << this_minCoord);
   }
 
   std::unordered_set<float> allCoordSetAxis;
@@ -166,7 +166,7 @@ bool WallQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::
 
   for (const glm::vec2& currCutCoord : inCutCoords)
   {
-    D_MYLOG(" -> currCutCoord " << currCutCoord.x);
+    // D_MYLOG(" -> currCutCoord " << currCutCoord.x);
 
     const bool isInRangeAxis = (
       currCutCoord.x > this_minCoord[hAxis] + k_rangeEpsilon &&
@@ -177,7 +177,7 @@ bool WallQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::
       currCutCoord.y < this_maxCoord.z - k_rangeEpsilon
     );
 
-    D_MYLOG(" -> isInRangeAxis " << isInRangeAxis);
+    // D_MYLOG(" -> isInRangeAxis " << isInRangeAxis);
 
     if (isInRangeAxis && isInRangeZ) {
       allCoordSetAxis.insert(currCutCoord.x);
@@ -196,7 +196,7 @@ bool WallQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::
     allCoordSetZ.size() == 2
   ) {
     // nothing to cut -> skip
-    D_MYLOG("nothing to cut -> skip");
+    // D_MYLOG("nothing to cut -> skip");
     return false;
   }
 
@@ -213,8 +213,8 @@ bool WallQuad::divideFromCoords(const std::vector<glm::vec2>& inCutCoords, std::
   std::sort(allCoordAxis.begin(), allCoordAxis.end());
   std::sort(allCoordZ.begin(), allCoordZ.end());
 
-  D_MYLOG("allCoordAxis.size() " << allCoordAxis.size());
-  D_MYLOG("allCoordZ.size() " << allCoordZ.size());
+  // D_MYLOG("allCoordAxis.size() " << allCoordAxis.size());
+  // D_MYLOG("allCoordZ.size() " << allCoordZ.size());
 
   const glm::vec3 this_normal = this->getNormal();
 
@@ -419,11 +419,11 @@ bool WallQuad::isColliding(const glm::vec3& inCenter, const glm::vec3& inSize) c
     // colliderMinCoord.z > maxCoord.z
   ) {
     // out of bounds (X/Y/Z)
-    D_MYLOG("[] out of bounds (X)");
-    D_MYLOG("   colliderMinCoord " << colliderMinCoord);
-    D_MYLOG("   colliderMaxCoord " << colliderMaxCoord);
-    D_MYLOG("   minCoord " << minCoord);
-    D_MYLOG("   maxCoord " << maxCoord);
+    // D_MYLOG("[] out of bounds (X)");
+    // D_MYLOG("   colliderMinCoord " << colliderMinCoord);
+    // D_MYLOG("   colliderMaxCoord " << colliderMaxCoord);
+    // D_MYLOG("   minCoord " << minCoord);
+    // D_MYLOG("   maxCoord " << maxCoord);
     return false;
   }
 
@@ -442,7 +442,7 @@ bool WallQuad::isColliding(const glm::vec3& inCenter, const glm::vec3& inSize) c
     // colliderMinCoord.z > maxCoord.z
   ) {
     // out of bounds (X/Y/Z)
-    D_MYLOG("[] out of bounds (Y)");
+    // D_MYLOG("[] out of bounds (Y)");
     return false;
   }
 
@@ -461,7 +461,7 @@ bool WallQuad::isColliding(const glm::vec3& inCenter, const glm::vec3& inSize) c
     colliderMinCoord.z > maxCoord.z
   ) {
     // out of bounds (X/Y/Z)
-    D_MYLOG("[] out of bounds (Z)");
+    // D_MYLOG("[] out of bounds (Z)");
     return false;
   }
 

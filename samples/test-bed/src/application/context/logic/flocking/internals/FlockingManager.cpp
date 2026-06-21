@@ -36,7 +36,7 @@ FlockingManager::FlockingManager() {
 
 void FlockingManager::update(float elapsedTime) {
 
-  glm::vec3 target = glm::vec3(80, -40, 30);
+  glm::vec3 target = glm::vec3(40, -80, 30);
 
   // constexpr float k_timePerTrailUpdate = 1.0f / 60.0f;
   constexpr float k_timePerTrailUpdate = 0.0f; // no wait

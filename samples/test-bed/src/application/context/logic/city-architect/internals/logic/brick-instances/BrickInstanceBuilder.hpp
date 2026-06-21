@@ -14,31 +14,15 @@
 //
 //
 
+enum class BrickInstanceError {
+  unknown
+};
+
+using ExpectBrickInstanceRef = std::expected<std::reference_wrapper<const BrickInstance>, BrickInstanceError>;
+
 class BrickInstanceBuilder
 {
 public:
-
-  // struct ConnectOpts {
-  //   float center;
-  //   float width;
-
-  //   ConnectOpts(float inCenter, float inWidth): center(inCenter), width(inWidth) {}
-  // };
-
-  // using MaybeGenericQuadRef = std::optional<std::reference_wrapper<WallQuad>>;
-
-  enum class BrickCreateError {
-    unknown //,
-    // is_blocked,
-    // not_aligned,
-    // out_of_range
-  };
-
-  using ExpectBrickInstanceRef = std::expected<std::reference_wrapper<const BrickInstance>, BrickCreateError>;
-
-  //
-  //
-  //
 
 public:
   BrickInstanceBuilder() = default;

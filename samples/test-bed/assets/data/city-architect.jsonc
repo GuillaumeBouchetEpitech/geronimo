@@ -1,0 +1,103 @@
+
+{
+
+  "bricks": [
+
+    {
+      "name": "simple-stairs",
+      "operations": [
+        { "type": "add-floor", "origin": [ 1.0,  1.0,  1.0], "size": [10, 10] },
+        { "type": "add-floor", "origin": [ 1.0, 51.0, 16.0], "size": [25, 10] },
+        { "type": "add-floor", "origin": [16.0,  1.0, 31.0], "size": [10, 10] },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [  2.0,  2.0,  1.0], "radius": 0.5 },
+          "searchB": { "center": [  2.0, 51.0, 16.0], "radius": 0.5 },
+          "options": { "axis": 6.0, "width": 10.0 }
+        },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [ 17.0, 51.0, 16.0], "radius": 0.5 },
+          "searchB": { "center": [ 17.0,  2.0, 31.0], "radius": 0.5 },
+          "options": { "axis": 21.0, "width": 10.0 }
+        }
+      ]
+    },
+
+    {
+      "name": "simple-floor",
+      "operations": [
+        { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [40, 60] }
+      ]
+    },
+
+    {
+      "name": "triple-stairs---now-connected",
+      "operations": [
+        { "type": "add-instance", "target": "simple-stairs", "origin": [0.0, 0.0, 0.0] },
+        { "type": "add-instance", "target": "simple-stairs", "origin": [0.0, 0.0, 30.0] },
+        { "type": "add-instance", "target": "simple-stairs", "origin": [0.0, 0.0, 60.0] },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [  3.0,  3.0, 31.0], "radius": 0.5 },
+          "searchB": { "center": [ 18.0,  3.0, 31.0], "radius": 0.5 }
+        },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [  3.0,  3.0, 61.0], "radius": 0.5 },
+          "searchB": { "center": [ 18.0,  3.0, 61.0], "radius": 0.5 }
+        },
+        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0,  1.0] },
+        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0, 31.0] },
+        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0, 61.0] },
+        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0, 91.0] },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [  3.0,  3.0, 1.0], "radius": 0.5 },
+          "searchB": { "center": [ 33.0,  3.0, 1.0], "radius": 0.5 }
+        },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [  3.0,  3.0, 31.0], "radius": 0.5 },
+          "searchB": { "center": [ 33.0,  3.0, 31.0], "radius": 0.5 }
+        },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [  3.0,  3.0, 61.0], "radius": 0.5 },
+          "searchB": { "center": [ 33.0,  3.0, 61.0], "radius": 0.5 }
+        },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [ 18.0,  3.0, 91.0], "radius": 0.5 },
+          "searchB": { "center": [ 33.0,  3.0, 91.0], "radius": 0.5 }
+        }
+      ]
+    }
+
+  ],
+
+  "scene": [
+
+    {
+      "target": "simple-stairs",
+      "origin": [100,-60,0]
+    },
+    {
+      "target": "simple-floor",
+      "origin": [100,-140,0]
+    },
+    {
+      "target": "triple-stairs---now-connected",
+      "origin": [160,-60,0]
+    },
+    {
+      "target": "triple-stairs---now-connected",
+      "transforms": [
+        { "type": "translate", "pos": [302,2,0] },
+        { "type": "rotate", "axis": [0,0,1], "angle": 180 }
+      ]
+    }
+
+  ]
+
+}

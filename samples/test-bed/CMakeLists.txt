@@ -64,6 +64,7 @@ add_executable(${PROJECT_NAME}
 
     # find ./src/application/context/logic/city-architect -name *.cpp >> CMakeLists.txt
     ./src/application/context/logic/city-architect/AbstractCityArchitect.cpp
+    ./src/application/context/logic/city-architect/internals/CityArchitect_loadJson.cpp
     ./src/application/context/logic/city-architect/internals/logic/BrickModel.cpp
     ./src/application/context/logic/city-architect/internals/logic/walls/WallQuad.cpp
     ./src/application/context/logic/city-architect/internals/logic/walls/WallBuilder.cpp

@@ -166,9 +166,9 @@ void BasicScene::render() {
     {
       auto& wireFrames = stackRenderers.getWireFramesStack();
 
-      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(1000, 0, 0), glm::vec3(1, 0, 0));
-      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 1000, 0), glm::vec3(0, 1, 0));
-      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1000), glm::vec3(0, 0, 1));
+      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(50, 0, 0), glm::vec3(1, 0, 0));
+      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 50, 0), glm::vec3(0, 1, 0));
+      wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 0, 50), glm::vec3(0, 0, 1));
 
       const auto getGroundPos = [this](const glm::vec3& inOrigin) {
         gero::physics::RayCaster::RayCastParams params(inOrigin + glm::vec3(0, 0, +100),

@@ -36,6 +36,9 @@ public:
   [[nodiscard]]
   static FloorQuad makeFloorConnection(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3);
 
+  [[nodiscard]]
+  static FloorQuad makeFloorFromMat4(const FloorQuad& inQuad, const glm::mat4& inTransform);
+
 public:
 
   // deduce new floor quad(s)

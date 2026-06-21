@@ -1,7 +1,7 @@
 
 #include "BrickInstanceBuilder.hpp"
 
-BrickInstanceBuilder::ExpectBrickInstanceRef BrickInstanceBuilder::addInstance(
+ExpectBrickInstanceRef BrickInstanceBuilder::addInstance(
   const glm::vec3& inPos,
   const glm::quat& inQuat,
   AbstractBrickModelWeakRef inRef
