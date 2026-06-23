@@ -98,7 +98,11 @@ void Scene::_renderScene() {
       });
 
       context.logic.artificialStupiditySim->renderScene();
+
+
+      GlContext::disable(States::cullFace);
       context.logic.cityArchitect->render();
+      GlContext::enable(States::cullFace);
     }
 
     scene.getGeometriesStackRenderer().renderAll();

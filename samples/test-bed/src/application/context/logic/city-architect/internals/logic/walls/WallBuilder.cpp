@@ -22,7 +22,7 @@ WallBuilder::ExpectGenericQuadRef WallBuilder::addWallFromOrigin(
   if (inWallOrientation == WallOrientation::posY || inWallOrientation == WallOrientation::negY) {
     std::swap(size.x, size.y);
   }
-  const glm::vec3 center = inOrigin + size * 0.5f;
+  const glm::vec3 center = inOrigin + size * 0.49f;
   if (this->_model->getWallsManager().collideWallQuads(center, size)) {
     D_MYLOG("is blocked");
     return std::unexpected(QuadCreateError::is_blocked);
@@ -58,12 +58,12 @@ WallBuilder::ExpectGenericQuadRef WallBuilder::makeWallAdjacentToFloor(
   WallOrientation inWallOrientation,
   float inHeight
 ) {
-  std::vector<std::size_t> matchingQuads;
-  if (!this->_model->getFloorsManager().findFloorQuads(inCenter, inSize, matchingQuads)) {
+  std::vector<FloorQuad> matchingQuads;
+  if (!this->_model->findFloorQuads(inCenter, inSize, matchingQuads)) {
     // D_MYLOG("no quad found");
     return std::unexpected(QuadCreateError::out_of_range);
   }
-  const FloorQuad& floorQuad = this->_model->getFloorsManager()._floorQuads.at(matchingQuads.front());
+  const FloorQuad& floorQuad = matchingQuads.front();
   return this->makeWallAdjacentToFloor(floorQuad, inWallOrientation, inHeight);
 }
 

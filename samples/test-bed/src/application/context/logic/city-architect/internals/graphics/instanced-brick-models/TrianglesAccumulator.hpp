@@ -1,0 +1,175 @@
+
+#pragma once
+
+#include "InstancedBrickModels.hpp"
+
+// #include "geronimo/graphics/opengl/Geometry.hpp"
+// #include "geronimo/graphics/opengl/ShaderProgram.hpp"
+// #include "geronimo/graphics/camera/Camera.hpp"
+#include "geronimo/helpers/GLMath.hpp"
+#include "geronimo/system/NonCopyable.hpp"
+
+#include <memory>
+#include <vector>
+
+class ITrianglesAccumulator {
+
+public:
+  virtual void pushTriangle(const glm::vec3& posA,
+                            const glm::vec3& posB,
+                            const glm::vec3& posC,
+                            const glm::vec3& colorA,
+                            const glm::vec3& colorB,
+                            const glm::vec3& colorC) = 0;
+
+  virtual void
+  pushTriangle(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& posC, const glm::vec3& color) = 0;
+
+  // virtual void
+  // push3dQuad(
+  //   const glm::vec3& posA,
+  //   const glm::vec3& posB,
+  //   const glm::vec3& posC,
+  //   const glm::vec3& posD,
+  //   const glm::vec3& color) = 0;
+
+// public:
+//   virtual void pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec3& color, float z) = 0;
+//   virtual void pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec3& color) = 0;
+
+// public:
+//   virtual void pushCircle(const glm::vec2& center, float radius, const glm::vec3& color, float z) = 0;
+//   virtual void pushCircle(const glm::vec2& center, float radius, const glm::vec3& color) = 0;
+
+// public:
+//   virtual void pushThickTriangle2dLine(const glm::vec2& posA,
+//                                        const glm::vec2& posB,
+//                                        float thicknessA,
+//                                        float thicknessB,
+//                                        const glm::vec3& colorA,
+//                                        const glm::vec3& colorB,
+//                                        float z) = 0;
+//   virtual void pushThickTriangle2dLine(const glm::vec2& posA,
+//                                        const glm::vec2& posB,
+//                                        float thicknessA,
+//                                        float thicknessB,
+//                                        const glm::vec3& colorA,
+//                                        const glm::vec3& colorB) = 0;
+//   virtual void pushThickTriangle2dLine(
+//     const glm::vec2& posA, const glm::vec2& posB, float thickness, const glm::vec3& color, float z) = 0;
+//   virtual void
+//   pushThickTriangle2dLine(const glm::vec2& posA, const glm::vec2& posB, float thickness, const glm::vec3& color) = 0;
+
+public:
+  virtual void pushThickTriangle3dLine(const glm::vec3& posA,
+                                       const glm::vec3& posB,
+                                       float thicknessA,
+                                       float thicknessB,
+                                       const glm::vec3& colorA,
+                                       const glm::vec3& colorB) = 0;
+  virtual void
+  pushThickTriangle3dLine(const glm::vec3& posA, const glm::vec3& posB, float thickness, const glm::vec3& color) = 0;
+  // virtual void
+  // pushThickTriangle3dCross(const glm::vec3& center,
+  //                              float halfExtent,
+  //                              float thickness,
+  //                              const glm::vec3& color) = 0;
+};
+
+struct TrianglesAccumulator : public ITrianglesAccumulator, public gero::NonCopyable {
+
+public:
+  TrianglesAccumulator();
+//   void initialize(gero::graphics::opengl::IUnboundShaderProgram& shader, const gero::graphics::opengl::Geometry::Definition& geoDef);
+
+public:
+  void pushTriangle(const glm::vec3& posA,
+                    const glm::vec3& posB,
+                    const glm::vec3& posC,
+                    const glm::vec3& colorA,
+                    const glm::vec3& colorB,
+                    const glm::vec3& colorC) override;
+
+  void
+  pushTriangle(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& posC, const glm::vec3& color) override;
+
+  // void
+  // push3dQuad(
+  //   const glm::vec3& posA,
+  //   const glm::vec3& posB,
+  //   const glm::vec3& posC,
+  //   const glm::vec3& posD,
+  //   const glm::vec4& color) override;
+
+// public:
+//   void pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec4& color, float z) override;
+//   void pushQuad(const glm::vec2& center, const glm::vec2& size, const glm::vec4& color) override;
+
+// public:
+//   void pushCircle(const glm::vec2& center, float radius, const glm::vec4& color, float z) override;
+//   void pushCircle(const glm::vec2& center, float radius, const glm::vec4& color) override;
+
+// public:
+//   void pushThickTriangle2dLine(const glm::vec2& posA,
+//                                const glm::vec2& posB,
+//                                float thicknessA,
+//                                float thicknessB,
+//                                const glm::vec3& colorA,
+//                                const glm::vec3& colorB,
+//                                float z) override;
+//   void pushThickTriangle2dLine(const glm::vec2& posA,
+//                                const glm::vec2& posB,
+//                                float thicknessA,
+//                                float thicknessB,
+//                                const glm::vec3& colorA,
+//                                const glm::vec3& colorB) override;
+//   void pushThickTriangle2dLine(
+//     const glm::vec2& posA, const glm::vec2& posB, float thickness, const glm::vec3& color, float z) override;
+//   void pushThickTriangle2dLine(const glm::vec2& posA,
+//                                const glm::vec2& posB,
+//                                float thickness,
+//                                const glm::vec3& color) override;
+
+public:
+  void pushThickTriangle3dLine(const glm::vec3& posA,
+                               const glm::vec3& posB,
+                               float thicknessA,
+                               float thicknessB,
+                               const glm::vec3& colorA,
+                               const glm::vec3& colorB) override;
+  void pushThickTriangle3dLine(const glm::vec3& posA,
+                               const glm::vec3& posB,
+                               float thickness,
+                               const glm::vec3& color) override;
+  // void pushThickTriangle3dCross(const glm::vec3& center,
+  //                              float halfExtent,
+  //                              float thickness,
+  //                              const glm::vec4& color) override;
+
+// public:
+//   void flush();
+
+// public:
+//   bool canRender() const;
+
+// public:
+//   void startSafeMode();
+//   void stopSafeMode();
+
+// private:
+//   struct Vertex {
+//     glm::vec3 position;
+//     glm::vec4 color;
+
+//     Vertex(const glm::vec3& in_position, const glm::vec4& in_color) : position(in_position), color(in_color) {}
+//   };
+
+  using Vertices = InstancedBrickModels::Vertices;
+
+// private:
+public:
+  // gero::graphics::opengl::Geometry _geometry;
+  Vertices _vertices;
+
+  // bool _safeMode = false;
+};

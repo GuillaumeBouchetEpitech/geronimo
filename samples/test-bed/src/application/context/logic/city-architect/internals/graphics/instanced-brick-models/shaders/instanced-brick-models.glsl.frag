@@ -17,5 +17,5 @@ void main(void)
   invAlpha = invAlpha == 0.0 ? 1.0 : invAlpha * 0.5;
   out_color = v_color;
   out_position = vec4(v_worldSpacePosition, 1.0);
-  out_normal = vec4(v_worldSpaceNormal * 0.5 + 0.5, v_lightMode * 1.0 / invAlpha);
+  out_normal = vec4(v_worldSpaceNormal * 0.5 + 0.5, v_lightMode * 1.0 / max(0.01, invAlpha));
 }

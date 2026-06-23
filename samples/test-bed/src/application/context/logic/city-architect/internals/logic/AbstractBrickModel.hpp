@@ -55,7 +55,7 @@ protected:
   virtual BrickInstancesManager& getBrickInstancesManager() = 0;
 
 public:
-  virtual void buildVertices(IWireFramesStackRenderer& inWireFrames) const = 0;
+  virtual void buildVertices(IWireFramesStackRenderer& inWireFrames, ITrianglesAccumulator& inTriangles) const = 0;
   virtual void buildInstances(const glm::vec3& inOrigin, const glm::quat& inQuat, InstancedBrickModels& inInstancedBrickModels) const = 0;
   virtual void render(const glm::mat4& transform) const = 0;
 

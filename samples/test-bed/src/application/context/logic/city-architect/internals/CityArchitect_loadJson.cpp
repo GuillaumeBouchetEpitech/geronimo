@@ -158,6 +158,76 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
             }
           }
         }
+        else if (opType == "add-wall") {
+          glm::vec3 wall_origin;
+          glm::vec2 wall_size;
+          std::string wall_orientation;
+          jsonUtils::fvec3::get(currOpval, "origin", wall_origin);
+          jsonUtils::fvec2::get(currOpval, "size", wall_size);
+          jsonUtils::str::get(currOpval, "orientation", wall_orientation);
+
+          WallOrientation orientation = WallOrientation::posX;
+          if (wall_orientation == "posX") { orientation = WallOrientation::posX; }
+          else if (wall_orientation == "negX") { orientation = WallOrientation::negX; }
+          else if (wall_orientation == "posY") { orientation = WallOrientation::posY; }
+          else if (wall_orientation == "negY") { orientation = WallOrientation::negY; }
+          else { D_MYERR(" -> unknown orientation?"); break; }
+
+          currWBuilder.addWallFromOrigin(wall_origin, wall_size, orientation);
+        }
+        else if (opType == "add-adjacent-wall") {
+
+          jsonUtils::common::propertyExist(currOpval, "search");
+          const auto search_val = currOpval["search"];
+          glm::vec3 search_center;
+          float search_radius;
+          jsonUtils::fvec3::get(search_val, "center", search_center);
+          jsonUtils::float32::get(search_val, "radius", search_radius);
+
+          jsonUtils::common::propertyExist(currOpval, "orientations");
+          if (!currOpval["orientations"].is_array()) {
+            D_MYERR("===> orientations not an array");
+            continue;
+          }
+
+          std::vector<WallOrientation> allOrientations;
+          allOrientations.reserve(4);
+
+          for (auto orientationVal : currOpval["orientations"]) {
+            if (!orientationVal.is_string()) {
+              D_MYERR("===> orientations not a string");
+              continue;
+            }
+
+            std::string wall_orientation;
+            orientationVal.get_to(wall_orientation);
+
+            WallOrientation orientation = WallOrientation::posX;
+            if (wall_orientation == "posX") { orientation = WallOrientation::posX; }
+            else if (wall_orientation == "negX") { orientation = WallOrientation::negX; }
+            else if (wall_orientation == "posY") { orientation = WallOrientation::posY; }
+            else if (wall_orientation == "negY") { orientation = WallOrientation::negY; }
+            else { D_MYERR(" -> unknown orientation?"); break; }
+
+            allOrientations.push_back(orientation);
+          }
+
+          float height;
+          jsonUtils::float32::get(currOpval, "height", height);
+
+          for (WallOrientation currOrientation : allOrientations) {
+            currWBuilder.makeWallAdjacentToFloor(search_center, search_radius, currOrientation, height);
+          }
+        }
+        else if (opType == "remove-wall") {
+
+          glm::vec3 wall_origin;
+          glm::vec3 wall_size;
+          jsonUtils::fvec3::get(currOpval, "origin", wall_origin);
+          jsonUtils::fvec3::get(currOpval, "size", wall_size);
+
+          currWBuilder.removeWallFromOrigin(wall_origin, wall_size);
+        }
         else if (opType == "connect-floors") {
 
           jsonUtils::common::propertyExist(currOpval, "searchA");
@@ -252,6 +322,9 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
 
       }
 
+      currBuilder.mergeAllAdjacentQuads();
+      currWBuilder.mergeAllAdjacentQuads();
+
 
       // {
       //   this->_wireFramesStackRenderer._vertices.clear();
@@ -315,9 +388,12 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
         if (!this->_instancedBrickModels.hasAlias(targetVal)) {
 
           this->_wireFramesStackRenderer._vertices.clear();
-          targetResult.value()->buildVertices(this->_wireFramesStackRenderer);
+          this->_trianglesAccumulator._vertices.clear();
+          targetResult.value()->buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-          this->_instancedBrickModels.createAlias(targetVal, this->_wireFramesStackRenderer._vertices);
+          D_MYLOG("this->_trianglesAccumulator " << this->_trianglesAccumulator._vertices.size());
+
+          this->_instancedBrickModels.createAlias(targetVal, this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
         }
 
         InstancedBrickModels::GeometryInstance instance;

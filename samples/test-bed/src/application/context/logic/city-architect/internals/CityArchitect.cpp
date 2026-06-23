@@ -130,9 +130,10 @@ CityArchitect::CityArchitect() {
 
     {
       this->_wireFramesStackRenderer._vertices.clear();
-      constModel.buildVertices(this->_wireFramesStackRenderer);
+      this->_trianglesAccumulator._vertices.clear();
+      constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices);
+      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
 
       InstancedBrickModels::GeometryInstance instance;
 
@@ -183,9 +184,10 @@ CityArchitect::CityArchitect() {
 
     {
       this->_wireFramesStackRenderer._vertices.clear();
-      constModel.buildVertices(this->_wireFramesStackRenderer);
+      this->_trianglesAccumulator._vertices.clear();
+      constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices);
+      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
 
       InstancedBrickModels::GeometryInstance instance;
 
@@ -240,9 +242,10 @@ CityArchitect::CityArchitect() {
 
     {
       this->_wireFramesStackRenderer._vertices.clear();
-      constModel.buildVertices(this->_wireFramesStackRenderer);
+      this->_trianglesAccumulator._vertices.clear();
+      constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices);
+      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
 
       InstancedBrickModels::GeometryInstance instance;
 

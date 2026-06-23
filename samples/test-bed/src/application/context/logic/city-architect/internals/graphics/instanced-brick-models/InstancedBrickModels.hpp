@@ -42,12 +42,12 @@ public:
   void setMatricesData(const gero::graphics::camera::Camera::MatricesData& matricesData);
 
 public:
-  void createAlias(const std::string& alias, const Vertices& vertices);
+  void createAlias(const std::string& alias, const Vertices& vertices, const Vertices& vertices_triangles);
   void deleteAlias(const std::string& alias);
   bool hasAlias(const std::string& alias) const;
   void clearAlias(const std::string& alias);
   void pushAlias(const std::string& alias, const GeometryInstance& newInstance);
-  void sortAlias(const std::string& alias, const gero::graphics::camera::ICamera& sceneCamera);
+  // void sortAlias(const std::string& alias, const gero::graphics::camera::ICamera& sceneCamera);
   void preAllocateAlias(const std::string& alias, std::size_t newSize);
 
 public:
@@ -56,13 +56,16 @@ public:
 
 private:
   std::shared_ptr<gero::graphics::opengl::ShaderProgram> _shader = nullptr;
-  gero::graphics::opengl::Geometry::Definition _geomDef;
+  gero::graphics::opengl::Geometry::Definition _geomDef_wireframes;
+  gero::graphics::opengl::Geometry::Definition _geomDef_triangles;
   gero::graphics::camera::Camera::MatricesData _matricesData;
 
 private:
   struct AliasedGeometry {
-    gero::graphics::opengl::Geometry geometry;
-    InstanceVertices instanceVertices;
+    gero::graphics::opengl::Geometry geometry_wireframes;
+    gero::graphics::opengl::Geometry geometry_triangles;
+    InstanceVertices instanceVertices_wireframes;
+    InstanceVertices instanceVertices_triangles;
   };
 
   std::unordered_map<std::string, std::shared_ptr<AliasedGeometry>> _aliasedGeometriesMap;

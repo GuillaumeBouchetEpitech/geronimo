@@ -5,6 +5,7 @@
 
 #include "graphics/instanced-brick-models/InstancedBrickModels.hpp"
 #include "graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+#include "graphics/instanced-brick-models/TrianglesAccumulator.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/NonCopyable.hpp"
@@ -27,5 +28,6 @@ private:
 
   InstancedBrickModels _instancedBrickModels;
   WireFramesStackRenderer _wireFramesStackRenderer;
+  TrianglesAccumulator _trianglesAccumulator;
 
 };

@@ -6,6 +6,7 @@
 #include "brick-instances/BrickInstancesManager.hpp"
 
 #include "../graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+#include "../graphics/instanced-brick-models/TrianglesAccumulator.hpp"
 
 #include "AbstractBrickModel.hpp"
 
@@ -34,7 +35,7 @@ private:
   const std::string& getName() const override {return _name; }
 
 public:
-  void buildVertices(IWireFramesStackRenderer& inWireFrames) const override;
+  void buildVertices(IWireFramesStackRenderer& inWireFrames, ITrianglesAccumulator& inTriangles) const override;
   void buildInstances(const glm::vec3& inOrigin, const glm::quat& inQuat, InstancedBrickModels& inInstancedBrickModels) const override;
   void render(const glm::mat4& transform) const override;
 

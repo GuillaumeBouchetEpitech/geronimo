@@ -6,30 +6,100 @@
     {
       "name": "simple-stairs",
       "operations": [
-        { "type": "add-floor", "origin": [ 1.0,  1.0,  1.0], "size": [10, 10] },
-        { "type": "add-floor", "origin": [ 1.0, 51.0, 16.0], "size": [25, 10] },
-        { "type": "add-floor", "origin": [16.0,  1.0, 31.0], "size": [10, 10] },
+        { "type": "add-floor", "origin": [ 0.0,  0.0,  0.0], "size": [10, 10] },
+        { "type": "add-floor", "origin": [ 0.0, 50.0, 15.0], "size": [25, 10] },
+        { "type": "add-floor", "origin": [15.0,  0.0, 30.0], "size": [10, 10] },
         {
           "type": "connect-floors",
-          "searchA": { "center": [  2.0,  2.0,  1.0], "radius": 0.5 },
-          "searchB": { "center": [  2.0, 51.0, 16.0], "radius": 0.5 },
-          "options": { "axis": 6.0, "width": 10.0 }
+          "searchA": { "center": [  0.0,  0.0,  0.0], "radius": 0.5 },
+          "searchB": { "center": [  0.0, 50.0, 15.0], "radius": 0.5 },
+          "options": { "axis": 5.0, "width": 10.0 }
         },
         {
           "type": "connect-floors",
-          "searchA": { "center": [ 17.0, 51.0, 16.0], "radius": 0.5 },
-          "searchB": { "center": [ 17.0,  2.0, 31.0], "radius": 0.5 },
-          "options": { "axis": 21.0, "width": 10.0 }
+          "searchA": { "center": [ 15.0, 50.0, 15.0], "radius": 0.5 },
+          "searchB": { "center": [ 15.0,  0.0, 30.0], "radius": 0.5 },
+          "options": { "axis": 20.0, "width": 10.0 }
+        },
+
+        // lowest floor walls
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 0.0, 0.0, 0.0], "radius": 0.5 },
+          "orientations": ["negX", "negY"],
+          "height": 4.0
+        },
+
+        // middle floor walls
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 0.0, 50.0, 15.0], "radius": 0.5 },
+          "orientations": ["posX", "posY", "negX"],
+          "height": 4.0
+        },
+        { "type": "add-wall", "origin": [10,50,15], "size": [5,4], "orientation": "negY" },
+
+        // highest floor walls
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 20.0, 0.0, 30.0], "radius": 0.5 },
+          "orientations": ["negY"],
+          "height": 4.0
+        },
+
+        // first connection
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 5.0, 25.0, 7.5], "radius": 4.0 },
+          "orientations": ["posX", "negX"],
+          "height": 4.0
+        },
+
+        // second connection
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 20.0, 25.0, 22.5], "radius": 5.0 },
+          "orientations": ["posX", "negX"],
+          "height": 4.0
         }
+
+        // { "type": "remove-wall", "origin": [0,49,10], "size": [10,2,5] },
+        // { "type": "remove-wall", "origin": [15,49,10], "size": [10,2,5] }
       ]
     },
 
     {
       "name": "simple-floor",
       "operations": [
+
+        { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [40, 60] },
+
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 5.0, 5.0, 0.0], "radius": 0.5 },
+          "orientations": ["posY", "negY", "negX"],
+          "height": 30.0
+        },
+        // { "type": "add-wall", "origin": [0,10,0], "size": [50,30], "orientation": "posX" },
+
+        { "type": "remove-wall", "origin": [-1,20,5], "size": [2,30,10] },
+        { "type": "remove-wall", "origin": [10,-1,5], "size": [20,2,10] },
+        { "type": "remove-wall", "origin": [10,59,5], "size": [20,2,10] },
+
+        { "type": "remove-wall", "origin": [-1,0,0], "size": [2,10,15] }
+
+        // { "type": "add-wall", "origin": [0,0,15], "size": [10,15], "orientation": "posX" }
+
+      ]
+    },
+
+    {
+      "name": "simple-rooftop",
+      "operations": [
         { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [40, 60] }
       ]
     },
+
 
     {
       "name": "triple-stairs---now-connected",
@@ -39,38 +109,84 @@
         { "type": "add-instance", "target": "simple-stairs", "origin": [0.0, 0.0, 60.0] },
         {
           "type": "connect-floors",
-          "searchA": { "center": [  3.0,  3.0, 31.0], "radius": 0.5 },
-          "searchB": { "center": [ 18.0,  3.0, 31.0], "radius": 0.5 }
+          "searchA": { "center": [  0.0,  0.0, 30.0], "radius": 0.5 },
+          "searchB": { "center": [ 15.0,  0.0, 30.0], "radius": 0.5 }
         },
         {
           "type": "connect-floors",
-          "searchA": { "center": [  3.0,  3.0, 61.0], "radius": 0.5 },
-          "searchB": { "center": [ 18.0,  3.0, 61.0], "radius": 0.5 }
+          "searchA": { "center": [  0.0,  0.0, 60.0], "radius": 0.5 },
+          "searchB": { "center": [ 15.0,  0.0, 60.0], "radius": 0.5 }
         },
-        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0,  1.0] },
-        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0, 31.0] },
-        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0, 61.0] },
-        { "type": "add-instance", "target": "simple-floor", "origin": [31.0, 1.0, 91.0] },
+        { "type": "add-instance", "target": "simple-floor", "origin": [30.0, 0.0,  0.0] },
+        { "type": "add-instance", "target": "simple-floor", "origin": [30.0, 0.0, 30.0] },
+        { "type": "add-instance", "target": "simple-floor", "origin": [30.0, 0.0, 60.0] },
+        { "type": "add-instance", "target": "simple-floor", "origin": [30.0, 0.0, 90.0] },
         {
           "type": "connect-floors",
-          "searchA": { "center": [  3.0,  3.0, 1.0], "radius": 0.5 },
-          "searchB": { "center": [ 33.0,  3.0, 1.0], "radius": 0.5 }
-        },
-        {
-          "type": "connect-floors",
-          "searchA": { "center": [  3.0,  3.0, 31.0], "radius": 0.5 },
-          "searchB": { "center": [ 33.0,  3.0, 31.0], "radius": 0.5 }
+          "searchA": { "center": [  0.0,  0.0, 0.0], "radius": 0.5 },
+          "searchB": { "center": [ 30.0,  0.0, 0.0], "radius": 0.5 }
         },
         {
           "type": "connect-floors",
-          "searchA": { "center": [  3.0,  3.0, 61.0], "radius": 0.5 },
-          "searchB": { "center": [ 33.0,  3.0, 61.0], "radius": 0.5 }
+          "searchA": { "center": [ 20.0,  0.0, 30.0], "radius": 0.5 },
+          "searchB": { "center": [ 30.0,  0.0, 30.0], "radius": 0.5 }
         },
         {
           "type": "connect-floors",
-          "searchA": { "center": [ 18.0,  3.0, 91.0], "radius": 0.5 },
-          "searchB": { "center": [ 33.0,  3.0, 91.0], "radius": 0.5 }
+          "searchA": { "center": [ 20.0,  0.0, 60.0], "radius": 0.5 },
+          "searchB": { "center": [ 30.0,  0.0, 60.0], "radius": 0.5 }
+        },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [ 15.0,  0.0, 90.0], "radius": 0.5 },
+          "searchB": { "center": [ 30.0,  0.0, 90.0], "radius": 0.5 }
+        },
+
+        { "type": "add-instance", "target": "simple-rooftop", "origin": [30.0, 0.0, 120.0] },
+
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 11.0, 0.0, 0.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 4.0
+        },
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 11.0, 0.0, 30.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 4.0
+        },
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 11.0, 0.0, 60.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 4.0
+        },
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 29.5, 0.0, 30.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 4.0
+        },
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 29.5, 0.0, 60.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 4.0
+        },
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 29.5, 0.0, 90.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 4.0
+        },
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 20.0, 0.0, 90.0], "radius": 0.5 },
+          "orientations": ["negX"],
+          "height": 4.0
         }
+
       ]
     }
 
@@ -80,11 +196,15 @@
 
     {
       "target": "simple-stairs",
-      "origin": [100,-60,0]
+      "origin": [160,60,0]
     },
     {
       "target": "simple-floor",
-      "origin": [100,-140,0]
+      "origin": [200,60,0]
+    },
+    {
+      "target": "simple-rooftop",
+      "origin": [250,60,0]
     },
     {
       "target": "triple-stairs---now-connected",
@@ -93,7 +213,7 @@
     {
       "target": "triple-stairs---now-connected",
       "transforms": [
-        { "type": "translate", "pos": [302,2,0] },
+        { "type": "translate", "pos": [300,0,0] },
         { "type": "rotate", "axis": [0,0,1], "angle": 180 }
       ]
     }

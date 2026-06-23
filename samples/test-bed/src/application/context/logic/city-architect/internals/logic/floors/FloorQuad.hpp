@@ -2,6 +2,7 @@
 #pragma once
 
 #include "../../graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+#include "../../graphics/instanced-brick-models/TrianglesAccumulator.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/asValue.hpp"
@@ -93,6 +94,7 @@ public:
   // render
 
   void buildVertices(IWireFramesStackRenderer& inWireFrames) const;
+  void buildVertices_triangles(ITrianglesAccumulator& inTriangles) const;
   void render() const;
 
 private:

@@ -3,7 +3,7 @@
 
 void GraphicSceneRenderer::initialize(uint32_t width, uint32_t height) {
 
-  _camera.setPerspective(70.0f, 1.0f, 200.0f);
+  _camera.setPerspective(70.0f, 1.0f, 500.0f);
   _camera.setSize(width, height);
 
   _stackRenderers.initialize();

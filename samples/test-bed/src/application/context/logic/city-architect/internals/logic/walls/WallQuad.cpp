@@ -523,6 +523,47 @@ void WallQuad::buildVertices(IWireFramesStackRenderer& inWireFrames) const {
   inWireFrames.pushLine(center, center + normal, glm::vec3(1.0f, 1.0f, 0.5f));
 }
 
+void WallQuad::buildVertices_triangles(ITrianglesAccumulator& inTriangles) const {
+
+  const glm::vec3 tmpColor = glm::vec3(1.0f, 0.6f, 0.3f) * 0.5f;
+
+  const glm::vec3 center = this->getCenter();
+  // const glm::vec3 size = this->getSize();
+  const glm::vec3 normal = this->getNormal();
+
+  inTriangles.pushThickTriangle3dLine(center, center + normal, 0.25f, glm::vec3(1.0f, 1.0f, 0.5f) * 0.5f);
+
+  inTriangles.pushTriangle(
+    this->_vertices.at(0),
+    this->_vertices.at(2),
+    this->_vertices.at(1),
+    tmpColor
+  );
+
+  inTriangles.pushTriangle(
+    this->_vertices.at(0),
+    this->_vertices.at(3),
+    this->_vertices.at(2),
+    tmpColor
+  );
+
+  // inTriangles.pushTriangle(
+  //   this->_vertices.at(0),
+  //   this->_vertices.at(1),
+  //   this->_vertices.at(2),
+  //   tmpColor
+  // );
+
+  // for (std::size_t ii = 0; ii < this->_vertices.size(); ++ii) {
+  //   const std::size_t jj = (ii + 1) % this->_vertices.size();
+  //   inWireFrames.pushLine(
+  //     this->_vertices.at(ii),
+  //     this->_vertices.at(jj),
+  //     tmpColor);
+  // }
+
+}
+
 //MARK: render
 void WallQuad::render() const {
 

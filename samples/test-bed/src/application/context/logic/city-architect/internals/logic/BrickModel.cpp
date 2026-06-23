@@ -60,7 +60,7 @@ bool BrickModel::findFloorQuads(const glm::vec3& inCenter, float inRadius, std::
 }
 
 //MARK:buildVertices
-void BrickModel::buildVertices(IWireFramesStackRenderer& inWireFrames) const
+void BrickModel::buildVertices(IWireFramesStackRenderer& inWireFrames, ITrianglesAccumulator& inTriangles) const
 {
   // axis
   inWireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(10, 0, 0), glm::vec3(1, 0, 0));
@@ -69,10 +69,12 @@ void BrickModel::buildVertices(IWireFramesStackRenderer& inWireFrames) const
 
   for (const auto& currQuad : this->_floorsManager.getFloorQuads()) {
     currQuad.buildVertices(inWireFrames);
+    currQuad.buildVertices_triangles(inTriangles);
   }
 
   for (const auto& currQuad : this->_wallsManager.getWallQuads()) {
     currQuad.buildVertices(inWireFrames);
+    currQuad.buildVertices_triangles(inTriangles);
   }
 
 }
@@ -93,6 +95,7 @@ void BrickModel::buildInstances(const glm::vec3& inOrigin, const glm::quat& inQu
     instance.position = inOrigin + inQuat * currInstance.pos;
     instance.orientation = inQuat * currInstance.quat;
     instance.color = glm::vec4(1,1,1, 1);
+    // instance.light = false;
     instance.light = false;
     instance.scale = glm::vec3(1,1,1);
 
