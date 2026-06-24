@@ -74,6 +74,11 @@ public:
   //                              float halfExtent,
   //                              float thickness,
   //                              const glm::vec3& color) = 0;
+
+public:
+  virtual const InstancedBrickModels::Vertices& getVertices() const = 0;
+  virtual void reset() = 0;
+
 };
 
 struct TrianglesAccumulator : public ITrianglesAccumulator, public gero::NonCopyable {
@@ -164,12 +169,11 @@ public:
 //     Vertex(const glm::vec3& in_position, const glm::vec4& in_color) : position(in_position), color(in_color) {}
 //   };
 
-  using Vertices = InstancedBrickModels::Vertices;
-
-// private:
 public:
-  // gero::graphics::opengl::Geometry _geometry;
-  Vertices _vertices;
+  const InstancedBrickModels::Vertices& getVertices() const override { return _vertices; };
+  void reset() override { _vertices.clear(); };
 
-  // bool _safeMode = false;
+private:
+  InstancedBrickModels::Vertices _vertices;
+
 };

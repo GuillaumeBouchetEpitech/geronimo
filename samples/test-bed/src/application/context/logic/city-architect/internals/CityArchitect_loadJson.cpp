@@ -158,6 +158,14 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
             }
           }
         }
+        else if (opType == "remove-floor") {
+          glm::vec3 wall_origin;
+          glm::vec3 wall_size;
+          jsonUtils::fvec3::get(currOpval, "origin", wall_origin);
+          jsonUtils::fvec3::get(currOpval, "size", wall_size);
+
+          currBuilder.removeFloorFromOrigin(wall_origin, wall_size);
+        }
         else if (opType == "add-wall") {
           glm::vec3 wall_origin;
           glm::vec2 wall_size;
@@ -385,28 +393,24 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
       }
 
       {
-        if (!this->_instancedBrickModels.hasAlias(targetVal)) {
+        // if (!this->_instancedBrickModels.hasAlias(targetVal)) {
 
-          this->_wireFramesStackRenderer._vertices.clear();
-          this->_trianglesAccumulator._vertices.clear();
-          targetResult.value()->buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
+        //   this->_wireFramesStackRenderer._vertices.clear();
+        //   this->_trianglesAccumulator._vertices.clear();
+        //   targetResult.value()->buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-          D_MYLOG("this->_trianglesAccumulator " << this->_trianglesAccumulator._vertices.size());
+        //   D_MYLOG("this->_trianglesAccumulator " << this->_trianglesAccumulator._vertices.size());
 
-          this->_instancedBrickModels.createAlias(targetVal, this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
-        }
+        //   this->_instancedBrickModels.createAlias(targetVal, this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
+        // }
 
-        InstancedBrickModels::GeometryInstance instance;
-
-        instance.position = instancePos;
-        instance.orientation = instanceQuat;
-        instance.color = glm::vec4(1,1,1, 1);
-        instance.light = false;
-        instance.scale = glm::vec3(1,1,1);
-
-        this->_instancedBrickModels.pushAlias(targetVal, instance);
-
-        targetResult.value()->buildInstances(instance.position, instance.orientation, this->_instancedBrickModels);
+        targetResult.value()->buildInstances(
+          instancePos,
+          instanceQuat,
+          this->_wireFramesStackRenderer,
+          this->_trianglesAccumulator,
+          this->_instancedBrickModels
+        );
       }
 
     }

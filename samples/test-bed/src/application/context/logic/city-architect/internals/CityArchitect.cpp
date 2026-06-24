@@ -129,11 +129,11 @@ CityArchitect::CityArchitect() {
     }
 
     {
-      this->_wireFramesStackRenderer._vertices.clear();
-      this->_trianglesAccumulator._vertices.clear();
+      this->_wireFramesStackRenderer.reset();
+      this->_trianglesAccumulator.reset();
       constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
+      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer.getVertices(), this->_trianglesAccumulator.getVertices());
 
       InstancedBrickModels::GeometryInstance instance;
 
@@ -183,11 +183,11 @@ CityArchitect::CityArchitect() {
     }
 
     {
-      this->_wireFramesStackRenderer._vertices.clear();
-      this->_trianglesAccumulator._vertices.clear();
+      this->_wireFramesStackRenderer.reset();
+      this->_trianglesAccumulator.reset();
       constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
+      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer.getVertices(), this->_trianglesAccumulator.getVertices());
 
       InstancedBrickModels::GeometryInstance instance;
 
@@ -241,11 +241,11 @@ CityArchitect::CityArchitect() {
     }
 
     {
-      this->_wireFramesStackRenderer._vertices.clear();
-      this->_trianglesAccumulator._vertices.clear();
+      this->_wireFramesStackRenderer.reset();
+      this->_trianglesAccumulator.reset();
       constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
+      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer.getVertices(), this->_trianglesAccumulator.getVertices());
 
       InstancedBrickModels::GeometryInstance instance;
 

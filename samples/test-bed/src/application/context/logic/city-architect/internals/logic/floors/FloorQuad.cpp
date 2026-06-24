@@ -431,7 +431,7 @@ void FloorQuad::buildVertices(IWireFramesStackRenderer& inWireFrames) const {
     inWireFrames.pushLine(v0a, v1a, glm::vec3(1.0f, 0.8f, 1.0f));
   }
 
-  inWireFrames.pushLine(center, center + normal, glm::vec3(1.0f, 1.0f, 0.5f));
+  inWireFrames.pushLine(center, center + normal * 1.5f, glm::vec3(1.0f, 1.0f, 0.5f));
 }
 
 void FloorQuad::buildVertices_triangles(ITrianglesAccumulator& inTriangles) const {

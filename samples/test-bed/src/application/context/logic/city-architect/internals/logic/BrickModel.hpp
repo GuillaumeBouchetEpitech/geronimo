@@ -29,14 +29,32 @@ public:
   bool findFloorQuads(const glm::vec3& inCenter, float inRadius, std::vector<FloorQuad>& outQuads) const override;
 
 private:
+  void _findFloorQuads(
+    const glm::mat4& inTransform,
+    const BrickInstance& inInstance,
+    const glm::vec3& inCenter,
+    const glm::vec3& inSize,
+    std::vector<FloorQuad>& outQuads
+  ) const;
+
+private:
   FloorsManager& getFloorsManager() override { return this->_floorsManager; }
   WallsManager& getWallsManager() override { return this->_wallsManager; }
   BrickInstancesManager& getBrickInstancesManager() override { return this->_brickInstancesManager; }
   const std::string& getName() const override {return _name; }
 
 public:
-  void buildVertices(IWireFramesStackRenderer& inWireFrames, ITrianglesAccumulator& inTriangles) const override;
-  void buildInstances(const glm::vec3& inOrigin, const glm::quat& inQuat, InstancedBrickModels& inInstancedBrickModels) const override;
+  void buildVertices(
+    IWireFramesStackRenderer& inWireFrames,
+    ITrianglesAccumulator& inTriangles
+  ) const override;
+  void buildInstances(
+    const glm::vec3& inOrigin,
+    const glm::quat& inQuat,
+    IWireFramesStackRenderer& inWireFrames,
+    ITrianglesAccumulator& inTriangles,
+    InstancedBrickModels& inInstancedBrickModels
+  ) const override;
   void render(const glm::mat4& transform) const override;
 
 private:

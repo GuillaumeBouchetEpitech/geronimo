@@ -10,7 +10,11 @@ BrickModel::BrickModel(const std::string& inName)
 {}
 
 //MARK:findFloorQuads
-bool BrickModel::findFloorQuads(const glm::vec3& inCenter, const glm::vec3& inSize, std::vector<FloorQuad>& outQuads) const {
+bool BrickModel::findFloorQuads(
+  const glm::vec3& inCenter,
+  const glm::vec3& inSize,
+  std::vector<FloorQuad>& outQuads
+) const {
 
   outQuads.clear();
   outQuads.reserve(16);
@@ -27,31 +31,87 @@ bool BrickModel::findFloorQuads(const glm::vec3& inCenter, const glm::vec3& inSi
       continue;
     }
 
-    glm::mat4 transform = glm::identity<glm::mat4>();
-    transform = glm::translate(transform, currInstance.pos);
-    transform = transform * glm::mat4_cast(currInstance.quat);
-
-
-    const auto& allFloorQuads = currInstance.ref->getFloorsManager().getFloorQuads();
-
-    for (std::size_t ii = 0; ii < allFloorQuads.size(); ++ii) {
-
-      const auto& currQuad = allFloorQuads.at(ii);
-
-      // hard copy -> on purpose
-      FloorQuad newQuad = FloorQuad::makeFloorFromMat4(currQuad, transform);
-
-      // D_MYLOG("- currQuad: " << currQuad.getOrigin());
-      // D_MYLOG("  newQuad: " << newQuad.getOrigin());
-
-      if (newQuad.isColliding(inCenter, inSize)) {
-        // hard copy -> on purpose
-        outQuads.push_back(newQuad);
-      }
-    }
+    this->_findFloorQuads(
+      glm::identity<glm::mat4>(),
+      currInstance,
+      inCenter,
+      inSize,
+      outQuads
+    );
   }
 
   return !outQuads.empty();
+
+  // auto _handleOneBrick = [&inCenter, &inSize, &outQuads](
+  //   const BrickInstance& inBrickInstance //,
+  //   // const glm::mat4& inTransform
+  // ) {
+
+  //   glm::mat4 transform = glm::identity<glm::mat4>();
+  //   transform = glm::translate(transform, inBrickInstance.pos);
+  //   transform = transform * glm::mat4_cast(inBrickInstance.quat);
+
+  //   const auto& allFloorQuads = inBrickInstance.ref->getFloorsManager().getFloorQuads();
+
+  //   for (std::size_t ii = 0; ii < allFloorQuads.size(); ++ii) {
+
+  //     const auto& currQuad = allFloorQuads.at(ii);
+
+  //     // hard copy -> on purpose
+  //     FloorQuad newQuad = FloorQuad::makeFloorFromMat4(currQuad, transform);
+
+  //     // D_MYLOG("- currQuad: " << currQuad.getOrigin());
+  //     // D_MYLOG("  newQuad: " << newQuad.getOrigin());
+
+  //     if (newQuad.isColliding(inCenter, inSize)) {
+  //       // hard copy -> on purpose
+  //       outQuads.push_back(newQuad);
+  //     }
+  //   }
+
+  //   for (const BrickInstance& currInstance : inBrickInstance._brickInstancesManager.getBrickInstances()) {
+  //     if (!currInstance.ref) {
+  //       continue;
+  //     }
+
+  //     _handleOneBrick(currInstance);
+  //   }
+
+  // };
+
+  // for (const BrickInstance& currInstance : this->_brickInstancesManager.getBrickInstances()) {
+  //   if (!currInstance.ref) {
+  //     continue;
+  //   }
+
+  //   _handleOneBrick(currInstance);
+
+  //   // glm::mat4 transform = glm::identity<glm::mat4>();
+  //   // transform = glm::translate(transform, currInstance.pos);
+  //   // transform = transform * glm::mat4_cast(currInstance.quat);
+
+
+
+  //   // const auto& allFloorQuads = currInstance.ref->getFloorsManager().getFloorQuads();
+
+  //   // for (std::size_t ii = 0; ii < allFloorQuads.size(); ++ii) {
+
+  //   //   const auto& currQuad = allFloorQuads.at(ii);
+
+  //   //   // hard copy -> on purpose
+  //   //   FloorQuad newQuad = FloorQuad::makeFloorFromMat4(currQuad, transform);
+
+  //   //   // D_MYLOG("- currQuad: " << currQuad.getOrigin());
+  //   //   // D_MYLOG("  newQuad: " << newQuad.getOrigin());
+
+  //   //   if (newQuad.isColliding(inCenter, inSize)) {
+  //   //     // hard copy -> on purpose
+  //   //     outQuads.push_back(newQuad);
+  //   //   }
+  //   // }
+  // }
+
+  // return !outQuads.empty();
 }
 
 //MARK:findFloorQuads
@@ -59,9 +119,55 @@ bool BrickModel::findFloorQuads(const glm::vec3& inCenter, float inRadius, std::
   return this->findFloorQuads(inCenter, glm::vec3(inRadius, inRadius, inRadius), outQuads);
 }
 
+//MARK:_findFloorQuads
+void BrickModel::_findFloorQuads(
+  const glm::mat4& inTransform,
+  const BrickInstance& inBrickInstance,
+  const glm::vec3& inCenter,
+  const glm::vec3& inSize,
+  std::vector<FloorQuad>& outQuads
+) const {
+
+  glm::mat4 transform = inTransform;
+  transform = glm::translate(transform, inBrickInstance.pos);
+  transform = transform * glm::mat4_cast(inBrickInstance.quat);
+
+  const auto& allFloorQuads = inBrickInstance.ref->getFloorsManager().getFloorQuads();
+
+  for (std::size_t ii = 0; ii < allFloorQuads.size(); ++ii) {
+
+    const auto& currQuad = allFloorQuads.at(ii);
+
+    // hard copy -> on purpose
+    FloorQuad newQuad = FloorQuad::makeFloorFromMat4(currQuad, transform);
+
+    if (newQuad.isColliding(inCenter, inSize)) {
+      // hard copy -> on purpose
+      outQuads.push_back(newQuad);
+    }
+  }
+
+  for (const BrickInstance& currInstance : inBrickInstance.ref->getBrickInstancesManager().getBrickInstances()) {
+    if (!currInstance.ref) {
+      continue;
+    }
+
+    this->_findFloorQuads(
+      transform,
+      currInstance,
+      inCenter,
+      inSize,
+      outQuads
+    );
+  }
+
+}
+
 //MARK:buildVertices
-void BrickModel::buildVertices(IWireFramesStackRenderer& inWireFrames, ITrianglesAccumulator& inTriangles) const
-{
+void BrickModel::buildVertices(
+  IWireFramesStackRenderer& inWireFrames,
+  ITrianglesAccumulator& inTriangles
+) const {
   // axis
   inWireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(10, 0, 0), glm::vec3(1, 0, 0));
   inWireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 10, 0), glm::vec3(0, 1, 0));
@@ -80,9 +186,40 @@ void BrickModel::buildVertices(IWireFramesStackRenderer& inWireFrames, ITriangle
 }
 
 //MARK:buildInstances
-void BrickModel::buildInstances(const glm::vec3& inOrigin, const glm::quat& inQuat, InstancedBrickModels& inInstancedBrickModels) const
-{
-  // D_MYERR("getBrickInstances().size(): " << _brickInstancesManager.getBrickInstances().size());
+void BrickModel::buildInstances(
+  const glm::vec3& inOrigin,
+  const glm::quat& inQuat,
+  IWireFramesStackRenderer& inWireFrames,
+  ITrianglesAccumulator& inTriangles,
+  InstancedBrickModels& inInstancedBrickModels
+) const {
+
+  D_MYERR("--> step");
+  D_MYERR("  --> inOrigin " << inOrigin);
+
+  if (!inInstancedBrickModels.hasAlias(this->_name)) {
+
+    inWireFrames.reset();
+    inTriangles.reset();
+    this->buildVertices(inWireFrames, inTriangles);
+
+    // D_MYLOG("inTriangles " << inTriangles._vertices.size());
+
+    inInstancedBrickModels.createAlias(this->_name, inWireFrames.getVertices(), inTriangles.getVertices());
+  }
+
+  {
+    InstancedBrickModels::GeometryInstance newInstance;
+
+    newInstance.position = inOrigin;
+    newInstance.orientation = inQuat;
+    newInstance.color = glm::vec4(1,1,1, 1);
+    newInstance.light = false;
+    newInstance.scale = glm::vec3(1,1,1);
+
+    inInstancedBrickModels.pushAlias(this->_name, newInstance);
+  }
+
   for (const auto& currInstance : _brickInstancesManager.getBrickInstances())
   {
     if (!currInstance.ref) {
@@ -90,18 +227,13 @@ void BrickModel::buildInstances(const glm::vec3& inOrigin, const glm::quat& inQu
       continue;
     }
 
-    InstancedBrickModels::GeometryInstance instance;
-
-    instance.position = inOrigin + inQuat * currInstance.pos;
-    instance.orientation = inQuat * currInstance.quat;
-    instance.color = glm::vec4(1,1,1, 1);
-    // instance.light = false;
-    instance.light = false;
-    instance.scale = glm::vec3(1,1,1);
-
-    inInstancedBrickModels.pushAlias(currInstance.ref->getName(), instance);
-
-    // D_MYERR(" => pushAlias -> " << currInstance.ref->getName());
+    currInstance.ref->buildInstances(
+      inOrigin + inQuat * currInstance.pos,
+      currInstance.quat * inQuat,
+      inWireFrames,
+      inTriangles,
+      inInstancedBrickModels
+    );
   }
 }
 

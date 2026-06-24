@@ -28,6 +28,12 @@ public:
 // public:
 //   virtual void
 //   pushRectangle(const glm::vec2& pos, const glm::vec2& size, const glm::vec3& color, float depth = 0.0f) = 0;
+
+
+public:
+  virtual const InstancedBrickModels::Vertices& getVertices() const = 0;
+  virtual void reset() = 0;
+
 };
 
 class WireFramesStackRenderer : public IWireFramesStackRenderer, public gero::NonCopyable {
@@ -71,12 +77,13 @@ public:
 //   };
 //   using Vertices = std::vector<Vertex>;
 
-// private:
+
 public:
-  // gero::graphics::opengl::Geometry _geometry;
+  const InstancedBrickModels::Vertices& getVertices() const override { return _vertices; };
+  void reset() override { _vertices.clear(); };
+
+private:
   InstancedBrickModels::Vertices _vertices;
 
-
-  // bool _safeMode = false;
 };
 

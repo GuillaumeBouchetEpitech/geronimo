@@ -520,7 +520,7 @@ void WallQuad::buildVertices(IWireFramesStackRenderer& inWireFrames) const {
       tmpColor);
   }
 
-  inWireFrames.pushLine(center, center + normal, glm::vec3(1.0f, 1.0f, 0.5f));
+  inWireFrames.pushLine(center, center + normal * 1.5f, glm::vec3(1.0f, 1.0f, 0.5f));
 }
 
 void WallQuad::buildVertices_triangles(ITrianglesAccumulator& inTriangles) const {

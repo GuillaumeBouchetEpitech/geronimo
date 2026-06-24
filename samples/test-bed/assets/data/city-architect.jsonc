@@ -96,7 +96,9 @@
     {
       "name": "simple-rooftop",
       "operations": [
-        { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [40, 60] }
+        { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [40, 60] },
+        { "type": "remove-floor", "origin": [10,10,-1], "size": [20,15,2] },
+        { "type": "remove-floor", "origin": [10,35,-1], "size": [20,15,2] }
       ]
     },
 
@@ -188,7 +190,132 @@
         }
 
       ]
+    },
+
+
+    {
+      "name": "connection-entrance-floor",
+      "operations": [
+
+        { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [40, 60] },
+
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 5.0, 5.0, 0.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 30.0
+        },
+        { "type": "remove-wall", "origin": [10,-1,0], "size": [20,2,20] },
+        { "type": "remove-wall", "origin": [10,59,0], "size": [20,2,20] }
+      ]
+    },
+
+
+    {
+      "name": "connection-upper-floor",
+      "operations": [
+
+        { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [40, 60] },
+
+        {
+          "type": "add-adjacent-wall",
+          "search": { "center": [ 5.0, 5.0, 0.0], "radius": 0.5 },
+          "orientations": ["posY", "negY"],
+          "height": 30.0
+        },
+        { "type": "remove-wall", "origin": [10,-1,5], "size": [20,2,10] },
+        { "type": "remove-wall", "origin": [10,59,5], "size": [20,2,10] }
+      ]
+    },
+
+
+    {
+      "name": "full-building",
+      "operations": [
+
+        // building
+        {
+          "type": "add-instance",
+          "target": "triple-stairs---now-connected",
+          "origin": [0.0, 0.0,  0.0]
+        },
+        {
+          "type": "add-instance",
+          "target": "triple-stairs---now-connected",
+          "transforms": [
+            { "type": "translate", "pos": [180,60,0] },
+            { "type": "rotate", "axis": [0,0,1], "angle": 180 }
+          ]
+        },
+        { "type": "add-instance", "target": "connection-entrance-floor", "origin": [70.0, 0.0,  0.0] },
+        { "type": "add-instance", "target": "connection-upper-floor", "origin": [70.0, 0.0,  30.0] },
+        { "type": "add-instance", "target": "connection-upper-floor", "origin": [70.0, 0.0,  60.0] },
+        { "type": "add-instance", "target": "connection-upper-floor", "origin": [70.0, 0.0,  90.0] },
+        { "type": "add-instance", "target": "simple-rooftop", "origin": [70.0, 0.0, 120.0] }
+
+
+
+      ]
+    },
+
+    {
+      "name": "small-city-block",
+      "operations": [
+
+        // main floor
+        { "type": "add-floor", "origin": [0.0, 0.0, 0.0], "size": [240, 120] },
+        { "type": "remove-floor", "origin": [25,25,-1], "size": [190,70,2] },
+        {
+          "type": "add-instance",
+          "target": "full-building",
+          "origin": [30.0, 30.0, 0.0]
+        },
+
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [ 120.0, 10.0, 0.0], "radius": 1.5 },
+          "searchB": { "center": [ 120.0, 60.0, 0.0], "radius": 1.5 },
+          "options": { "axis": 120.0, "width": 20.0 }
+        },
+        {
+          "type": "connect-floors",
+          "searchA": { "center": [ 120.0, 110.0, 0.0], "radius": 1.5 },
+          "searchB": { "center": [ 120.0, 60.0, 0.0], "radius": 1.5 },
+          "options": { "axis": 120.0, "width": 20.0 }
+        }
+
+      ]
+    },
+
+    {
+      "name": "medium-city-block",
+      "operations": [
+
+        {
+          "type": "add-instance",
+          "target": "small-city-block",
+          "origin": [0.0, 0.0, 0.0]
+        },
+        {
+          "type": "add-instance",
+          "target": "small-city-block",
+          "transforms": [
+            { "type": "translate", "pos": [120,120,0] },
+            { "type": "rotate", "axis": [0,0,1], "angle": 90 }
+          ]
+        },
+        {
+          "type": "add-instance",
+          "target": "small-city-block",
+          "transforms": [
+            { "type": "translate", "pos": [240,120,0] },
+            { "type": "rotate", "axis": [0,0,1], "angle": 90 }
+          ]
+        }
+
+      ]
     }
+
 
   ],
 
@@ -200,23 +327,44 @@
     },
     {
       "target": "simple-floor",
-      "origin": [200,60,0]
+      "origin": [160,130,0]
     },
     {
       "target": "simple-rooftop",
-      "origin": [250,60,0]
+      "origin": [160,200,0]
+    },
+    // {
+    //   "target": "triple-stairs---now-connected",
+    //   "origin": [160,-60,0]
+    // },
+    // {
+    //   "target": "triple-stairs---now-connected",
+    //   "transforms": [
+    //     { "type": "translate", "pos": [300,0,0] },
+    //     { "type": "rotate", "axis": [0,0,1], "angle": 180 }
+    //   ]
+    // },
+    {
+      "target": "connection-entrance-floor",
+      "origin": [210,130,0]
     },
     {
-      "target": "triple-stairs---now-connected",
-      "origin": [160,-60,0]
+      "target": "connection-upper-floor",
+      "origin": [260,130,0]
     },
+    // {
+    //   "target": "small-city-block",
+    //   "origin": [100,-100,0]
+    // },
     {
-      "target": "triple-stairs---now-connected",
-      "transforms": [
-        { "type": "translate", "pos": [300,0,0] },
-        { "type": "rotate", "axis": [0,0,1], "angle": 180 }
-      ]
+      "target": "medium-city-block",
+      "origin": [100,-400,0]
     }
+
+
+
+
+
 
   ]
 
