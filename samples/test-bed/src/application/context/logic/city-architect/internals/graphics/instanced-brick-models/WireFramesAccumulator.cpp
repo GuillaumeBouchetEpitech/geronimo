@@ -1,5 +1,5 @@
 
-#include "WireFramesStackRenderer.hpp"
+#include "WireFramesAccumulator.hpp"
 
 #include "geronimo/system/asValue.hpp"
 #include "geronimo/system/math/constants.hpp"
@@ -10,7 +10,7 @@
 // namespace advanced {
 // namespace stackRenderers {
 
-// void WireFramesStackRenderer::initialize(gero::graphics::opengl::IUnboundShaderProgram& shader,
+// void WireFramesAccumulator::initialize(gero::graphics::opengl::IUnboundShaderProgram& shader,
 //                                          const gero::graphics::opengl::Geometry::Definition& geoDef) {
 
 //   _geometry.initialize(shader, geoDef);
@@ -22,7 +22,7 @@
 //   // _geometry.preAllocateBufferFromCapacity(0, _vertices);
 // }
 
-WireFramesStackRenderer::WireFramesStackRenderer()
+WireFramesAccumulator::WireFramesAccumulator()
 {
   constexpr std::size_t preAllocatedSize = 1024 * 32; // 32Ko
   _vertices.reserve(preAllocatedSize);
@@ -30,7 +30,7 @@ WireFramesStackRenderer::WireFramesStackRenderer()
 
 //
 
-void WireFramesStackRenderer::pushLine(const glm::vec3& posA,
+void WireFramesAccumulator::pushLine(const glm::vec3& posA,
                                        const glm::vec3& posB,
                                        const glm::vec3& colorA,
                                        const glm::vec3& colorB) {
@@ -47,24 +47,24 @@ void WireFramesStackRenderer::pushLine(const glm::vec3& posA,
   _vertices.emplace_back(posB, glm::vec3(0,0,0), colorB);
 }
 
-void WireFramesStackRenderer::pushLine(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
+void WireFramesAccumulator::pushLine(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
   pushLine(posA, posB, color, color);
 }
 
-// void WireFramesStackRenderer::pushLine(const glm::vec3& posA,
+// void WireFramesAccumulator::pushLine(const glm::vec3& posA,
 //                                        const glm::vec3& posB,
 //                                        const glm::vec3& colorA,
 //                                        const glm::vec3& colorB) {
 //   pushLine(posA, posB, glm::vec4(colorA, 1.0f), glm::vec4(colorB, 1.0f));
 // }
 
-// void WireFramesStackRenderer::pushLine(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
+// void WireFramesAccumulator::pushLine(const glm::vec3& posA, const glm::vec3& posB, const glm::vec3& color) {
 //   pushLine(posA, posB, glm::vec4(color, 1.0f));
 // }
 
 //
 
-void WireFramesStackRenderer::pushCross(const glm::vec3& pos, const glm::vec3& color, float halfExtent) {
+void WireFramesAccumulator::pushCross(const glm::vec3& pos, const glm::vec3& color, float halfExtent) {
   if (halfExtent <= 0)
     return;
 
@@ -77,7 +77,7 @@ void WireFramesStackRenderer::pushCross(const glm::vec3& pos, const glm::vec3& c
     pushLine(elem.at(0), elem.at(1), color);
 }
 
-// void WireFramesStackRenderer::pushRectangle(const glm::vec2& pos,
+// void WireFramesAccumulator::pushRectangle(const glm::vec2& pos,
 //                                             const glm::vec2& size,
 //                                             const glm::vec3& color,
 //                                             float depth /*= 0.0f*/) {
@@ -90,13 +90,13 @@ void WireFramesStackRenderer::pushCross(const glm::vec3& pos, const glm::vec3& c
 //     glm::vec3(pos.x, farPos.y, depth),
 //   }};
 
-//   WireFramesStackRenderer::pushLine(vertices.at(0), vertices.at(1), color);
-//   WireFramesStackRenderer::pushLine(vertices.at(1), vertices.at(2), color);
-//   WireFramesStackRenderer::pushLine(vertices.at(2), vertices.at(3), color);
-//   WireFramesStackRenderer::pushLine(vertices.at(3), vertices.at(0), color);
+//   WireFramesAccumulator::pushLine(vertices.at(0), vertices.at(1), color);
+//   WireFramesAccumulator::pushLine(vertices.at(1), vertices.at(2), color);
+//   WireFramesAccumulator::pushLine(vertices.at(2), vertices.at(3), color);
+//   WireFramesAccumulator::pushLine(vertices.at(3), vertices.at(0), color);
 // }
 
-// void WireFramesStackRenderer::flush() {
+// void WireFramesAccumulator::flush() {
 //   if (!canRender())
 //     return;
 
@@ -108,8 +108,8 @@ void WireFramesStackRenderer::pushCross(const glm::vec3& pos, const glm::vec3& c
 //   _vertices.clear();
 // }
 
-// bool WireFramesStackRenderer::canRender() const { return !_vertices.empty(); }
+// bool WireFramesAccumulator::canRender() const { return !_vertices.empty(); }
 
-// void WireFramesStackRenderer::startSafeMode() { _safeMode = true; }
+// void WireFramesAccumulator::startSafeMode() { _safeMode = true; }
 
-// void WireFramesStackRenderer::stopSafeMode() { _safeMode = false; }
+// void WireFramesAccumulator::stopSafeMode() { _safeMode = false; }

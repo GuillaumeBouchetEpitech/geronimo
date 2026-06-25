@@ -5,10 +5,10 @@
 #include "walls/WallsManager.hpp"
 // #include "brick-instances/BrickInstancesManager.hpp"
 
-#include "../graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+#include "../graphics/instanced-brick-models/WireFramesAccumulator.hpp"
 
 #include "geronimo/system/containers/weak_ref_data_pool.hpp"
-
+#include "geronimo/system/math/RayCastResult.hpp"
 #include "geronimo/helpers/GLMath.hpp"
 
 #include <vector>
@@ -24,6 +24,7 @@ class FloorBuilder;
 class WallBuilder;
 class BrickInstanceBuilder;
 class BrickInstancesManager;
+class GenericAABB;
 
 //
 //
@@ -43,11 +44,21 @@ public:
   virtual const WallsManager& getWallsManager() const = 0;
   virtual const BrickInstancesManager& getBrickInstancesManager() const = 0;
   virtual const std::string& getName() const = 0;
+  virtual const GenericAABB& getAABB() const = 0;
 
 public:
   // virtual bool collideFloorQuads(const glm::vec3& inCenter, const glm::vec3& inSize) const = 0;
   virtual bool findFloorQuads(const glm::vec3& inCenter, const glm::vec3& inSize, std::vector<FloorQuad>& outQuads) const = 0;
   virtual bool findFloorQuads(const glm::vec3& inCenter, float inRadius, std::vector<FloorQuad>& outQuads) const = 0;
+
+  virtual void computeAABB(const glm::mat4& inTransform) const = 0;
+
+  // virtual bool intersect(
+  //   const glm::mat4& inTransform,
+  //   const glm::vec3& inRayFrom,
+  //   const glm::vec3& inRayTo,
+  //   gero::math::RayCastResult& outData
+  // ) const = 0;
 
 protected:
   virtual FloorsManager& getFloorsManager() = 0;
@@ -56,17 +67,19 @@ protected:
 
 public:
   virtual void buildVertices(
-    IWireFramesStackRenderer& inWireFrames,
+    IWireFramesAccumulator& inWireFrames,
     ITrianglesAccumulator& inTriangles
   ) const = 0;
   virtual void buildInstances(
-    const glm::vec3& inOrigin,
-    const glm::quat& inQuat,
-    IWireFramesStackRenderer& inWireFrames,
+    IWireFramesAccumulator& inWireFrames,
     ITrianglesAccumulator& inTriangles,
     InstancedBrickModels& inInstancedBrickModels
   ) const = 0;
-  virtual void render(const glm::mat4& transform) const = 0;
+  virtual void pushNewInstances(
+    const glm::vec3& inOrigin,
+    const glm::quat& inQuat,
+    InstancedBrickModels& inInstancedBrickModels
+  ) const = 0;
 
 };
 

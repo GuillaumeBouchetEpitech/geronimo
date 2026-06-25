@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../../graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+#include "../../graphics/instanced-brick-models/WireFramesAccumulator.hpp"
 #include "../../graphics/instanced-brick-models/TrianglesAccumulator.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
@@ -50,6 +50,9 @@ public:
     WallOrientation inWallOrientation,
     float inHeight
   );
+
+  [[nodiscard]]
+  static WallQuad makeWallFromMat4(const WallQuad& inQuad, const glm::mat4& inTransform);
 
 public:
 
@@ -101,9 +104,8 @@ public:
 
   // render
 
-  void buildVertices(IWireFramesStackRenderer& inWireFrames) const;
+  void buildVertices_wireframes(IWireFramesAccumulator& inWireFrames) const;
   void buildVertices_triangles(ITrianglesAccumulator& inTriangles) const;
-  void render() const;
 
 protected:
   std::array<glm::vec3, 4> _vertices = {{

@@ -26,7 +26,7 @@ class BrickInstancesManager
 
 public:
   BrickInstancesManager();
-  ~BrickInstancesManager() = default;
+  virtual ~BrickInstancesManager() = default;
 
 // public:
 //   bool collideWallQuads(const glm::vec3& inCenter, const glm::vec3& inSize) const;
@@ -38,7 +38,21 @@ public:
 public:
   const std::vector<BrickInstance>& getBrickInstances() const { return this->_brickInstances; }
 
-private:
+protected:
   std::vector<BrickInstance> _brickInstances;
+
+};
+
+class LiveBrickInstancesManager : public BrickInstancesManager
+{
+public:
+  LiveBrickInstancesManager() = default;
+
+public:
+  BrickInstance& addInstance(
+    const glm::vec3& inPos,
+    const glm::quat& inQuat,
+    AbstractBrickModelWeakRef inRef
+  );
 
 };

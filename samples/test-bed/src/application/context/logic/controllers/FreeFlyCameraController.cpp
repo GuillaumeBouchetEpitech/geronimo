@@ -123,7 +123,7 @@ void FreeFlyCameraController::update(float elapsedTime) {
     const bool moveUp = keyboard.isPressed(SDLK_SPACE);
     const bool accelerated = keyboard.isPressed(SDLK_LSHIFT);
 
-    const float speed = 16.0f * (accelerated ? 4.0f : 1.0f);
+    const float speed = 64.0f * (accelerated ? 4.0f : 1.0f);
     glm::vec3 acceleration(0, 0, 0);
 
     if (moveForward || _forceForward)

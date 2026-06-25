@@ -38,8 +38,8 @@ public:
 public:
   const std::vector<FloorQuad>& getFloorQuads() const { return this->_floorQuads; }
 
-public:
-  void render() const;
+// public:
+//   void render() const;
 
 private:
   std::vector<FloorQuad> _floorQuads;

@@ -16,7 +16,7 @@
 
 CityArchitect::CityArchitect() {
 
-  this->_instancedBrickModels.initialize();
+  this->graphics.instancedBrickModels.initialize();
 
   {
     const std::string_view tmpFilename = "./assets/data/city-architect.jsonc";
@@ -25,8 +25,8 @@ CityArchitect::CityArchitect() {
 
   {
     // MARK: floor bridges
-    // AbstractBrickModelWeakRef currModelRef = this->_brickModelsManager._brickModelsPool.acquire("test-floors-with-bridges");
-    ExpectBrickRef brickResult = this->_brickModelsManager.createNewBrick("test-floors-with-bridges");
+    // AbstractBrickModelWeakRef currModelRef = this->logic.brickModelsManager._brickModelsPool.acquire("test-floors-with-bridges");
+    ExpectBrickRef brickResult = this->logic.brickModelsManager.createNewBrick("test-floors-with-bridges");
     if (!brickResult) {
       D_MYERR("===> could not create a brick");
       switch (brickResult.error()) {
@@ -38,8 +38,8 @@ CityArchitect::CityArchitect() {
     AbstractBrickModelWeakRef currModelRef = *brickResult;
 
 
-    auto& currBuilder = this->_brickModelsManager._floorBuilder;
-    auto& currWBuilder = this->_brickModelsManager._wallBuilder;
+    auto& currBuilder = this->logic.brickModelsManager._floorBuilder;
+    auto& currWBuilder = this->logic.brickModelsManager._wallBuilder;
 
     {
       AbstractBrickModel& currModel = *currModelRef;
@@ -129,11 +129,16 @@ CityArchitect::CityArchitect() {
     }
 
     {
-      this->_wireFramesStackRenderer.reset();
-      this->_trianglesAccumulator.reset();
-      constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
+      currModelRef->computeAABB(glm::identity<glm::mat4>());
+      this->graphics.wireFramesAccumulator.reset();
+      this->graphics.trianglesAccumulator.reset();
+      constModel.buildVertices(this->graphics.wireFramesAccumulator, this->graphics.trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer.getVertices(), this->_trianglesAccumulator.getVertices());
+      this->graphics.instancedBrickModels.createAlias(
+        currModelRef->getName(),
+        this->graphics.wireFramesAccumulator.getVertices(),
+        this->graphics.trianglesAccumulator.getVertices()
+      );
 
       InstancedBrickModels::GeometryInstance instance;
 
@@ -143,14 +148,14 @@ CityArchitect::CityArchitect() {
       instance.light = false;
       instance.scale = glm::vec3(1,1,1);
 
-      this->_instancedBrickModels.pushAlias(currModelRef->getName(), instance);
+      this->graphics.instancedBrickModels.pushAlias(currModelRef->getName(), instance);
     }
 
   }
 
   {
     // MARK: debug
-    ExpectBrickRef brickResult = this->_brickModelsManager.createNewBrick("test-debug-1");
+    ExpectBrickRef brickResult = this->logic.brickModelsManager.createNewBrick("test-debug-1");
     if (!brickResult) {
       D_MYERR("===> could not create a brick");
       switch (brickResult.error()) {
@@ -161,8 +166,8 @@ CityArchitect::CityArchitect() {
     }
     AbstractBrickModelWeakRef currModelRef = *brickResult;
 
-    auto& currBuilder = this->_brickModelsManager._floorBuilder;
-    auto& currWBuilder = this->_brickModelsManager._wallBuilder;
+    auto& currBuilder = this->logic.brickModelsManager._floorBuilder;
+    auto& currWBuilder = this->logic.brickModelsManager._wallBuilder;
 
     {
       AbstractBrickModel& currModel = *currModelRef;
@@ -183,11 +188,12 @@ CityArchitect::CityArchitect() {
     }
 
     {
-      this->_wireFramesStackRenderer.reset();
-      this->_trianglesAccumulator.reset();
-      constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
+      currModelRef->computeAABB(glm::identity<glm::mat4>());
+      this->graphics.wireFramesAccumulator.reset();
+      this->graphics.trianglesAccumulator.reset();
+      constModel.buildVertices(this->graphics.wireFramesAccumulator, this->graphics.trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer.getVertices(), this->_trianglesAccumulator.getVertices());
+      this->graphics.instancedBrickModels.createAlias(currModelRef->getName(), this->graphics.wireFramesAccumulator.getVertices(), this->graphics.trianglesAccumulator.getVertices());
 
       InstancedBrickModels::GeometryInstance instance;
 
@@ -197,14 +203,14 @@ CityArchitect::CityArchitect() {
       instance.light = false;
       instance.scale = glm::vec3(1,1,1);
 
-      this->_instancedBrickModels.pushAlias(currModelRef->getName(), instance);
+      this->graphics.instancedBrickModels.pushAlias(currModelRef->getName(), instance);
     }
 
   }
 
   {
     // MARK: debug2
-    ExpectBrickRef brickResult = this->_brickModelsManager.createNewBrick("test-debug-2");
+    ExpectBrickRef brickResult = this->logic.brickModelsManager.createNewBrick("test-debug-2");
     if (!brickResult) {
       D_MYERR("===> could not create a brick");
       switch (brickResult.error()) {
@@ -215,8 +221,8 @@ CityArchitect::CityArchitect() {
     }
     AbstractBrickModelWeakRef currModelRef = *brickResult;
 
-    auto& currBuilder = this->_brickModelsManager._floorBuilder;
-    auto& currWBuilder = this->_brickModelsManager._wallBuilder;
+    auto& currBuilder = this->logic.brickModelsManager._floorBuilder;
+    auto& currWBuilder = this->logic.brickModelsManager._wallBuilder;
 
     {
       AbstractBrickModel& currModel = *currModelRef;
@@ -241,11 +247,12 @@ CityArchitect::CityArchitect() {
     }
 
     {
-      this->_wireFramesStackRenderer.reset();
-      this->_trianglesAccumulator.reset();
-      constModel.buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
+      currModelRef->computeAABB(glm::identity<glm::mat4>());
+      this->graphics.wireFramesAccumulator.reset();
+      this->graphics.trianglesAccumulator.reset();
+      constModel.buildVertices(this->graphics.wireFramesAccumulator, this->graphics.trianglesAccumulator);
 
-      this->_instancedBrickModels.createAlias(currModelRef->getName(), this->_wireFramesStackRenderer.getVertices(), this->_trianglesAccumulator.getVertices());
+      this->graphics.instancedBrickModels.createAlias(currModelRef->getName(), this->graphics.wireFramesAccumulator.getVertices(), this->graphics.trianglesAccumulator.getVertices());
 
       InstancedBrickModels::GeometryInstance instance;
 
@@ -255,7 +262,7 @@ CityArchitect::CityArchitect() {
       instance.light = false;
       instance.scale = glm::vec3(1,1,1);
 
-      this->_instancedBrickModels.pushAlias(currModelRef->getName(), instance);
+      this->graphics.instancedBrickModels.pushAlias(currModelRef->getName(), instance);
     }
 
   }
@@ -265,6 +272,7 @@ CityArchitect::CityArchitect() {
 
 //MARK: update
 void CityArchitect::update(float deltaTimeSec) {
+
 }
 
 //MARK: render
@@ -273,6 +281,41 @@ void CityArchitect::render() {
   auto& context = Context::get();
   auto& renderer = context.graphic.renderer;
   gero::graphics::camera::ICamera& camInstance = renderer.getSceneRenderer().getCamera();
+
+  // {
+  //   const glm::vec3 rayFrom = camInstance.getEye();
+  //   const glm::vec3 rayTo = rayFrom + camInstance.getForwardAxis() * 30.0f;
+  //   gero::math::RayCastResult outData;
+  //   outData.distance = 1.0f;
+
+  //   for (auto currBrick : this->logic.liveBrickInstancesManager.getBrickInstances()) {
+
+  //     // this->logic.brickModelsManager._brickModelsPool.for_each([
+  //     //   &rayFrom, &rayTo, &outData
+  //     // ](const AbstractBrickModel& currBrick) {
+  //     // });
+
+  //     // glm::mat4 transform = glm::identity<glm::mat4>();
+  //     // transform = glm::translate(transform, currBrick.pos);
+  //     // transform = transform * glm::mat4_cast(currBrick.quat);
+  //     glm::mat4 transform =
+  //       glm::translate(glm::identity<glm::mat4>(), currBrick.pos)
+  //       * glm::mat4_cast(currBrick.quat);
+  //     // glm::mat4 invTransform = glm::inverse(transform);
+
+  //     // glm::vec3 newFrom = invTransform * glm::vec4(rayFrom, 1);
+  //     // glm::vec3 newTo = invTransform * glm::vec4(rayTo, 1);
+
+  //     // currBrick.ref->intersect(newFrom, newTo, outData);
+  //     currBrick.ref->intersect(transform, rayFrom, rayTo, outData);
+  //   }
+
+  //   auto& scene = renderer.getSceneRenderer();
+  //   auto& stackRenderers = scene.getStackRenderers();
+  //   auto& wireFrames = stackRenderers.getWireFramesStack();
+  //   wireFrames.pushCross(rayFrom + (rayTo - rayFrom) * outData.distance, glm::vec3(1,1,0), 1.0f);
+  //   stackRenderers.flush();
+  // }
 
   // auto& scene = renderer.getSceneRenderer();
 
@@ -287,13 +330,26 @@ void CityArchitect::render() {
   //     wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 1000, 0), glm::vec3(0, 1, 0));
   //     wireFrames.pushLine(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1000), glm::vec3(0, 0, 1));
 
-  //     stackRenderers.flush();
+      // stackRenderers.flush();
   //   }
   // }
 
-  // this->_brickModelsManager.render(glm::identity<glm::mat4>());
+  // this->logic.brickModelsManager.render(glm::identity<glm::mat4>());
 
-  this->_instancedBrickModels.setMatricesData(camInstance.getMatricesData());
-  this->_instancedBrickModels.renderAll(false);
+  this->graphics.instancedBrickModels.setMatricesData(camInstance.getMatricesData());
+
+  for (auto& currBrick : this->logic.liveBrickInstancesManager.getBrickInstances()) {
+    if (!currBrick.ref) {
+      continue;
+    }
+
+    currBrick.ref->pushNewInstances(
+      currBrick.pos,
+      currBrick.quat,
+      this->graphics.instancedBrickModels
+    );
+  }
+
+  this->graphics.instancedBrickModels.renderAll();
 
 }

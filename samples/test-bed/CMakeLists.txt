@@ -76,8 +76,8 @@ add_executable(${PROJECT_NAME}
     ./src/application/context/logic/city-architect/internals/logic/floors/FloorsManager.cpp
     ./src/application/context/logic/city-architect/internals/logic/BrickModelsManager.cpp
     ./src/application/context/logic/city-architect/internals/CityArchitect.cpp
+    ./src/application/context/logic/city-architect/internals/graphics/instanced-brick-models/WireFramesAccumulator.cpp
     ./src/application/context/logic/city-architect/internals/graphics/instanced-brick-models/TrianglesAccumulator.cpp
-    ./src/application/context/logic/city-architect/internals/graphics/instanced-brick-models/WireFramesStackRenderer.cpp
     ./src/application/context/logic/city-architect/internals/graphics/instanced-brick-models/InstancedBrickModels.cpp
 
 

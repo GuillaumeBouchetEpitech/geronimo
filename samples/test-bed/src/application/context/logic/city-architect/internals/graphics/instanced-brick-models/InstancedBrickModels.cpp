@@ -100,8 +100,6 @@ void InstancedBrickModels::createAlias(const std::string& alias, const Vertices&
     newAlias->geometry_wireframes.setPrimitiveCount(uint32_t(vertices_wireframes.size()));
   }
 
-  D_MYLOG("vertices_triangles.empty() -> " << vertices_triangles.empty());
-
   if (!vertices_triangles.empty()) {
     newAlias->geometry_triangles.initialize(*_shader, _geomDef_triangles);
     newAlias->geometry_triangles.allocateBuffer(0, vertices_triangles);

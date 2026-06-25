@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-class IWireFramesStackRenderer {
+class IWireFramesAccumulator {
 
 public:
   virtual void
@@ -36,10 +36,10 @@ public:
 
 };
 
-class WireFramesStackRenderer : public IWireFramesStackRenderer, public gero::NonCopyable {
+class WireFramesAccumulator : public IWireFramesAccumulator, public gero::NonCopyable {
 
 public:
-  WireFramesStackRenderer();
+  WireFramesAccumulator();
 
 // public:
 //   void initialize(gero::graphics::opengl::IUnboundShaderProgram& shader, const gero::graphics::opengl::Geometry::Definition& geoDef);

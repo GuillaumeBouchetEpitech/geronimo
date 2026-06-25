@@ -36,6 +36,7 @@ public:
 public:
   ExpectBrickRef createNewBrick(const std::string& inName);
 
+public:
   MaybeBrickRef getBrickByName(const std::string& inName);
   const MaybeBrickRef getBrickByName(const std::string& inName) const;
 

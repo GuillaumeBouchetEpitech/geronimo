@@ -63,7 +63,7 @@ bool intersectTriangle(const glm::vec3& ray_origin,
   outData.normal = -n;
   // outData.normal = n;
 
-  float length = glm::length(outData.normal);
+  const float length = glm::length(outData.normal);
   // safe normalize -> check the length first to avoid dividing by zero
   if (length > 0) {
     outData.normal /= length; // normalize

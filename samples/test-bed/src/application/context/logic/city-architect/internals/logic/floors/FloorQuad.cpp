@@ -7,6 +7,7 @@
 #include "geronimo/system/math/lerp.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/helpers/GLMath_sets_and_maps.hpp"
+#include "geronimo/system/math/rayIntersectTriangle.hpp"
 
 #include <unordered_set>
 #include <algorithm> // std::sort
@@ -389,7 +390,7 @@ glm::vec3 FloorQuad::getNormal() const {
 }
 
 //MARK: buildVertices
-void FloorQuad::buildVertices(IWireFramesStackRenderer& inWireFrames) const {
+void FloorQuad::buildVertices_wireframes(IWireFramesAccumulator& inWireFrames) const {
 
   const glm::vec3& minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
   const glm::vec3& maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
@@ -477,77 +478,48 @@ void FloorQuad::buildVertices_triangles(ITrianglesAccumulator& inTriangles) cons
 
 }
 
-//MARK: render
-void FloorQuad::render() const
-{
+bool FloorQuad::intersect(
+  const glm::vec3& inRayOrigin,
+  const glm::vec3& inRayDirection,
+  gero::math::RayCastResult& outData
+) const {
+  bool hasHit = false;
 
-  auto& context = Context::get();
-  auto& renderer = context.graphic.renderer;
-  // gero::graphics::camera::ICamera& camInstance = renderer.getSceneRenderer().getCamera();
+  gero::math::RayCastResult tmpData;
 
-  auto& scene = renderer.getSceneRenderer();
-
-  auto& stackRenderers = scene.getStackRenderers();
-  auto& wireFrames = stackRenderers.getWireFramesStack();
-
-  const glm::vec3& minCoord = this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY);
-  const glm::vec3& maxCoord = this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY);
-  const glm::vec3 center = this->getCenter();
-  const glm::vec3 size = this->getSize();
-  const glm::vec3 normal = this->getNormal();
-
-  const glm::vec3 tmpColor = glm::vec3(1.0f, 0.3f, 1.0f);
-
-  wireFrames.pushCross(center, tmpColor, 0.25f);
-
-  for (std::size_t ii = 0; ii < this->_vertices.size(); ++ii) {
-    const std::size_t jj = (ii + 1) % this->_vertices.size();
-    wireFrames.pushLine(
-      this->_vertices.at(ii),
-      this->_vertices.at(jj),
-      tmpColor);
+  if (
+    gero::math::intersectTriangle(
+      inRayOrigin,
+      inRayDirection,
+      this->_vertices.at(0),
+      this->_vertices.at(2),
+      this->_vertices.at(1),
+      tmpData
+    ) && outData.distance > tmpData.distance
+  ) {
+    D_MYLOG("tmpData.distance " << tmpData.distance);
+    outData.distance = tmpData.distance;
+    outData.normal = tmpData.normal;
+    hasHit = true;
   }
 
-  // // cross
-  // wireFrames.pushLine(
-  //   this->getFloorVertex(FloorQuad::FloorVertexType::negX_negY),
-  //   this->getFloorVertex(FloorQuad::FloorVertexType::posX_posY),
-  //   glm::vec3(1.0f, 0.6f, 1.0f));
-  // wireFrames.pushLine(
-  //   this->getFloorVertex(FloorQuad::FloorVertexType::posX_negY),
-  //   this->getFloorVertex(FloorQuad::FloorVertexType::negX_posY),
-  //   glm::vec3(1.0f, 0.6f, 1.0f));
-
-  constexpr float k_step = 0.2f;
-
-  const glm::vec2 hSize = glm::vec2(size.x, size.y) * 0.5f - k_step;
-
-  const std::array<glm::vec2, 4> innerVertices = {{
-    glm::vec2(center.x - hSize.x, center.y - hSize.y),
-    glm::vec2(center.x + hSize.x, center.y - hSize.y),
-    glm::vec2(center.x + hSize.x, center.y + hSize.y),
-    glm::vec2(center.x - hSize.x, center.y + hSize.y),
-  }};
-
-  for (std::size_t ii = 0; ii < innerVertices.size(); ++ii) {
-    const std::size_t jj = (ii + 1) % this->_vertices.size();
-
-    const glm::vec2& v0 = innerVertices.at(ii);
-    const glm::vec2& v1 = innerVertices.at(jj);
-    const glm::vec3 v0a = glm::vec3(v0.x, v0.y, this->getFloorZ(v0.x, v0.y));
-    const glm::vec3 v1a = glm::vec3(v1.x, v1.y, this->getFloorZ(v1.x, v1.y));
-
-    wireFrames.pushLine(v0a, v1a, glm::vec3(1.0f, 0.8f, 1.0f));
+  if (
+    gero::math::intersectTriangle(
+      inRayOrigin,
+      inRayDirection,
+      this->_vertices.at(0),
+      this->_vertices.at(2),
+      this->_vertices.at(1),
+      tmpData
+    ) && outData.distance > tmpData.distance
+  ) {
+    D_MYLOG("tmpData.distance " << tmpData.distance);
+    outData.distance = tmpData.distance;
+    outData.normal = tmpData.normal;
+    hasHit = true;
   }
 
-  // for (std::size_t ii = 0; ii < innerVertices.size(); ++ii) {
-  //   const glm::vec2& v0 = innerVertices.at(ii);
-  //   const glm::vec3 v0a = glm::vec3(v0.x, v0.y, this->getFloorZ(v0.x, v0.y));
-  //   wireFrames.pushLine(v0a, v0a + normal, glm::vec3(1.0f, 1.0f, 0.5f));
-  // }
-
-  wireFrames.pushLine(center, center + normal, glm::vec3(1.0f, 1.0f, 0.5f));
+  return hasHit;
 }
-
 
 

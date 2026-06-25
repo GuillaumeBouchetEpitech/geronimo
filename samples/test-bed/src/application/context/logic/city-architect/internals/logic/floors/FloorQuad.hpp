@@ -1,11 +1,12 @@
 
 #pragma once
 
-#include "../../graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+#include "../../graphics/instanced-brick-models/WireFramesAccumulator.hpp"
 #include "../../graphics/instanced-brick-models/TrianglesAccumulator.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
 #include "geronimo/system/asValue.hpp"
+#include "geronimo/system/math/RayCastResult.hpp"
 
 #include <array>
 #include <vector>
@@ -93,9 +94,15 @@ public:
 
   // render
 
-  void buildVertices(IWireFramesStackRenderer& inWireFrames) const;
+  void buildVertices_wireframes(IWireFramesAccumulator& inWireFrames) const;
   void buildVertices_triangles(ITrianglesAccumulator& inTriangles) const;
-  void render() const;
+  // void render() const;
+
+  bool intersect(
+    const glm::vec3& inRayOrigin,
+    const glm::vec3& inRayDirection,
+    gero::math::RayCastResult& outData
+  ) const;
 
 private:
   std::array<glm::vec3, 4> _vertices = {{

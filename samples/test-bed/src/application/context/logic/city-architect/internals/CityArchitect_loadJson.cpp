@@ -104,7 +104,7 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
 
       //
 
-      ExpectBrickRef brickResult = this->_brickModelsManager.createNewBrick(brickNameVal);
+      ExpectBrickRef brickResult = this->logic.brickModelsManager.createNewBrick(brickNameVal);
       if (!brickResult) {
         D_MYERR("===> could not create a brick");
         switch (brickResult.error()) {
@@ -115,9 +115,9 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
       }
       AbstractBrickModelWeakRef currModelRef = *brickResult;
 
-      auto& currBuilder = this->_brickModelsManager._floorBuilder;
-      auto& currWBuilder = this->_brickModelsManager._wallBuilder;
-      auto& currIBuilder = this->_brickModelsManager._brickInstanceBuilder;
+      auto& currBuilder = this->logic.brickModelsManager._floorBuilder;
+      auto& currWBuilder = this->logic.brickModelsManager._wallBuilder;
+      auto& currIBuilder = this->logic.brickModelsManager._brickInstanceBuilder;
 
       {
         AbstractBrickModel& currModel = *currModelRef;
@@ -285,7 +285,7 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
           jsonUtils::str::get(currOpval, "target", targetVal);
           D_MYLOG("-> targetVal " << targetVal);
 
-          auto targetResult = this->_brickModelsManager.getBrickByName(targetVal);
+          auto targetResult = this->logic.brickModelsManager.getBrickByName(targetVal);
           if (!targetResult) {
             D_MYERR("===> could not find brick named \"" << targetVal << "\"");
             continue;
@@ -334,27 +334,11 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
       currWBuilder.mergeAllAdjacentQuads();
 
 
-      // {
-      //   this->_wireFramesStackRenderer._vertices.clear();
-      //   constModel.buildVertices(this->_wireFramesStackRenderer);
-
-      //   this->_instancedBrickModels.createAlias(brickNameVal, this->_wireFramesStackRenderer._vertices);
-
-      //   InstancedBrickModels::GeometryInstance instance;
-
-      //   instance.position = glm::vec3(110 + float(currentindex) * 50.0f, -70, 10);
-      //   instance.orientation = glm::identity<glm::quat>();
-      //   instance.color = glm::vec4(1,1,1, 1);
-      //   instance.light = false;
-      //   instance.scale = glm::vec3(1,1,1);
-
-      //   this->_instancedBrickModels.pushAlias(brickNameVal, instance);
-
-      //   // D_MYERR("STEP?");
-      //   constModel.buildInstances(instance.position, instance.orientation, this->_instancedBrickModels);
-      // }
-
-      // currentindex += 1;
+      constModel.buildInstances(
+        this->graphics.wireFramesAccumulator,
+        this->graphics.trianglesAccumulator,
+        this->graphics.instancedBrickModels
+      );
 
     }
 
@@ -370,9 +354,9 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
 
       std::string targetVal;
       jsonUtils::str::get(currSceneVal, "target", targetVal);
-      D_MYLOG("-> targetVal " << targetVal);
+      // D_MYLOG("-> targetVal " << targetVal);
 
-      auto targetResult = this->_brickModelsManager.getBrickByName(targetVal);
+      auto targetResult = this->logic.brickModelsManager.getBrickByName(targetVal);
       if (!targetResult) {
         D_MYERR("===> could not find brick named \"" << targetVal << "\"");
         continue;
@@ -392,26 +376,19 @@ void CityArchitect::loadJson(std::string_view inFilepath) {
         instanceQuat = glm::toQuat(tmpMat);
       }
 
-      {
-        // if (!this->_instancedBrickModels.hasAlias(targetVal)) {
+      // this->logic.liveBrickInstancesManager
 
-        //   this->_wireFramesStackRenderer._vertices.clear();
-        //   this->_trianglesAccumulator._vertices.clear();
-        //   targetResult.value()->buildVertices(this->_wireFramesStackRenderer, this->_trianglesAccumulator);
+      this->logic.liveBrickInstancesManager.addInstance(
+        instancePos,
+        instanceQuat,
+        *targetResult
+      );
 
-        //   D_MYLOG("this->_trianglesAccumulator " << this->_trianglesAccumulator._vertices.size());
-
-        //   this->_instancedBrickModels.createAlias(targetVal, this->_wireFramesStackRenderer._vertices, this->_trianglesAccumulator._vertices);
-        // }
-
-        targetResult.value()->buildInstances(
-          instancePos,
-          instanceQuat,
-          this->_wireFramesStackRenderer,
-          this->_trianglesAccumulator,
-          this->_instancedBrickModels
-        );
-      }
+      // targetResult.value()->pushNewInstances(
+      //   instancePos,
+      //   instanceQuat,
+      //   this->graphics.instancedBrickModels
+      // );
 
     }
 

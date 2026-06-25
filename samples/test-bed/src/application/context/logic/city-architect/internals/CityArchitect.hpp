@@ -4,7 +4,7 @@
 #include "logic/BrickModelsManager.hpp"
 
 #include "graphics/instanced-brick-models/InstancedBrickModels.hpp"
-#include "graphics/instanced-brick-models/WireFramesStackRenderer.hpp"
+#include "graphics/instanced-brick-models/WireFramesAccumulator.hpp"
 #include "graphics/instanced-brick-models/TrianglesAccumulator.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
@@ -24,10 +24,18 @@ public:
 
 private:
 
-  BrickModelsManager _brickModelsManager;
+  struct {
+    BrickModelsManager brickModelsManager;
+    LiveBrickInstancesManager liveBrickInstancesManager;
+  }
+  logic;
 
-  InstancedBrickModels _instancedBrickModels;
-  WireFramesStackRenderer _wireFramesStackRenderer;
-  TrianglesAccumulator _trianglesAccumulator;
+  struct {
+
+    InstancedBrickModels instancedBrickModels;
+    WireFramesAccumulator wireFramesAccumulator;
+    TrianglesAccumulator trianglesAccumulator;
+  }
+  graphics;
 
 };

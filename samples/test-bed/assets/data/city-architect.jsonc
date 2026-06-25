@@ -333,10 +333,12 @@
       "target": "simple-rooftop",
       "origin": [160,200,0]
     },
-    // {
-    //   "target": "triple-stairs---now-connected",
-    //   "origin": [160,-60,0]
-    // },
+
+    {
+      "target": "triple-stairs---now-connected",
+      "origin": [220,220,0]
+    },
+
     // {
     //   "target": "triple-stairs---now-connected",
     //   "transforms": [
